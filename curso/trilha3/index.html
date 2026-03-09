@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trilha 3 - Construcao do SaaS | Imersao Vibe Coding</title>
+  <title>Trilha 3: Construcao do SaaS | Imersao Vibe Coding</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -25,7 +25,7 @@
     .topic-explanation { display: none; }
     .topic-explanation.active { display: block; }
 
-    /* Light mode overrides - OBRIGATORIO */
+    /* Light mode overrides */
     html:not(.dark) body {
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     }
@@ -58,27 +58,27 @@
         <div class="flex items-center space-x-1 sm:space-x-2">
           <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
             <span class="sm:hidden">T1</span>
-            <span class="hidden sm:inline">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
           </a>
           <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
             <span class="sm:hidden">T2</span>
-            <span class="hidden sm:inline">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
           </a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-400 bg-purple-500/10">
             <span class="sm:hidden">T3</span>
-            <span class="hidden sm:inline">T3 Construcao</span>
+            <span class="hidden sm:inline">Construcao</span>
           </a>
           <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
             <span class="sm:hidden">T4</span>
-            <span class="hidden sm:inline">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
           </a>
           <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
             <span class="sm:hidden">T5</span>
-            <span class="hidden sm:inline">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
           </a>
           <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
             <span class="sm:hidden">T6</span>
-            <span class="hidden sm:inline">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
           </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
@@ -96,24 +96,20 @@
   <!-- HEADER -->
   <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
-        TRILHA 3
-      </span>
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">TRILHA 3</span>
       <h1 class="text-3xl sm:text-4xl font-bold mb-4">💻 Construcao do SaaS</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">
-        Produto funcional. Autenticacao, dashboard, system prompts, upload multimodal, estados do sistema e historico de conversas. Do esqueleto ao SaaS rodando.
-      </p>
+      <p class="text-lg text-neutral-400 max-w-3xl">Auth, dashboard, system prompts, upload multimodal, estados e o SaaS funcional.</p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-purple-400">1</div>
-          <div class="text-xs text-neutral-400">Modulo</div>
+          <div class="text-xl font-bold text-purple-400">7</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xl font-bold text-purple-400">42</div>
           <div class="text-xs text-neutral-400">Topicos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-purple-400">~60min</div>
+          <div class="text-xl font-bold text-purple-400">~5h</div>
           <div class="text-xs text-neutral-400">Duracao</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
@@ -124,237 +120,307 @@
     </div>
   </header>
 
+  <!-- CONTENT -->
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- NAVEGACAO RAPIDA -->
-    <div class="grid grid-cols-1 gap-4 mb-12">
-      <a href="#mod-3-1" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/50 p-4 transition-all">
-        <span class="text-purple-400 font-bold text-sm">3.1</span>
-        <h3 class="font-semibold mt-1">💻 Construcao do SaaS</h3>
-      </a>
-    </div>
-
-    <!-- DIVISOR -->
+    <!-- Divisor -->
     <div class="flex items-center space-x-4 mb-8">
-      <div class="flex-1 h-px bg-dark-600"></div>
+      <div class="h-px bg-dark-600 flex-1"></div>
       <span class="text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
-      <div class="flex-1 h-px bg-dark-600"></div>
+      <div class="h-px bg-dark-600 flex-1"></div>
     </div>
 
-    <!-- ===== MODULO 3.1 ===== -->
-    <div id="mod-3-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+    <!-- MODULE 3.1 - Introducao -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
       <div class="p-6 border-b border-dark-600">
         <div class="flex items-center justify-between mb-2">
           <span class="text-purple-400 font-bold">3.1</span>
-          <span class="text-xs text-neutral-500">~60min</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
         </div>
-        <h3 class="text-2xl font-bold mb-2">💻 Construcao do SaaS</h3>
-        <p class="text-neutral-400 text-sm">Auth, dashboard, system prompts, upload multimodal, estados do sistema, historico e exercicio pratico para construir um SaaS funcional com IA.</p>
+        <h3 class="text-2xl font-bold mb-2">💻 Introducao: Construcao do SaaS</h3>
+        <p class="text-neutral-400 text-sm">Visao geral da construcao. Panorama dos 6 temas que serao aprofundados nos modulos seguintes.</p>
       </div>
       <div class="divide-y divide-dark-600">
-        <!-- Topico 1 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
             <span class="text-lg">🔐</span>
-            <div>
-              <span class="font-medium">Autenticacao e Onboarding</span>
-              <span class="text-neutral-500 text-sm ml-2">- Login, registro, Supabase Auth, JWT, social login</span>
-            </div>
+            <div><span class="font-medium">Autenticacao e Onboarding</span><span class="text-neutral-500 text-sm ml-2">- Auth, sessoes, protecao de rotas</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">O sistema de login, registro e primeiro acesso do usuario. Inclui Supabase Auth, JWT tokens, session management e integracao com social login (Google, GitHub). E a primeira impressao do produto.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Sem autenticacao, nao existe SaaS. E o gate que separa visitante de usuario. Auth mal feita vaza dados, auth bem feita converte visitantes e mantem sessoes seguras.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Supabase Auth simplifica tudo: signup, login, reset password, OAuth em poucas linhas. JWT tokens carregam identidade. Session management define quanto tempo o usuario fica logado. Onboarding guia o primeiro uso.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Sistema completo de autenticacao: login, registro, JWT, protecao de rotas e fluxo de onboarding para novos usuarios.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Auth e a porta de entrada do seu SaaS. Sem auth seguro, nada mais importa.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Supabase Auth, JWT, OAuth, protecao de rotas, onboarding flow, social login.</p></div>
             </div>
           </div>
         </div>
-        <!-- Topico 2 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
             <span class="text-lg">📊</span>
-            <div>
-              <span class="font-medium">Dashboard e Interface Principal</span>
-              <span class="text-neutral-500 text-sm ml-2">- Layout, navegacao, UX para apps de IA</span>
-            </div>
+            <div><span class="font-medium">Dashboard e Interface</span><span class="text-neutral-500 text-sm ml-2">- Layout, componentes, navegacao</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">A tela principal do SaaS onde o usuario opera. Inclui layout design, navigation patterns, sidebar vs topbar, e a decisao entre design centrado em conversa vs centrado em transacao.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">O dashboard e onde o usuario passa 90% do tempo. UX ruim no dashboard mata retencao. Apps de IA tem desafios unicos: tempo de resposta variavel, outputs longos, estados assincronos.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Conversation-centered (tipo ChatGPT) vs Transaction-centered (tipo Notion). Sidebar para navegacao, area principal para conteudo. Loading states visiveis, feedback instantaneo em cada acao.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Design e implementacao do dashboard principal: layout, componentes essenciais, navegacao e responsividade.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O dashboard e onde o usuario passa 90% do tempo. UX ruim = churn alto.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Layout design, conversation-centered UI, information architecture, mobile-first.</p></div>
             </div>
           </div>
         </div>
-        <!-- Topico 3 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
             <span class="text-lg">⚙️</span>
-            <div>
-              <span class="font-medium">System Prompts e Fluxo da Aplicacao</span>
-              <span class="text-neutral-500 text-sm ml-2">- Pipeline Input > Processing > Output</span>
-            </div>
+            <div><span class="font-medium">System Prompts e Fluxo</span><span class="text-neutral-500 text-sm ml-2">- Pipeline, parametros, guardrails</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">O pipeline completo de como a mensagem do usuario vira resposta da IA: input do usuario, system prompt que define o comportamento, configuracoes de temperature e context window, e formatacao do output.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">O system prompt define a personalidade e capacidades do seu SaaS. Temperature errada gera respostas inconsistentes. Context window mal gerenciado gasta dinheiro e perde informacao.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">System prompt = instrucoes permanentes que moldam o comportamento. Temperature 0 = deterministico, 1 = criativo. Context window = memoria de curto prazo da conversa. Streaming = resposta aparecendo em tempo real.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Configuracao de system prompts de producao, pipeline de processamento e validacao de output.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O system prompt define a personalidade e qualidade do seu produto IA. E o diferencial competitivo.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">System prompts de producao, pipeline I/O, temperature, contexto dinamico, guardrails.</p></div>
             </div>
           </div>
         </div>
-        <!-- Topico 4 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
             <span class="text-lg">📎</span>
-            <div>
-              <span class="font-medium">Upload Multimodal</span>
-              <span class="text-neutral-500 text-sm ml-2">- PDF, imagens, video, OCR, vision models</span>
-            </div>
+            <div><span class="font-medium">Upload Multimodal</span><span class="text-neutral-500 text-sm ml-2">- PDF, imagem, video, audio</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">A capacidade do SaaS de receber e processar arquivos alem de texto: PDFs, imagens, videos. Inclui patterns de upload, chunking de documentos grandes, OCR para extrair texto de imagens e vision models para entender conteudo visual.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">SaaS que so aceita texto e limitado. Upload multimodal e o diferencial que transforma um chatbot simples em uma ferramenta profissional. Usuarios querem enviar contratos, fotos, relatorios.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Chunking = quebrar documentos grandes em pedacos processaveis. OCR = extrair texto de imagens/scans. Vision models (GPT-4o, Claude) analisam imagens diretamente. Limites: tamanho de arquivo, formatos aceitos, custo por token.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Sistema de upload e processamento de multiplos tipos de arquivo: PDF, imagens, video e audio.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">SaaS com IA que aceita apenas texto e limitado. Multimodal e o padrao em 2026.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Upload patterns, processamento de PDF/imagem, chunking, indexacao RAG.</p></div>
             </div>
           </div>
         </div>
-        <!-- Topico 5 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
             <span class="text-lg">🔄</span>
-            <div>
-              <span class="font-medium">Estados do Sistema e Historico</span>
-              <span class="text-neutral-500 text-sm ml-2">- Loading, error, async UX, persistencia</span>
-            </div>
+            <div><span class="font-medium">Estados e Historico</span><span class="text-neutral-500 text-sm ml-2">- Loading, error, persistencia</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Como o sistema comunica o que esta acontecendo ao usuario: loading, processando, erro, concluido. Inclui UX patterns para operacoes assincronas de IA, historico de conversas e persistencia de sessoes.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">IA demora. Se o usuario nao sabe o que esta acontecendo, ele fecha a aba. Estados claros reduzem abandono. Historico permite retomar conversas e e feature obrigatoria em qualquer SaaS com IA.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">4 estados: idle, loading, success, error. Skeleton screens durante carregamento. Streaming text para respostas longas. Historico salvo no banco com session_id. Persistencia = usuario volta e continua de onde parou.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Gerenciamento dos 4 estados do sistema (idle, loading, success, error) e persistencia de historico.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Apps IA tem latencia alta. Estados bem gerenciados transformam espera em experiencia.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 estados, loading states para IA, error recovery, historico de conversas, persistencia.</p></div>
             </div>
           </div>
         </div>
-        <!-- Topico 6 -->
         <div class="topic-item">
           <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
             <span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
             <span class="text-lg">🛠️</span>
-            <div>
-              <span class="font-medium">Exercicio: SaaS Funcional</span>
-              <span class="text-neutral-500 text-sm ml-2">- Construir interface completa com auth, dashboard, IA e upload</span>
-            </div>
+            <div><span class="font-medium">Exercicio: SaaS Funcional</span><span class="text-neutral-500 text-sm ml-2">- Integracao completa</span></div>
           </button>
           <div class="topic-explanation px-6 pb-4">
             <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-purple-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Exercicio pratico para construir a interface completa do SaaS: autenticacao funcional, dashboard com navegacao, fluxo de IA com system prompt, upload de arquivos e gerenciamento de estados e historico.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Teoria sem pratica nao constroi produto. Este exercicio junta todas as pecas dos topicos anteriores num sistema funcional. Ao final, voce tem um SaaS que um usuario real pode usar.</p>
-              </div>
-              <div>
-                <span class="text-purple-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Entregaveis: 1) Login/registro funcionando, 2) Dashboard com sidebar e area principal, 3) Input de texto + system prompt gerando resposta, 4) Upload de arquivo processado, 5) Historico de conversas persistente.</p>
-              </div>
+              <div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio integrador: conectar auth + dashboard + AI + upload em um SaaS funcional end-to-end.</p></div>
+              <div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Teoria sem pratica nao constroi nada. Este exercicio cria o MVP funcional do seu SaaS.</p></div>
+              <div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Integracao de modulos, fluxo completo, polishing, testes de integracao, demo day.</p></div>
             </div>
           </div>
         </div>
       </div>
       <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-        <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
-          Ver em Modal
-        </button>
-        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">
-          Ver Completo
-        </a>
+        <button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
       </div>
     </div>
 
-    <!-- NAVEGACAO INFERIOR -->
+    <!-- MODULE 3.2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.2</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🔐 Autenticacao e Onboarding</h3>
+        <p class="text-neutral-400 text-sm">Supabase Auth, JWT, protecao de rotas, onboarding flow e social login.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🔑</span><div><span class="font-medium">Supabase Auth: Setup Completo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Configuracao completa do Supabase Auth: projeto, providers, email templates, redirect URLs.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Supabase Auth elimina semanas de trabalho. Setup correto evita dores de cabeca futuras.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Supabase project setup, auth providers, email confirmation, redirect config.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🪪</span><div><span class="font-medium">JWT Tokens e Sessoes</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Como JWT funciona: access token, refresh token, expiracao, renovacao automatica.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Entender JWT previne bugs de sessao expirada e vulnerabilidades de seguranca.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">JWT structure, access vs refresh tokens, token storage, session management.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🛡️</span><div><span class="font-medium">Protecao de Rotas</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Middleware de autenticacao, rotas publicas vs privadas, redirect para login, role-based access.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Rotas desprotegidas sao a vulnerabilidade #1 em SaaS. Uma rota aberta e um vazamento de dados.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Auth middleware, route guards, public vs private, RBAC, Next.js middleware.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🎯</span><div><span class="font-medium">Onboarding Flow</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Fluxo pos-registro: coleta de dados, personalizacao, primeiro uso guiado, time to value.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">40-60% dos usuarios abandonam apps sem onboarding. Primeiros 5 minutos definem retencao.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Onboarding steps, progressive disclosure, first-run experience, personalizacao.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🌐</span><div><span class="font-medium">Social Login e OAuth</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Login com Google, GitHub, etc. OAuth 2.0 flow, configuracao de providers, account linking.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Social login aumenta conversao em 20-50%. Menos friccao = mais signups.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">OAuth 2.0, Google/GitHub providers, consent screen, account linking, PKCE flow.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🛠️</span><div><span class="font-medium">Exercicio: Auth Completo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Implementar auth completo: registro, login, social auth, protecao de rotas e onboarding flow.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Auth e a fundacao. Sem ele funcionando, nada mais pode ser construido.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Implementacao end-to-end, teste de fluxos, edge cases, checklist de seguranca.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 3.3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-purple-400 font-bold">3.3</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">📊 Dashboard e Interface Principal</h3>
+        <p class="text-neutral-400 text-sm">Layout design, conversation-centered UI, componentes essenciais, navegacao e responsividade.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🖥️</span><div><span class="font-medium">Layout Design para Apps com IA</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Padroes de layout especificos para apps com IA: sidebar + main area, chat-centric, split view.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Layout de app IA e diferente de SaaS tradicional. O output da IA precisa de espaco e contexto.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Layout patterns IA, sidebar navigation, main content area, streaming output area.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">💬</span><div><span class="font-medium">Conversation vs Transaction-Centered</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dois paradigmas de UI para IA: chat/conversa (ChatGPT-style) vs transacao/formulario (SaaS tradicional).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escolher o paradigma errado cria fricao. Nem todo app IA precisa ser um chatbot.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Chat UI, form UI, hybrid approach, quando usar cada um, exemplos reais.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🧱</span><div><span class="font-medium">Componentes Essenciais do Dashboard</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Os componentes que todo dashboard IA precisa: input area, output display, history sidebar, settings panel.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Componentes reutilizaveis aceleram o desenvolvimento e garantem consistencia visual.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Component library, input/output areas, history, settings, status indicators.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧭</span><div><span class="font-medium">Navegacao e Information Architecture</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrutura de navegacao: hierarquia de paginas, breadcrumbs, tabs, sidebar vs top nav.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Usuarios se perdem em apps sem navegacao clara. IA architecture e nao-linear por natureza.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">IA (information architecture), navigation patterns, page hierarchy, user mental models.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">📱</span><div><span class="font-medium">Responsividade e Mobile</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Adaptacao do dashboard para mobile: breakpoints, sidebar collapsible, touch targets, bottom nav.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">60%+ do trafego e mobile. Dashboard que nao funciona em mobile perde metade dos usuarios.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Mobile-first, Tailwind breakpoints, touch UX, responsive patterns para apps IA.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🛠️</span><div><span class="font-medium">Exercicio: Dashboard Funcional</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Construir o dashboard completo: layout, componentes, navegacao, responsividade e integracao com auth.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dashboard funcional e o coracao do SaaS. Depois deste exercicio, o app tem cara de produto real.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Implementacao completa, Tailwind components, integracao auth, teste mobile.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 3.4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.4</span><span class="text-xs text-neutral-500">~50 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">⚙️ System Prompts e Fluxo da Aplicacao</h3>
+        <p class="text-neutral-400 text-sm">Anatomia de system prompts, pipeline de processamento, temperature, contexto dinamico e guardrails.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Anatomia de um System Prompt de Producao</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Estrutura de system prompts profissionais: role, constraints, output format, examples, fallbacks.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">System prompt amador = output inconsistente. System prompt profissional = produto confiavel.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Role definition, constraints, output schema, few-shot examples, edge case handling.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Pipeline Input > Processing > Output</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O pipeline completo: sanitizacao de input, montagem do prompt, chamada API, parsing de output.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada etapa do pipeline pode falhar. Entender o fluxo completo previne bugs silenciosos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Input validation, prompt assembly, API call, response parsing, error handling.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Temperature e Parametros de Geracao</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Temperature, top_p, max_tokens, frequency_penalty e como cada um afeta o output.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Parametros errados geram output imprevisivel. Temperature 0 para dados, 0.7+ para criatividade.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Temperature scale, top_p sampling, token limits, penalty params, presets por use case.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Injecao de Contexto Dinamico</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Adicionar dados do usuario, historico e contexto externo no prompt em runtime.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">IA sem contexto da respostas genericas. Contexto dinamico personaliza e melhora qualidade 3-5x.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template variables, user context injection, RAG context, conversation history window.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Guardrails e Output Validation</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Validacao de output: schema check, content filtering, fallback responses, retry logic.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">LLMs podem gerar output inesperado. Guardrails protegem o usuario e a reputacao do produto.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Output schema validation, content filters, retry with fallback, structured output (JSON mode).</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Fluxo Completo da Aplicacao</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Implementar pipeline completo: system prompt, input processing, API call, output validation, error handling.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Pipeline integrado e o motor do SaaS. Cada peca isolada nao tem valor sem integracao.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">End-to-end pipeline, system prompt tuning, guardrails config, teste de edge cases.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 3.5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.5</span><span class="text-xs text-neutral-500">~50 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">📎 Upload Multimodal</h3>
+        <p class="text-neutral-400 text-sm">Upload de PDF, imagem, video e audio. Processamento, chunking e indexacao para RAG.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Tipos de Upload: PDF, Imagem, Video, Audio</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Panorama dos 4 tipos de upload multimodal: cada um com pipeline de processamento diferente.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Usuarios querem interagir com IA usando seus proprios documentos e midias, nao so texto.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">File types, MIME types, size limits, processing pipelines por tipo, storage strategy.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Processamento de PDF</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Extracao de texto de PDF: OCR, parsing estruturado, tabelas, metadados.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">PDF e o formato mais comum em contexto profissional. 80% dos uploads em SaaS B2B sao PDFs.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">PDF parsing libraries, OCR, text extraction, table extraction, metadata handling.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Processamento de Imagens</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Vision API: enviar imagens para LLMs multimodais, compressao, formatos, limites de tamanho.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">GPT-4V, Claude Vision e Gemini transformam imagens em dados estruturados. Poder enorme.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Vision APIs, image encoding (base64), compression, multi-image prompts, cost per image.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Upload UX Patterns</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Drag and drop, progress indicators, file preview, error messages, batch upload.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Upload ruim frustra usuarios. Boa UX de upload transmite confianca e profissionalismo.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Drag-drop zone, progress bar, file preview, error states, chunked upload.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Chunking e Indexacao para RAG</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dividir documentos em chunks, gerar embeddings, indexar para busca semantica (RAG).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">RAG transforma documentos estaticos em conhecimento consultavel pela IA. E o padrao em 2026.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Chunking strategies, embeddings, vector store, semantic search, retrieval pipeline.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Sistema de Upload Completo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Implementar upload completo: drag-drop UI, processamento server-side, chunking e integracao RAG.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Upload funcional conecta o mundo real ao seu SaaS. Sem ele, a IA so trabalha com texto digitado.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Full upload pipeline, storage config, processing queue, RAG integration, teste end-to-end.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 3.6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.6</span><span class="text-xs text-neutral-500">~45 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">🔄 Estados do Sistema e Historico</h3>
+        <p class="text-neutral-400 text-sm">Os 4 estados (idle, loading, success, error), loading states para IA, historico e persistencia.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">⚡</span><div><span class="font-medium">Os 4 Estados: Idle, Loading, Success, Error</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Todo componente interativo tem 4 estados. Mapear cada um evita telas em branco e UX quebrada.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Apps sem tratamento de estados parecem quebrados. Usuarios nao sabem se esta carregando ou travou.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State machine, 4 estados universais, transicoes, UI para cada estado.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⏳</span><div><span class="font-medium">Loading States para IA</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Loading especifico para IA: streaming tokens, skeleton screens, progress estimation, cancelamento.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">IA demora 2-30 segundos. Sem feedback visual, usuario acha que travou e fecha o app.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Token streaming, typing indicators, skeleton UI, cancel button, time estimation.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🚨</span><div><span class="font-medium">Error States e Recuperacao</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Tratamento de erros: rate limits, timeout, API down, output invalido, retry automatico.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">APIs de IA falham. Rate limits, timeouts e erros 500 sao comuns. Resiliencia e obrigatoria.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Error types, user-friendly messages, retry logic, exponential backoff, fallback responses.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">💬</span><div><span class="font-medium">Historico de Conversas</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Armazenar e exibir historico: conversation threads, busca, exportacao, limites de contexto.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Historico transforma interacoes isoladas em experiencia continua. Usuarios esperam poder voltar.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Conversation storage, thread management, search, context window management, export.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">💾</span><div><span class="font-medium">Persistencia de Sessao</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Salvar estado da sessao: draft messages, scroll position, configuracoes, preferencias do usuario.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Perder trabalho em progresso e frustrante. Persistencia de sessao e diferencial de qualidade.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">LocalStorage, session recovery, auto-save, user preferences, state hydration.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🛠️</span><div><span class="font-medium">Exercicio: Sistema de Estados Completo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Implementar todos os 4 estados, streaming, error handling, historico e persistencia de sessao.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sistema de estados completo transforma prototipo em produto. E o polish que diferencia amador de pro.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">State management completo, streaming integration, error recovery, history persistence.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 3.7 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.7</span><span class="text-xs text-neutral-500">~60 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">🚀 SaaS Funcional (Exercicio Integrador)</h3>
+        <p class="text-neutral-400 text-sm">Integracao completa: Auth + Dashboard + AI. Fluxo do usuario, polishing, testes e demo day.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🔗</span><div><span class="font-medium">Integrando Auth + Dashboard + AI</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Conectar os 3 pilares: usuario autenticado acessa dashboard que interage com IA personalizada.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Pecas isoladas nao fazem produto. A integracao e onde a maioria dos projetos trava.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Auth context propagation, user-scoped AI, data flow architecture, session management.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔀</span><div><span class="font-medium">Fluxo Completo do Usuario</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Jornada end-to-end: landing > signup > onboarding > dashboard > core feature > resultado > retorno.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Testar o fluxo completo revela gaps invisiveis. Cada transicao e um ponto potencial de abandono.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">User journey mapping, transition points, friction analysis, time-to-value optimization.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">✨</span><div><span class="font-medium">Polishing a Interface</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Micro-interacoes, animacoes, tipografia, espacamento, cores consistentes, empty states.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Polish transforma "funciona" em "impressiona". 10% de esforco que gera 50% da percepcao de qualidade.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Micro-interactions, transitions, typography scale, consistent spacing, attention to detail.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧪</span><div><span class="font-medium">Testes de Integracao Rapidos</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Testes pragmaticos: happy path, edge cases criticos, fluxo de auth, erro de API, mobile.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Nao precisa de 100% coverage. 5 testes bem escolhidos cobrem 80% dos bugs criticos.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Happy path testing, critical edge cases, manual test checklist, smoke tests.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⚡</span><div><span class="font-medium">Performance Basica</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Otimizacoes essenciais: bundle size, lazy loading, image optimization, API response caching.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">App lento = usuario frustrado. 3 segundos de load time perde 53% dos usuarios mobile.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Core Web Vitals, lazy loading, code splitting, caching strategy, Lighthouse audit.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🎬</span><div><span class="font-medium">Exercicio: Demo Day</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Preparar e apresentar o SaaS funcional: demo script, screen recording, feature walkthrough.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saber apresentar seu produto e tao importante quanto construi-lo. Demo day treina essa skill.</p></div><div><span class="text-purple-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Demo script, screen recording, feature highlights, storytelling, feedback collection.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-3-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-3-7.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
     <div class="flex flex-col sm:flex-row gap-4 mt-12">
-      <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
-        ← Trilha Anterior
-      </a>
-      <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
-        Proxima →
-      </a>
+      <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">&larr; Trilha 2</a>
+      <a href="../trilha4/index.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Trilha 4 &rarr;</a>
     </div>
 
   </main>
 
-  <!-- MODAIS -->
-  <div id="modal-3-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+  <!-- MODALS -->
+  <div id="modal-3-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
     <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-        <div class="flex items-center space-x-3">
-          <span class="text-purple-400 font-bold">3.1</span>
-          <span class="font-semibold">Construcao do SaaS</span>
-        </div>
-        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
-      </div>
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.1</span><span class="font-semibold">Introducao: Construcao do SaaS</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
       <iframe src="modulo-3-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">Autenticacao e Onboarding</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">Dashboard e Interface Principal</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-4" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.4</span><span class="font-semibold">System Prompts e Fluxo da Aplicacao</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-5" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.5</span><span class="font-semibold">Upload Multimodal</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-6" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.6</span><span class="font-semibold">Estados do Sistema e Historico</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-3-7" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.7</span><span class="font-semibold">SaaS Funcional (Exercicio Integrador)</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-3-7.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+      <p>Imersao Vibe Coding - Trilha 3: Construcao do SaaS - 2026</p>
+      <p class="mt-2"><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
     </div>
   </footer>
 
@@ -365,31 +431,22 @@
       const explanation = topicItem.querySelector('.topic-explanation');
       const moduleCard = button.closest('.bg-dark-800');
       moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
-        if (exp !== explanation) {
-          exp.classList.remove('active');
-        }
+        if (exp !== explanation) exp.classList.remove('active');
       });
       explanation.classList.toggle('active');
     }
 
     function openModal(modalId) {
       const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      }
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
     }
 
     function closeModal() {
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.classList.add('hidden');
-      });
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
       document.body.style.overflow = 'auto';
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');

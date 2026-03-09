@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.3 - Dashboard e Interface Principal | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.3</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📊 Dashboard e Interface Principal</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        O design do dashboard define se o usuario fica ou vai embora. Layout para apps de IA, paradigmas de interface, componentes essenciais, navegacao, responsividade e construcao pratica.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">50 min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Layout Design para Apps com IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🖥️ Layout Design para Apps com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Apps de IA tem um desafio de layout que apps tradicionais nao tem: <strong class="text-purple-400">espaco para conversa</strong>. A interacao primaria e texto, e texto precisa de area generosa para ser lido com conforto. Sidebar + area principal + input bar e o padrao que domina em 2026 por uma razao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O layout padrao para SaaS com IA consiste em tres zonas: <strong class="text-white">sidebar de navegacao</strong> (historico, configuracoes, agentes), <strong class="text-white">area principal</strong> (onde a conversa/conteudo acontece) e <strong class="text-white">painel de chat/input</strong> (onde o usuario interage). Esse modelo funciona porque mapeia diretamente o fluxo mental do usuario: escolher contexto > ver conteudo > agir.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Sidebar (240-280px):</strong> Fixa no desktop, drawer no mobile. Contem historico de conversas, botao "Nova Conversa", navegacao para settings e billing</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Area Principal (flex-1):</strong> Ocupa todo o espaco restante. Scroll vertical para mensagens. Max-width de 768px para legibilidade (texto longo em tela wide e cansativo)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Input Bar (fixo no bottom):</strong> Textarea expansivel + botao de upload + botao de envio. Sticky no bottom da viewport para estar sempre acessivel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Responsive:</strong> Em telas menores que 768px, sidebar vira overlay/drawer. Input bar vira full-width. Area principal ocupa 100vw</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Layout Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🏗️</span> Wireframe do Layout
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20">
+          <span class="text-neutral-500">┌─────────────────────────────────────────────────┐</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-purple-400">Logo</span>    <span class="text-neutral-400">Nav Items</span>              <span class="text-neutral-400">Theme  Avatar</span> <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">├──────────┬──────────────────────────────────────┤</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-purple-400">+ Nova</span>   <span class="text-neutral-500">│</span>                                      <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conversa</span> <span class="text-neutral-500">│</span>  <span class="text-purple-400">Area Principal (Chat/Content)</span>       <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span>                                      <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 1</span>   <span class="text-neutral-500">│</span>  <span class="text-neutral-400">User: Como funciona X?</span>             <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 2</span>   <span class="text-neutral-500">│</span>  <span class="text-neutral-400">AI: X funciona assim...</span>            <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 3</span>   <span class="text-neutral-500">│</span>                                      <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span>  <span class="text-neutral-400">User: E sobre Y?</span>                  <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Settings</span> <span class="text-neutral-500">│</span>  <span class="text-neutral-400">AI: Y e relacionado a...</span>           <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span> <span class="text-neutral-400">Billing</span>  <span class="text-neutral-500">│</span>                                      <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span>  <span class="text-neutral-400">┌──────────────────────────────────┐</span> <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span>  <span class="text-neutral-400">│ 📎  Digite sua mensagem...  ➤ │</span> <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span>  <span class="text-neutral-400">└──────────────────────────────────┘</span> <span class="text-neutral-500">│</span><br>
+          <span class="text-neutral-500">└──────────┴──────────────────────────────────────┘</span>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Estrutura Base do Layout
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-neutral-500">// app/dashboard/layout.tsx</div>
+          <div class="text-purple-400">export default function</div><span class="text-neutral-300"> DashboardLayout({ children }) {</span>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">return</span> (</div>
+          <div class="text-neutral-300 ml-8">&lt;div className="flex h-screen"&gt;</div>
+          <div class="text-neutral-300 ml-12"><span class="text-neutral-500">{/* Sidebar - hidden on mobile */}</span></div>
+          <div class="text-neutral-300 ml-12">&lt;aside className="hidden md:flex w-64 flex-col</div>
+          <div class="text-neutral-300 ml-16">bg-gray-900 border-r border-gray-800"&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;SidebarHeader /&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;ConversationList /&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;SidebarFooter /&gt;</div>
+          <div class="text-neutral-300 ml-12">&lt;/aside&gt;</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-neutral-300 ml-12"><span class="text-neutral-500">{/* Main content area */}</span></div>
+          <div class="text-neutral-300 ml-12">&lt;main className="flex-1 flex flex-col overflow-hidden"&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;TopBar /&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;div className="flex-1 overflow-y-auto"&gt;</div>
+          <div class="text-neutral-300 ml-20">{children}</div>
+          <div class="text-neutral-300 ml-16">&lt;/div&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;ChatInput /&gt;</div>
+          <div class="text-neutral-300 ml-12">&lt;/main&gt;</div>
+          <div class="text-neutral-300 ml-8">&lt;/div&gt;</div>
+          <div class="text-neutral-300 ml-4">)</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Copie o layout do ChatGPT ou Claude como base.</strong> Serio. Sidebar esquerda com historico + area central de conversa + input bar na base. Usuarios ja sabem usar esse padrao. Nao invente um layout novo. Inove no conteudo e nas features, nao na disposicao dos elementos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Conversation-Centered vs Transaction-Centered -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">💬 Conversation vs Transaction-Centered</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem todo SaaS com IA precisa ser um chatbot. Existem dois paradigmas dominantes de interface e a escolha errada pode matar a experiencia do usuario. Entender quando usar cada um e <strong class="text-purple-400">decisao de arquitetura, nao de design</strong>.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">conversation-centered</strong> (ChatGPT, Claude, Gemini) coloca a conversa como elemento central da interface. O usuario interage primariamente via texto. Ja o <strong class="text-white">transaction-centered</strong> (Notion AI, Canva AI, Jasper) integra a IA dentro de workflows existentes. A IA e uma feature, nao o produto inteiro.
+        </p>
+        <p class="text-neutral-300">
+          Existe tambem o <strong class="text-white">modelo hibrido</strong> (Cursor, v0.dev, Replit Agent) que combina os dois: um workspace visual onde a IA atua como co-piloto. O usuario edita diretamente E conversa com a IA no mesmo ambiente.
+        </p>
+      </div>
+
+      <!-- Comparison -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4 text-lg">💬 Conversation-Centered</h4>
+          <p class="text-neutral-400 text-sm mb-4">A conversa e o produto</p>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Exemplos:</strong> ChatGPT, Claude, Perplexity</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Quando usar:</strong> O valor principal vem da interacao textual com a IA</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Layout:</strong> Chat area centralizada, historico na sidebar</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Vantagem:</strong> Simples de construir, familiar para usuarios</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6">
+          <h4 class="font-bold text-purple-400 mb-4 text-lg">📋 Transaction-Centered</h4>
+          <p class="text-neutral-400 text-sm mb-4">A IA potencializa workflows</p>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Exemplos:</strong> Notion AI, Canva AI, Jasper</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Quando usar:</strong> A IA e uma feature dentro de um produto maior</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Layout:</strong> Workspace no centro, IA em sidebar ou popup</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-purple-400 mt-1">•</span>
+              <span><strong class="text-white">Vantagem:</strong> IA contextualizada no que o usuario esta fazendo</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados de Mercado
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">72%</strong> dos SaaS com IA lancados em 2025-2026 usam modelo conversation-centered como base</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Modelos hibridos</strong> (Cursor, v0) mostram 3x mais retencao que chatbots puros em tarefas de produtividade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Para MVP:</strong> Conversation-centered e 5x mais rapido de construir que hibrido. Comece simples, complexifique depois</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Se voce esta construindo um SaaS com IA pela primeira vez, <strong class="text-white">va de conversation-centered</strong>. E mais simples de construir, usuarios ja sabem usar e voce pode evoluir para hibrido depois. O ChatGPT provou que o modelo funciona. Nao reinvente antes de validar.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Componentes Essenciais do Dashboard -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🧱 Componentes Essenciais do Dashboard</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um dashboard funcional nao e uma pagina em branco com um input de texto. Ele precisa de <strong class="text-purple-400">componentes que informam, guiam e motivam</strong> o usuario. Stats cards, lista de conversas recentes, acoes rapidas e seletor de agente sao o minimo para um produto que parece profissional.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os componentes essenciais de um dashboard de SaaS com IA seguem uma hierarquia: <strong class="text-white">status/metricas no topo</strong> (quantas conversas, tokens usados, plano atual), <strong class="text-white">acoes rapidas no meio</strong> (nova conversa, templates, upload) e <strong class="text-white">conteudo recente embaixo</strong> (ultimas conversas, resultados salvos).
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Stats Cards:</strong> 3-4 cards no topo mostrando metricas-chave. Conversas hoje, tokens usados, tempo economizado. Dados que justificam o pagamento</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Quick Actions:</strong> Botoes grandes para acoes frequentes. "Nova Conversa", "Upload Documento", "Usar Template". Reduzem cliques para chegar ao valor</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Recent Conversations:</strong> Lista das ultimas 5-10 conversas com titulo, data e preview. Clicar abre a conversa completa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Agent Selector:</strong> Se o SaaS tem multiplos agentes/modos (escrita, analise, codigo), dropdown ou tabs para alternar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block: Stats Cards -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Stats Card com Tailwind + shadcn/ui
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">import</div><span class="text-neutral-300"> { Card, CardContent, CardHeader, CardTitle } </span><span class="text-purple-400">from</span><span class="text-neutral-300"> '@/components/ui/card'</span>
+          <div class="text-purple-400">import</div><span class="text-neutral-300"> { MessageSquare, Zap, Clock, TrendingUp } </span><span class="text-purple-400">from</span><span class="text-neutral-300"> 'lucide-react'</span>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-purple-400">const</div><span class="text-neutral-300"> stats = [</span>
+          <div class="text-neutral-300 ml-4">{ title: 'Conversas Hoje', value: '12', icon: MessageSquare, change: '+3' },</div>
+          <div class="text-neutral-300 ml-4">{ title: 'Tokens Usados', value: '45.2k', icon: Zap, change: '60%' },</div>
+          <div class="text-neutral-300 ml-4">{ title: 'Tempo Economizado', value: '2.5h', icon: Clock, change: '+45min' },</div>
+          <div class="text-neutral-300 ml-4">{ title: 'Satisfacao', value: '94%', icon: TrendingUp, change: '+2%' },</div>
+          <div class="text-neutral-300">]</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-purple-400">function</div><span class="text-neutral-300"> StatsGrid() {</span>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">return</span> (</div>
+          <div class="text-neutral-300 ml-8">&lt;div className="grid grid-cols-2 lg:grid-cols-4 gap-4"&gt;</div>
+          <div class="text-neutral-300 ml-12">{stats.map((stat) =&gt; (</div>
+          <div class="text-neutral-300 ml-16">&lt;Card key={stat.title}&gt;</div>
+          <div class="text-neutral-300 ml-20">&lt;CardHeader className="flex flex-row items-center</div>
+          <div class="text-neutral-300 ml-24">justify-between pb-2"&gt;</div>
+          <div class="text-neutral-300 ml-24">&lt;CardTitle className="text-sm font-medium</div>
+          <div class="text-neutral-300 ml-28">text-muted-foreground"&gt;</div>
+          <div class="text-neutral-300 ml-28">{stat.title}</div>
+          <div class="text-neutral-300 ml-24">&lt;/CardTitle&gt;</div>
+          <div class="text-neutral-300 ml-24">&lt;stat.icon className="h-4 w-4 text-purple-400" /&gt;</div>
+          <div class="text-neutral-300 ml-20">&lt;/CardHeader&gt;</div>
+          <div class="text-neutral-300 ml-20">&lt;CardContent&gt;</div>
+          <div class="text-neutral-300 ml-24">&lt;div className="text-2xl font-bold"&gt;{stat.value}&lt;/div&gt;</div>
+          <div class="text-neutral-300 ml-24">&lt;p className="text-xs text-emerald-400"&gt;{stat.change}&lt;/p&gt;</div>
+          <div class="text-neutral-300 ml-20">&lt;/CardContent&gt;</div>
+          <div class="text-neutral-300 ml-16">&lt;/Card&gt;</div>
+          <div class="text-neutral-300 ml-12">))}</div>
+          <div class="text-neutral-300 ml-8">&lt;/div&gt;</div>
+          <div class="text-neutral-300 ml-4">)</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Mostrar metricas que justificam o valor do produto</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Usar shadcn/ui como base (consistente, acessivel, customizavel)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Colocar a acao principal (nova conversa) em destaque</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Dashboard vazio sem metricas nem contexto</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Criar componentes do zero quando existem libraries</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Sobrecarregar com 20 cards (3-4 stats sao suficientes)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Navegacao e Information Architecture -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🧭 Navegacao e Information Architecture</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O usuario abriu o dashboard. Agora precisa encontrar o que procura em <strong class="text-purple-400">menos de 3 segundos</strong>. Information Architecture (IA) e a arte de organizar features de forma que o usuario descubra naturalmente, sem precisar de manual. Sidebar, breadcrumbs e command palette sao as ferramentas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A navegacao de um SaaS opera em tres niveis: <strong class="text-white">primaria</strong> (sidebar - seccoes principais como Chat, Settings, Billing), <strong class="text-white">secundaria</strong> (breadcrumbs + tabs dentro de cada seccao) e <strong class="text-white">global</strong> (Command Palette Cmd+K que busca qualquer coisa de qualquer lugar).
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Sidebar Items:</strong> Maximo 7 items na navegacao primaria (regra de Miller). Agrupe items relacionados com separadores visuais. Icons + labels</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Breadcrumbs:</strong> Mostram onde o usuario esta na hierarquia. Dashboard > Settings > API Keys. Permitem voltar rapidamente a qualquer nivel</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Command Palette (Cmd+K):</strong> Busca universal. Digita o que quer e encontra conversas, settings, acoes. Linear, Vercel, Notion e Slack usam. Power users adoram</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Feature Discovery:</strong> Tooltips em features novas, badges "Novo" em items de menu, empty states com call-to-action educativo</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block: Sidebar -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Sidebar com Navegacao Organizada
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">const</div><span class="text-neutral-300"> sidebarItems = [</span>
+          <div class="text-neutral-300 ml-4"><span class="text-neutral-500">// Acao principal</span></div>
+          <div class="text-neutral-300 ml-4">{ icon: Plus, label: 'Nova Conversa', href: '/chat/new', primary: true },</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-neutral-500">// Navegacao principal</span></div>
+          <div class="text-neutral-300 ml-4">{ icon: MessageSquare, label: 'Conversas', href: '/chat' },</div>
+          <div class="text-neutral-300 ml-4">{ icon: FileText, label: 'Documentos', href: '/documents' },</div>
+          <div class="text-neutral-300 ml-4">{ icon: Bot, label: 'Agentes', href: '/agents', badge: 'Novo' },</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-neutral-500">// Separador</span></div>
+          <div class="text-neutral-300 ml-4">{ type: 'separator' },</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-neutral-500">// Configuracoes</span></div>
+          <div class="text-neutral-300 ml-4">{ icon: Settings, label: 'Configuracoes', href: '/settings' },</div>
+          <div class="text-neutral-300 ml-4">{ icon: CreditCard, label: 'Plano', href: '/billing' },</div>
+          <div class="text-neutral-300">]</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-500">// Cmd+K command palette (usar cmdk library)</div>
+          <div class="text-emerald-400">npm install cmdk</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-purple-400">import</div><span class="text-neutral-300"> { Command } </span><span class="text-purple-400">from</span><span class="text-neutral-300"> 'cmdk'</span>
+          <div class="text-neutral-300">&lt;Command&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;Command.Input placeholder="Buscar conversas, settings..." /&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;Command.List&gt;</div>
+          <div class="text-neutral-300 ml-8">&lt;Command.Item&gt;Nova Conversa&lt;/Command.Item&gt;</div>
+          <div class="text-neutral-300 ml-8">&lt;Command.Item&gt;Configuracoes&lt;/Command.Item&gt;</div>
+          <div class="text-neutral-300 ml-8">&lt;Command.Item&gt;Trocar de Agente&lt;/Command.Item&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;/Command.List&gt;</div>
+          <div class="text-neutral-300">&lt;/Command&gt;</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Implemente Cmd+K desde o MVP.</strong> Parece avancado mas a library <code class="text-purple-400 bg-dark-800 px-1 rounded">cmdk</code> do Pacocoursey faz em 20 linhas. Power users (que pagam mais) usam atalhos. E um diferencial competitivo barato de implementar.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Responsividade e Mobile -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">📱 Responsividade e Mobile</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        67% do trafego de SaaS vem de desktop, mas os outros 33% nao podem ter uma experiencia quebrada. <strong class="text-purple-400">Mobile-first</strong> nao significa construir para mobile primeiro. Significa garantir que a experiencia mobile e pensada, nao improvisada. Sidebar colapsavel, bottom nav e touch-friendly chat sao essenciais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A adaptacao mobile de um dashboard de IA envolve tres transformacoes principais: <strong class="text-white">sidebar vira drawer/sheet</strong> (abre por cima do conteudo, fecha com swipe), <strong class="text-white">navegacao primaria migra para bottom bar</strong> (polegar alcanca facilmente) e <strong class="text-white">input bar precisa coexistir com teclado virtual</strong> (viewport resize).
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Collapsible Sidebar:</strong> No desktop, toggle entre 64px (icons only) e 256px (full). No mobile, Sheet/Drawer overlay. Botao hamburger no header</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Bottom Navigation:</strong> 4-5 items max (Chat, History, Agents, Settings). Tab bar fixa no bottom do mobile. Padrao nativo iOS/Android</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Touch-Friendly Chat:</strong> Botoes com min 44x44px (Apple HIG). Swipe para deletar mensagem. Long press para copiar. Input area com min 48px height</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">PWA:</strong> Progressive Web App permite instalar o SaaS como app no celular. Service worker para offline, manifest.json para icon na home screen</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block: Responsive -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Sidebar Responsiva com Tailwind
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-neutral-500">// Sidebar que colapsa no mobile</div>
+          <div class="text-purple-400">function</div><span class="text-neutral-300"> Sidebar({ isOpen, onClose }) {</span>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">return</span> (</div>
+          <div class="text-neutral-300 ml-8">&lt;&gt;</div>
+          <div class="text-neutral-300 ml-12"><span class="text-neutral-500">{/* Mobile overlay */}</span></div>
+          <div class="text-neutral-300 ml-12">{isOpen && (</div>
+          <div class="text-neutral-300 ml-16">&lt;div</div>
+          <div class="text-neutral-300 ml-20">className="fixed inset-0 bg-black/50 z-40 md:hidden"</div>
+          <div class="text-neutral-300 ml-20">onClick={onClose}</div>
+          <div class="text-neutral-300 ml-16">/&gt;</div>
+          <div class="text-neutral-300 ml-12">)}</div>
+          <div class="text-neutral-400 mt-1"></div>
+          <div class="text-neutral-300 ml-12"><span class="text-neutral-500">{/* Sidebar */}</span></div>
+          <div class="text-neutral-300 ml-12">&lt;aside className={`</div>
+          <div class="text-neutral-300 ml-16">fixed md:static inset-y-0 left-0 z-50</div>
+          <div class="text-neutral-300 ml-16">w-64 bg-gray-900 border-r border-gray-800</div>
+          <div class="text-neutral-300 ml-16">transform transition-transform duration-200</div>
+          <div class="text-neutral-300 ml-16">${isOpen ? 'translate-x-0' : '-translate-x-full'}</div>
+          <div class="text-neutral-300 ml-16">md:translate-x-0</div>
+          <div class="text-neutral-300 ml-12">`}&gt;</div>
+          <div class="text-neutral-300 ml-16">{/* sidebar content */}</div>
+          <div class="text-neutral-300 ml-12">&lt;/aside&gt;</div>
+          <div class="text-neutral-300 ml-8">&lt;/&gt;</div>
+          <div class="text-neutral-300 ml-4">)</div>
+          <div class="text-neutral-300">}</div>
+          <div class="text-neutral-400 mt-3"></div>
+          <div class="text-neutral-500">// Bottom navigation (mobile only)</div>
+          <div class="text-neutral-300">&lt;nav className="fixed bottom-0 left-0 right-0</div>
+          <div class="text-neutral-300 ml-4">bg-gray-900 border-t border-gray-800</div>
+          <div class="text-neutral-300 ml-4">flex justify-around py-2 md:hidden z-40"&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;NavItem icon={MessageSquare} label="Chat" /&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;NavItem icon={History} label="Historico" /&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;NavItem icon={Bot} label="Agentes" /&gt;</div>
+          <div class="text-neutral-300 ml-4">&lt;NavItem icon={Settings} label="Config" /&gt;</div>
+          <div class="text-neutral-300">&lt;/nav&gt;</div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Breakpoints Essenciais
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl font-bold text-purple-400 mb-1">sm: 640px</div>
+            <div class="text-neutral-400 text-xs">Mobile landscape. Stack to row layouts</div>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl font-bold text-purple-400 mb-1">md: 768px</div>
+            <div class="text-neutral-400 text-xs">Tablet. Sidebar aparece. Bottom nav some</div>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl font-bold text-purple-400 mb-1">lg: 1024px</div>
+            <div class="text-neutral-400 text-xs">Desktop. Full sidebar. Multi-column layouts</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Teste no mobile real, nao so no DevTools.</strong> O Chrome DevTools mente sobre teclado virtual, safe areas e gestos de swipe. Conecte seu celular via USB e use remote debugging. Ou use BrowserStack free tier. Erros de mobile so aparecem no mobile real.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Dashboard Funcional -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛠️ Exercicio: Dashboard Funcional</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de construir. Neste exercicio voce vai criar um <strong class="text-purple-400">dashboard completo</strong> com sidebar de navegacao, stats cards, lista de conversas recentes e design responsivo. O resultado e um painel profissional que da a impressao certa quando o usuario loga.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border-2 border-purple-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🛠️</span>
+          <div>
+            <h3 class="text-xl font-bold text-purple-400">Exercicio: Construir Dashboard Completo</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 35-50 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Layout base com Sidebar</h4>
+              <p class="text-neutral-300 text-sm mb-3">Criar o layout principal: sidebar fixa de 256px no desktop, drawer no mobile. Area principal com flex-1. Header com logo e avatar:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-500">// Estrutura de pastas:</div>
+                <div class="text-neutral-300">app/dashboard/layout.tsx    <span class="text-neutral-500">← Layout wrapper</span></div>
+                <div class="text-neutral-300">app/dashboard/page.tsx      <span class="text-neutral-500">← Dashboard home</span></div>
+                <div class="text-neutral-300">components/sidebar.tsx      <span class="text-neutral-500">← Sidebar component</span></div>
+                <div class="text-neutral-300">components/top-bar.tsx      <span class="text-neutral-500">← Top navigation</span></div>
+                <div class="text-neutral-300">components/mobile-nav.tsx   <span class="text-neutral-500">← Bottom nav mobile</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Stats Cards no topo</h4>
+              <p class="text-neutral-300 text-sm">Grid de 4 cards: Conversas Hoje, Tokens Usados, Tempo Economizado, Plano Atual. Grid-cols-2 no mobile, grid-cols-4 no desktop. Usar shadcn/ui Card component.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Lista de Conversas Recentes</h4>
+              <p class="text-neutral-300 text-sm mb-3">Exibir as ultimas 5 conversas com titulo (gerado pela IA), data relativa e preview da ultima mensagem. Clicar navega para a conversa:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-300">&lt;div className="space-y-2"&gt;</div>
+                <div class="text-neutral-300 ml-4">{conversations.map(conv =&gt; (</div>
+                <div class="text-neutral-300 ml-8">&lt;Link href={`/chat/${conv.id}`} key={conv.id}&gt;</div>
+                <div class="text-neutral-300 ml-12">&lt;div className="p-3 rounded-lg hover:bg-gray-800</div>
+                <div class="text-neutral-300 ml-16">cursor-pointer transition"&gt;</div>
+                <div class="text-neutral-300 ml-16">&lt;h3 className="font-medium truncate"&gt;{conv.title}&lt;/h3&gt;</div>
+                <div class="text-neutral-300 ml-16">&lt;p className="text-sm text-gray-400 truncate"&gt;</div>
+                <div class="text-neutral-300 ml-20">{conv.lastMessage}</div>
+                <div class="text-neutral-300 ml-16">&lt;/p&gt;</div>
+                <div class="text-neutral-300 ml-16">&lt;span className="text-xs text-gray-500"&gt;</div>
+                <div class="text-neutral-300 ml-20">{formatRelative(conv.updatedAt)}</div>
+                <div class="text-neutral-300 ml-16">&lt;/span&gt;</div>
+                <div class="text-neutral-300 ml-12">&lt;/div&gt;</div>
+                <div class="text-neutral-300 ml-8">&lt;/Link&gt;</div>
+                <div class="text-neutral-300 ml-4">))}</div>
+                <div class="text-neutral-300">&lt;/div&gt;</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Quick Actions + Agent Selector</h4>
+              <p class="text-neutral-300 text-sm">Secao de acoes rapidas: "Nova Conversa", "Upload Documento", "Usar Template". Dropdown ou tabs para selecionar agente/modo de IA (Escrita, Analise, Codigo).</p>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Responsividade completa</h4>
+              <p class="text-neutral-300 text-sm">Testar em 3 breakpoints: mobile (375px), tablet (768px) e desktop (1280px). Sidebar colapsa em mobile. Bottom nav aparece. Stats grid adapta de 4 para 2 colunas. Input bar full-width.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Sidebar com navegacao funcional</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Stats cards mostrando dados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Lista de conversas recentes clicavel</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Sidebar colapsa no mobile (drawer)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Bottom nav visivel no mobile</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Layout funciona em 375px, 768px e 1280px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-emerald-900/20 rounded-xl border border-purple-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Adicione <strong class="text-white">Command Palette (Cmd+K)</strong> com a library cmdk e <strong class="text-white">dark/light mode toggle</strong>. Implemente animacoes suaves na sidebar (framer-motion) e skeleton loading nos stats cards enquanto os dados carregam.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Layout: sidebar + area central + input bar</strong>
+              <span class="text-neutral-400"> - Padrao dominante em apps de IA. Copie antes de inovar. Max-width 768px para legibilidade.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Conversation-centered para MVP</strong>
+              <span class="text-neutral-400"> - 5x mais rapido de construir que hibrido. Evolua para transaction-centered ou hibrido depois de validar.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Stats + Quick Actions + Recent Conversations</strong>
+              <span class="text-neutral-400"> - Os tres componentes minimos de um dashboard profissional. shadcn/ui como base.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Navegacao em 3 niveis</strong>
+              <span class="text-neutral-400"> - Sidebar (primaria) + Breadcrumbs (secundaria) + Cmd+K (global). Max 7 items na sidebar. cmdk para command palette.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Mobile: drawer + bottom nav + touch-friendly</strong>
+              <span class="text-neutral-400"> - Sidebar vira overlay. Bottom nav com 4-5 items. Botoes min 44x44px. Teste no dispositivo real.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">Modulo 3.4 - System Prompts e Fluxo da Aplicacao. O DNA do produto: como configurar system prompts, temperature, context window e pipeline de processamento.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-3-2.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 3
+          </a>
+          <a href="modulo-3-4.html" class="text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.5 - Upload Multimodal | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.5</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.5
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">Upload Multimodal</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Seu SaaS nao pode aceitar so texto. PDFs, imagens, video, audio. Aqui voce aprende a processar cada tipo de arquivo, construir um sistema de upload profissional com drag-and-drop, e implementar chunking e indexacao para RAG.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">50 min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Tipos de Upload: PDF, Imagem, Video, Audio -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">Tipos de Upload: PDF, Imagem, Video, Audio</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Cada formato de arquivo tem requisitos diferentes para processamento por IA. Um PDF precisa de extracao de texto. Uma imagem precisa de um vision model. Um video precisa de extracao de frames + transcricao de audio. Entender essas diferencas <strong class="text-purple-400">antes de codar</strong> evita retrabalho e decisoes de arquitetura ruins.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Todo upload segue o mesmo fluxo basico: <strong class="text-white">receber > armazenar > processar > disponibilizar para IA</strong>. O que muda entre formatos e a etapa de processamento. A estrategia de storage tambem varia por tamanho e frequencia de acesso.
+        </p>
+      </div>
+
+      <!-- 4 Formatos Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📁</span> Os 4 Formatos e Seus Pipelines
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-dark-900 rounded-lg p-5 border border-purple-500/20">
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center">
+                <span class="text-xl">📄</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-red-400">PDF</h4>
+                <p class="text-neutral-500 text-xs">Texto + layout</p>
+              </div>
+            </div>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-white">Pipeline:</strong> Upload > pdf-parse > texto > chunking > IA</li>
+              <li><strong class="text-white">Libs:</strong> pdf-parse, pdfjs-dist, Apache Tika</li>
+              <li><strong class="text-white">Limite:</strong> ~100 paginas antes de precisar chunking</li>
+              <li><strong class="text-white">OCR:</strong> Tesseract para PDFs escaneados</li>
+            </ul>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-5 border border-purple-500/20">
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center">
+                <span class="text-xl">🖼️</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-blue-400">Imagem</h4>
+                <p class="text-neutral-500 text-xs">Visual + texto</p>
+              </div>
+            </div>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-white">Pipeline:</strong> Upload > compress > vision model > descricao</li>
+              <li><strong class="text-white">Models:</strong> GPT-4o Vision, Claude Vision</li>
+              <li><strong class="text-white">Formatos:</strong> PNG, JPEG, WebP, GIF</li>
+              <li><strong class="text-white">Limite:</strong> 20MB por imagem (GPT-4o)</li>
+            </ul>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-5 border border-purple-500/20">
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center">
+                <span class="text-xl">🎬</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-purple-400">Video</h4>
+                <p class="text-neutral-500 text-xs">Frames + audio</p>
+              </div>
+            </div>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-white">Pipeline:</strong> Upload > extrair frames + audio > Whisper + Vision</li>
+              <li><strong class="text-white">Libs:</strong> FFmpeg, Whisper API</li>
+              <li><strong class="text-white">Estrategia:</strong> 1 frame a cada 5-10s + transcricao completa</li>
+              <li><strong class="text-white">Complexidade:</strong> Alta. Recomendado para v2+</li>
+            </ul>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-5 border border-purple-500/20">
+            <div class="flex items-center space-x-3 mb-3">
+              <div class="w-12 h-12 rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center">
+                <span class="text-xl">🎤</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-emerald-400">Audio</h4>
+                <p class="text-neutral-500 text-xs">Voz + som</p>
+              </div>
+            </div>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li><strong class="text-white">Pipeline:</strong> Upload > Whisper > texto > IA</li>
+              <li><strong class="text-white">Models:</strong> Whisper (OpenAI), Deepgram</li>
+              <li><strong class="text-white">Formatos:</strong> MP3, WAV, M4A, OGG</li>
+              <li><strong class="text-white">Limite:</strong> 25MB por arquivo (Whisper API)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Custos de Processamento por Formato
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">PDF (10 paginas):</strong> ~5000 tokens de texto extraido. Custo de processamento: $0.01-0.05 dependendo do modelo. Extracao local, so paga na chamada ao LLM</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Imagem (1 foto):</strong> ~$0.003 por imagem 512x512 no GPT-4o. $0.01-0.04 para imagens maiores. Claude Vision incluso no custo por token</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Audio (1 minuto):</strong> ~$0.006 via Whisper API. Transcricao vira texto que entra no pipeline normal. Custo total: transcricao + LLM call</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Video (1 minuto):</strong> ~$0.006 (audio) + $0.03-0.10 (6-12 frames analisados). O formato mais caro. Reserve para features premium</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para o MVP, suporte <strong class="text-white">PDF + imagens</strong>. Sao os dois formatos que 90% dos usuarios vao enviar. Audio e simples de adicionar depois (Whisper API e uma chamada). Video e complexo e caro. Deixe para quando tiver usuarios pagando.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Processamento de PDF -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">Processamento de PDF</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        PDF e o formato mais comum que usuarios vao enviar. Contratos, relatorios, artigos, faturas. O desafio e que PDFs nao sao texto puro. Eles tem <strong class="text-purple-400">layout, tabelas, imagens embutidas e as vezes sao escaneados</strong> (imagem pura sem texto selecionavel). Cada caso precisa de uma estrategia diferente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O pipeline de processamento de PDF tem <strong class="text-white">4 etapas</strong>: parsing (extrair texto bruto), limpeza (remover headers/footers/ruido), chunking (dividir em pedacos) e metadata (titulo, autor, numero de paginas).
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">pdf-parse (Node.js):</strong> Mais simples. Extrai texto basico. Bom para PDFs com texto selecionavel. Nao lida bem com tabelas ou layouts complexos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">pdfjs-dist (Mozilla):</strong> Mais robusto. Extrai texto com posicionamento. Pode reconstruir tabelas. Usado internamente pelo Firefox</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">OCR (Tesseract):</strong> Para PDFs escaneados. Converte imagem em texto. Qualidade depende da resolucao do scan. Adiciona 2-5 segundos por pagina</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Claude PDF nativo:</strong> Claude 3.5+ aceita PDFs diretamente na API. Ate 100 paginas. Mais caro mas nao precisa de parsing local</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> PDF Parsing com pdf-parse
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1 overflow-x-auto">
+          <div class="text-purple-400">import pdfParse from 'pdf-parse'</div>
+          <div class="text-purple-400">import { readFileSync } from 'fs'</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300">async function processPDF(filePath: string) {</div>
+          <div class="text-neutral-300 ml-4">const buffer = readFileSync(filePath)</div>
+          <div class="text-neutral-300 ml-4">const data = await pdfParse(buffer)</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Metadata</span></div>
+          <div class="text-neutral-300 ml-4">console.log('Paginas:', data.numpages)</div>
+          <div class="text-neutral-300 ml-4">console.log('Titulo:', data.info?.Title)</div>
+          <div class="text-neutral-300 ml-4">console.log('Autor:', data.info?.Author)</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Texto completo</span></div>
+          <div class="text-neutral-300 ml-4">const fullText = data.text</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Limpar texto</span></div>
+          <div class="text-neutral-300 ml-4">const cleaned = fullText</div>
+          <div class="text-neutral-300 ml-8">.replace(/\n{3,}/g, '\n\n')  <span class="text-purple-400">// remove linhas extras</span></div>
+          <div class="text-neutral-300 ml-8">.replace(/\s{2,}/g, ' ')     <span class="text-purple-400">// normaliza espacos</span></div>
+          <div class="text-neutral-300 ml-8">.trim()</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">return {</div>
+          <div class="text-neutral-300 ml-8">text: cleaned,</div>
+          <div class="text-neutral-300 ml-8">pages: data.numpages,</div>
+          <div class="text-neutral-300 ml-8">metadata: data.info</div>
+          <div class="text-neutral-300 ml-4">}</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Chunking Strategies -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">✂️</span> Estrategias de Chunking para PDF
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-4 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">1</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">Fixed-size chunks</h4>
+              <p class="text-neutral-400 text-sm">Dividir a cada N tokens (ex: 1000). Simples mas pode cortar frases no meio. Sempre use overlap de 100-200 tokens.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">2</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">Paragraph-based chunks</h4>
+              <p class="text-neutral-400 text-sm">Dividir por paragrafos (double newline). Respeita a estrutura semantica. Tamanho varia. Melhor qualidade de retrieval.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">3</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">Page-based chunks</h4>
+              <p class="text-neutral-400 text-sm">Uma pagina = um chunk. Simples de implementar. Bom quando cada pagina tem conteudo distinto (relatorios, apresentacoes).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Detectar se o PDF e texto ou imagem (scanned)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Implementar chunking com overlap para docs grandes</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Extrair e preservar metadata (titulo, autor, paginas)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Enviar PDF de 200 paginas inteiro para a API</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Assumir que todo PDF tem texto selecionavel</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar limpeza de texto (headers repetidos, footers)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Processamento de Imagens -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">Processamento de Imagens</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Vision models mudaram o jogo. Em vez de extrair texto com OCR e perder contexto visual, <strong class="text-purple-400">GPT-4o e Claude Vision "enxergam" a imagem</strong> e descrevem, analisam ou extraem informacao diretamente. O processamento de imagens no seu SaaS precisa lidar com compressao, formatos, e envio eficiente para a API.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem <strong class="text-white">duas abordagens</strong> para processar imagens com IA: enviar diretamente para um vision model (mais rico, mais caro) ou usar OCR para extrair texto (mais barato, perde contexto visual). Para a maioria dos SaaS, vision models sao a escolha certa.
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">GPT-4o Vision:</strong> Aceita PNG, JPEG, GIF, WebP. Ate 20MB. Suporta multiplas imagens por request. Custo baseado em resolucao (low/high detail)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Claude Vision:</strong> Ate 5 imagens por request. 20MB cada. Excelente em analise de documentos e graficos. Custo incluido no pricing por token</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Base64 encoding:</strong> A forma de enviar imagens via API. Converte bytes em string ASCII. Aumenta o tamanho em ~33%. Alternativa: enviar URL publica da imagem</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Compressao pre-envio:</strong> Reduzir resolucao para 1024x1024 antes de enviar. Corta custo sem perder qualidade significativa para analise. Use sharp (Node.js) para isso</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Enviando Imagem para GPT-4o Vision
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1 overflow-x-auto">
+          <div class="text-purple-400">import sharp from 'sharp'</div>
+          <div class="text-purple-400">import { readFileSync } from 'fs'</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300">async function processImage(filePath: string) {</div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// 1. Comprimir e redimensionar</span></div>
+          <div class="text-neutral-300 ml-4">const compressed = await sharp(filePath)</div>
+          <div class="text-neutral-300 ml-8">.resize(1024, 1024, { fit: 'inside' })</div>
+          <div class="text-neutral-300 ml-8">.jpeg({ quality: 85 })</div>
+          <div class="text-neutral-300 ml-8">.toBuffer()</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// 2. Converter para base64</span></div>
+          <div class="text-neutral-300 ml-4">const base64 = compressed.toString('base64')</div>
+          <div class="text-neutral-300 ml-4">const dataUrl = `data:image/jpeg;base64,${base64}`</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// 3. Enviar para vision model</span></div>
+          <div class="text-neutral-300 ml-4">const response = await openai.chat.completions.create({</div>
+          <div class="text-neutral-300 ml-8">model: 'gpt-4o',</div>
+          <div class="text-neutral-300 ml-8">messages: [{</div>
+          <div class="text-neutral-300 ml-12">role: 'user',</div>
+          <div class="text-neutral-300 ml-12">content: [</div>
+          <div class="text-neutral-300 ml-16">{ type: 'text', text: 'Analise esta imagem.' },</div>
+          <div class="text-neutral-300 ml-16">{ type: 'image_url', image_url: {</div>
+          <div class="text-neutral-300 ml-20">url: dataUrl,</div>
+          <div class="text-neutral-300 ml-20">detail: 'high' <span class="text-purple-400">// 'low' = barato, 'high' = detalhado</span></div>
+          <div class="text-neutral-300 ml-16">}}</div>
+          <div class="text-neutral-300 ml-12">]</div>
+          <div class="text-neutral-300 ml-8">}]</div>
+          <div class="text-neutral-300 ml-4">})</div>
+          <div class="text-neutral-300 ml-4">return response.choices[0].message.content</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Resolucao vs Custo
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Low detail (512x512):</strong> ~85 tokens. $0.003. Bom para classificacao simples, deteccao de tipo de documento</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">High detail (ate 2048x2048):</strong> ~765-1105 tokens. $0.01-0.04. Necessario para leitura de texto em imagens, analise de graficos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">EXIF data:</strong> Imagens de camera tem metadata (data, localizacao, orientacao). Extraia com exifr (Node.js) antes de comprimir. Pode ser util como contexto</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Gere thumbnails no upload.</strong> Quando o usuario envia uma imagem de 8MB, gere um thumbnail de 200x200 para mostrar no chat e guarde o original no storage. O frontend carrega rapido, a API recebe o original comprimido para analise.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Upload UX Patterns -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">Upload UX Patterns</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Upload ruim = usuario frustrado. Upload bom = usuario nem percebe a complexidade. Os <strong class="text-purple-400">patterns de UX para upload</strong> sao bem estabelecidos: drag-and-drop, progress bar, validacao em tempo real, preview e estados de erro claros. Implementar isso direito faz seu SaaS parecer profissional.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um sistema de upload profissional tem <strong class="text-white">5 componentes essenciais</strong>: drop zone visual, validacao client-side, progress indicator, preview/thumbnail e error handling. Cada componente resolve um ponto de frustacao do usuario.
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Drag-and-drop zone:</strong> Area visual onde o usuario pode arrastar arquivos. Muda de cor quando o arquivo esta sobre ela. Tambem aceita click para abrir file picker</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Client-side validation:</strong> Validar tipo (MIME type), tamanho (max MB) e quantidade ANTES do upload. Feedback instantaneo: "Arquivo muito grande" ou "Formato nao suportado"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Progress bar:</strong> Indicador visual de progresso do upload. Usa XMLHttpRequest ou fetch com ReadableStream. Mostra porcentagem e velocidade estimada</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Preview thumbnails:</strong> Para imagens, mostrar preview imediato (FileReader API). Para PDFs, mostrar icone + nome + tamanho. Confirma visualmente que o arquivo certo foi selecionado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Error states:</strong> Mensagens claras para cada tipo de erro (network, tamanho, formato, timeout). Sempre oferecer opcao de tentar novamente</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Upload Zone Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🖥️</span> Os 4 Estados da Upload Zone
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-neutral-500/20 border-2 border-dashed border-neutral-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">📂</span>
+            </div>
+            <h4 class="font-bold text-neutral-400 mb-1">Idle</h4>
+            <p class="text-neutral-500 text-xs">"Arraste um arquivo ou clique para selecionar"</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-dashed border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">✨</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Drag Over</h4>
+            <p class="text-neutral-500 text-xs">Borda muda de cor, fundo highlight</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⏳</span>
+            </div>
+            <h4 class="font-bold text-blue-400 mb-1">Uploading</h4>
+            <p class="text-neutral-500 text-xs">Progress bar + porcentagem + preview</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">✅</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Complete</h4>
+            <p class="text-neutral-500 text-xs">Thumbnail + nome + opcao de remover</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supabase Storage -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Upload com Supabase Storage
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1 overflow-x-auto">
+          <div class="text-purple-400">// Frontend: upload direto para Supabase Storage</div>
+          <div class="text-neutral-300">async function uploadFile(file: File, userId: string) {</div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Validacao client-side</span></div>
+          <div class="text-neutral-300 ml-4">const allowedTypes = ['application/pdf', 'image/png', 'image/jpeg']</div>
+          <div class="text-neutral-300 ml-4">if (!allowedTypes.includes(file.type)) {</div>
+          <div class="text-neutral-300 ml-8">throw new Error('Formato nao suportado')</div>
+          <div class="text-neutral-300 ml-4">}</div>
+          <div class="text-neutral-300 ml-4">if (file.size > 10 * 1024 * 1024) { <span class="text-purple-400">// 10MB</span></div>
+          <div class="text-neutral-300 ml-8">throw new Error('Arquivo muito grande (max 10MB)')</div>
+          <div class="text-neutral-300 ml-4">}</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Upload para Supabase</span></div>
+          <div class="text-neutral-300 ml-4">const path = `${userId}/${Date.now()}-${file.name}`</div>
+          <div class="text-neutral-300 ml-4">const { data, error } = await supabase.storage</div>
+          <div class="text-neutral-300 ml-8">.from('uploads')</div>
+          <div class="text-neutral-300 ml-8">.upload(path, file, {</div>
+          <div class="text-neutral-300 ml-12">contentType: file.type,</div>
+          <div class="text-neutral-300 ml-12">upsert: false</div>
+          <div class="text-neutral-300 ml-8">})</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">if (error) throw error</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4"><span class="text-purple-400">// Obter URL publica</span></div>
+          <div class="text-neutral-300 ml-4">const { data: { publicUrl } } = supabase.storage</div>
+          <div class="text-neutral-300 ml-8">.from('uploads')</div>
+          <div class="text-neutral-300 ml-8">.getPublicUrl(path)</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">return { path, publicUrl }</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Validar tipo e tamanho no client ANTES do upload</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Mostrar progress bar com porcentagem real</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Gerar preview imediato com FileReader para imagens</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Aceitar qualquer tipo de arquivo sem validacao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Mostrar spinner generico sem progresso real</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Guardar uploads no filesystem do servidor (nao escala)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Chunking e Indexacao para RAG -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">Chunking e Indexacao para RAG</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando um usuario envia um documento de 50 paginas e faz uma pergunta, voce nao pode enviar tudo para o LLM. E caro, lento e o modelo pode perder informacao no meio do texto enorme. <strong class="text-purple-400">RAG (Retrieval Augmented Generation)</strong> resolve isso: divide o documento em pedacos, indexa com embeddings e busca so os trechos relevantes para a pergunta.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O pipeline RAG tem <strong class="text-white">3 fases</strong>: indexacao (acontece no upload), retrieval (acontece na pergunta) e generation (o LLM responde com o contexto recuperado).
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Chunking:</strong> Dividir o documento em pedacos de 500-1500 tokens. Overlap de 100-200 tokens entre chunks adjacentes para nao perder contexto na fronteira</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Embedding:</strong> Converter cada chunk em um vetor numerico (array de 1536 floats com text-embedding-3-small da OpenAI). Vetores similares ficam proximos no espaco</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Vector Storage:</strong> Guardar os vetores num banco vetorial (Supabase pgvector, Pinecone, Chroma). Permite busca por similaridade semantica</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Retrieval:</strong> Quando o usuario pergunta, gerar embedding da pergunta e buscar os N chunks mais similares. Esses chunks viram contexto para o LLM</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Pipeline Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔄</span> Pipeline RAG Completo
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">📄</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">1. Upload</h4>
+            <p class="text-neutral-500 text-xs">Receber documento do usuario</p>
+          </div>
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">✂️</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">2. Chunk</h4>
+            <p class="text-neutral-500 text-xs">Dividir em pedacos de ~1000 tokens</p>
+          </div>
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">🧮</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">3. Embed</h4>
+            <p class="text-neutral-500 text-xs">Gerar vetor para cada chunk</p>
+          </div>
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">💾</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">4. Store</h4>
+            <p class="text-neutral-500 text-xs">Salvar vetores no pgvector</p>
+          </div>
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">🔍</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">5. Retrieve</h4>
+            <p class="text-neutral-500 text-xs">Buscar chunks similares a pergunta</p>
+          </div>
+          <div class="text-center p-3 bg-dark-900 rounded-lg border border-purple-500/10">
+            <div class="text-2xl mb-2">🤖</div>
+            <h4 class="font-bold text-purple-400 text-sm mb-1">6. Generate</h4>
+            <p class="text-neutral-500 text-xs">LLM responde com contexto</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block: Chunking + Embedding -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Chunking + Embedding + Retrieval
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1 overflow-x-auto">
+          <div class="text-purple-400">// 1. Chunking com overlap</div>
+          <div class="text-neutral-300">function chunkText(text: string, size = 1000, overlap = 200) {</div>
+          <div class="text-neutral-300 ml-4">const chunks: string[] = []</div>
+          <div class="text-neutral-300 ml-4">let start = 0</div>
+          <div class="text-neutral-300 ml-4">while (start < text.length) {</div>
+          <div class="text-neutral-300 ml-8">chunks.push(text.slice(start, start + size))</div>
+          <div class="text-neutral-300 ml-8">start += size - overlap</div>
+          <div class="text-neutral-300 ml-4">}</div>
+          <div class="text-neutral-300 ml-4">return chunks</div>
+          <div class="text-neutral-300">}</div>
+          <div class="text-neutral-400 mt-3"></div>
+          <div class="text-purple-400">// 2. Gerar embeddings</div>
+          <div class="text-neutral-300">async function embedChunks(chunks: string[]) {</div>
+          <div class="text-neutral-300 ml-4">const response = await openai.embeddings.create({</div>
+          <div class="text-neutral-300 ml-8">model: 'text-embedding-3-small',</div>
+          <div class="text-neutral-300 ml-8">input: chunks</div>
+          <div class="text-neutral-300 ml-4">})</div>
+          <div class="text-neutral-300 ml-4">return response.data.map(d => d.embedding)</div>
+          <div class="text-neutral-300">}</div>
+          <div class="text-neutral-400 mt-3"></div>
+          <div class="text-purple-400">// 3. Buscar chunks relevantes (Supabase pgvector)</div>
+          <div class="text-neutral-300">async function searchChunks(query: string, docId: string) {</div>
+          <div class="text-neutral-300 ml-4">const queryEmb = await embedChunks([query])</div>
+          <div class="text-neutral-300 ml-4">const { data } = await supabase.rpc('match_chunks', {</div>
+          <div class="text-neutral-300 ml-8">query_embedding: queryEmb[0],</div>
+          <div class="text-neutral-300 ml-8">match_count: 5,</div>
+          <div class="text-neutral-300 ml-8">filter_doc_id: docId</div>
+          <div class="text-neutral-300 ml-4">})</div>
+          <div class="text-neutral-300 ml-4">return data.map(d => d.content)</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Custos de Embedding
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">text-embedding-3-small:</strong> $0.02 por 1M tokens. Um livro de 300 paginas (~150k tokens) custa ~$0.003 para indexar. Baratissimo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">text-embedding-3-large:</strong> $0.13 por 1M tokens. Melhor qualidade de retrieval. Use para aplicacoes que precisam de alta precisao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Supabase pgvector:</strong> Incluso no plano free ate 500MB de dados vetoriais. Suficiente para milhares de documentos. Sem custo adicional de infra</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Comece com chunking simples e retrieval top-5.</strong> Muita gente se perde otimizando chunk size, overlap e re-ranking antes de ter usuarios. Chunk de 1000 chars com overlap de 200 + top 5 results funciona surpreendentemente bem para 90% dos casos. Otimize depois com dados reais.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Sistema de Upload Completo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">Exercicio: Sistema de Upload Completo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Neste exercicio voce vai construir um <strong class="text-purple-400">sistema de upload end-to-end</strong>: drag-and-drop no frontend, upload para Supabase Storage, processamento de PDF e imagem no backend, e analise pela IA. O resultado e um componente reutilizavel para qualquer SaaS com IA.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border-2 border-purple-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🛠️</span>
+          <div>
+            <h3 class="text-xl font-bold text-purple-400">Exercicio: Build Complete Upload System</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 40-60 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Criar a drop zone com drag-and-drop</h4>
+              <p class="text-neutral-300 text-sm mb-3">Componente React com eventos onDragOver, onDragLeave, onDrop. Aceitar PDF e imagens. Mostrar estado visual para cada fase:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-300">const handleDrop = (e: DragEvent) => {</div>
+                <div class="text-neutral-300 ml-4">e.preventDefault()</div>
+                <div class="text-neutral-300 ml-4">const file = e.dataTransfer.files[0]</div>
+                <div class="text-neutral-300 ml-4">if (!validateFile(file)) return showError()</div>
+                <div class="text-neutral-300 ml-4">setPreview(URL.createObjectURL(file))</div>
+                <div class="text-neutral-300 ml-4">uploadToSupabase(file)</div>
+                <div class="text-neutral-300">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Upload para Supabase Storage com progress</h4>
+              <p class="text-neutral-300 text-sm">Criar bucket 'uploads' no Supabase. Configurar RLS (Row Level Security) para que cada usuario so acesse seus proprios arquivos. Implementar progress tracking com XMLHttpRequest.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Processar PDF: extrair texto + chunking</h4>
+              <p class="text-neutral-300 text-sm mb-3">No backend, baixar o arquivo do storage, processar com pdf-parse, limpar texto e dividir em chunks:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-300">const { text, pages } = await processPDF(filePath)</div>
+                <div class="text-neutral-300">const chunks = chunkText(text, 1000, 200)</div>
+                <div class="text-neutral-300">const embeddings = await embedChunks(chunks)</div>
+                <div class="text-neutral-300">await storeInPgVector(docId, chunks, embeddings)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Processar imagem: comprimir + enviar para Vision</h4>
+              <p class="text-neutral-300 text-sm">Comprimir com sharp, converter para base64, enviar para GPT-4o Vision ou Claude Vision. Guardar a descricao gerada como texto indexavel.</p>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Integrar com o chat: "Pergunte sobre o documento"</h4>
+              <p class="text-neutral-300 text-sm">Depois do upload processado, usuario pode fazer perguntas. Usar RAG: buscar chunks relevantes, injetar como contexto no system prompt, LLM responde baseado no documento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Drag-and-drop funcionando com preview</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Validacao client-side (tipo + tamanho)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Upload com progress bar real</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">PDF processado e texto extraido</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Imagem analisada pelo vision model</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">IA responde perguntas sobre o documento</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-emerald-900/20 rounded-xl border border-purple-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Implemente <strong class="text-white">multi-file upload</strong>: o usuario envia 3 PDFs de uma vez, todos sao processados em paralelo (Promise.all), e a IA consegue responder perguntas cruzando informacao de todos os documentos. Adicione um indicador de "documentos carregados" no chat.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">4 formatos, 4 pipelines diferentes</strong>
+              <span class="text-neutral-400"> - PDF (text extraction), imagem (vision model), video (frames + audio), audio (transcricao). MVP = PDF + imagens.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">PDF processing: parse > clean > chunk</strong>
+              <span class="text-neutral-400"> - pdf-parse para texto, Tesseract para OCR. Chunking com overlap para documentos grandes. Claude aceita PDF nativo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Vision models > OCR para imagens</strong>
+              <span class="text-neutral-400"> - GPT-4o Vision e Claude Vision enxergam contexto visual. Comprimir com sharp antes de enviar. Low vs high detail.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Upload UX: 5 componentes essenciais</strong>
+              <span class="text-neutral-400"> - Drop zone, validacao client-side, progress bar, preview e error handling. Supabase Storage para armazenamento.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">RAG: chunk > embed > store > retrieve > generate</strong>
+              <span class="text-neutral-400"> - Embeddings baratos ($0.02/1M tokens). pgvector no Supabase. Top-5 retrieval funciona pra maioria dos casos.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Sistema completo: upload > process > AI analysis</strong>
+              <span class="text-neutral-400"> - Drag-drop UI, Supabase Storage, PDF/image processing, RAG pipeline. Componente reutilizavel para qualquer SaaS.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">Modulo 3.6 - Estados do Sistema, Historico e Deploy. Gerenciar estados visuais, persistir conversas e preparar para producao.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-3-4.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 3
+          </a>
+          <a href="modulo-3-6.html" class="text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

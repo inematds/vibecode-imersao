@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.6 - Estados do Sistema e Historico | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔄 Estados do Sistema e Historico</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        IA demora. As vezes 2 segundos, as vezes 30. Se o usuario nao sabe o que esta acontecendo, ele fecha a aba. Gerenciar estados visuais e historico de conversas e o que separa um prototipo de um produto real.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">45 min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Teoria+Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Os 4 Estados: Idle, Loading, Success, Error -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">⚡ Os 4 Estados: Idle, Loading, Success, Error</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Todo componente interativo do seu SaaS existe em um de quatro estados a qualquer momento. Pensar nisso como uma <strong class="text-purple-400">state machine</strong> muda completamente como voce projeta interfaces. Cada estado tem regras visuais e comportamentais especificas, e em apps de IA o estado "loading" ganha uma importancia que nao existe em apps tradicionais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Uma <strong class="text-white">state machine</strong> e um modelo mental onde seu componente so pode estar em um estado por vez, e as transicoes entre estados sao explicitas. Isso elimina bugs como "mostrar loading e error ao mesmo tempo" ou "botao clicavel durante processamento".
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Idle:</strong> Estado padrao. Input habilitado, botao de enviar ativo, nenhuma animacao rodando. O usuario esta no controle. UI limpa, sem distracao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Loading:</strong> Algo esta sendo processado. Input desabilitado (ou nao, depende do design), indicador visual de progresso, mensagem de contexto ("Analisando seu documento...")</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Success:</strong> Operacao concluida. Resposta renderizada, feedback visual positivo (checkmark, cor verde), transicao suave de volta para idle</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Error:</strong> Algo falhou. Mensagem clara do que aconteceu, opcao de retry, log do erro para debug. Nunca uma tela em branco</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- State Machine Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔄</span> State Machine para Interacoes de IA
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-neutral-500/20 border-2 border-neutral-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⏸️</span>
+            </div>
+            <h4 class="font-bold text-neutral-400 mb-1">Idle</h4>
+            <p class="text-neutral-500 text-xs">Input ativo, aguardando acao do usuario</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⏳</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Loading</h4>
+            <p class="text-neutral-500 text-xs">IA processando, streaming ou aguardando API</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">✅</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Success</h4>
+            <p class="text-neutral-500 text-xs">Resposta entregue, volta para idle</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">❌</span>
+            </div>
+            <h4 class="font-bold text-red-400 mb-1">Error</h4>
+            <p class="text-neutral-500 text-xs">Falha com retry ou volta para idle</p>
+          </div>
+        </div>
+        <div class="mt-6 bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20">
+          <div class="text-purple-400">// Transicoes validas da state machine</div>
+          <div class="text-neutral-300">idle    → loading  <span class="text-neutral-500">// usuario envia mensagem</span></div>
+          <div class="text-neutral-300">loading → success  <span class="text-neutral-500">// IA respondeu com sucesso</span></div>
+          <div class="text-neutral-300">loading → error    <span class="text-neutral-500">// API falhou ou timeout</span></div>
+          <div class="text-neutral-300">success → idle     <span class="text-neutral-500">// automatico apos renderizar</span></div>
+          <div class="text-neutral-300">error   → loading  <span class="text-neutral-500">// usuario clicou retry</span></div>
+          <div class="text-neutral-300">error   → idle     <span class="text-neutral-500">// usuario descartou o erro</span></div>
+        </div>
+      </div>
+
+      <!-- Por que "thinking" importa mais em IA -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Por que "Thinking" Importa Mais em Apps de IA
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Apps tradicionais:</strong> Requests duram 100-500ms. Um spinner generico resolve. O usuario nem percebe</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Apps de IA:</strong> Chamadas duram 5-30 segundos. O "thinking" state precisa ser rico: indicador de progresso, mensagem contextual, animacao sutil. O usuario precisa sentir que algo esta acontecendo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Tolerancia a espera:</strong> Pesquisas mostram que usuarios toleram ate 10s se o feedback visual for bom, mas abandonam em 3s se nao houver nenhum indicador</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use um <strong class="text-white">useReducer</strong> (React) ou uma lib como XState para gerenciar estados. Um simples <code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400 text-sm">useState('idle')</code> funciona para MVP, mas conforme o app cresce, uma state machine formal evita dezenas de bugs de estado inconsistente.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Mapear todos os estados possiveis antes de codar a UI</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Desabilitar inputs durante loading para evitar requests duplicados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Transicionar de success para idle automaticamente apos 1-2s</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Usar multiplos booleans (isLoading, isError, isSuccess) que podem conflitar</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Permitir que o usuario envie outra mensagem durante loading</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Mostrar estado de erro sem opcao de retry ou voltar</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Loading States para IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">⏳ Loading States para IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em apps tradicionais, um spinner resolve. Em apps de IA, voce precisa de um repertorio inteiro de loading states. Uma chamada de 2 segundos pede um tratamento diferente de uma de 30 segundos. O segredo e <strong class="text-purple-400">gerenciar a expectativa do usuario</strong> em tempo real.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem quatro tecnicas principais de loading para apps de IA, e voce vai usar combinacoes delas dependendo da operacao:
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Skeleton Screens:</strong> Placeholders cinza na forma do conteudo que vai aparecer. Funcionam melhor que spinners porque dao ao cerebro uma previa da estrutura. Use para carregar listas de conversas, perfis, dashboards</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Typing Indicators:</strong> Os tres pontinhos pulsando ("IA esta digitando..."). Classico do chat. Funciona para respostas curtas (2-5s). Para respostas longas, combine com streaming</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Streaming Text:</strong> A resposta aparece token por token em tempo real. Padrao de ouro para apps de IA. O usuario le enquanto a IA ainda gera. Reduz percepcao de espera drasticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Progress Estimation:</strong> Para operacoes longas (processar PDF de 50 paginas, gerar relatorio), mostre progresso estimado: "Analisando pagina 12 de 47..." ou barra de progresso com percentual</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block: Streaming Implementation -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Implementando Streaming com OpenAI
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">// Frontend: consumindo stream da API</div>
+          <div class="text-neutral-300">const response = await fetch('/api/chat', {</div>
+          <div class="text-neutral-300 ml-4">method: 'POST',</div>
+          <div class="text-neutral-300 ml-4">body: JSON.stringify({ message, conversationId }),</div>
+          <div class="text-neutral-300">});</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-purple-400">// Ler o stream token por token</div>
+          <div class="text-neutral-300">const reader = response.body.getReader();</div>
+          <div class="text-neutral-300">const decoder = new TextDecoder();</div>
+          <div class="text-neutral-300">let aiMessage = '';</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300">while (true) {</div>
+          <div class="text-neutral-300 ml-4">const { done, value } = await reader.read();</div>
+          <div class="text-neutral-300 ml-4">if (done) break;</div>
+          <div class="text-neutral-300 ml-4">const chunk = decoder.decode(value);</div>
+          <div class="text-neutral-300 ml-4">aiMessage += chunk;</div>
+          <div class="text-neutral-300 ml-4">setDisplayedText(aiMessage); <span class="text-neutral-500">// atualiza UI em tempo real</span></div>
+          <div class="text-neutral-300">}</div>
+          <div class="text-neutral-300">setState('success'); <span class="text-neutral-500">// stream completo</span></div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Gerenciando Expectativa em Chamadas de 5-30s
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">0-2 segundos:</strong> Typing indicator e suficiente. O usuario nem registra a espera conscientemente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">2-10 segundos:</strong> Streaming e ideal. Se nao for possivel, use typing indicator + mensagem contextual ("Analisando seu pedido...")</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">10-30 segundos:</strong> Progress bar ou etapas visiveis ("Etapa 1/3: Lendo documento..."). O usuario precisa sentir que o sistema esta trabalhando, nao travado</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">30+ segundos:</strong> Notificacao. Diga ao usuario que ele pode fazer outra coisa e sera avisado quando estiver pronto. Ninguem espera 30s olhando para uma tela</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Skeleton screens > spinners. Streaming > typing indicator.</strong> Sempre escolha a opcao que da mais informacao ao usuario. Um skeleton mostra onde o conteudo vai aparecer. Um spinner so diz "espere". Streaming mostra progresso real. Typing indicator so diz "algo esta acontecendo".
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Error States e Recuperacao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🚨 Error States e Recuperacao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Erros acontecem. A API cai, o rate limit estoura, o usuario envia algo invalido, a internet oscila. O que define a qualidade do seu SaaS nao e a ausencia de erros, e <strong class="text-purple-400">como voce lida com eles</strong>. Um erro bem tratado gera mais confianca do que nenhum erro.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem tres categorias de erros em apps de IA, e cada uma exige tratamento diferente:
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">AI Errors (API):</strong> Rate limit (429), timeout, modelo indisponivel, resposta truncada, content filter. Sao os mais comuns. Solucao: retry automatico com backoff exponencial, modelo fallback, fila de requests</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">System Errors:</strong> Banco de dados fora, Supabase down, deploy quebrado, SSL expirado. Sao criticos. Solucao: health checks, monitoring, pagina de manutencao, alertas automaticos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">User Errors:</strong> Arquivo grande demais, formato invalido, prompt vazio, caracteres especiais. Sao preveniveis. Solucao: validacao no frontend antes de enviar, mensagens claras de o que corrigir</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Error Handling Patterns -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Padroes de Tratamento de Erro
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">// Retry com backoff exponencial</div>
+          <div class="text-neutral-300">async function callAIWithRetry(messages, retries = 3) {</div>
+          <div class="text-neutral-300 ml-4">for (let i = 0; i < retries; i++) {</div>
+          <div class="text-neutral-300 ml-8">try {</div>
+          <div class="text-neutral-300 ml-12">return await openai.chat.completions.create({</div>
+          <div class="text-neutral-300 ml-16">model: 'gpt-4o', messages, stream: true</div>
+          <div class="text-neutral-300 ml-12">});</div>
+          <div class="text-neutral-300 ml-8">} catch (err) {</div>
+          <div class="text-neutral-300 ml-12">if (err.status === 429 && i < retries - 1) {</div>
+          <div class="text-neutral-300 ml-16">await sleep(Math.pow(2, i) * 1000); <span class="text-neutral-500">// 1s, 2s, 4s</span></div>
+          <div class="text-neutral-300 ml-16">continue;</div>
+          <div class="text-neutral-300 ml-12">}</div>
+          <div class="text-neutral-300 ml-12">throw classifyError(err); <span class="text-neutral-500">// AI, system ou user error</span></div>
+          <div class="text-neutral-300 ml-8">}</div>
+          <div class="text-neutral-300 ml-4">}</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Mensagens Amigaveis -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Mensagens de Erro Amigaveis
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-red-400 text-xl mt-0.5">✗</span>
+            <div>
+              <p class="text-neutral-400 text-sm line-through">Error 429: Too many requests. Rate limit exceeded.</p>
+              <span class="text-emerald-400 text-xl">✓</span>
+              <p class="text-neutral-300 text-sm mt-1">"Muitas perguntas de uma vez! Aguarde alguns segundos e tente novamente."</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-red-400 text-xl mt-0.5">✗</span>
+            <div>
+              <p class="text-neutral-400 text-sm line-through">Error 500: Internal server error</p>
+              <span class="text-emerald-400 text-xl">✓</span>
+              <p class="text-neutral-300 text-sm mt-1">"Algo deu errado do nosso lado. Estamos trabalhando nisso. Tente novamente em um minuto."</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-red-400 text-xl mt-0.5">✗</span>
+            <div>
+              <p class="text-neutral-400 text-sm line-through">CORS policy: No 'Access-Control-Allow-Origin'</p>
+              <span class="text-emerald-400 text-xl">✓</span>
+              <p class="text-neutral-300 text-sm mt-1">"Nao foi possivel conectar ao servidor. Verifique sua conexao e tente novamente."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Implemente <strong class="text-white">fallback responses</strong> para quando a API estiver indisponivel. Pode ser uma mensagem pre-gravada, um cache da ultima resposta similar, ou um redirecionamento para um modelo alternativo (ex: cair de GPT-4o para GPT-3.5 quando o 4o estiver sobrecarregado). O usuario prefere uma resposta parcial a nenhuma resposta.
+        </p>
+      </div>
+
+      <!-- Offline Handling -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Retry automatico em erros 429 e 503 (transientes)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Botao de "Tentar novamente" visivel em todo erro</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Detectar offline e avisar antes de tentar enviar</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Mostrar stack traces ou codigos HTTP crus ao usuario</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Engolir erros silenciosamente (console.log e seguir)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Fazer retry infinito sem limite (loop de requests)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Historico de Conversas -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">💬 Historico de Conversas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Se o usuario fecha o browser e perde tudo que conversou, seu SaaS e descartavel. <strong class="text-purple-400">Historico persistente</strong> e o que transforma uma sessao avulsa em um relacionamento continuo. E tambem e o que permite ao usuario voltar, buscar, e continuar de onde parou.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O modelo de dados para historico de conversas segue uma hierarquia natural: <strong class="text-white">Usuario > Conversas > Mensagens > Anexos</strong>. Cada nivel tem suas propriedades e regras.
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Conversations:</strong> id, user_id, title (auto-gerado do primeiro prompt), created_at, updated_at, is_archived. Uma conversa agrupa mensagens sobre um mesmo topico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Messages:</strong> id, conversation_id, role (user/assistant/system), content, tokens_used, created_at. Cada mensagem e uma unidade atomica no historico</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Attachments:</strong> id, message_id, file_url, file_type, file_size, extracted_text. Arquivos vinculados a mensagens especificas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Data Model Visual -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🗄️</span> Schema do Banco (Supabase/PostgreSQL)
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">-- Tabela de conversas</div>
+          <div class="text-neutral-300">CREATE TABLE conversations (</div>
+          <div class="text-neutral-300 ml-4">id UUID DEFAULT gen_random_uuid() PRIMARY KEY,</div>
+          <div class="text-neutral-300 ml-4">user_id UUID REFERENCES auth.users(id),</div>
+          <div class="text-neutral-300 ml-4">title TEXT DEFAULT 'Nova conversa',</div>
+          <div class="text-neutral-300 ml-4">created_at TIMESTAMPTZ DEFAULT now(),</div>
+          <div class="text-neutral-300 ml-4">updated_at TIMESTAMPTZ DEFAULT now(),</div>
+          <div class="text-neutral-300 ml-4">is_archived BOOLEAN DEFAULT false</div>
+          <div class="text-neutral-300">);</div>
+          <div class="text-neutral-400 mt-3"></div>
+          <div class="text-purple-400">-- Tabela de mensagens</div>
+          <div class="text-neutral-300">CREATE TABLE messages (</div>
+          <div class="text-neutral-300 ml-4">id UUID DEFAULT gen_random_uuid() PRIMARY KEY,</div>
+          <div class="text-neutral-300 ml-4">conversation_id UUID REFERENCES conversations(id),</div>
+          <div class="text-neutral-300 ml-4">role TEXT CHECK (role IN ('user', 'assistant', 'system')),</div>
+          <div class="text-neutral-300 ml-4">content TEXT NOT NULL,</div>
+          <div class="text-neutral-300 ml-4">tokens_used INTEGER DEFAULT 0,</div>
+          <div class="text-neutral-300 ml-4">created_at TIMESTAMPTZ DEFAULT now()</div>
+          <div class="text-neutral-300">);</div>
+          <div class="text-neutral-400 mt-3"></div>
+          <div class="text-purple-400">-- Tabela de anexos</div>
+          <div class="text-neutral-300">CREATE TABLE attachments (</div>
+          <div class="text-neutral-300 ml-4">id UUID DEFAULT gen_random_uuid() PRIMARY KEY,</div>
+          <div class="text-neutral-300 ml-4">message_id UUID REFERENCES messages(id),</div>
+          <div class="text-neutral-300 ml-4">file_url TEXT NOT NULL,</div>
+          <div class="text-neutral-300 ml-4">file_type TEXT, <span class="text-neutral-500">-- 'pdf', 'image', 'csv'</span></div>
+          <div class="text-neutral-300 ml-4">file_size INTEGER,</div>
+          <div class="text-neutral-300 ml-4">extracted_text TEXT <span class="text-neutral-500">-- conteudo extraido para contexto</span></div>
+          <div class="text-neutral-300">);</div>
+        </div>
+      </div>
+
+      <!-- Funcionalidades -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Funcionalidades Essenciais do Historico
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Paginacao:</strong> Carregar 20 mensagens por vez, com "carregar mais" ou infinite scroll. Conversas com 200+ mensagens nao podem ser carregadas de uma vez</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Busca:</strong> Full-text search no conteudo das mensagens. Supabase tem <code class="bg-dark-700 px-1 rounded text-purple-400">to_tsvector</code> nativo para isso. O usuario precisa encontrar aquela conversa de 3 semanas atras</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Thread Management:</strong> Renomear conversas, arquivar, deletar, fixar favoritas. A sidebar vira inutilizavel com 50+ conversas sem organizacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Auto-titulo:</strong> Gerar titulo automatico da conversa baseado na primeira mensagem do usuario. Pedir para a IA resumir em 5 palavras custa centavos e economiza cliques</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Use Supabase Realtime para sync instantaneo.</strong> Se o usuario tem o app aberto em duas abas, uma nova mensagem aparece nas duas automaticamente. E gratis no Supabase e adiciona uma camada profissional que poucos MVPs tem.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Persistencia de Sessao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">💾 Persistencia de Sessao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O usuario comecou a escrever uma pergunta longa, fechou o notebook para almocar e voltou 2 horas depois. Se o draft desapareceu, voce perdeu confianca. <strong class="text-purple-400">Persistencia de sessao</strong> e sobre garantir que nada se perde, nao importa o que o usuario faca.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Persistencia funciona em duas camadas. <strong class="text-white">LocalStorage</strong> para dados temporarios e rapidos (draft da mensagem atual, preferencias de UI, ultimo scroll position). <strong class="text-white">Database</strong> para dados permanentes e sincronizados (conversas, mensagens, configuracoes do usuario).
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Resumir conversas:</strong> Quando o usuario reabre o app, carregar a ultima conversa ativa automaticamente. Nao forcar a escolher da lista. Lembrar qual conversa estava aberta</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Session timeout:</strong> JWT do Supabase dura 1 hora por padrao, com refresh token de 7 dias. Configurar refresh automatico no background. Se expirar, redirecionar para login suavemente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Multi-device sync:</strong> Conversa criada no desktop aparece no celular. Supabase Realtime + polling resolve. Conflitos: last-write-wins e suficiente para MVP</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Draft saving:</strong> Auto-save do input a cada 2 segundos no localStorage. Se o browser crashar, o rascunho esta la quando voltar. Custo zero, impacto enorme na UX</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- LocalStorage vs Database -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">⚖️</span> LocalStorage vs Database: Quando Usar Cada
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20">
+            <h4 class="font-bold text-purple-400 mb-3">localStorage</h4>
+            <ul class="space-y-2 text-neutral-300 text-sm">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Draft da mensagem sendo digitada</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Tema (dark/light mode)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>ID da ultima conversa aberta</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Posicao do scroll na sidebar</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Configuracoes de UI (sidebar aberta/fechada)</span>
+              </li>
+            </ul>
+            <div class="mt-3 p-2 bg-dark-800 rounded text-xs text-neutral-400">
+              Rapido, sem network, max 5MB, device-specific
+            </div>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20">
+            <h4 class="font-bold text-purple-400 mb-3">Database (Supabase)</h4>
+            <ul class="space-y-2 text-neutral-300 text-sm">
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Conversas e mensagens completas</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Preferencias do usuario (model, temperature)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Arquivos enviados (Storage + metadata)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>Usage tracking (tokens, requests)</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-purple-400">•</span>
+                <span>System prompts personalizados</span>
+              </li>
+            </ul>
+            <div class="mt-3 p-2 bg-dark-800 rounded text-xs text-neutral-400">
+              Persistente, sincronizado, multi-device, escalavel
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Auto-save de Draft com localStorage
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">// Hook customizado para auto-save do draft</div>
+          <div class="text-neutral-300">function useDraftSave(conversationId) {</div>
+          <div class="text-neutral-300 ml-4">const key = `draft_${conversationId}`;</div>
+          <div class="text-neutral-300 ml-4">const [draft, setDraft] = useState(</div>
+          <div class="text-neutral-300 ml-8">() => localStorage.getItem(key) || ''</div>
+          <div class="text-neutral-300 ml-4">);</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">useEffect(() => {</div>
+          <div class="text-neutral-300 ml-8">const timer = setTimeout(() => {</div>
+          <div class="text-neutral-300 ml-12">if (draft) localStorage.setItem(key, draft);</div>
+          <div class="text-neutral-300 ml-12">else localStorage.removeItem(key);</div>
+          <div class="text-neutral-300 ml-8">}, 2000); <span class="text-neutral-500">// debounce 2s</span></div>
+          <div class="text-neutral-300 ml-8">return () => clearTimeout(timer);</div>
+          <div class="text-neutral-300 ml-4">}, [draft, key]);</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">const clearDraft = () => {</div>
+          <div class="text-neutral-300 ml-8">setDraft('');</div>
+          <div class="text-neutral-300 ml-8">localStorage.removeItem(key);</div>
+          <div class="text-neutral-300 ml-4">};</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">return { draft, setDraft, clearDraft };</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Regra de ouro: se o dado precisa existir em outro dispositivo, vai para o banco. Se so importa nesta aba, vai para localStorage.</strong> Nao complique. Um draft de mensagem nao precisa sincronizar entre dispositivos. Mas as conversas sim.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Auto-save drafts no localStorage com debounce</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Reabrir automaticamente a ultima conversa ativa</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Refresh silencioso do JWT antes de expirar</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Guardar conversas inteiras no localStorage (limite de 5MB)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Redirecionar bruscamente para login sem salvar estado</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar conflitos de sync entre dispositivos</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Sistema de Estados Completo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛠️ Exercicio: Sistema de Estados Completo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de implementar tudo que vimos. Este exercicio integra os <strong class="text-purple-400">4 estados com UI adequada</strong>, historico de conversas com paginacao, e persistencia de sessao. O resultado e um chat funcional com qualidade profissional de UX.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border-2 border-purple-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🛠️</span>
+          <div>
+            <h3 class="text-xl font-bold text-purple-400">Exercicio: Sistema de Estados + Historico + Persistencia</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-45 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implementar state machine com 4 estados</h4>
+              <p class="text-neutral-300 text-sm mb-3">Criar um hook ou state manager que controla idle/loading/success/error:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-purple-400">// useConversationState.ts</div>
+                <div class="text-neutral-300">type State = 'idle' | 'loading' | 'success' | 'error';</div>
+                <div class="text-neutral-400 mt-1"></div>
+                <div class="text-neutral-300">const [state, setState] = useState&lt;State&gt;('idle');</div>
+                <div class="text-neutral-300">const [errorInfo, setErrorInfo] = useState&lt;ErrorInfo | null&gt;(null);</div>
+                <div class="text-neutral-400 mt-1"></div>
+                <div class="text-purple-400">// Cada estado controla a UI:</div>
+                <div class="text-neutral-300">// idle    → input ativo, botao habilitado</div>
+                <div class="text-neutral-300">// loading → skeleton/streaming, input desabilitado</div>
+                <div class="text-neutral-300">// success → checkmark, auto-transicao para idle</div>
+                <div class="text-neutral-300">// error   → mensagem + botao retry</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">UI para cada estado</h4>
+              <p class="text-neutral-300 text-sm mb-3">Renderizar componentes diferentes para cada estado:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-300">{state === 'loading' && (</div>
+                <div class="text-neutral-300 ml-4">&lt;div className="flex items-center gap-2"&gt;</div>
+                <div class="text-neutral-300 ml-8">&lt;TypingIndicator /&gt;</div>
+                <div class="text-neutral-300 ml-8">&lt;span&gt;Analisando sua pergunta...&lt;/span&gt;</div>
+                <div class="text-neutral-300 ml-4">&lt;/div&gt;</div>
+                <div class="text-neutral-300">)}</div>
+                <div class="text-neutral-300">{state === 'error' && (</div>
+                <div class="text-neutral-300 ml-4">&lt;ErrorBanner</div>
+                <div class="text-neutral-300 ml-8">message={errorInfo.userMessage}</div>
+                <div class="text-neutral-300 ml-8">onRetry={() =&gt; handleRetry()}</div>
+                <div class="text-neutral-300 ml-8">onDismiss={() =&gt; setState('idle')}</div>
+                <div class="text-neutral-300 ml-4">/&gt;</div>
+                <div class="text-neutral-300">)}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Historico com paginacao</h4>
+              <p class="text-neutral-300 text-sm">Carregar conversas da sidebar com paginacao (20 por vez). Ao clicar, buscar mensagens daquela conversa tambem paginadas. Implementar infinite scroll ou botao "carregar mais".</p>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Persistencia de sessao</h4>
+              <p class="text-neutral-300 text-sm">Salvar draft no localStorage, restaurar ultima conversa ao abrir o app, refresh automatico do token de auth.</p>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Testar todos os cenarios</h4>
+              <p class="text-neutral-300 text-sm">Simular: API lenta (throttle no DevTools), API fora (bloquear request), browser fechado e reaberto, sessao expirada, conversa com 100+ mensagens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">4 estados visuais distintos funcionando</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Loading com typing indicator ou streaming</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Error com mensagem amigavel + retry</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Historico carregando com paginacao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Draft salvo no localStorage</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Ultima conversa restaurada ao reabrir</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-emerald-900/20 rounded-xl border border-purple-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Adicione <strong class="text-white">busca full-text nas conversas</strong> usando Supabase text search. Implemente <strong class="text-white">auto-titulo</strong> que gera o nome da conversa apos a primeira resposta da IA. E se quiser ir alem, adicione <strong class="text-white">export de conversa</strong> em formato Markdown.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">State machine com 4 estados</strong>
+              <span class="text-neutral-400"> - Idle, Loading, Success, Error. Transicoes explicitas. Nunca dois estados ao mesmo tempo. useReducer ou XState para escalar.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Loading states ricos para IA</strong>
+              <span class="text-neutral-400"> - Skeleton screens, typing indicators, streaming text, progress estimation. Cada faixa de tempo tem seu tratamento ideal.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Error handling categorizado</strong>
+              <span class="text-neutral-400"> - AI errors, system errors, user errors. Retry automatico, fallback responses, mensagens amigaveis. Nunca tela em branco.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Historico: conversations > messages > attachments</strong>
+              <span class="text-neutral-400"> - Paginacao, busca full-text, auto-titulo, thread management. Supabase Realtime para sync.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Persistencia: localStorage + database</strong>
+              <span class="text-neutral-400"> - Drafts no localStorage, conversas no banco. Restaurar ultima sessao. Refresh silencioso do JWT. Multi-device sync.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-3-5.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 3
+          </a>
+          <a href="modulo-3-7.html" class="text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

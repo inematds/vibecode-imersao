@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.7 - SaaS Funcional (Exercicio Integrador) | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.7</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center space-x-3 mb-4">
+        <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">
+          MODULO 3.7
+        </span>
+        <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">
+          EXERCICIO FINAL
+        </span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 SaaS Funcional (Exercicio Integrador)</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Este e o modulo final da Trilha 3. Tudo que voce aprendeu -- auth, dashboard, IA, upload, estados, historico -- se junta aqui em um produto funcional. O objetivo: sair com um SaaS que um usuario real consegue usar do login ao historico.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">60 min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Integrando Auth + Dashboard + AI -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔗 Integrando Auth + Dashboard + AI</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Ate agora, cada peca foi construida separadamente. Auth funciona. Dashboard renderiza. IA responde. Upload processa. O desafio agora e diferente: <strong class="text-purple-400">fazer tudo conversar</strong>. O login alimenta o dashboard, o dashboard mostra conversas, as conversas usam o pipeline de IA. Nenhuma peca funciona isolada num produto real.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A integracao segue um fluxo linear que precisa ser <strong class="text-white">bulletproof</strong>: se qualquer elo da corrente quebra, o usuario fica preso. O fluxo e:
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Auth → Session:</strong> Login com Supabase retorna JWT. Esse token e armazenado e enviado em todo request subsequente. Sem token valido, nenhuma rota funciona</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Session → Dashboard:</strong> O token carrega o user_id. O dashboard busca conversas WHERE user_id = token.sub. Sidebar popula automaticamente. Row Level Security (RLS) no Supabase garante que usuario A nunca ve dados de B</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Dashboard → AI Pipeline:</strong> Quando o usuario envia mensagem, o frontend passa o token + conversation_id + message. O backend valida o token, busca o historico da conversa, monta o array de messages com system prompt, e chama a API da LLM</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">AI Pipeline → Storage:</strong> A resposta e salva no banco (messages table) e streamada para o frontend. Anexos vao para o Supabase Storage com referencia na tabela attachments</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Architecture Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🏗️</span> Arquitetura de Integracao
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20">
+          <div class="text-neutral-500 mb-2">Fluxo completo de um request:</div>
+          <div class="text-neutral-400 mb-3"></div>
+          <div class="text-neutral-300">┌─────────┐    JWT     ┌──────────┐   query    ┌──────────┐</div>
+          <div class="text-neutral-300">│  <span class="text-purple-400">Login</span>  │ ───────→ │ <span class="text-purple-400">Session</span>  │ ────────→ │<span class="text-purple-400">Dashboard</span>│</div>
+          <div class="text-neutral-300">└─────────┘           └──────────┘           └────┬─────┘</div>
+          <div class="text-neutral-300">                                                  │ msg</div>
+          <div class="text-neutral-300">                                                  ▼</div>
+          <div class="text-neutral-300">┌─────────┐   stream   ┌──────────┐  messages  ┌──────────┐</div>
+          <div class="text-neutral-300">│<span class="text-emerald-400">Response</span> │ ◀──────── │  <span class="text-purple-400">LLM API</span> │ ◀──────── │ <span class="text-purple-400">Backend</span>  │</div>
+          <div class="text-neutral-300">└─────────┘           └──────────┘           └────┬─────┘</div>
+          <div class="text-neutral-300">                                                  │ save</div>
+          <div class="text-neutral-300">                                                  ▼</div>
+          <div class="text-neutral-300">                                            ┌──────────┐</div>
+          <div class="text-neutral-300">                                            │ <span class="text-blue-400">Supabase</span> │</div>
+          <div class="text-neutral-300">                                            └──────────┘</div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Middleware de Auth para API Routes
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+          <div class="text-purple-400">// middleware/auth.ts - protege todas as rotas da API</div>
+          <div class="text-neutral-300">export async function requireAuth(req, res, next) {</div>
+          <div class="text-neutral-300 ml-4">const token = req.headers.authorization?.split('Bearer ')[1];</div>
+          <div class="text-neutral-300 ml-4">if (!token) return res.status(401).json({</div>
+          <div class="text-neutral-300 ml-8">error: 'Voce precisa estar logado para acessar isso.'</div>
+          <div class="text-neutral-300 ml-4">});</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">const { data: { user }, error } = await supabase.auth.getUser(token);</div>
+          <div class="text-neutral-300 ml-4">if (error || !user) return res.status(401).json({</div>
+          <div class="text-neutral-300 ml-8">error: 'Sessao expirada. Faca login novamente.'</div>
+          <div class="text-neutral-300 ml-4">});</div>
+          <div class="text-neutral-400 mt-2"></div>
+          <div class="text-neutral-300 ml-4">req.user = user; <span class="text-neutral-500">// disponivel em todas as rotas</span></div>
+          <div class="text-neutral-300 ml-4">next();</div>
+          <div class="text-neutral-300">}</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Teste o fluxo completo em sequencia, nao cada peca isolada.</strong> Crie uma conta nova, faca login, crie uma conversa, envie uma mensagem com arquivo, receba a resposta, feche o browser, reabra e veja se tudo esta la. Se qualquer etapa falhar, e um bug de integracao que testes unitarios nunca pegam.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Fluxo Completo do Usuario -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🔀 Fluxo Completo do Usuario</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O fluxo end-to-end e o teste definitivo do seu SaaS. Cada etapa precisa funcionar perfeitamente e transicionar para a proxima sem friccao. Se o usuario sentir um "bump" entre o registro e o primeiro uso, voce esta perdendo gente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> O Fluxo End-to-End
+        </h3>
+        <p class="text-neutral-300 mb-6">
+          Cada etapa tem seus proprios desafios de UX e pontos de falha. Mapeie todos antes de comecar a implementar:
+        </p>
+      </div>
+
+      <!-- Flow Steps -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">Register</h4>
+              <p class="text-neutral-300 text-sm">Formulario com email + senha ou OAuth (Google). Validacao em tempo real (email valido, senha forte). Enviar email de confirmacao. Redirecionar para onboarding apos confirmar.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: 40% de abandono se pedir mais de 3 campos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">Onboard</h4>
+              <p class="text-neutral-300 text-sm">Coletar nome, caso de uso principal, preferencias. Pode ser 1-3 telas com progress bar. Mostrar o valor do produto imediatamente. "Qual e seu primeiro projeto?" ja cria uma conversa automaticamente.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: Nao pedir info que nao sera usada nas proximas 24 horas</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">Create Conversation</h4>
+              <p class="text-neutral-300 text-sm">Botao "Nova Conversa" cria registro no banco e abre a area de chat. Auto-titulo gerado apos a primeira interacao. Conversa aparece imediatamente na sidebar.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: A primeira conversa pode ser criada automaticamente no onboarding</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">Send Message</h4>
+              <p class="text-neutral-300 text-sm">Usuario digita e envia. Mensagem aparece no chat imediatamente (optimistic update). State transiciona para loading. Input e desabilitado. Typing indicator aparece.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: Optimistic update faz parecer instantaneo mesmo em conexao lenta</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">Get AI Response</h4>
+              <p class="text-neutral-300 text-sm">Backend monta messages array, chama LLM com streaming, tokens chegam ao frontend em tempo real. Resposta completa e salva no banco. State transiciona para success e depois idle.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: Streaming e obrigatorio. Sem ele, 5-15s de tela parada</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold text-sm">6</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-1">View History</h4>
+              <p class="text-neutral-300 text-sm">Sidebar lista todas as conversas. Clicar carrega as mensagens com paginacao. Busca por texto. Fechar e reabrir o browser mantem tudo. Multi-device sincronizado.</p>
+              <div class="mt-2 text-xs text-neutral-500">Ponto critico: Sem historico, seu SaaS e descartavel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Metricas de Referencia para o Fluxo
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Time to first value:</strong> Do registro ate a primeira resposta da IA em menos de 2 minutos. Se demorar mais, simplifique o onboarding</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Completion rate:</strong> 80%+ dos que comecam o registro devem chegar a enviar a primeira mensagem. Menos que isso indica friccao no fluxo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Return rate (D1):</strong> 30%+ dos usuarios devem voltar no dia seguinte. Se nao voltam, o historico e a qualidade da IA nao estao bons o suficiente</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Polishing a Interface -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">✨ Polishing a Interface</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O "polishing" e a diferenca entre um projeto de portfolio e um produto que alguem pagaria para usar. Nao e sobre redesign, e sobre <strong class="text-purple-400">10 ajustes rapidos</strong> que elevam drasticamente a percepcao de qualidade. Cada um leva 5-15 minutos.
+      </p>
+
+      <!-- 10 Quick UX Wins -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> 10 Quick UX Wins
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">1</span>
+            <div>
+              <strong class="text-white">Dark mode toggle</strong>
+              <span class="text-neutral-400"> - localStorage para persistir. Transicao suave com CSS transition. Respeitar prefers-color-scheme do sistema como default</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">2</span>
+            <div>
+              <strong class="text-white">Responsive audit</strong>
+              <span class="text-neutral-400"> - Testar em 320px, 768px e 1440px. Sidebar vira drawer no mobile. Input bar fixa na base. Textos nao quebram</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">3</span>
+            <div>
+              <strong class="text-white">Loading states review</strong>
+              <span class="text-neutral-400"> - Verificar que TODAS as chamadas de API tem loading state. Nenhum botao sem feedback ao clicar</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">4</span>
+            <div>
+              <strong class="text-white">Error handling audit</strong>
+              <span class="text-neutral-400"> - Desconectar internet e testar. Enviar request invalido. Verificar que toda mensagem de erro e user-friendly</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">5</span>
+            <div>
+              <strong class="text-white">Keyboard shortcuts</strong>
+              <span class="text-neutral-400"> - Enter para enviar, Shift+Enter para nova linha, Cmd+K para busca, Escape para fechar modais. Usuarios power adoram</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">6</span>
+            <div>
+              <strong class="text-white">Empty states</strong>
+              <span class="text-neutral-400"> - Quando nao tem conversas, nao mostrar lista vazia. Mostrar "Comece sua primeira conversa!" com botao de acao</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">7</span>
+            <div>
+              <strong class="text-white">Copy to clipboard</strong>
+              <span class="text-neutral-400"> - Botao de copiar em cada resposta da IA. Feedback visual "Copiado!" por 2 segundos. Formatar como markdown para paste</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">8</span>
+            <div>
+              <strong class="text-white">Auto-scroll inteligente</strong>
+              <span class="text-neutral-400"> - Scroll automatico para baixo durante streaming. Mas se o usuario scrollou para cima manualmente, nao forcar scroll</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">9</span>
+            <div>
+              <strong class="text-white">Favicon e titulo dinamico</strong>
+              <span class="text-neutral-400"> - Mudar o titulo da aba para "Nova mensagem..." quando IA responder com a aba em background. Notificacao sutil</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-400 font-bold text-xs">10</span>
+            <div>
+              <strong class="text-white">Textarea auto-resize</strong>
+              <span class="text-neutral-400"> - O input cresce conforme o usuario digita. Max 6 linhas, depois scroll interno. Muito melhor que textarea fixa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Nao tente implementar os 10 de uma vez.</strong> Escolha os 3 que mais impactam a primeira experiencia do usuario: loading states, empty states e responsive. O resto e iteracao pos-lancamento.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Testes de Integracao Rapidos -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🧪 Testes de Integracao Rapidos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Voce nao precisa de um framework de testes sofisticado para validar que seu SaaS funciona. O que voce precisa e de um <strong class="text-purple-400">checklist de QA manual</strong> que cobre os fluxos criticos. Teste como um usuario, nao como um dev.
+      </p>
+
+      <!-- QA Checklist -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Checklist de QA Manual
+        </h3>
+
+        <!-- Auth Flow -->
+        <div class="mb-6">
+          <h4 class="font-semibold text-white mb-3">Auth Flow</h4>
+          <div class="space-y-2">
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Criar conta com email/senha funciona</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Login com Google OAuth funciona</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Logout limpa sessao e redireciona</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Rota protegida redireciona para login sem token</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Token expira e refresh funciona silenciosamente</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Pipeline -->
+        <div class="mb-6">
+          <h4 class="font-semibold text-white mb-3">AI Pipeline</h4>
+          <div class="space-y-2">
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Mensagem enviada e resposta recebida com streaming</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">System prompt esta sendo aplicado (IA se comporta como configurado)</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Historico da conversa e enviado (IA lembra do contexto)</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Erro de API mostra mensagem amigavel com retry</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-6">
+          <h4 class="font-semibold text-white mb-3">File Upload</h4>
+          <div class="space-y-2">
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Upload de PDF funciona e conteudo e extraido</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Upload de imagem funciona e IA "ve" o conteudo</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Arquivo grande demais mostra erro claro (nao crash)</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Formato invalido e rejeitado com mensagem</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversation CRUD -->
+        <div>
+          <h4 class="font-semibold text-white mb-3">Conversation CRUD</h4>
+          <div class="space-y-2">
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Criar nova conversa funciona</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Clicar em conversa da sidebar carrega mensagens</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Deletar conversa remove da sidebar e do banco</span>
+            </div>
+            <div class="flex items-center space-x-3 p-2 bg-dark-800/50 rounded-lg">
+              <span class="text-purple-400">☐</span>
+              <span class="text-neutral-300 text-sm">Fechar browser e reabrir: historico persiste</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Grave a tela enquanto testa.</strong> Use o gravador de tela nativo do seu OS. Quando encontrar um bug, o video ja esta la. E tambem serve como material para o Demo Day (topico 6).
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Performance Basica -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚡ Performance Basica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Performance nao e otimizacao prematura quando afeta a experiencia do usuario. Um dashboard que leva 5 segundos para carregar parece quebrado. <strong class="text-purple-400">4 ajustes basicos</strong> resolvem 80% dos problemas de performance sem complexidade.
+      </p>
+
+      <!-- 4 Performance Pillars -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Os 4 Pilares de Performance para SaaS
+        </h3>
+        <ul class="space-y-4 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <div>
+              <strong class="text-white">Image Optimization:</strong>
+              <p class="text-sm mt-1">Usar WebP ao inves de PNG/JPEG. Lazy loading com <code class="bg-dark-700 px-1 rounded text-purple-400 text-xs">loading="lazy"</code> em imagens fora da viewport. Next.js Image component faz isso automatico. Avatares: max 100x100px, nao 500x500.</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <div>
+              <strong class="text-white">Lazy Loading de Componentes:</strong>
+              <p class="text-sm mt-1">Nao carregar o editor de codigo se o usuario esta na pagina de login. <code class="bg-dark-700 px-1 rounded text-purple-400 text-xs">React.lazy()</code> + Suspense para code splitting. Reduz bundle inicial em 30-50%.</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <div>
+              <strong class="text-white">API Response Caching:</strong>
+              <p class="text-sm mt-1">Conversas ja carregadas nao precisam ser buscadas novamente. Cache local com SWR ou React Query. Stale-while-revalidate: mostra cache primeiro, atualiza em background.</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <div>
+              <strong class="text-white">Database Query Optimization:</strong>
+              <p class="text-sm mt-1">Indices nas colunas usadas em WHERE (user_id, conversation_id, created_at). Paginacao com cursor ao inves de OFFSET. Select apenas colunas necessarias, nao <code class="bg-dark-700 px-1 rounded text-purple-400 text-xs">SELECT *</code>.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Lighthouse -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Lighthouse Audit Basico
+        </h3>
+        <p class="text-neutral-300 mb-4 text-sm">
+          Abra o Chrome DevTools > Lighthouse > Generate report. Os numeros que importam para MVP:
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20 text-center">
+            <div class="text-2xl font-bold text-emerald-400 mb-1">90+</div>
+            <div class="text-xs text-neutral-400">Performance</div>
+            <div class="text-xs text-neutral-500 mt-1">LCP < 2.5s</div>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20 text-center">
+            <div class="text-2xl font-bold text-emerald-400 mb-1">90+</div>
+            <div class="text-xs text-neutral-400">Accessibility</div>
+            <div class="text-xs text-neutral-500 mt-1">Alt texts, contrast</div>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20 text-center">
+            <div class="text-2xl font-bold text-amber-400 mb-1">80+</div>
+            <div class="text-xs text-neutral-400">Best Practices</div>
+            <div class="text-xs text-neutral-500 mt-1">HTTPS, console clean</div>
+          </div>
+          <div class="bg-dark-900 rounded-lg p-4 border border-purple-500/20 text-center">
+            <div class="text-2xl font-bold text-amber-400 mb-1">80+</div>
+            <div class="text-xs text-neutral-400">SEO</div>
+            <div class="text-xs text-neutral-500 mt-1">Meta tags, viewport</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">SWR (stale-while-revalidate) e o melhor amigo de SaaS com IA.</strong> A sidebar carrega conversas do cache instantaneamente enquanto busca atualizacoes em background. O usuario nunca ve loading na sidebar apos a primeira vez. <code class="bg-dark-700 px-2 py-0.5 rounded text-purple-400 text-sm">npm install swr</code> e 10 linhas de codigo.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Lazy load de imagens e componentes pesados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Cache de API responses com SWR/React Query</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Indices no banco para queries frequentes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Otimizar prematuramente antes de medir (profile first)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Carregar 500 conversas na sidebar de uma vez</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar o Lighthouse ate o lancamento</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Demo Day -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🎬 Exercicio: Demo Day</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Este e o exercicio final da Trilha 3. Voce vai gravar um video de <strong class="text-purple-400">2 minutos</strong> demonstrando seu SaaS funcional. Nao precisa ser perfeito. Precisa funcionar de ponta a ponta. Se funciona no video, funciona na vida real.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border-2 border-purple-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🎬</span>
+          <div>
+            <h3 class="text-xl font-bold text-purple-400">Exercicio Final: Gravar Demo de 2 Minutos</h3>
+            <p class="text-neutral-400 text-sm">Tempo de preparacao: 45-60 minutos | Gravacao: 2 minutos</p>
+          </div>
+        </div>
+
+        <p class="text-neutral-300 mb-6">
+          O video deve cobrir o fluxo completo do usuario. Use o gravador de tela nativo (QuickTime no Mac, OBS no Windows/Linux). Nao edite, nao adicione musica, nao faqa intro. Direto ao ponto.
+        </p>
+
+        <!-- Script do Demo -->
+        <div class="space-y-4 mb-6">
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">0:00</div>
+            <div>
+              <h4 class="font-semibold text-white">Login/Register</h4>
+              <p class="text-neutral-300 text-sm">Abrir o app. Mostrar a tela de login. Fazer login (ou registrar conta nova). Mostrar que redireciona para o dashboard.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">0:20</div>
+            <div>
+              <h4 class="font-semibold text-white">Dashboard + Nova Conversa</h4>
+              <p class="text-neutral-300 text-sm">Mostrar o dashboard com sidebar. Criar nova conversa. Mostrar que aparece na sidebar.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">0:40</div>
+            <div>
+              <h4 class="font-semibold text-white">Chat com IA</h4>
+              <p class="text-neutral-300 text-sm">Enviar uma mensagem. Mostrar o loading/streaming. Receber resposta. Enviar follow-up para provar que o contexto persiste.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">1:10</div>
+            <div>
+              <h4 class="font-semibold text-white">Upload de Arquivo</h4>
+              <p class="text-neutral-300 text-sm">Anexar um PDF ou imagem. Mostrar preview. Enviar com uma pergunta sobre o arquivo. Mostrar que a IA entende o conteudo.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">1:30</div>
+            <div>
+              <h4 class="font-semibold text-white">Historico Persistente</h4>
+              <p class="text-neutral-300 text-sm">Trocar para outra conversa na sidebar. Voltar. Mostrar que mensagens estao la. Fechar e reabrir o browser rapidamente para provar persistencia.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-800/80 rounded-lg border border-dark-600">
+            <div class="flex-shrink-0 text-xl">1:50</div>
+            <div>
+              <h4 class="font-semibold text-white">Polish</h4>
+              <p class="text-neutral-300 text-sm">Mostrar dark mode toggle. Mostrar que funciona no mobile (ou resize do browser). Logout.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Final -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Checklist Final da Trilha 3
+        </h3>
+        <p class="text-neutral-300 mb-4 text-sm">Antes de gravar, verifique cada item. Se todos funcionam, seu SaaS esta pronto para o Demo Day.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Auth funciona (login, register, logout)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Dashboard com sidebar + area de chat</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">IA responde com streaming</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Upload de arquivo processado pela IA</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Historico persiste entre sessoes</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Loading/error states visiveis</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Dark mode toggle funciona</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Responsivo (funciona em mobile)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Video de 2 min gravado</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Nenhum crash ou erro nao tratado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-emerald-900/20 rounded-xl border border-purple-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Compartilhe o video no grupo da imersao ou nas redes sociais. Mostre o que voce construiu. Feedback de outros devs e a melhor forma de melhorar. Se quiser ir alem, faqa um <strong class="text-white">deploy no Vercel</strong> e compartilhe o link. Um SaaS que roda em producao vale mais do que qualquer portfolio.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL DA TRILHA 3 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-2 flex items-center">
+          <span class="mr-3">📋</span> Resumo Final - Trilha 3: Construcao do SaaS
+        </h2>
+        <p class="text-neutral-400 mb-6 text-sm">Tudo que voce aprendeu nesta trilha, de auth ate o Demo Day.</p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Autenticacao e onboarding</strong>
+              <span class="text-neutral-400"> - Supabase Auth, JWT, social login, onboarding de primeiro acesso. A porta de entrada do SaaS.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Dashboard e interface</strong>
+              <span class="text-neutral-400"> - Sidebar + area central + input bar. Conversation-centered. Layout padrao do ChatGPT como base.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">System prompts e pipeline</strong>
+              <span class="text-neutral-400"> - Identidade, capacidades, restricoes, formato. Temperature baixa. Versionar como codigo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Upload multimodal</strong>
+              <span class="text-neutral-400"> - PDF e imagens no MVP. Chunking, vision models, Supabase Storage. Video e audio sao v2.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Estados do sistema</strong>
+              <span class="text-neutral-400"> - State machine com 4 estados. Streaming obrigatorio. Loading states ricos. Error handling categorizado.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Historico e persistencia</strong>
+              <span class="text-neutral-400"> - Conversations > Messages > Attachments. Paginacao, busca, auto-titulo. LocalStorage + database.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Integracao e polishing</strong>
+              <span class="text-neutral-400"> - Fluxo end-to-end, 10 quick UX wins, QA manual, performance basica, Lighthouse.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proxima Trilha:</h3>
+          <p class="text-neutral-300">
+            <strong class="text-white">Trilha 4 - Agentes, MCP e Skills.</strong> Agora que seu SaaS funciona, e hora de adicionar inteligencia real. Agentes autonomos, Model Context Protocol (MCP), ferramentas e skills que fazem a IA interagir com o mundo real. Seu chatbot vai virar um assistente que age.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-3-6.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 3
+          </a>
+          <a href="../trilha4/index.html" class="text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Trilha 4: Agentes e MCP →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
