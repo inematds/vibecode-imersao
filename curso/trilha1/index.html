@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trilha 1: Mentalidade e Metodo | Imersao Vibe Coding</title>
-  <meta name="description" content="Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.">
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,12 +18,12 @@
       }
     }
   </script>
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
 
     /* Light mode overrides */
     html:not(.dark) body {
@@ -41,68 +39,6 @@
     html:not(.dark) .text-neutral-500 { color: #9ca3af; }
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
     html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
-
-    /* Topic toggle animation */
-    .topic-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
-    .topic-content.open {
-      max-height: 2000px;
-      opacity: 1;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-overlay.active {
-      display: flex;
-    }
-    .modal-box {
-      width: 92%;
-      max-width: 1000px;
-      height: 90vh;
-      border-radius: 1rem;
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-    }
-    .dark .modal-box { background-color: #1f2937; border: 1px solid #4b5563; }
-    html:not(.dark) .modal-box { background-color: #ffffff; border: 1px solid #d1d5db; }
-
-    .modal-header {
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #4b5563;
-    }
-    html:not(.dark) .modal-header { border-bottom-color: #d1d5db; }
-
-    .modal-header .close-btn {
-      font-size: 1.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: #9ca3af;
-      transition: color 0.2s;
-    }
-    .modal-header .close-btn:hover { color: #ef4444; }
-
-    .module-card {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .module-card:hover {
-      transform: translateY(-4px);
-    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -113,7 +49,7 @@
       <div class="flex justify-between items-center h-14">
         <div class="flex items-center space-x-4">
           <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-            <span class="text-2xl">&#x1F680;</span>
+            <span class="text-2xl">🚀</span>
             <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
           </a>
           <span class="text-neutral-600">|</span>
@@ -158,23 +94,22 @@
   </nav>
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-6">TRILHA 1</span>
-      <h1 class="text-4xl sm:text-5xl font-bold mb-4">&#x1F9E0; Mentalidade e Metodo de Vibe Coding</h1>
-      <p class="text-neutral-400 max-w-2xl mx-auto mb-8">Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.</p>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">TRILHA 1</span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧠 Mentalidade e Metodo de Vibe Coding</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.</p>
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">1</div>
-          <div class="text-xs text-neutral-400">Modulo</div>
+          <div class="text-xl font-bold text-emerald-400">7</div>
+          <div class="text-xs text-neutral-400">Modulos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xl font-bold text-emerald-400">42</div>
           <div class="text-xs text-neutral-400">Topicos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">~45min</div>
+          <div class="text-xl font-bold text-emerald-400">~5h</div>
           <div class="text-xs text-neutral-400">Duracao</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
@@ -185,187 +120,359 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- Module 1.1 Card -->
-    <div class="module-card bg-dark-800 rounded-2xl p-6 lg:p-8 mb-8 border border-dark-600">
-      <div class="flex items-start justify-between mb-6">
-        <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-            <span class="text-emerald-400 font-bold text-lg">1.1</span>
-          </div>
-          <div>
-            <h2 class="text-2xl font-bold">Mentalidade e Metodo de Vibe Coding</h2>
-            <p class="text-neutral-400">Fundamentos para construir com IA</p>
+    <!-- Divisor -->
+    <div class="flex items-center space-x-4 mb-8">
+      <div class="h-px bg-dark-600 flex-1"></div>
+      <span class="text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
+      <div class="h-px bg-dark-600 flex-1"></div>
+    </div>
+
+    <!-- MODULE 1.1 - Introducao -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.1</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🧠 Introducao: Mentalidade e Metodo</h3>
+        <p class="text-neutral-400 text-sm">Visao geral dos fundamentos do Vibe Coding. Panorama dos 6 temas que serao aprofundados nos modulos seguintes.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-lg">🌐</span>
+            <div><span class="font-medium">O que e Vibe Coding em 2026</span><span class="text-neutral-500 text-sm ml-2">- Origem, evolucao, dados de adocao</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Termo cunhado por Karpathy para construir software conversando com IA. Evoluiu para Agentic Engineering em 2026.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">92% dos devs usam IA diariamente, 41% do codigo global e gerado por IA. E a nova forma de construir.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Karpathy, Agentic Engineering, Vibe Shipping, Cursor, Claude Code, Copilot, Windsurf.</p></div>
+            </div>
           </div>
         </div>
-        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold whitespace-nowrap">6 Topicos</span>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-lg">💡</span>
+            <div><span class="font-medium">Da Ideia ao Software</span><span class="text-neutral-500 text-sm ml-2">- Pipeline Problema > Usuario > Solucao > MVP</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pipeline que transforma ideia em software: Problema > Usuario > Solucao > MVP.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A maioria dos projetos falha por falta de clareza, nao por limitacao tecnica.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Validacao de ideia, product-market fit, persona, mapa de fluxo do usuario.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-lg">🎯</span>
+            <div><span class="font-medium">Escopo e Definicao de Produto</span><span class="text-neutral-500 text-sm ml-2">- MVP, fluxos, telas, limites</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir o que entra e o que fica de fora do MVP. Telas, fluxos e limites claros.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Scope creep e o maior assassino de projetos. Com IA e tentador adicionar tudo.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">MVP, user flows, wireframes, MoSCoW, lista de exclusao.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span class="text-lg">📝</span>
+            <div><span class="font-medium">Prompts Estruturados para Construcao</span><span class="text-neutral-500 text-sm ml-2">- Framework CIRF</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Framework [Contexto + Instrucao + Restricao + Formato] para prompts que geram codigo funcional.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prompts estruturados geram codigo na primeira tentativa. Vagos precisam de 10 iteracoes.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">CIRF, chain-of-thought, system prompts vs user prompts, iteracao de prompts.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span class="text-lg">⚠️</span>
+            <div><span class="font-medium">Erros Comuns em Projetos com IA</span><span class="text-neutral-500 text-sm ml-2">- 5 erros fatais, alucinacoes</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Os 5 erros fatais: confiar cegamente, ignorar seguranca, nao testar, escopo infinito, nao versionar.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">45% do codigo gerado por IA contem vulnerabilidades se nao for revisado.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pesquisa Stanford, alucinacoes, over-reliance, code review, testes automatizados.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <span class="text-lg">🛠️</span>
+            <div><span class="font-medium">Exercicio: Definir seu SaaS</span><span class="text-neutral-500 text-sm ml-2">- Frase do produto, fluxo, telas</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4">
+            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+              <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Exercicio pratico: definir product sentence, user flow, telas, limites e plano de build.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Teoria sem pratica nao constroi nada. Este exercicio cria o blueprint do seu SaaS.</p></div>
+              <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Product sentence, user flow, lista de telas, lista de exclusao, cronograma.</p></div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <!-- Topics List -->
-      <ul class="space-y-2">
-
-        <!-- Topic 1 -->
-        <li>
-          <button onclick="toggleTopic('topic-1')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
-            <span>O que e Vibe Coding em 2026</span>
-          </button>
-          <div id="topic-1" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Vibe Coding e um termo cunhado por Andrej Karpathy para descrever a pratica de construir software conversando com IA. Em 2026, o conceito evoluiu para Agentic Engineering e Vibe Shipping, onde a IA nao apenas escreve codigo, mas planeja, executa e deploya sistemas inteiros.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> 92% dos desenvolvedores nos EUA ja usam IA no dia a dia e 41% do codigo global e gerado por IA. Quem nao dominar essa mentalidade vai ficar para tras. Vibe Coding nao e tendencia passageira, e a nova forma de construir software.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Karpathy e a origem do termo, evolucao de Prompt Engineering para Agentic Engineering, conceito de Vibe Shipping (da ideia ao deploy com IA), dados de adocao (92% devs, 41% codigo), ferramentas: Cursor, Claude Code, Copilot, Windsurf.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- Topic 2 -->
-        <li>
-          <button onclick="toggleTopic('topic-2')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
-            <span>Da Ideia ao Software</span>
-          </button>
-          <div id="topic-2" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> O pipeline completo que transforma uma ideia em software funcional: Problema > Usuario > Solucao > MVP. Cada etapa tem perguntas especificas que voce responde antes de escrever uma unica linha de codigo (ou prompt).</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A maioria dos projetos com IA falha nao por limitacao tecnica, mas por falta de clareza sobre o que construir. Definir bem o problema e o usuario antes de codar evita semanas de retrabalho.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Framework Problema > Usuario > Solucao > MVP, como validar uma ideia antes de construir, product-market fit basico, definicao de persona e dor principal, mapa de fluxo do usuario.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- Topic 3 -->
-        <li>
-          <button onclick="toggleTopic('topic-3')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
-            <span>Escopo e Definicao de Produto</span>
-          </button>
-          <div id="topic-3" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> A arte de definir o que entra e o que fica de fora do seu MVP. Inclui definicao de telas, fluxos de usuario, funcionalidades essenciais e limites claros do que a v1 vai entregar.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> Scope creep e o maior assassino de projetos. Com IA, e tentador adicionar mais e mais funcionalidades porque parece facil. Mas cada feature adicional multiplica a complexidade. Saber cortar e tao importante quanto saber construir.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> MVP (Minimum Viable Product), user flows, wireframes mentais, lista de telas da v1, o que NAO fazer (lista de exclusao), prioridade MoSCoW (Must/Should/Could/Won't), escopo como contrato consigo mesmo.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- Topic 4 -->
-        <li>
-          <button onclick="toggleTopic('topic-4')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
-            <span>Prompts Estruturados para Construcao</span>
-          </button>
-          <div id="topic-4" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> O framework [Contexto + Instrucao + Restricao + Formato] para escrever prompts que geram codigo funcional, nao generico. Cada parte do prompt tem uma funcao especifica que maximiza a qualidade da saida da IA.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A diferenca entre um prompt vago e um prompt estruturado e a diferenca entre codigo que precisa de 10 iteracoes e codigo que funciona na primeira. Prompts bem escritos economizam horas de debug.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Framework CIRF (Contexto, Instrucao, Restricao, Formato), exemplos praticos de prompts para frontend, backend e deploy, como iterar prompts, chain-of-thought para problemas complexos, system prompts vs user prompts.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- Topic 5 -->
-        <li>
-          <button onclick="toggleTopic('topic-5')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
-            <span>Erros Comuns em Projetos com IA</span>
-          </button>
-          <div id="topic-5" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Os 5 erros fatais que destroem projetos construidos com IA: confiar cegamente no codigo gerado, ignorar seguranca, nao testar, escopo infinito e nao versionar. 45% do codigo gerado por IA contem vulnerabilidades se nao for revisado.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A IA e uma ferramenta poderosa, mas nao e infalivel. Alucinacoes de codigo sao reais: a IA pode gerar funcoes que parecem corretas mas tem bugs sutis. Saber o que pode dar errado e a melhor forma de prevenir.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> 45% de vulnerabilidades em codigo IA (pesquisa Stanford), os 5 erros fatais, alucinacoes de codigo, over-reliance (dependencia excessiva), code review como habito obrigatorio, testes automatizados como rede de seguranca.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- Topic 6 -->
-        <li>
-          <button onclick="toggleTopic('topic-6')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">6</span>
-            <span>Exercicio: Definir seu SaaS</span>
-          </button>
-          <div id="topic-6" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Exercicio pratico onde voce define seu produto SaaS: a frase do produto, o fluxo do usuario, as telas da v1, os limites do escopo e o plano de construcao.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> Teoria sem pratica nao constroi nada. Este exercicio transforma tudo que voce aprendeu nos topicos 1-5 em um plano concreto para o seu SaaS, que sera construido ao longo das trilhas seguintes.</p>
-            </div>
-            <div>
-              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Product sentence ("Um [tipo de app] que ajuda [usuario] a [resolver problema]"), user flow principal, lista de telas (max 5 para v1), lista de exclusao, cronograma de build com IA.</p>
-            </div>
-          </div>
-        </li>
-
-      </ul>
-
-      <!-- Action Buttons -->
-      <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-dark-600 justify-start">
-        <button onclick="openModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-          </svg>
-          <span>Ver em Modal</span>
-        </button>
-        <a href="modulo-1-1.html" class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <span>Ver Completo</span>
-        </a>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-1.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
       </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="flex justify-between items-center mt-12">
-      <a href="../../index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-        <span>Inicio</span>
-      </a>
-      <a href="../trilha2/index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-lg transition-colors">
-        <span>Proxima Trilha</span>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-      </a>
+    <!-- MODULE 1.2 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.2</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">🌐 O que e Vibe Coding em 2026</h3>
+        <p class="text-neutral-400 text-sm">A origem do termo, a evolucao para Agentic Engineering, dados de adocao e as ferramentas do ecossistema.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <div><span class="font-medium">A Origem: Andrej Karpathy e o Termo</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O tweet de Fev 2025 que cunhou o termo. "I just see stuff, say stuff, run stuff."</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Entender a origem mostra que Vibe Coding nao e modismo, e uma mudanca de paradigma.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Karpathy, Tesla/OpenAI, o tweet viral, coding by vibes not syntax.</p></div>
+          </div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <div><span class="font-medium">De Prompt Engineering a Agentic Engineering</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">A evolucao: 2023 Prompts > 2024 AI-Assisted > 2025 Vibe Coding > 2026 Agentic Engineering.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O papel mudou de escrever prompts para orquestrar agentes. Desenvolvedor como arquiteto.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 fases de evolucao, developer como arquiteto, 4.2x ganho de produtividade.</p></div>
+          </div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <div><span class="font-medium">Vibe Shipping: Da Ideia ao Deploy</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Nao apenas codar com IA, mas entregar produtos inteiros. Ideia > Arquitetura > Codigo > Teste > Deploy.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Devs solo estao lancando SaaS em dias, nao meses. O gargalo agora e a visao, nao a execucao.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Pipeline end-to-end, casos reais de solo devs, Vibe Shipping como tendencia.</p></div>
+          </div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <div><span class="font-medium">Dados de Adocao: 92% Devs, 41% Codigo IA</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dados de Stack Overflow, GitHub, McKinsey e Gartner sobre adocao de IA no desenvolvimento.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Numeros provam que nao e tendencia: e a realidade do mercado de trabalho.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">92% devs US, 41% codigo IA, 42% empresas com agentic, projecoes 2030.</p></div>
+          </div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <div><span class="font-medium">Ferramentas do Ecossistema</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Comparacao detalhada: Cursor, Claude Code, Copilot, Windsurf, v0, bolt.new.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Escolher a ferramenta certa pro seu perfil acelera 3-5x. A errada frustra.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">IDE vs CLI vs cloud, autocomplete vs chat vs agentic, quando usar cada uma.</p></div>
+          </div></div>
+        </div>
+        <div class="topic-item">
+          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+            <div><span class="font-medium">Exercicio: Seu Primeiro Projeto</span></div>
+          </button>
+          <div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+            <div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Escolher ferramenta, criar projeto simples, iterar com IA e deployar.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Primeiro ciclo completo. Depois daqui voce ja sabe como funciona o workflow.</p></div>
+            <div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Setup, primeiro prompt, iteracao, deploy, checklist de entrega.</p></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-2.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 1.3 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-emerald-400 font-bold">1.3</span>
+          <span class="text-xs text-neutral-500">~45 min</span>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">💡 Da Ideia ao Software</h3>
+        <p class="text-neutral-400 text-sm">O pipeline completo: Problema > Usuario > Solucao > MVP. Validacao, persona e product-market fit.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Framework Problema > Usuario > Solucao > MVP</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pipeline de 4 passos. Comece pelo problema, nao pela solucao.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Pivots de sucesso vieram de pensamento problem-first: Slack, Instagram, Notion.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">P-U-S-M pipeline, elevator test, exemplos de pivots.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Validacao de Ideia Antes de Construir</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Lean Startup aplicado a projetos com IA. 4 metodos de validacao ranqueados por custo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fale com 5 usuarios antes de escrever codigo. The Mom Test para feedback honesto.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Conversas, landing page test, smoke test, pre-venda, regra das 48h.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Definicao de Persona e Dor Principal</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Anatomia de persona: demograficos, dor principal, JTBD framework, disposicao a pagar.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Em produtos IA, o usuario nao quer "IA", quer o problema resolvido.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Jobs-to-be-done, template de persona 5 minutos, dor vs desejo.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Product-Market Fit para Projetos com IA</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Sean Ellis test (40% "very disappointed"). Wow factor vs utilidade real.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Produtos IA tem desafio unico: o efeito "wow" mascara falta de PMF real.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Sean Ellis 40%, retencao D7/D30, utilidade vs novidade, metricas early.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Mapa de Fluxo do Usuario</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Jornada: Entry > Onboarding > Core Action > Value Moment > Retention Loop.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Apps IA tem fluxo conversacional, diferente de UI tradicional.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Fluxo universal SaaS, conversation flow vs UI flow, mapeamento 15 min.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Pipeline Completo da sua Ideia</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Aplicar P-U-S-M completo. 5 entregaveis: problem statement, persona, validacao, fluxo, metricas.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Saida concreta que alimenta os proximos modulos.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">5 deliverables, checklist, AI review prompt.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-3.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 1.4 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.4</span><span class="text-xs text-neutral-500">~50 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">🎯 Escopo e Definicao de Produto</h3>
+        <p class="text-neutral-400 text-sm">MVP, user flows, lista de telas, priorizacao MoSCoW e a lista de exclusao.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">MVP: O Minimo que Entrega Valor</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O que MVP realmente significa. Analogia skateboard > bike > car.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">IA torna scope creep mais facil. Disciplina de escopo e mais critica que nunca.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">MVP real vs produto quebrado, exemplos Stripe/Dropbox/Buffer.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">User Flows e Wireframes Mentais</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pensar em fluxos antes de telas. Entry points, decision trees, error states.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">IA gera wireframes a partir de descricoes. Mas voce precisa descrever bem.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Wireframe mental, 1 frase por tela, fluxo vs layout.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Lista de Telas da v1</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Max 5-7 telas: Landing, Auth, Dashboard, Core Feature, Settings.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Mais telas = mais bugs = lancamento mais lento.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">5 telas essenciais, priorizacao, descricao em 1 paragrafo.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Prioridade MoSCoW</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Must/Should/Could/Won't. Classificar toda feature nessas 4 categorias.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Must = lancamento. Should = semana 2. Could = mes 2. Won't = nunca.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Regra 60-20-20, matriz de decisao, exemplos praticos.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Lista de Exclusao: O que NAO Fazer</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O anti-roadmap. Lista explicita do que voce NAO vai construir.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Essa lista economiza mais tempo que a lista de features.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Kill your darlings, custo de features, quando vs nunca.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Documento de Escopo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Doc de 1 pagina: product sentence, 5 telas, MoSCoW, exclusao, timeline.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Documento concreto que guia todo o desenvolvimento.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template de escopo, AI review prompt, 5 campos obrigatorios.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-4.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 1.5 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.5</span><span class="text-xs text-neutral-500">~50 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">📝 Prompts Estruturados para Construcao</h3>
+        <p class="text-neutral-400 text-sm">Framework CIRF, prompts para frontend e backend, chain-of-thought e system prompts.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Framework CIRF</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Contexto + Instrucao + Restricao + Formato. Os 4 pilares de prompts eficazes.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">40% mais acerto na primeira tentativa, 60% menos iteracoes.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 pilares, prompt vago vs CIRF, exemplos com codigo real.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Prompts para Frontend</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Padroes de prompt para React/Next.js, Tailwind, componentes, layouts responsivos.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Descrever UI para IA e uma skill especifica. Vocabulario visual importa.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">3 padroes: componente isolado, layout de pagina, estilizacao.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Prompts para Backend</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Prompts para API routes, Supabase, autenticacao, tratamento de erros.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Backend mal especificado gera bugs de seguranca. Detalhe e obrigatorio.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">3 padroes: API route, data model, business logic. Checklist backend.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Chain-of-Thought para Problemas Complexos</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Raciocinio passo a passo para arquitetura, debug, dependencias.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">CoT transforma problemas impossíveis em solucionaveis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Quando usar CoT, multi-turn, quando ajuda vs atrapalha.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">System Prompts vs User Prompts</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">System = personalidade/regras. User = tarefa. CLAUDE.md e .cursorrules.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">System prompts bem feitos transformam a qualidade de TODA saida da IA.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Hierarquia de prompts, instrucoes persistentes, template completo.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Biblioteca de Prompts</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Criar 7 prompts: 3 frontend, 3 backend, 1 system. Testar e refinar.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Biblioteca de prompts e seu ativo mais valioso como Vibe Coder.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">7 prompts, processo de refinamento, onde armazenar.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-5.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 1.6 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.6</span><span class="text-xs text-neutral-500">~45 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">⚠️ Erros Comuns em Projetos com IA</h3>
+        <p class="text-neutral-400 text-sm">Vulnerabilidades, os 5 erros fatais, alucinacoes de codigo, over-reliance e code review.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">45% de Vulnerabilidades: Pesquisa Stanford</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pesquisa Stanford/UIUC: SQL injection, XSS, path traversal em codigo gerado por IA.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Falsa sensacao de seguranca e o maior risco. LLMs reproduzem padroes vulneraveis.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">45% vulneravel, 67% dos devs nao revisam, Top 3 vulnerabilidades.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">Os 5 Erros Fatais</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Confianca cega, ignorar seguranca, zero testes, escopo infinito, sem versionamento.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Cada erro tem historias reais de fracasso. Prevencao e mais barata que correcao.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">5 erros com exemplos reais de falha e custo.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Alucinacoes de Codigo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">APIs fantasma, pacotes ficticios, assinaturas erradas, logica plausivel mas errada.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">30% de sugestoes contem alucinacoes. Slopsquatting e um vetor de ataque real.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 tipos, teste de verificacao em 3 passos, dados Purdue/Vulcan Cyber.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Over-Reliance: A IA como Muleta</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Armadilha da dependencia: conforto > atrofia > paralisia. Regra 80/20.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">IA para boilerplate, cerebro humano para logica. Skills atrofiam sem pratica.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">3 estagios, 80/20, o que IA faz bem vs o que precisa de humano.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Code Review e Testes</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Processo de review em 4 camadas. Meta-testing: IA escrevendo testes pro proprio codigo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Codigo IA precisa de MAIS review, nao menos.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 camadas: logica, seguranca, performance, edge cases. Checklist.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Checklist de Qualidade</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Construir checklist pessoal em 4 categorias. Analisar 2 amostras de codigo.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Checklist vira habito. Habito vira qualidade automatica.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">4 categorias, 2 code samples, correcao e comparacao.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-6.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- MODULE 1.7 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.7</span><span class="text-xs text-neutral-500">~60 min</span></div>
+        <h3 class="text-2xl font-bold mb-2">🛠️ Definir seu SaaS</h3>
+        <p class="text-neutral-400 text-sm">Product sentence, user flow, telas, restricoes tecnologicas, cronograma e documento final.</p>
+      </div>
+      <div class="divide-y divide-dark-600">
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><div><span class="font-medium">Product Sentence: A Frase que Define Tudo</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">"Um [tipo] que ajuda [usuario] a [resolver problema] atraves de [mecanismo]".</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">1 frase forca clareza. Se nao cabe em 1 frase, nao esta claro.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Template 4 campos, bons vs maus exemplos, elevator test.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><div><span class="font-medium">User Flow: Do Login ao Resultado</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Caminho critico: Chegada > Signup > Onboarding > Core Action > Resultado.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Time to Value e critico. Em apps IA, a primeira interacao precisa mostrar capacidade.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">5 passos, TTV &lt;5min SaaS / &lt;60s IA, fluxo conversacional.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><div><span class="font-medium">Lista de Telas (Max 5)</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">5 telas essenciais: Landing, Auth, Dashboard, Core Feature, Settings.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Descrever cada tela em 1 paragrafo. Mobile-first vs desktop-first.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">5 telas detalhadas, informacao por tela, decisao mobile/desktop.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><div><span class="font-medium">Limites e Restricoes Tecnologicas</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rate limits, custo de tokens, latencia, free tiers (Supabase, Vercel, Neon).</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Budget de $0 (MVP) a $200-500 (1000 usuarios). Planejar custos de API.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Tabela de custos, stack recomendado 2026, latencia em UX de IA.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><div><span class="font-medium">Cronograma de Build com IA</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dia 1 fundacao, Dia 2 features, Dia 3 polish+deploy. Manha e tarde.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">3-5x mais rapido para boilerplate, 1x para debug. Buffer de 30% obrigatorio.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">Timeline 3 dias, estimativas de aceleracao, regra 30% buffer.</p></div></div></div></div>
+        <div class="topic-item"><button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><div><span class="font-medium">Exercicio: Documento Final do Produto</span></div></button><div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Documento completo: product sentence, user flow, 5 telas, stack, limites, timeline.</p></div><div><span class="text-emerald-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Blueprint final da Trilha 1. Alimenta as Trilhas 2-6.</p></div><div><span class="text-emerald-400 font-semibold">Conceitos-chave:</span><p class="text-neutral-300 text-sm">6 secoes, cada uma referencia o modulo de origem, prompt de revisao IA.</p></div></div></div></div>
+      </div>
+      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+        <button onclick="openModal('modal-1-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+        <a href="modulo-1-7.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">Ver Completo</a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-12">
+      <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Inicio</a>
+      <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Trilha 2: Arquitetura →</a>
     </div>
 
   </main>
 
-  <!-- MODAL -->
-  <div id="module-modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-box" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="text-lg font-bold text-neutral-100">Modulo 1.1 - Mentalidade e Metodo</h2>
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-      </div>
-      <iframe id="modal-iframe" src="" style="width:100%; height:calc(90vh - 60px); border:none;"></iframe>
+  <!-- MODALS -->
+  <div id="modal-1-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.1</span><span class="font-semibold">Introducao: Mentalidade e Metodo</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">O que e Vibe Coding em 2026</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-3" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">Da Ideia ao Software</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-3.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-4" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.4</span><span class="font-semibold">Escopo e Definicao de Produto</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-4.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-5" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">Prompts Estruturados</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-5.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-6" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.6</span><span class="font-semibold">Erros Comuns em Projetos com IA</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-6.html" class="flex-1 w-full rounded-b-xl"></iframe>
+    </div>
+  </div>
+  <div id="modal-1-7" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this)closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.7</span><span class="font-semibold">Definir seu SaaS</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div>
+      <iframe src="modulo-1-7.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
   </div>
 
@@ -373,52 +480,34 @@
   <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
       <p>Imersao Vibe Coding - Trilha 1: Mentalidade e Metodo - 2026</p>
-      <p class="mt-2">
-        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
-      </p>
+      <p class="mt-2"><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
     </div>
   </footer>
 
   <!-- SCRIPTS -->
   <script>
-    // Toggle Topic
-    function toggleTopic(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.classList.toggle('open');
-      }
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
     }
 
-    // Modal
-    function openModal() {
-      const modal = document.getElementById('module-modal');
-      const iframe = document.getElementById('modal-iframe');
-      iframe.src = 'modulo-1-1.html';
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
     }
 
-    function closeModal(event) {
-      if (event && event.target !== event.currentTarget && event.target.className !== 'close-btn') return;
-      const modal = document.getElementById('module-modal');
-      const iframe = document.getElementById('modal-iframe');
-      modal.classList.remove('active');
-      iframe.src = '';
-      document.body.style.overflow = '';
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
     }
 
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        const modal = document.getElementById('module-modal');
-        if (modal.classList.contains('active')) {
-          modal.classList.remove('active');
-          document.getElementById('modal-iframe').src = '';
-          document.body.style.overflow = '';
-        }
-      }
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-    // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.7: Definir seu SaaS | Imersao Vibe Coding</title>
+  <meta name="description" content="Defina seu produto SaaS: product sentence, user flow, telas, limites tecnologicos e cronograma de build com IA.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.7</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-4">MODULO 1.7</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F3D7;&#xFE0F; Definir seu SaaS</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Da ideia abstrata ao documento concreto: product sentence, user flow, telas, limites e cronograma. Este e o blueprint para tudo que voce vai construir.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Product Sentence: A Frase que Define Tudo -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F4AC; Product Sentence: A Frase que Define Tudo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Se voce nao consegue descrever seu produto em uma frase, voce nao entende seu produto. Isso nao e simplificacao excessiva. E clareza. Toda grande empresa que existe pode ser descrita em uma frase: "Um buscador que organiza a informacao do mundo" (Google), "Uma rede que conecta profissionais" (LinkedIn), "Um marketplace de hospedagem entre pessoas" (Airbnb).
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A Product Sentence nao e marketing. E uma ferramenta de pensamento. Ela forca voce a responder quatro perguntas em sequencia: o que e, para quem, qual problema resolve, e como resolve. Se voce nao consegue preencher os quatro campos, tem lacunas na sua ideia que precisam ser resolvidas antes de escrever uma linha de codigo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: O Template</h3>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-emerald-400 mb-4">
+          "Um [tipo de app] que ajuda [usuario especifico] a [resolver problema especifico] atraves de [mecanismo principal]."
+        </div>
+        <p class="text-neutral-300 mb-4">Cada campo tem uma funcao critica:</p>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Tipo de app</h4>
+              <p class="text-neutral-300 text-sm">Define a categoria e cria expectativas imediatas. "Uma plataforma SaaS", "Um app mobile", "Uma extensao de navegador", "Um dashboard web". O usuario ja sabe o que esperar.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Usuario especifico</h4>
+              <p class="text-neutral-300 text-sm">NAO e "todo mundo". Quanto mais especifico, melhor. "Freelancers de design", "donos de restaurantes com ate 3 unidades", "professores de ensino medio". Especificidade gera foco.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Problema especifico</h4>
+              <p class="text-neutral-300 text-sm">O verbo importa. "Organizar", "automatizar", "monitorar", "simplificar". O problema deve ser algo que o usuario sente no dia a dia, nao algo que voce imagina que ele tem.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">4</span>
+            <div>
+              <h4 class="font-semibold text-primary">Mecanismo principal</h4>
+              <p class="text-neutral-300 text-sm">O "como" do seu produto. E aqui que entra a IA, automacao, ou qualquer tecnologia diferencial. "Atraves de chatbots com IA", "atraves de analise automatica de dados", "atraves de templates pre-configurados".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Exemplos Reais: Bons vs Ruins</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-red-400 font-semibold text-sm mb-1">Ruim:</p>
+            <p class="text-neutral-300 text-sm">"Um app de IA para empresas."</p>
+            <p class="text-neutral-500 text-xs mt-1">Problema: vago demais. Que tipo de app? Que empresas? Que IA? O que faz?</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-emerald-400 font-semibold text-sm mb-1">Bom:</p>
+            <p class="text-neutral-300 text-sm">"Uma plataforma SaaS que ajuda pequenas empresas a automatizar atendimento ao cliente atraves de chatbots treinados com dados da propria empresa."</p>
+            <p class="text-neutral-500 text-xs mt-1">Claro: SaaS + pequenas empresas + atendimento + chatbots customizados.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-red-400 font-semibold text-sm mb-1">Ruim:</p>
+            <p class="text-neutral-300 text-sm">"Uma rede social para criadores de conteudo com marketplace, lives, assinaturas e cursos."</p>
+            <p class="text-neutral-500 text-xs mt-1">Problema: escopo infinito. Isso sao 4 produtos diferentes em 1 frase.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <p class="text-emerald-400 font-semibold text-sm mb-1">Bom:</p>
+            <p class="text-neutral-300 text-sm">"Um dashboard web que ajuda freelancers de marketing a gerar relatorios de performance para clientes atraves de integracao automatica com Google Analytics e Meta Ads."</p>
+            <p class="text-neutral-500 text-xs mt-1">Especifico: dashboard + freelancers de marketing + relatorios + integracao de dados.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: O Teste do Elevador</h3>
+        <p class="text-neutral-300 mb-3">
+          Leia sua product sentence em voz alta. Se a pessoa do outro lado nao entender o que seu produto faz em 10 segundos, a frase precisa ser reescrita. Teste com alguem que nao e da area tech. Se sua mae (ou equivalente nao-tecnico) entender, voce acertou.
+        </p>
+        <p class="text-neutral-300">
+          Outra tecnica: escreva 5 versoes diferentes da frase. Compare. A mais curta e especifica que ainda transmite a ideia completa e geralmente a melhor.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Preencher todos os 4 campos do template</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ser especifico sobre o usuario-alvo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Testar a frase com pessoas nao-tecnicas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Escrever multiplas versoes e comparar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Dizer que e "para todo mundo"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Listar 5 features na frase do produto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar jargao tecnico na descricao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular essa etapa ("vou definir depois")</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: User Flow Principal: Do Login ao Resultado -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F6A6; User Flow Principal: Do Login ao Resultado</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Um produto sem user flow definido e como uma cidade sem ruas: tem edificios bonitos, mas ninguem sabe como chegar de um lugar ao outro. O user flow e o mapa que descreve exatamente o que o usuario faz, em que ordem, e que resultado obtem em cada passo.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Para um MVP, voce precisa definir UM fluxo principal. Nao tres, nao cinco. Um. Esse fluxo e o caminho mais curto entre "o usuario chegou no seu produto" e "o usuario recebeu valor". Tudo no seu MVP existe para suportar esse caminho. Se uma tela ou feature nao esta nesse fluxo, ela nao deveria estar na v1.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: O Fluxo em 5-7 Passos</h3>
+        <p class="text-neutral-300 mb-4">
+          Todo SaaS segue uma estrutura similar. O que muda e o conteudo de cada passo, nao a estrutura:
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">1</div>
+            <div class="flex-1 bg-dark-700/50 rounded-lg p-3">
+              <p class="text-neutral-300 text-sm"><strong class="text-emerald-400">Chegada:</strong> Usuario acessa a landing page. Entende o que o produto faz em 5 segundos. Decide testar.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">2</div>
+            <div class="flex-1 bg-dark-700/50 rounded-lg p-3">
+              <p class="text-neutral-300 text-sm"><strong class="text-emerald-400">Cadastro:</strong> Sign up rapido (Google OAuth ou email/senha). Zero fricao. Nenhum formulario de 15 campos.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">3</div>
+            <div class="flex-1 bg-dark-700/50 rounded-lg p-3">
+              <p class="text-neutral-300 text-sm"><strong class="text-emerald-400">Onboarding:</strong> O usuario ve o dashboard pela primeira vez. Entende onde estao as coisas. Sabe o proximo passo.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">4</div>
+            <div class="flex-1 bg-dark-700/50 rounded-lg p-3 border border-primary/20">
+              <p class="text-neutral-300 text-sm"><strong class="text-primary">Acao Principal:</strong> O usuario executa a acao central do produto. Esse e o momento de verdade. Se o seu produto e um gerador de relatorios, ele gera o primeiro relatorio aqui.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">5</div>
+            <div class="flex-1 bg-dark-700/50 rounded-lg p-3">
+              <p class="text-neutral-300 text-sm"><strong class="text-emerald-400">Resultado:</strong> O usuario recebe valor. Ve o output, baixa o arquivo, recebe a resposta. Esse e o "aha moment".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Time to Value: A Metrica que Importa</h3>
+        <p class="text-neutral-300 mb-3">
+          "Time to Value" (TTV) e o tempo entre o usuario criar a conta e receber o primeiro resultado util. Para SaaS modernos, o benchmark e menos de 5 minutos. Para apps com IA, o padrao e ainda mais agressivo: o primeiro resultado deve aparecer em menos de 60 segundos apos a acao principal.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&lt; 5 min</div>
+            <p class="text-neutral-400 text-sm">TTV ideal para SaaS B2B (Notion, Linear, Vercel)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&lt; 60s</div>
+            <p class="text-neutral-400 text-sm">TTV esperado para o resultado de IA (ChatGPT, v0, Midjourney)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">73%</div>
+            <p class="text-neutral-400 text-sm">dos usuarios abandonam apps que nao entregam valor em 5 minutos (Mixpanel, 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">1 fluxo</div>
+            <p class="text-neutral-400 text-sm">MVPs de sucesso tem 1 fluxo principal, nao 5 (YC Startup School)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Como Apps com IA Diferem</h3>
+        <p class="text-neutral-300 mb-3">
+          Em apps tradicionais, o valor vem do dado que o usuario armazenou. Em apps com IA, o valor vem do resultado que a IA gera. Isso muda o fluxo radicalmente: a primeira interacao com a IA deve acontecer o mais cedo possivel no fluxo.
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm mb-3">
+          <p class="text-red-400 font-semibold mb-1">Fluxo errado:</p>
+          <p class="text-neutral-400">Login > Configurar perfil > Adicionar dados > Configurar preferencias > Finalmente usar a IA</p>
+          <p class="text-emerald-400 font-semibold mt-3 mb-1">Fluxo correto:</p>
+          <p class="text-neutral-400">Login > Ver a IA em acao imediatamente > Customizar depois</p>
+        </div>
+        <p class="text-neutral-300">
+          Mostre o poder da IA primeiro. Peca informacoes depois. O usuario precisa sentir o valor antes de investir tempo configurando.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir um unico fluxo principal com max 7 passos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Colocar a acao de IA o mais cedo possivel</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Medir time to value (meta: &lt; 5 min)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Desenhar o fluxo antes de codar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar 5 fluxos diferentes na v1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esconder a IA atras de 10 passos de configuracao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir informacoes antes de mostrar valor</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ter um fluxo com mais de 7 passos</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Lista de Telas (Max 5 para v1) -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F4F1; Lista de Telas (Max 5 para v1)</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Cinco telas. Esse e o limite para sua v1. Nao dez, nao quinze. Cinco. Cada tela e uma unidade de trabalho: design, implementacao, testes, responsividade. Cada tela adicionada multiplica a complexidade do projeto. E com Vibe Coding, e tentador gerar tela atras de tela porque parece rapido. Mas geracao rapida nao significa manutencao rapida.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        As cinco telas essenciais cobrem o fluxo completo do usuario: chegar, entrar, ver o panorama, fazer a acao principal, e ajustar configuracoes. Qualquer coisa alem disso e feature creep disfarada de "necessidade".
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Conceito Principal: As 5 Telas Essenciais</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">1</span>
+              <h4 class="font-semibold text-emerald-400">Landing Page</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">A primeira impressao. Headline claro que explica o produto, sub-headline com o beneficio principal, CTA unico (sign up ou try free), e talvez um screenshot ou demo. Nao e uma pagina de 15 secoes. E uma pagina que converte.</p>
+            <p class="text-neutral-400 text-xs">Informacao: o que faz, para quem, CTA, prova social (opcional na v1)</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">2</span>
+              <h4 class="font-semibold text-emerald-400">Auth (Login + Register)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Uma tela, nao duas. Toggle entre login e register. OAuth social (Google, no minimo) + email/senha. Formulario minimo: email, senha, e um botao. Nao peca nome, empresa, cargo e telefone no cadastro.</p>
+            <p class="text-neutral-400 text-xs">Informacao: email, senha, botao OAuth, link para alternar login/register</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">3</span>
+              <h4 class="font-semibold text-emerald-400">Dashboard</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">O hub central. Mostra o panorama geral: metricas de resumo (3-4 cards), acesso rapido a acao principal, e lista dos ultimos itens/atividades. Sidebar ou top nav para navegacao. O dashboard deve responder: "o que esta acontecendo?" e "o que eu devo fazer agora?"</p>
+            <p class="text-neutral-400 text-xs">Informacao: cards de resumo, link para acao principal, atividade recente, nav</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 border border-primary/20">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs">4</span>
+              <h4 class="font-semibold text-primary">Core Feature (Tela Principal)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">A tela onde a magia acontece. Se seu produto e um chatbot, essa e a tela de conversa. Se e um gerador de relatorios, essa e a tela de geracao. Essa tela e o coracao do seu produto e deve receber a maior parte da atencao em design e implementacao.</p>
+            <p class="text-neutral-400 text-xs">Informacao: varia por produto. E a tela que implementa a product sentence.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs">5</span>
+              <h4 class="font-semibold text-emerald-400">Settings / Profile</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Nome, email, foto, senha, preferencias basicas, e na v1 um botao de logout e talvez delete account. Nao precisa de 15 tabs. Uma pagina simples com as configuracoes essenciais.</p>
+            <p class="text-neutral-400 text-xs">Informacao: dados do perfil, alterar senha, preferencias basicas, logout</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Mobile-First ou Desktop-First?</h3>
+        <p class="text-neutral-300 mb-3">
+          Essa decisao afeta toda a construcao. A regra e simples: se o seu usuario vai usar no trabalho (B2B, SaaS de produtividade), comece por desktop. Se vai usar no dia a dia (B2C, consumo rapido), comece por mobile.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-400 mb-2">Desktop-First</h4>
+            <ul class="space-y-1 text-sm text-neutral-300">
+              <li>Dashboards e analytics</li>
+              <li>Ferramentas de produtividade</li>
+              <li>Admin panels</li>
+              <li>Ferramentas de desenvolvimento</li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-400 mb-2">Mobile-First</h4>
+            <ul class="space-y-1 text-sm text-neutral-300">
+              <li>Apps de consumo rapido</li>
+              <li>Social / comunicacao</li>
+              <li>Conteudo / entretenimento</li>
+              <li>Ferramentas pessoais</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Descreva Cada Tela em 1 Paragrafo</h3>
+        <p class="text-neutral-300 mb-3">
+          Para cada uma das 5 telas, escreva um paragrafo descrevendo: o que o usuario ve, o que ele pode fazer, e que informacao esta presente. Esse paragrafo se torna o prompt perfeito para pedir a IA gerar a tela.
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="text-emerald-400 mb-1">Exemplo de descricao:</p>
+          <p>"Tela de Dashboard: o usuario ve 3 cards no topo (total de conversas este mes, tempo medio de resposta, satisfacao do cliente). Abaixo, uma lista das 5 conversas mais recentes com preview. Na sidebar esquerda, menu com: Dashboard, Conversas, Configuracoes. Header com nome do usuario e avatar."</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Limitar a v1 a exatamente 5 telas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Descrever cada tela em 1 paragrafo completo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Decidir mobile-first vs desktop-first cedo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Investir mais tempo na core feature (tela 4)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar telas "porque e facil com IA"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ter telas sem funcao clara no fluxo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Separar login e register em 2 telas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comecar pelo design bonito antes do fluxo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Limites e Restricoes Tecnologicas -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F6A7; Limites e Restricoes Tecnologicas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Vibe Coding faz construir parecer magico. Mas magia tem custos. Cada API tem rate limits. Cada servico gratis tem limites de uso. Cada modelo de IA cobra por token. Cada deploy tem limites de banda. Se voce nao mapear essas restricoes antes de comecar a construir, vai descobrir quando for tarde demais: quando o usuario esta usando e o servico cai.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Este topico nao e sobre limitar sua ambicao. E sobre construir com os olhos abertos. Saber quanto custa cada chamada de API, quantos usuarios o free tier suporta, e quando voce vai precisar pagar e a diferenca entre um projeto sustentavel e um que morre no primeiro pico de uso.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Conceito Principal: Mapa de Restricoes</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">API Rate Limits e Custos de IA</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-neutral-300 mt-2">
+                <thead>
+                  <tr class="border-b border-dark-600">
+                    <th class="text-left py-2 text-neutral-400">Servico</th>
+                    <th class="text-left py-2 text-neutral-400">Free Tier</th>
+                    <th class="text-left py-2 text-neutral-400">Custo Apos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-dark-700">
+                    <td class="py-2">OpenAI GPT-4o</td>
+                    <td class="py-2">$5 credito inicial</td>
+                    <td class="py-2">~$2.50/1M tokens input</td>
+                  </tr>
+                  <tr class="border-b border-dark-700">
+                    <td class="py-2">Claude Sonnet</td>
+                    <td class="py-2">$5 credito inicial</td>
+                    <td class="py-2">~$3/1M tokens input</td>
+                  </tr>
+                  <tr class="border-b border-dark-700">
+                    <td class="py-2">Supabase</td>
+                    <td class="py-2">500MB DB, 1GB storage</td>
+                    <td class="py-2">$25/mes (Pro)</td>
+                  </tr>
+                  <tr class="border-b border-dark-700">
+                    <td class="py-2">Vercel</td>
+                    <td class="py-2">100GB banda, 1000 builds</td>
+                    <td class="py-2">$20/mes (Pro)</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2">Neon (Postgres)</td>
+                    <td class="py-2">0.5GB, 1 projeto</td>
+                    <td class="py-2">$19/mes (Launch)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Latencia e Experiencia do Usuario</h4>
+            <p class="text-neutral-300 text-sm mb-2">Chamadas de IA nao sao instantaneas. Um request para GPT-4o leva 2-10 segundos dependendo do tamanho. Isso muda como voce desenha a UX:</p>
+            <ul class="space-y-1 text-sm text-neutral-300">
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">-</span><span>Sempre mostre um loading state (spinner, skeleton, progress bar)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">-</span><span>Use streaming quando possivel (resposta aparece token por token)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">-</span><span>Cache respostas que nao mudam (evita chamadas repetidas)</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">-</span><span>Defina timeouts (15-30s max) para nao travar a UI</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Budget Planning: Quanto Custa Rodar um SaaS com IA</h3>
+        <p class="text-neutral-300 mb-4">
+          A conta que ninguem faz antes de comecar: se cada usuario faz 10 interacoes por dia, e cada interacao custa ~$0.005 em tokens, 100 usuarios = $50/mes so em IA. Adicione hosting, banco de dados e dominio:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$0</div>
+            <p class="text-neutral-400 text-sm">MVP com 0-10 usuarios: tudo no free tier (Vercel + Supabase + creditos iniciais de IA)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$50-100</div>
+            <p class="text-neutral-400 text-sm">10-100 usuarios: custos de IA + possivel upgrade de DB. Ainda viavel para indie.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$200-500</div>
+            <p class="text-neutral-400 text-sm">100-1000 usuarios: escala real. Precisa de monetizacao para cobrir custos.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$0.005</div>
+            <p class="text-neutral-400 text-sm">custo medio por interacao de IA (GPT-4o mini / Claude Haiku). Faca a conta com seu volume.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Stack Recomendada para MVP 2026</h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce esta comecando e quer o caminho de menor fricao com custos controlaveis:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm text-neutral-300 space-y-2">
+          <p><strong class="text-emerald-400">Frontend:</strong> Next.js 14+ (App Router) + Tailwind CSS</p>
+          <p><strong class="text-emerald-400">Backend/DB:</strong> Supabase (auth + Postgres + storage em um so lugar)</p>
+          <p><strong class="text-emerald-400">IA:</strong> OpenAI API ou Anthropic API (modelo mais barato para v1: gpt-4o-mini ou claude-haiku)</p>
+          <p><strong class="text-emerald-400">Deploy:</strong> Vercel (gratis ate ~1000 deploys/mes)</p>
+          <p><strong class="text-emerald-400">Dominio:</strong> Qualquer registrador (~R$40/ano para .com.br)</p>
+          <p class="text-primary font-semibold mt-2">Custo total para MVP: $0 (usando free tiers + creditos iniciais)</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Calcular custo por usuario antes de construir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar modelos de IA baratos na v1 (mini/haiku)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Implementar cache e rate limiting desde o inicio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Anotar limites dos free tiers que voce usa</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar GPT-4 para tudo sem controlar custo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar rate limits ate receber erro 429</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Construir sem loading states para chamadas de IA</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deixar a conta de infra pra "resolver depois"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Cronograma de Build com IA -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F4C5; Cronograma de Build com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Um dos maiores erros de builders iniciantes e nao ter um cronograma. "Vou construindo e vejo" e a receita para scope creep, burnout e abandono. Com IA acelerando a construcao, voce precisa de um plano mais rigido, nao menos. Porque a tentacao de "adicionar so mais uma coisa" e constante quando gerar codigo e rapido.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O cronograma realista para um MVP construido com Vibe Coding e 3 dias de trabalho focado (ou 1 semana em ritmo normal). Nao 3 meses. Nao 6 sprints. Tres dias. Se voce nao consegue construir a v1 em 3 dias com IA, o escopo esta grande demais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Conceito Principal: O Plano de 3 Dias</h3>
+        <div class="space-y-6">
+          <div class="bg-dark-700/50 rounded-lg p-5 border-l-4 border-emerald-400">
+            <h4 class="font-semibold text-emerald-400 text-lg mb-3">Dia 1: Foundation (Fundacao)</h4>
+            <div class="space-y-2 text-sm text-neutral-300">
+              <p><strong class="text-neutral-100">Manha (4h):</strong> Setup do projeto (create-next-app, Supabase, env vars, Git init). Configurar auth (Google OAuth + email). Criar layout base (sidebar, header, footer). Deploy inicial no Vercel (mesmo vazio, ja funciona).</p>
+              <p><strong class="text-neutral-100">Tarde (4h):</strong> Banco de dados: criar as tabelas principais (max 3-4 tabelas). Tela de login/register. Tela de settings basico. Primeiro commit funcional.</p>
+              <p class="text-emerald-400 mt-2">Checkpoint: app rodando, auth funcionando, layout base pronto, deploy no ar.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5 border-l-4 border-primary">
+            <h4 class="font-semibold text-primary text-lg mb-3">Dia 2: Features (Construcao)</h4>
+            <div class="space-y-2 text-sm text-neutral-300">
+              <p><strong class="text-neutral-100">Manha (4h):</strong> Dashboard com dados reais (queries ao banco, cards de resumo). Integracao com API de IA (endpoint, streaming, tratamento de erros). Core feature v1 (a tela principal do produto).</p>
+              <p><strong class="text-neutral-100">Tarde (4h):</strong> Iterar na core feature (UX, edge cases). Adicionar loading states e tratamento de erros. Testes basicos (pelo menos para a funcao principal). Deploy atualizado.</p>
+              <p class="text-primary mt-2">Checkpoint: produto funcional. Um usuario poderia usar e receber valor.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5 border-l-4 border-blue-400">
+            <h4 class="font-semibold text-blue-400 text-lg mb-3">Dia 3: Polish + Ship (Lancamento)</h4>
+            <div class="space-y-2 text-sm text-neutral-300">
+              <p><strong class="text-neutral-100">Manha (4h):</strong> Landing page (headline, sub-headline, CTA, 1 screenshot). Responsividade (testar mobile). Fix de bugs encontrados no dia 2. Revisao de seguranca (checklist do Modulo 1.6).</p>
+              <p><strong class="text-neutral-100">Tarde (4h):</strong> Deploy final. Testar fluxo completo como usuario novo. README basico. Compartilhar com 3-5 pessoas para feedback inicial. Documentar o que falta para v2.</p>
+              <p class="text-blue-400 mt-2">Checkpoint: produto no ar, acessivel por link, primeiros usuarios testando.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Estimativas Realistas com IA</h3>
+        <p class="text-neutral-300 mb-4">
+          A aceleracao com IA nao e uniforme. Algumas tarefas ficam 5x mais rapidas, outras continuam no mesmo ritmo. Entender essa distribuicao evita frustracao:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3-5x</div>
+            <p class="text-neutral-400 text-sm">mais rapido: boilerplate, componentes UI, CRUD, configuracao, testes unitarios, documentacao</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">1.5-2x</div>
+            <p class="text-neutral-400 text-sm">mais rapido: integracao de APIs, logica de negocio moderada, queries complexas</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">1x</div>
+            <p class="text-neutral-400 text-sm">mesmo ritmo: debugging complexo, decisoes de arquitetura, otimizacao de performance</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">0.5x</div>
+            <p class="text-neutral-400 text-sm">mais lento se: voce nao entende o codigo gerado e precisa debugar output incorreto da IA</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Buffer para Debug</h3>
+        <p class="text-neutral-300 mb-3">
+          Reserve 30% do tempo de cada dia para debug e correcoes. Codigo gerado por IA vai ter problemas. Isso nao e pessimismo, e realismo baseado em dados. Se voce planeja 8 horas de features, reserve 2-3 horas para corrigir o que nao funciona.
+        </p>
+        <p class="text-neutral-300">
+          A pior situacao e chegar no Dia 3 com o Dia 2 incompleto porque voce subestimou o tempo de debug. Se sobrar tempo (improvavel na v1), use para melhorar UX, nao para adicionar features.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir checkpoints claros para cada dia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Reservar 30% do tempo para debug</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Deployer no Dia 1 (mesmo incompleto)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Cortar features se estiver atrasado, nao o prazo</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Planejar sem deadlines fixos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar Dia 1 inteiro em design</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deixar deploy pro ultimo dia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Estender o prazo em vez de cortar escopo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Documento Final do Produto -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F4D1; Exercicio: Documento Final do Produto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Este e o exercicio mais importante de toda a Trilha 1. Tudo que voce aprendeu nos modulos 1.1 a 1.7 converge aqui em um unico documento: o blueprint do seu SaaS. Este documento e o que voce vai usar como referencia em todas as proximas trilhas. Sem ele, voce entra na Trilha 2 (Arquitetura) sem saber o que esta construindo.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Reserve 30-45 minutos para completar este exercicio com atencao. Nao apresse. Cada secao que voce preencher agora sao horas que voce economiza depois. Um produto bem definido e um produto que a IA consegue construir com menos iteracoes, menos bugs e menos retrabalho.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Documento do Produto: 6 Secoes</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Secao 1: Product Sentence</h4>
+            <p class="text-neutral-300 text-sm mb-3">Escreva a frase unica que define seu produto usando o template do Topico 1:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-sm text-emerald-400">
+              "Um [tipo de app] que ajuda [usuario] a [resolver problema] atraves de [mecanismo]."
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Teste: alguem de fora entenderia o que e so lendo essa frase?</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Secao 2: User Flow Principal</h4>
+            <p class="text-neutral-300 text-sm mb-3">Descreva o caminho do usuario em 5-7 passos do Topico 2:</p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm text-neutral-300 space-y-1">
+              <p>Passo 1: [Como o usuario chega]</p>
+              <p>Passo 2: [Como se cadastra]</p>
+              <p>Passo 3: [O que ve primeiro]</p>
+              <p>Passo 4: [Acao principal - onde a IA brilha]</p>
+              <p>Passo 5: [Resultado/valor entregue]</p>
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Teste: o time to value e menor que 5 minutos?</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Secao 3: As 5 Telas</h4>
+            <p class="text-neutral-300 text-sm mb-3">Para cada tela do Topico 3, escreva 1 paragrafo descrevendo o que o usuario ve e faz:</p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm text-neutral-300 space-y-2">
+              <p><strong class="text-emerald-400">Tela 1 - Landing:</strong> [descreva]</p>
+              <p><strong class="text-emerald-400">Tela 2 - Auth:</strong> [descreva]</p>
+              <p><strong class="text-emerald-400">Tela 3 - Dashboard:</strong> [descreva]</p>
+              <p><strong class="text-primary">Tela 4 - Core Feature:</strong> [descreva em detalhe]</p>
+              <p><strong class="text-emerald-400">Tela 5 - Settings:</strong> [descreva]</p>
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Teste: cada paragrafo poderia ser usado como prompt para gerar a tela com IA?</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">Secao 4: Stack Tecnica e Limites</h4>
+            <p class="text-neutral-300 text-sm mb-3">Defina sua stack e liste restricoes do Topico 4:</p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm text-neutral-300 space-y-1">
+              <p><strong>Frontend:</strong> [framework + CSS]</p>
+              <p><strong>Backend/DB:</strong> [servico + tipo de banco]</p>
+              <p><strong>IA:</strong> [API + modelo escolhido]</p>
+              <p><strong>Deploy:</strong> [plataforma]</p>
+              <p><strong>Limite de custo mensal:</strong> [valor]</p>
+              <p><strong>Custo estimado por usuario:</strong> [valor]</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">Secao 5: Lista de Exclusao</h4>
+            <p class="text-neutral-300 text-sm mb-3">Liste pelo menos 7 coisas que a v1 NAO vai ter. Essa lista e tao importante quanto a lista do que vai ter:</p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm text-neutral-300">
+              <p class="text-red-400 font-semibold mb-1">NAO vai ter na v1:</p>
+              <p>1. [feature excluida e razao]</p>
+              <p>2. [feature excluida e razao]</p>
+              <p>3. ...</p>
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Teste: se alguem sugerir adicionar qualquer item desta lista, voce vai dizer nao?</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">Secao 6: Cronograma de 3 Dias</h4>
+            <p class="text-neutral-300 text-sm mb-3">Adapte o plano do Topico 5 para o seu produto especifico:</p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm text-neutral-300 space-y-2">
+              <p><strong class="text-emerald-400">Dia 1 - Foundation:</strong> [o que voce vai fazer manha e tarde]</p>
+              <p><strong class="text-primary">Dia 2 - Features:</strong> [o que voce vai fazer manha e tarde]</p>
+              <p><strong class="text-blue-400">Dia 3 - Polish + Ship:</strong> [o que voce vai fazer manha e tarde]</p>
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Teste: cada dia tem um checkpoint claro? Se o Dia 2 atrasar, o que voce corta?</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Por que Este Documento Muda Tudo</h3>
+        <p class="text-neutral-300 mb-3">
+          Na Trilha 2 (Arquitetura), voce vai usar a Secao 4 (stack) para configurar o projeto. Na Trilha 3 (Construcao), vai usar as Secoes 2 e 3 (fluxo e telas) como prompts diretos para a IA. Na Trilha 4 (Agentes), vai conectar a Secao 1 (product sentence) ao comportamento do seu agente. Nas Trilhas 5 e 6, vai usar o cronograma e limites para planejar deploy e operacao.
+        </p>
+        <p class="text-neutral-300">
+          Cada secao deste documento alimenta uma trilha inteira. Sem ele, voce vai improvisar. Com ele, voce tem um mapa completo.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Use a IA para Revisar o Documento</h3>
+        <p class="text-neutral-300 mb-3">
+          Depois de preencher as 6 secoes, use este prompt para a IA revisar:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="text-emerald-400 mb-2">Prompt de revisao final:</p>
+          <p>"Revise este documento de produto para um MVP construido com Vibe Coding. Analise:</p>
+          <p>1. A product sentence e clara e especifica o suficiente?</p>
+          <p>2. O user flow tem time to value menor que 5 minutos?</p>
+          <p>3. As 5 telas sao suficientes para o fluxo descrito?</p>
+          <p>4. A stack e adequada para o tipo de produto?</p>
+          <p>5. A lista de exclusao e agressiva o suficiente?</p>
+          <p>6. O cronograma de 3 dias e realista?</p>
+          <p>Aponte inconsistencias e sugira melhorias especificas."</p>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          Este e o ultimo passo antes de entrar na Trilha 2. Quando voce iniciar a Arquitetura, abra este documento e use cada secao como input para as decisoes tecnicas.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Completar todas as 6 secoes antes de seguir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir para a IA revisar o documento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Compartilhar com alguem para feedback</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Salvar em local acessivel (vai usar nas trilhas 2-6)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular para Trilha 2 sem completar o documento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Preencher superficialmente ("depois eu detalho")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao definir a lista de exclusao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Fazer o documento mas nunca consultar de novo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-emerald-500/30">
+      <h2 class="text-2xl font-bold text-emerald-400 mb-6 text-center">Resumo do Modulo 1.7 - Fim da Trilha 1</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce completou a Trilha 1: Mentalidade e Metodo. Seu SaaS esta definido, documentado e pronto para ser construido. Aqui esta o que voce consolidou neste modulo final:
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Product Sentence: uma frase que define o que voce esta construindo</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">User Flow: o caminho do usuario do login ao resultado em max 7 passos</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">5 Telas: cada uma descrita em 1 paragrafo que serve como prompt</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Limites tecnologicos: custos, rate limits e restricoes mapeados</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Cronograma de 3 dias com checkpoints claros e buffer para debug</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Documento final do produto: o blueprint para as Trilhas 2-6</span>
+        </div>
+      </div>
+
+      <!-- Transicao para Trilha 2 -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-8">
+        <h3 class="font-bold text-blue-400 mb-3 text-center">Proximo: Trilha 2 - Arquitetura</h3>
+        <p class="text-neutral-300 text-center text-sm">
+          Na Trilha 2 voce vai transformar o documento do produto em codigo real: setup do projeto, estrutura de pastas, banco de dados, autenticacao e deploy inicial. Traga o documento que voce criou neste exercicio. Ele e o input para tudo que vem a seguir.
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center pt-6 border-t border-emerald-500/20">
+        <a href="modulo-1-6.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 1.6</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 1</span>
+        </a>
+        <a href="../trilha2/index.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-lg transition-colors">
+          <span>Trilha 2: Arquitetura</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 1.7: Definir seu SaaS - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.5: Prompts Estruturados para Construcao | Imersao Vibe Coding</title>
+  <meta name="description" content="Framework CIRF, prompts para frontend e backend, chain-of-thought, system prompts e como montar sua biblioteca de prompts.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.5</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-4">MODULO 1.5</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F4AC; Prompts Estruturados para Construcao</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Como escrever prompts que geram codigo funcional de primeira. Do framework CIRF a biblioteca de prompts do seu projeto.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">50</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Intermed.</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">T+P</div>
+          <div class="text-xs text-neutral-400">Teoria+Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Framework CIRF -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F3D7;&#xFE0F; Framework CIRF: Contexto, Instrucao, Restricao, Formato</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        O CIRF e o framework fundamental para escrever prompts que geram codigo utilizavel. Cada letra representa um pilar que adiciona precisao ao seu pedido. Sem CIRF, voce esta jogando na loteria: as vezes a IA acerta, as vezes gera lixo. Com CIRF, voce controla o resultado.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A grande maioria dos prompts que geram codigo ruim falha em pelo menos um dos quatro pilares. Normalmente o Contexto (a IA nao sabe que stack voce usa) ou a Restricao (a IA gera algo generico demais). Dominar o CIRF transforma a qualidade do que a IA entrega.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Os 4 Pilares do CIRF</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">C - Contexto</h4>
+            <p class="text-neutral-300 text-sm mb-2">O que a IA precisa saber sobre o seu projeto antes de executar qualquer coisa. Stack, arquitetura, estado atual, convencoes.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-emerald-400">// Bom contexto:</p>
+              <p>"Projeto Next.js 14 com App Router, Tailwind CSS, Supabase para auth e DB. TypeScript strict mode. O projeto ja tem layout base com sidebar e header. Estou usando Zustand para state."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">I - Instrucao</h4>
+            <p class="text-neutral-300 text-sm mb-2">O que voce quer que a IA faca. Quanto mais especifico, melhor. Nao diga "crie uma pagina". Diga exatamente o que deve estar nessa pagina.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-emerald-400">// Boa instrucao:</p>
+              <p>"Crie o componente ProjectCard que exibe: titulo do projeto (h3), descricao truncada em 2 linhas, badge de status (ativo/pausado/concluido), data de criacao formatada, e botao de abrir que navega para /projects/[id]."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">R - Restricao</h4>
+            <p class="text-neutral-300 text-sm mb-2">O que a IA NAO deve fazer. Limites tecnicos, de estilo, de tamanho. As restricoes evitam que a IA tome decisoes que voce nao quer.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-emerald-400">// Boas restricoes:</p>
+              <p>"Nao use bibliotecas externas alem de Tailwind. Nao crie arquivos extras. Maximo 150 linhas. Server Component (sem 'use client'). Nao faca fetch de dados, use props tipadas."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">F - Formato</h4>
+            <p class="text-neutral-300 text-sm mb-2">Como voce quer receber a resposta. Formato do arquivo, estrutura, comentarios, tipos.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-emerald-400">// Bom formato:</p>
+              <p>"Retorne um unico arquivo .tsx. Inclua interface Props no topo. Adicione comentarios JSDoc na funcao principal. Use export default. Nao inclua explicacoes fora do codigo."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Impacto Mensuravel do CIRF</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">40%</div>
+            <p class="text-neutral-400 text-sm">mais codigo correto na primeira tentativa com contexto especifico (Microsoft Research)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">60%</div>
+            <p class="text-neutral-400 text-sm">menos iteracoes quando restricoes sao explicitas no prompt</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3-5x</div>
+            <p class="text-neutral-400 text-sm">mais rapido chegar ao resultado final com CIRF vs prompts vagos</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">85%</div>
+            <p class="text-neutral-400 text-sm">dos prompts que geram codigo ruim falham em Contexto ou Restricao</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Prompt Completo vs Prompt Vago</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700 rounded-lg p-4">
+            <p class="text-red-400 font-semibold text-sm mb-2">Prompt VAGO (vai precisar de 5+ iteracoes):</p>
+            <p class="font-mono text-sm text-neutral-300">"Cria uma pagina de login"</p>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4">
+            <p class="text-emerald-400 font-semibold text-sm mb-2">Prompt CIRF (funciona de primeira):</p>
+            <p class="font-mono text-xs text-neutral-300">
+              <span class="text-blue-400">[C]</span> Projeto Next.js 14, App Router, Tailwind, Supabase Auth. TypeScript.<br>
+              <span class="text-blue-400">[I]</span> Crie a pagina de login com: form de email+senha, botao "Entrar", link "Criar conta" que vai para /signup, link "Esqueci senha" que vai para /forgot. Ao submeter, chamar supabase.auth.signInWithPassword e redirecionar para /dashboard.<br>
+              <span class="text-blue-400">[R]</span> Client component. Sem bibliotecas de form (use useState). Validar email e senha nao vazia antes de submeter. Mostrar erro do Supabase em um toast simples. Nao criar o layout, so a pagina.<br>
+              <span class="text-blue-400">[F]</span> Arquivo page.tsx com types inline. Comentarios nas secoes principais.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Sempre incluir os 4 pilares em prompts de codigo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Especificar stack, versoes e convencoes no Contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Listar o que NAO fazer nas Restricoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir tipo de arquivo e estrutura no Formato</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Prompts de uma linha sem contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Assumir que a IA sabe sua stack</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deixar a IA decidir bibliotecas e padroes sozinha</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir "refaz tudo" quando so precisa mudar uma parte</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: Prompts para Frontend -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F3A8; Prompts para Frontend: UI, Componentes, Layout</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Frontend e onde a maioria dos builders comecar, e e onde a IA brilha mais. Ferramentas como v0, Cursor e Claude Code geram componentes React/Next.js com qualidade surpreendente quando voce sabe descrever o que quer. O segredo esta em ser visual com palavras.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O erro mais comum em prompts de frontend e ser funcional demais e visual de menos. Dizer "crie um card" gera um card generico. Dizer "crie um card com cantos arredondados, sombra sutil, borda na esquerda em emerald, titulo em bold 18px, descricao em gray-400 truncada em 2 linhas" gera exatamente o que voce imaginou.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Padroes de Prompt para Frontend</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Padrao 1: Componente Isolado</h4>
+            <p class="text-neutral-300 text-sm mb-2">Para criar um componente reutilizavel com props tipadas:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Crie um componente React [Nome] que recebe [props com tipos]. Visualmente: [descricao visual detalhada]. Comportamento: [interacoes, hover, click]. Responsivo: [como muda em mobile]. Use Tailwind, sem libs extras."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Padrao 2: Layout de Pagina</h4>
+            <p class="text-neutral-300 text-sm mb-2">Para gerar o layout completo de uma pagina:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Crie o layout da pagina [nome] com: [header: descricao], [sidebar: descricao], [area principal: descricao], [footer: descricao]. Grid/flex: [como distribui o espaco]. Breakpoints: [sm, md, lg comportamento]."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-2">Padrao 3: Estilizacao de Componente Existente</h4>
+            <p class="text-neutral-300 text-sm mb-2">Para refinar visual de algo que ja existe:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Este componente [cole o codigo]. Mude: [lista especifica de mudancas visuais]. Mantenha: [o que nao deve mudar]. Adicione: [novas interacoes ou estados visuais]."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Exemplo Real: Prompt para Dashboard Card</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-xs text-neutral-300 space-y-2">
+          <p class="text-emerald-400">// Prompt completo usando CIRF:</p>
+          <p><span class="text-blue-400">[C]</span> Next.js 14, Tailwind, TypeScript. Componente para dashboard de SaaS. Tema escuro com emerald como accent.</p>
+          <p><span class="text-blue-400">[I]</span> Crie StatsCard que mostra: icone (recebe como prop, Lucide React), titulo (string), valor (number formatado com Intl), variacao percentual (number, positivo=verde, negativo=vermelho), e sparkline simplificado (array de 7 numeros renderizado como barras minusculas).</p>
+          <p><span class="text-blue-400">[R]</span> Sem chart library. Sparkline com divs e alturas proporcionais. Lucide React e a unica lib externa permitida. Max 80 linhas. Client component so se precisar de interacao.</p>
+          <p><span class="text-blue-400">[F]</span> Arquivo StatsCard.tsx. Interface Props exportada. Componente com export default. Comentarios inline nas partes nao-obvias.</p>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">
+          Este prompt gera um componente funcional, tipado e estilizado de primeira porque a IA sabe exatamente o que construir, como construir e o que nao fazer.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Vocabulario Visual para Prompts</h3>
+        <p class="text-neutral-300 mb-3">
+          Aprenda a descrever UI com precisao. Estes termos fazem a IA gerar exatamente o que voce quer:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-neutral-300">
+          <div><strong class="text-primary">Espacamento:</strong> "tight" (p-2), "comfortable" (p-4), "spacious" (p-8)</div>
+          <div><strong class="text-primary">Bordas:</strong> "rounded-lg", "pill" (rounded-full), "sharp" (sem rounded)</div>
+          <div><strong class="text-primary">Sombras:</strong> "subtle shadow" (shadow-sm), "elevated" (shadow-lg)</div>
+          <div><strong class="text-primary">Layout:</strong> "sidebar + content", "cards grid 3 cols", "stacked vertical"</div>
+          <div><strong class="text-primary">Tipografia:</strong> "bold heading", "muted subtext", "monospace para codigo"</div>
+          <div><strong class="text-primary">Cores:</strong> "accent emerald", "muted gray", "gradient from-X to-Y"</div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Descrever visualmente: cores, espacamentos, tamanhos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Especificar comportamento responsivo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir estados: hover, loading, empty, error</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar referencia visual ("parecido com o card do Stripe Dashboard")</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>"Faz um card bonito" (bonito como?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>"Cria uma pagina responsiva" (como se adapta?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao especificar tema (light? dark? ambos?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir tudo de uma vez (pagina inteira com 20 componentes)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Prompts para Backend -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x2699;&#xFE0F; Prompts para Backend: APIs, Banco, Logica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Backend e onde a maioria dos bugs criticos vivem. Prompts de backend precisam de mais rigor que prompts de frontend porque erros aqui afetam dados, seguranca e confiabilidade. Uma API mal feita pode expor dados do usuario. Um query mal escrito pode derrubar o banco.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A diferenca entre um prompt de backend "bom o suficiente" e um prompt de backend profissional esta nos detalhes: validacao de input, tratamento de erros, tipagem de retorno, permissoes de acesso. A IA nao vai incluir isso automaticamente a menos que voce peca.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Padroes de Prompt para Backend</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Padrao 1: API Route</h4>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Crie a API route [metodo] /api/[path] que: [o que faz]. Input: [body/query params com tipos]. Output: [formato da resposta com tipos]. Validacao: [regras]. Auth: [requer auth? como verificar?]. Erros: [quais erros tratar e status codes]. DB: [qual tabela, qual operacao]."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Padrao 2: Modelo de Dados</h4>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Defina o schema para [entidade] com campos: [lista de campos com tipos, constraints, defaults]. Relacoes: [foreign keys, one-to-many, many-to-many]. Indices: [quais campos indexar]. RLS: [regras de acesso por usuario]. Migrations: [como criar a tabela]."</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-2">Padrao 3: Logica de Negocio</h4>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300">
+              <p>"Implemente a funcao [nome] que: [o que faz, passo a passo]. Params: [tipos]. Return: [tipo]. Side effects: [o que muda no sistema]. Edge cases: [lista de casos especiais]. Error handling: [como tratar cada tipo de erro]."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Exemplo Real: API de Criacao de Projeto</h3>
+        <div class="bg-dark-700/50 rounded-lg p-4 font-mono text-xs text-neutral-300 space-y-2">
+          <p class="text-emerald-400">// Prompt CIRF para API route:</p>
+          <p><span class="text-blue-400">[C]</span> Next.js 14 App Router, Supabase, TypeScript. Tabela "projects" com: id (uuid), user_id (uuid FK), title (text), description (text nullable), status (enum: active/paused/done), created_at (timestamptz).</p>
+          <p><span class="text-blue-400">[I]</span> Crie POST /api/projects que: valida o body, verifica auth via Supabase, insere na tabela projects com user_id do usuario logado, retorna o projeto criado.</p>
+          <p><span class="text-blue-400">[R]</span> Title obrigatorio, min 3 chars, max 100. Description opcional, max 500. Status default "active". Retornar 401 se nao autenticado, 400 se validacao falhar, 500 se DB error. Nao usar ORM, usar Supabase client direto.</p>
+          <p><span class="text-blue-400">[F]</span> Arquivo route.ts. Zod para validacao do body. Types inline. Try/catch com erro tipado.</p>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">
+          Note como o prompt especifica validacao, auth, erros e formato. Sem esses detalhes, a IA geraria uma API sem validacao e sem tratamento de erro.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Checklist de Backend no Prompt</h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de enviar um prompt de backend, verifique se voce incluiu:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Metodo HTTP e path da rota</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Tipos de input (body, query, params)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Tipo de output (success response)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Regras de validacao dos inputs</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Autenticacao e autorizacao</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Status codes de erro (400, 401, 403, 404, 500)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span>Operacoes de banco (qual tabela, qual query)</span></label>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Especificar validacao de TODOS os inputs</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Incluir tratamento de erro com status codes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir auth requirements na rota</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir Zod ou outra lib de validacao explicitamente</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>"Cria uma API de projetos" (qual operacao? CRUD todo?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao mencionar auth (a IA vai gerar sem auth)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar que a IA vai validar inputs por conta</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir CRUD completo em um unico prompt</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Chain-of-Thought para Problemas Complexos -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F9E9; Chain-of-Thought para Problemas Complexos</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Nem todo problema se resolve com um unico prompt. Quando voce esta tomando decisoes arquiteturais, resolvendo bugs complexos ou planejando features com multiplas dependencias, a tecnica de Chain-of-Thought (CoT) faz a IA raciocinar passo a passo antes de gerar codigo.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Chain-of-Thought foi popularizado por um paper do Google Research em 2022 e se tornou a base de prompts avancados. A ideia e simples: ao inves de pedir o resultado final direto, voce pede para a IA pensar em etapas. Isso reduz erros logicos drasticamente, especialmente em problemas com multiplas variaveis.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Quando Usar Chain-of-Thought</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Decisoes Arquiteturais</h4>
+            <p class="text-neutral-300 text-sm">"Preciso decidir entre Supabase e Firebase para meu SaaS de [descricao]. Pense passo a passo: 1) Liste os requisitos do meu app. 2) Compare como cada um atende cada requisito. 3) Considere custo, escala e DX. 4) Recomende com justificativa."</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">Debug de Problemas Complexos</h4>
+            <p class="text-neutral-300 text-sm">"Este codigo [cole o codigo] deveria fazer [X] mas faz [Y]. Analise passo a passo: 1) O que cada linha faz? 2) Onde o fluxo diverge do esperado? 3) Quais sao as possiveis causas? 4) Qual a correcao mais simples?"</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-2">Features com Dependencias</h4>
+            <p class="text-neutral-300 text-sm">"Quero adicionar sistema de notificacoes ao meu SaaS. Antes de codar, pense: 1) Que tipos de notificacao existem? 2) Qual o modelo de dados? 3) Como o frontend consome? 4) Quais eventos disparam notificacoes? 5) Agora gere o plano de implementacao."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Multi-Turn: Conversas em Cadeia</h3>
+        <p class="text-neutral-300 mb-3">
+          Chain-of-Thought nao precisa acontecer em um unico prompt. Em ferramentas como Claude Code e Cursor, voce pode usar conversas multi-turn para construir raciocinio progressivo:
+        </p>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">1</span>
+            <div>
+              <p class="text-neutral-300"><strong>Turn 1:</strong> "Descreva a arquitetura ideal para [feature]. Nao gere codigo ainda."</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">2</span>
+            <div>
+              <p class="text-neutral-300"><strong>Turn 2:</strong> "Bom. Agora defina o schema de banco para essa arquitetura."</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">3</span>
+            <div>
+              <p class="text-neutral-300"><strong>Turn 3:</strong> "Agora crie a API route baseada nesse schema."</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">4</span>
+            <div>
+              <p class="text-neutral-300"><strong>Turn 4:</strong> "Agora o componente frontend que consome essa API."</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-neutral-400 text-sm mt-3">
+          Cada turn constroi sobre o anterior. A IA mantem o contexto e gera codigo coerente em toda a stack.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: "Think Step by Step" Quando Ajuda vs Quando Atrapalha</h3>
+        <p class="text-neutral-300 mb-3">
+          O famoso "think step by step" (pense passo a passo) nao e magico. Ele ajuda em problemas de raciocinio e atrapalha em problemas de execucao:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div>
+            <p class="text-emerald-400 font-semibold mb-2">Ajuda (problemas de raciocinio):</p>
+            <ul class="space-y-1 text-neutral-300">
+              <li>- Decidir entre tecnologias</li>
+              <li>- Debugar problemas complexos</li>
+              <li>- Planejar arquitetura</li>
+              <li>- Analisar trade-offs</li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-red-400 font-semibold mb-2">Atrapalha (problemas de execucao):</p>
+            <ul class="space-y-1 text-neutral-300">
+              <li>- Gerar um componente simples</li>
+              <li>- Criar um CRUD basico</li>
+              <li>- Estilizar com Tailwind</li>
+              <li>- Converter formato de dados</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar CoT para decisoes arquiteturais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Quebrar features complexas em turns sequenciais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir "analise antes de gerar" para problemas nao-triviais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Validar cada etapa antes de prosseguir</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar CoT para tarefas simples (gera verbosidade)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir tudo em um mega-prompt de 500 palavras</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular etapas de planejamento e ir direto ao codigo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Aceitar o plano da IA sem questionar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: System Prompts vs User Prompts -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x2699;&#xFE0F; System Prompts vs User Prompts</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Todo modelo de IA opera com dois tipos de instrucao: o system prompt (instrucoes persistentes que definem comportamento, personalidade e regras) e o user prompt (o pedido especifico de cada interacao). Entender essa diferenca e saber como configurar system prompts e o que separa um usuario casual de um power user de IA.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        No contexto de Vibe Coding, system prompts aparecem em varios formatos: o arquivo CLAUDE.md no Claude Code, o .cursorrules no Cursor, o copilot-instructions.md no GitHub Copilot. Sao instrucoes que persistem em toda sessao e moldam como a IA se comporta no seu projeto especifico.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">System vs User: A Hierarquia</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">System Prompt (Persistente)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Define quem a IA e e como ela se comporta. Regras que valem para TODA interacao. E como o "manual do funcionario" da IA.</p>
+            <div class="text-sm text-neutral-300 space-y-1">
+              <p><strong class="text-emerald-400">O que incluir:</strong></p>
+              <p>- Stack do projeto (Next.js, Tailwind, Supabase, etc.)</p>
+              <p>- Convencoes de codigo (naming, estrutura de pastas, patterns)</p>
+              <p>- O que nunca fazer (ex: "nunca use any em TypeScript")</p>
+              <p>- Estilo de resposta (ex: "seja direto, sem explicacoes longas")</p>
+              <p>- Contexto do projeto (o que ja existe, o que falta)</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-2">User Prompt (Por interacao)</h4>
+            <p class="text-neutral-300 text-sm mb-2">O pedido especifico de cada momento. Assume que o system prompt ja esta ativo.</p>
+            <div class="text-sm text-neutral-300 space-y-1">
+              <p><strong class="text-primary">O que incluir:</strong></p>
+              <p>- A tarefa especifica (CIRF focado na task)</p>
+              <p>- Contexto adicional relevante para essa task</p>
+              <p>- Restricoes especificas desta task</p>
+              <p>- Formato de saida desejado</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Exemplos de System Prompts por Ferramenta</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-400 mb-2">CLAUDE.md (Claude Code)</h4>
+            <div class="font-mono text-xs text-neutral-300 space-y-1">
+              <p># Projeto: SaaS de Gestao</p>
+              <p>Stack: Next.js 14, Tailwind, Supabase, TypeScript strict</p>
+              <p>Convencoes: camelCase, components em /components, pages em /app</p>
+              <p>NUNCA: use 'any', gere console.log em producao, crie arquivos sem types</p>
+              <p>SEMPRE: valide inputs com Zod, trate erros, use Server Components quando possivel</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-400 mb-2">.cursorrules (Cursor)</h4>
+            <div class="font-mono text-xs text-neutral-300 space-y-1">
+              <p>You are a senior Next.js developer working on a SaaS project.</p>
+              <p>Always use TypeScript strict mode.</p>
+              <p>Prefer Server Components. Use 'use client' only when needed.</p>
+              <p>Style with Tailwind CSS only. No CSS modules, no styled-components.</p>
+              <p>Validate all API inputs with Zod schemas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Template de System Prompt para seu Projeto</h3>
+        <p class="text-neutral-300 mb-3">
+          Copie e adapte este template para o system prompt do seu projeto:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-xs text-neutral-300 space-y-2">
+          <p class="text-emerald-400"># [Nome do Projeto]</p>
+          <p></p>
+          <p class="text-emerald-400">## Stack</p>
+          <p>- Framework: [Next.js 14 / Remix / etc]</p>
+          <p>- Styling: [Tailwind / CSS Modules / etc]</p>
+          <p>- Database: [Supabase / Firebase / Prisma+Postgres]</p>
+          <p>- Auth: [Supabase Auth / NextAuth / Clerk]</p>
+          <p>- Language: [TypeScript strict]</p>
+          <p></p>
+          <p class="text-emerald-400">## Convencoes</p>
+          <p>- Naming: [camelCase funcs, PascalCase components]</p>
+          <p>- Structure: [/app routes, /components shared, /lib utils]</p>
+          <p>- State: [Zustand / Context / etc]</p>
+          <p></p>
+          <p class="text-emerald-400">## Regras</p>
+          <p>- NUNCA: [lista do que a IA nao deve fazer]</p>
+          <p>- SEMPRE: [lista do que a IA deve fazer]</p>
+          <p></p>
+          <p class="text-emerald-400">## Contexto Atual</p>
+          <p>- [O que ja esta implementado]</p>
+          <p>- [O que esta em progresso]</p>
+          <p>- [Proximos passos]</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Criar CLAUDE.md ou .cursorrules no dia 1 do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Incluir stack, convencoes e regras de "nunca/sempre"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Atualizar o system prompt conforme o projeto evolui</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Versionar o system prompt junto com o codigo</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Repetir contexto do projeto em todo user prompt</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao usar system prompt (a IA vai assumir defaults)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>System prompt generico ("voce e um bom programador")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>System prompt com 5000 palavras (muito longo perde eficacia)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Biblioteca de Prompts -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F4DA; Exercicio: Biblioteca de Prompts para seu SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Uma biblioteca de prompts e uma colecao curada de prompts testados e refinados que voce reutiliza ao longo do projeto. Em vez de inventar um prompt novo toda vez que precisa de algo, voce consulta a biblioteca, adapta e executa. Isso economiza tempo e garante consistencia.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Este exercicio pede que voce crie 7 prompts: 3 para frontend, 3 para backend e 1 system prompt. Cada prompt deve ser testado contra o seu projeto real. Nao adianta criar prompts teoricos que nunca vai usar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Os 7 Prompts da sua Biblioteca</h3>
+        <div class="space-y-6">
+
+          <div>
+            <h4 class="font-semibold text-emerald-400 mb-3">Frontend (3 prompts)</h4>
+            <div class="space-y-3">
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-emerald-400 mb-1">1. Componente de UI Reutilizavel</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para gerar um componente que voce vai usar em multiplas telas (ex: card, botao, modal, form input).</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: gere o componente e use em 2 lugares diferentes do seu projeto.</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-emerald-400 mb-1">2. Layout de Pagina Completa</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para gerar o layout de uma das suas 5 telas (ex: dashboard, core feature).</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: a pagina gerada deve ser navegavel e responsiva sem ajustes.</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-emerald-400 mb-1">3. Formulario com Validacao</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para gerar um form com inputs tipados, validacao client-side e estados de erro.</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: submeta com dados invalidos e verifique se os erros aparecem corretos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-blue-400 mb-3">Backend (3 prompts)</h4>
+            <div class="space-y-3">
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-blue-400 mb-1">4. API Route com Auth</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para gerar uma API route protegida com validacao, auth e error handling.</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: chame sem auth (deve dar 401), com body invalido (400), e com dados corretos (200).</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-blue-400 mb-1">5. Schema de Banco + Migration</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para definir modelo de dados com tipos, constraints, indices e RLS.</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: execute a migration e verifique que a tabela foi criada corretamente.</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-4">
+                <p class="text-sm font-semibold text-blue-400 mb-1">6. Funcao de Logica de Negocio</p>
+                <p class="text-neutral-300 text-sm">Prompt CIRF para implementar uma funcao com edge cases, error handling e tipos de retorno.</p>
+                <p class="text-neutral-400 text-xs mt-1">Teste: chame com inputs normais, nulos, invalidos e de borda. Todos devem retornar corretamente.</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-primary mb-3">System Prompt (1)</h4>
+            <div class="bg-dark-700/50 rounded-lg p-4">
+              <p class="text-sm font-semibold text-primary mb-1">7. System Prompt do Projeto</p>
+              <p class="text-neutral-300 text-sm">CLAUDE.md ou .cursorrules completo com stack, convencoes, regras e contexto atual.</p>
+              <p class="text-neutral-400 text-xs mt-1">Teste: inicie uma nova sessao com o system prompt e faca 3 pedidos. O codigo gerado deve seguir as convencoes sem voce repetir.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Processo de Refinamento</h3>
+        <p class="text-neutral-300 mb-3">
+          Nenhum prompt fica perfeito na primeira tentativa. O processo de criar uma biblioteca de prompts envolve iteracao:
+        </p>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">1</span>
+            <p class="text-neutral-300"><strong>Escreva:</strong> Crie o prompt usando CIRF.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">2</span>
+            <p class="text-neutral-300"><strong>Teste:</strong> Execute e veja o resultado.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">3</span>
+            <p class="text-neutral-300"><strong>Analise:</strong> O que ficou certo? O que precisa mudar?</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">4</span>
+            <p class="text-neutral-300"><strong>Refine:</strong> Ajuste o prompt com restricoes ou contexto que faltou.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold flex-shrink-0">5</span>
+            <p class="text-neutral-300"><strong>Salve:</strong> Quando o prompt gera resultado bom consistentemente, salve na biblioteca.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Onde Guardar sua Biblioteca</h3>
+        <p class="text-neutral-300 mb-3">
+          Sua biblioteca de prompts deve estar acessivel e versionada. Opcoes:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <p><strong class="text-primary">Opcao 1 (Recomendada):</strong> Arquivo <code class="text-emerald-400">prompts.md</code> na raiz do projeto. Versionado com Git. Disponivel em toda sessao de Claude Code.</p>
+          <p><strong class="text-primary">Opcao 2:</strong> Notion, Obsidian ou outra ferramenta de notas. Bom para busca, ruim para versionamento.</p>
+          <p><strong class="text-primary">Opcao 3:</strong> Pasta <code class="text-emerald-400">/prompts</code> no projeto com um arquivo por categoria (frontend.md, backend.md, system.md).</p>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          O importante nao e onde guardar, e guardar. Prompt bom que voce nao salva e prompt que vai ter que reinventar semana que vem.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Criar os 7 prompts e testar cada um</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Iterar ate gerar resultado consistente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Salvar prompts versionados no repositorio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Expandir a biblioteca conforme o projeto avanca</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar prompts teoricos que nunca testa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Salvar o primeiro draft sem iterar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Guardar prompts so na memoria ("eu lembro")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Copiar prompts genericos da internet sem adaptar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-emerald-500/30">
+      <h2 class="text-2xl font-bold text-emerald-400 mb-6 text-center">Resumo do Modulo 1.5</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora domina a arte de escrever prompts que geram codigo funcional. A qualidade do que a IA produz depende diretamente da qualidade das suas instrucoes.
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">CIRF (Contexto, Instrucao, Restricao, Formato) e a base de todo prompt eficaz</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Prompts de frontend precisam de descricao visual precisa e estados definidos</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Prompts de backend exigem validacao, auth e error handling explicos</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Chain-of-Thought funciona para decisoes complexas, nao para execucao simples</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">System prompts definem regras persistentes; user prompts definem tarefas pontuais</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Sua biblioteca de 7 prompts testados e a base de produtividade com IA</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center pt-6 border-t border-emerald-500/20">
+        <a href="modulo-1-4.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 1.4</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 1</span>
+        </a>
+        <a href="modulo-1-6.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Modulo 1.6</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 1.5: Prompts Estruturados para Construcao - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

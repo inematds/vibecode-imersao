@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.2: O que e Vibe Coding em 2026 | Imersao Vibe Coding</title>
+  <meta name="description" content="Entenda a origem, evolucao e o ecossistema completo de Vibe Coding em 2026. De Karpathy ao Agentic Engineering.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.2</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-4">MODULO 1.2</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F30D; O que e Vibe Coding em 2026</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">A origem do termo, a evolucao para Agentic Engineering, os dados de adocao e as ferramentas que definem o ecossistema.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">45</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: A Origem: Andrej Karpathy e o Termo Vibe Coding -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F31F; A Origem: Andrej Karpathy e o Termo Vibe Coding</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Em fevereiro de 2025, Andrej Karpathy publicou um post no X (antigo Twitter) que capturou algo que milhoes de desenvolvedores ja sentiam mas nao tinham nome. Ele descreveu uma nova forma de programar onde voce para de pensar em sintaxe, para de decorar APIs, e simplesmente conversa com a IA ate o software funcionar. Ele chamou isso de "Vibe Coding".
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A frase que viralizou foi: "I just see stuff, say stuff, run stuff, and copy paste stuff, and it mostly works." Em uma unica sentenca, Karpathy descreveu o que estava acontecendo nos bastidores de milhares de projetos ao redor do mundo. Desenvolvedores experientes e iniciantes, todos fazendo a mesma coisa: conversando com IA e produzindo software funcional em uma fracao do tempo tradicional.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>Vibe Coding</strong>, no sentido original de Karpathy, e a pratica de construir software "pelo vibe", sem se preocupar com cada detalhe do codigo. Voce descreve o que quer, a IA gera, voce executa, ve se funciona, e itera. O foco muda de "escrever codigo correto" para "descrever o resultado desejado".
+        </p>
+        <p class="text-neutral-300 mb-3">
+          O que deu credibilidade ao conceito foi quem o descreveu. Karpathy nao e um influencer qualquer. Ele foi diretor de IA na Tesla, onde liderou o desenvolvimento do Autopilot. Antes disso, foi um dos primeiros pesquisadores da OpenAI. Ele tem um PhD em Deep Learning por Stanford. Quando alguem com esse curriculo diz "eu nao escrevo mais codigo manualmente", o mundo presta atencao.
+        </p>
+        <p class="text-neutral-300">
+          O post nao foi um manifesto ou um artigo academico. Foi um relato casual de como ele estava trabalhando. E foi exatamente essa naturalidade que ressoou: milhoes de pessoas estavam fazendo a mesma coisa e finalmente tinham um nome para isso.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">O Impacto do Post</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2.4M+</div>
+            <p class="text-neutral-400 text-sm">visualizacoes do post original no X em 48 horas</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">15K+</div>
+            <p class="text-neutral-400 text-sm">artigos, videos e podcasts mencionando "Vibe Coding" nos 30 dias seguintes</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Top 10</div>
+            <p class="text-neutral-400 text-sm">trending topic no GitHub e Hacker News por uma semana</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Feb 2025</div>
+            <p class="text-neutral-400 text-sm">marco zero do movimento que redefiniu desenvolvimento de software</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Leia o post original de Karpathy e observe a simplicidade. Ele nao esta falando de frameworks complexos ou metodologias elaboradas. Ele esta descrevendo um loop natural: ver, falar, executar, iterar. Esse loop e a base de tudo que voce vai aprender neste curso.
+        </p>
+        <p class="text-neutral-300">
+          Quando voce comecar seus projetos, resista a tentacao de complicar. O "vibe" do Vibe Coding e justamente a simplicidade. Descreva o que quer, veja o que a IA gera, ajuste, repita. Nao precisa ser perfeito na primeira tentativa. Precisa funcionar e evoluir.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Entender que Vibe Coding e uma mudanca de paradigma, nao uma moda</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Estudar a trajetoria de Karpathy para entender o contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Adotar o loop: descrever > gerar > executar > iterar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Manter a simplicidade como principio fundamental</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Descartar o conceito como "preguica de programar"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Achar que Vibe Coding e so para iniciantes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar a necessidade de revisar o que a IA gera</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confundir "facil de comecar" com "nao precisa pensar"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: De Prompt Engineering a Agentic Engineering -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F504; De Prompt Engineering a Agentic Engineering</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        O Vibe Coding de Karpathy em 2025 era sobre conversar com uma IA e copiar o resultado. Mas em menos de dois anos, o conceito evoluiu de forma radical. Em 2026, nao estamos mais apenas "conversando" com a IA. Estamos orquestrando agentes autonomos que planejam, executam e iteram por conta propria.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Essa evolucao segue uma linha clara. Em 2023, o grande hype era Prompt Engineering: a arte de escrever o prompt perfeito para extrair a melhor resposta possivel. Em 2024, surgiram as primeiras ferramentas de AI-Assisted Coding como GitHub Copilot e o Cursor inicial. Em 2025, o Vibe Coding consolidou a ideia de construir software inteiro via conversa. E agora, em 2026, entramos na era do Agentic Engineering, onde o desenvolvedor e o arquiteto e os agentes de IA sao a equipe de construcao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">A Linha do Tempo da Evolucao</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-neutral-500/30 flex items-center justify-center text-neutral-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-neutral-400">2023: Prompt Engineering</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">O foco era escrever o prompt perfeito. Engenheiros de prompt viraram uma profissao. A IA era uma caixa preta que voce alimentava com texto e recebia texto de volta. Voce copiava e colava trechos. Ferramentas: ChatGPT, Claude (web), Bard.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-blue-400">2024: AI-Assisted Coding</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">A IA entrou diretamente no editor de codigo. Autocomplete inteligente, sugestoes inline, chat integrado na IDE. O dev ainda escrevia a maior parte do codigo, mas a IA acelerava 2-3x. Ferramentas: GitHub Copilot, Cursor (v1), Codeium, Tabnine.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-emerald-400">2025: Vibe Coding</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">A IA passou a gerar projetos inteiros. O dev descreve o que quer e a IA produz. O loop Karpathy (ver, falar, executar, iterar) se torna o padrao. Ferramentas: Cursor (Composer), Claude Code (beta), v0, bolt.new, Devin.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-primary">2026: Agentic Engineering</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Agentes autonomos que planejam, executam multiplas tarefas, editam arquivos, rodam testes, e iteram sozinhos. O dev define a arquitetura e os objetivos. Os agentes fazem o trabalho. Ferramentas: Claude Code (agentic), Cursor Agent, Codex, Windsurf Cascade.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">A Mudanca de Papel do Desenvolvedor</h3>
+        <p class="text-neutral-300 mb-3">
+          A transformacao mais profunda nao e tecnologica, e de identidade profissional. O desenvolvedor de 2023 era um digitador de codigo. O de 2024 era um editor assistido. O de 2025 era um diretor criativo. O de 2026 e um <strong>arquiteto e orquestrador</strong>.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          Dados da pesquisa "State of AI in Software Development" (2026) mostram que engenheiros que adotaram o modelo agentico completam projetos 4.2x mais rapido que os que ainda usam o modelo de autocomplete. A diferenca nao e pequena: e uma ordem de magnitude em produtividade.
+        </p>
+        <p class="text-neutral-300">
+          Isso nao significa que conhecimento tecnico ficou irrelevante. Pelo contrario: quanto mais voce entende de arquitetura, design patterns e boas praticas, melhor voce direciona os agentes. A IA substituiu a digitacao, nao o pensamento.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Pense como Arquiteto</h3>
+        <p class="text-neutral-300 mb-3">
+          A partir de agora, quando voce iniciar um projeto, nao pense "que codigo eu preciso escrever?". Pense "que instrucoes eu daria para uma equipe de devs juniores muito rapidos e muito literais?". Esse e o modelo mental correto para trabalhar com agentes de IA.
+        </p>
+        <p class="text-neutral-300">
+          Seja especifico sobre a arquitetura (pastas, frameworks, padroes), sobre o comportamento esperado (o que cada tela faz), e sobre as restricoes (o que NAO fazer). Quanto mais claro o briefing, melhor o resultado. Voce e o tech lead. A IA e a equipe.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Investir em aprender arquitetura de software</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Praticar dar instrucoes claras e estruturadas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Experimentar ferramentas agenticas (Claude Code, Cursor Agent)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Adaptar seu workflow para o modelo orquestrador-agente</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ficar preso no modelo "autocomplete" de 2024</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Achar que agentes sao "só chatbots mais caros"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar a curva de aprendizado do modelo agentico</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Resistir a mudanca de papel (de digitador para arquiteto)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Vibe Shipping: Da Ideia ao Deploy com IA -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F6A2; Vibe Shipping: Da Ideia ao Deploy com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Vibe Coding era sobre escrever codigo com IA. Vibe Shipping e sobre lancar produtos inteiros com IA. A diferenca e fundamental: nao estamos mais falando de gerar funcoes ou componentes isolados. Estamos falando do ciclo completo, da ideia ao produto em producao, com IA assistindo em cada etapa.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O conceito de Vibe Shipping emergiu naturalmente quando desenvolvedores solo comecaram a relatar que estavam lancando SaaS completos em dias, nao meses. Um dev com uma ideia, uma ferramenta de IA, e uma conta na Vercel consegue ir do zero ao produto com usuarios pagantes em um final de semana. Isso era impensavel em 2023.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: O Pipeline End-to-End</h3>
+        <p class="text-neutral-300 mb-4">
+          Vibe Shipping cobre todo o ciclo de vida do produto, e cada etapa pode ser acelerada (ou completamente executada) com IA:
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Ideacao</h4>
+              <p class="text-neutral-300 text-sm">Brainstorm com IA para validar e refinar a ideia. A IA ajuda a identificar concorrentes, gaps de mercado, e potenciais problemas antes de construir qualquer coisa.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Arquitetura</h4>
+              <p class="text-neutral-300 text-sm">Definicao de stack, estrutura de pastas, banco de dados, APIs. A IA sugere patterns baseados no tipo de aplicacao e escala esperada.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Construcao</h4>
+              <p class="text-neutral-300 text-sm">Codigo gerado por agentes. Frontend, backend, banco, testes. O dev revisa, ajusta, e direciona. A IA executa.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">4</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Teste</h4>
+              <p class="text-neutral-300 text-sm">IA gera testes unitarios, de integracao e E2E. Identifica edge cases que o dev nao pensou. Roda os testes e corrige os que falham.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">5</span>
+            <div>
+              <h4 class="font-semibold text-primary">Deploy</h4>
+              <p class="text-neutral-300 text-sm">Configuracao de CI/CD, deploy na Vercel/Railway/Fly.io, setup de dominio, SSL, monitoramento. Tudo assistido por IA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Casos Reais de Vibe Shipping</h3>
+        <p class="text-neutral-300 mb-3">
+          Em 2025-2026, surgiu uma onda de indie hackers e solo developers que lancaram produtos funcionais em tempos recordes usando exclusivamente Vibe Shipping. Alguns exemplos que viralizaram:
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">SaaS de analytics</strong> construido em 3 dias por um dev solo usando Claude Code + Vercel. Atingiu $2K MRR no primeiro mes.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Marketplace de prompts</strong> criado em um final de semana com Cursor + Supabase. 500 usuarios na primeira semana.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Ferramenta de email marketing com IA</strong> prototipada em 48 horas usando bolt.new + Railway. Conseguiu investimento seed de $150K.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Seu Primeiro Vibe Ship</h3>
+        <p class="text-neutral-300 mb-3">
+          Nao tente lancar seu SaaS completo no primeiro dia. Comece com um "micro-ship": uma landing page funcional com waitlist. Use v0 ou bolt.new para gerar a UI, Supabase para o backend do formulario, e Vercel para deployar. Tempo estimado: 2-4 horas.
+        </p>
+        <p class="text-neutral-300">
+          O objetivo do micro-ship nao e ter um produto. E validar que voce consegue ir do zero ao deploy. Uma vez que voce fez esse ciclo completo uma vez, o medo de "lancar" desaparece. E ai voce pode construir com confianca.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pensar em termos de produto, nao de codigo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar deploy rapido (Vercel, Railway, Fly.io)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Lancar imperfeito e iterar com feedback real</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Documentar cada ship para acelerar o proximo</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esperar "estar pronto" para lancar (nunca estara)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar semanas em features antes do primeiro deploy</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar feedback dos primeiros usuarios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comparar seu MVP com produtos de empresas com 50 devs</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Dados de Adocao: 92% Devs, 41% Codigo IA -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F4CA; Dados de Adocao: 92% Devs, 41% Codigo IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Vibe Coding nao e uma tendencia de nicho. Os numeros mostram uma adocao massiva e acelerada que esta transformando a industria inteira de software. Vamos analisar os dados mais relevantes de pesquisas recentes para entender a escala do que esta acontecendo.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Esses dados nao sao de blogs ou influencers. Sao de pesquisas rigorosas conduzidas por Stack Overflow, GitHub, McKinsey e Gartner. Os numeros sao consistentes entre as fontes e apontam na mesma direcao: IA no desenvolvimento de software nao e mais opcional. E o padrao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: Os Numeros que Definem 2026</h3>
+        <p class="text-neutral-300 mb-4">
+          Tres metricas-chave resumem o estado atual do desenvolvimento de software com IA. Juntas, elas contam a historia de uma industria que mudou de forma irreversivel.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A primeira metrica e a adocao: <strong>92% dos desenvolvedores nos EUA usam IA diariamente</strong> no seu trabalho, segundo o Stack Overflow Developer Survey 2025. Isso nao e "ja experimentaram". E "usam todo dia". Em 2023, esse numero era 44%. Dobrou em dois anos.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A segunda metrica e a producao: <strong>41% de todo o codigo no GitHub e gerado por IA</strong>, segundo o GitHub Copilot Impact Report. Isso inclui codigo em repositorios publicos e privados. Em linguagens como Python e JavaScript, o numero passa de 50%.
+        </p>
+        <p class="text-neutral-300">
+          A terceira metrica e a estrategia corporativa: <strong>42% das grandes empresas ja tem IA agentica em producao</strong>, segundo McKinsey Global Survey on AI 2025. Nao e prova de conceito. E producao real, gerando valor de negocio.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Dashboard de Dados</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">92%</div>
+            <p class="text-neutral-400 text-sm">devs nos EUA usam IA diariamente (Stack Overflow 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">41%</div>
+            <p class="text-neutral-400 text-sm">do codigo global e gerado por IA (GitHub 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">42%</div>
+            <p class="text-neutral-400 text-sm">empresas com IA agentica em producao (McKinsey 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">78%</div>
+            <p class="text-neutral-400 text-sm">das empresas planejam aumentar investimento em IA em 2026 (Gartner)</p>
+          </div>
+        </div>
+        <div class="bg-dark-700/50 rounded-lg p-4 mt-4">
+          <h4 class="font-semibold text-blue-400 mb-2">Projecoes Gartner para 2028-2030</h4>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#8226;</span><span>Ate 2028: 75% dos engenheiros usarao assistentes de IA (vs 10% em 2023)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#8226;</span><span>Ate 2029: 80% do codigo sera gerado ou co-gerado por IA</span></li>
+            <li class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#8226;</span><span>Ate 2030: equipes de software serao 50% menores com a mesma ou maior output</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Use os Dados a seu Favor</h3>
+        <p class="text-neutral-300 mb-3">
+          Esses numeros nao sao curiosidades. Sao argumentos. Se voce precisa convencer um chefe, um socio, ou um investidor de que Vibe Coding e serio, esses dados sao suas munições. "92% dos devs nos EUA ja usam IA diariamente. Nosso time nao pode ficar nos 8% restantes."
+        </p>
+        <p class="text-neutral-300">
+          Se voce esta empreendendo solo, os dados significam que voce pode competir com equipes maiores. Se 41% do codigo ja e IA, um dev solo com boas ferramentas equivale a uma equipe de 3-4 devs em velocidade de output. Essa e a vantagem competitiva que Vibe Coding oferece.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Acompanhar os relatorios anuais (Stack Overflow, GitHub, McKinsey)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar dados para justificar investimento em ferramentas de IA</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Medir sua propria produtividade antes e depois de IA</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Entender que a adocao e irreversivel, nao uma bolha</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar dados porque "no Brasil e diferente"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Achar que "vai passar" como outras tendencias tech</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar dados desatualizados (muita coisa de 2023 ja esta obsoleta)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confundir adocao com substituicao total de devs</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Ferramentas do Ecossistema -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Ferramentas do Ecossistema</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        O ecossistema de ferramentas de Vibe Coding explodiu entre 2025 e 2026. Cada ferramenta tem sua filosofia, seus pontos fortes, e seus cenarios ideais de uso. Escolher a ferramenta certa para o contexto certo e uma habilidade fundamental.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Nao existe "a melhor ferramenta". Existe a melhor ferramenta para o que voce esta fazendo agora. Devs produtivos usam multiplas ferramentas e alternam entre elas dependendo da tarefa. Vamos fazer uma analise profunda de cada uma.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Mapa do Ecossistema</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">Cursor</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">IDE</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Fork do VS Code com IA nativa. Autocomplete (Tab), chat lateral, e o Composer (agente que edita multiplos arquivos). Em 2026, o Cursor Agent pode executar tarefas complexas autonomamente dentro da IDE.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> desenvolvimento diario, projetos em andamento, quando voce quer a IA dentro do editor. <strong>Preco:</strong> $20/mes (Pro).</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">Claude Code</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">CLI / Agentic</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Ferramenta de linha de comando da Anthropic. Totalmente agentica: le o codebase, edita arquivos, executa comandos, roda testes, e itera ate resolver. Funciona em qualquer editor porque roda no terminal.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> tarefas complexas de engenharia, refatoracao, debugging profundo, quando voce quer o agente mais autonomo possivel. <strong>Preco:</strong> uso via API Claude.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">GitHub Copilot</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Inline / Plugin</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">O pioneiro do AI-assisted coding. Integra com VS Code, JetBrains, Neovim. Autocomplete inline muito bom, chat com contexto do projeto, e workspace agents para tarefas mais complexas.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> autocomplete rapido no dia a dia, equipes que ja usam GitHub, integracao com ecossistema Microsoft. <strong>Preco:</strong> $10/mes (Individual).</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">Windsurf (Codeium)</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">IDE / Cascade</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">IDE focada em Vibe Coding com o recurso Cascade: um agente que entende o contexto do projeto inteiro e executa mudancas em cadeia. Interface limpa e experiencia fluida, competindo diretamente com Cursor.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> quem quer uma alternativa ao Cursor com interface mais polida, projetos novos. <strong>Preco:</strong> free tier generoso, Pro $15/mes.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">v0 (Vercel)</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">UI Generation</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Ferramenta da Vercel especializada em gerar interfaces React/Next.js a partir de descricoes. Voce descreve a UI que quer, o v0 gera componentes completos com Tailwind CSS. Excelente para prototipagem rapida de frontend.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> prototipagem de UI, gerar componentes visuais rapidamente, landing pages. <strong>Preco:</strong> free tier, Pro $20/mes.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-emerald-400">bolt.new (StackBlitz)</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Fullstack / Browser</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Ambiente fullstack no browser. Voce descreve o app, o bolt.new gera frontend + backend + banco, tudo rodando no browser via WebContainers. Nao precisa instalar nada. Deploy direto para producao.</p>
+            <p class="text-neutral-300 text-sm"><strong>Melhor para:</strong> prototipagem rapida de apps fullstack, provas de conceito, quando voce nao quer configurar ambiente local. <strong>Preco:</strong> free tier, Pro $20/mes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Comparativo Rapido: Quando Usar Cada Uma</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-300 mt-2">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-blue-400">Cenario</th>
+                <th class="text-left py-2 text-blue-400">Ferramenta</th>
+              </tr>
+            </thead>
+            <tbody class="space-y-1">
+              <tr class="border-b border-dark-700"><td class="py-2">Desenvolvimento diario em projeto existente</td><td class="py-2">Cursor / Copilot</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Refatoracao complexa / debug profundo</td><td class="py-2">Claude Code</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Prototipo de UI rapidamente</td><td class="py-2">v0</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">App fullstack do zero (prova de conceito)</td><td class="py-2">bolt.new</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Projeto novo com agente inteligente</td><td class="py-2">Windsurf / Cursor</td></tr>
+              <tr><td class="py-2">Automacao / scripts / infra</td><td class="py-2">Claude Code</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Nao Case com Uma Ferramenta</h3>
+        <p class="text-neutral-300 mb-3">
+          A melhor estrategia e dominar 2-3 ferramentas e alternar entre elas. Por exemplo: use Cursor para o dia a dia no editor, Claude Code para tarefas pesadas de engenharia, e v0/bolt.new para prototipar ideias novas rapidamente.
+        </p>
+        <p class="text-neutral-300">
+          O ecossistema muda rapido. A ferramenta que e a melhor hoje pode nao ser a melhor em 6 meses. O que nao muda e a habilidade de descrever bem o que voce quer e revisar o que a IA entrega. Invista nessa habilidade, nao na lealdade a uma ferramenta.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Experimentar pelo menos 3 ferramentas diferentes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar a ferramenta certa para o contexto certo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Acompanhar lancamentos e atualizacoes das ferramentas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Combinar ferramentas (ex: v0 para UI + Claude Code para backend)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar so ChatGPT web para gerar codigo (muito limitado)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pagar por 5 ferramentas e nao dominar nenhuma</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar ferramentas CLI como Claude Code por "preferir GUI"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar mais tempo escolhendo ferramenta do que construindo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Seu Primeiro Projeto Vibe Coding -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F3AF; Exercicio: Seu Primeiro Projeto Vibe Coding</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Teoria sem pratica nao fixa. Este exercicio vai fazer voce passar pelo ciclo completo de Vibe Coding pela primeira vez: escolher uma ferramenta, criar um projeto simples, iterar com IA, e deployar. Ao final, voce tera algo real e online.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O projeto e intencionalmente simples: uma landing page. Nao porque landing pages sejam o objetivo do curso, mas porque elas cobrem o ciclo completo (design, codigo, conteudo, deploy) com complexidade baixa o suficiente para focar no processo, nao no produto.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Passo a Passo do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-emerald-400">Escolha sua Ferramenta</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Escolha UMA ferramenta para este exercicio. Sugestoes por perfil:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-emerald-400">Iniciante total:</strong> bolt.new (tudo no browser, zero setup)</li>
+              <li><strong class="text-emerald-400">Tem VS Code:</strong> Cursor (experiencia familiar, IA integrada)</li>
+              <li><strong class="text-emerald-400">Confortavel com terminal:</strong> Claude Code (maximo poder agentico)</li>
+              <li><strong class="text-emerald-400">Quer focar em UI:</strong> v0 (gera interface linda rapido)</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-emerald-400">Defina o Projeto</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie uma landing page para o SaaS que voce definiu no Modulo 1.1. A landing page deve ter:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li>Hero section com titulo e subtitulo</li>
+              <li>3-4 features/beneficios com icones</li>
+              <li>CTA (Call to Action) com formulario de email para waitlist</li>
+              <li>Footer com links</li>
+              <li>Design responsivo (mobile + desktop)</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-emerald-400">Construa com IA (Vibe Coding)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Use o framework CIRF do Modulo 1.1 para dar instrucoes a sua ferramenta. Exemplo de prompt inicial:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p>[Contexto] Landing page para [seu SaaS], stack: HTML + Tailwind CSS (ou Next.js se usar Cursor/Claude Code).</p>
+              <p>[Instrucao] Crie uma landing page moderna com hero, features, CTA com email input, footer.</p>
+              <p>[Restricao] Design escuro, responsivo, sem bibliotecas externas alem de Tailwind.</p>
+              <p>[Formato] Arquivo unico HTML com Tailwind CDN (ou componente React).</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-emerald-400">Itere e Refine</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Faca pelo menos 3 rodadas de iteracao. Exemplos: "Mude a paleta de cores para tons de azul", "Adicione animacoes sutis no hero", "Melhore o texto do CTA para ser mais persuasivo". Observe como cada pedido gera uma versao melhor.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-primary">Deploy</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Coloque no ar. Opcoes gratuitas:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-primary">Vercel:</strong> connectar repo GitHub, deploy automatico</li>
+              <li><strong class="text-primary">Netlify:</strong> drag & drop de pasta, deploy em segundos</li>
+              <li><strong class="text-primary">GitHub Pages:</strong> push para repo, ativar nas settings</li>
+              <li><strong class="text-primary">bolt.new:</strong> deploy integrado com um clique</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Ferramenta escolhida e instalada/configurada</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Landing page criada com hero, features, CTA e footer</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Pelo menos 3 iteracoes de refinamento feitas</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Design responsivo (testado em mobile e desktop)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Projeto deployado e acessivel via URL publica</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>URL compartilhada no grupo da comunidade</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: O Timer de 2 Horas</h3>
+        <p class="text-neutral-300 mb-3">
+          Coloque um timer de 2 horas. Nao importa onde voce estiver quando o timer tocar: deploye. O objetivo nao e perfeicao. E completar o ciclo. Voce pode (e deve) melhorar depois. Mas primeiro, termine.
+        </p>
+        <p class="text-neutral-300">
+          Esse exercicio vai revelar seu padrao: voce tende a gastar tempo demais no design? Na copia? Na configuracao? Na busca pela ferramenta "perfeita"? Conhecer seu padrao e o primeiro passo para otimizar seu workflow de Vibe Coding.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Escolher uma ferramenta e comecar em 10 minutos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar o framework CIRF para os prompts</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Deployar mesmo que nao esteja perfeito</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Compartilhar o resultado e pedir feedback</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar 1 hora escolhendo a ferramenta</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar features alem do especificado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao deployar ("vou fazer depois")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comparar sua landing page com sites de empresas grandes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-emerald-500/30">
+      <h2 class="text-2xl font-bold text-emerald-400 mb-6 text-center">Resumo do Modulo 1.2</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora entende a origem, a evolucao e o ecossistema completo de Vibe Coding. Vamos revisar o que voce aprendeu:
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Karpathy cunhou "Vibe Coding" em fevereiro de 2025, descrevendo o loop ver-falar-executar-iterar</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">A evolucao: Prompt Engineering > AI-Assisted > Vibe Coding > Agentic Engineering</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Vibe Shipping e o ciclo completo: ideia > arquitetura > codigo > teste > deploy com IA</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">92% dos devs usam IA, 41% do codigo e gerado por IA, 42% das empresas tem IA agentica</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Ferramentas: Cursor (IDE), Claude Code (CLI), Copilot (inline), Windsurf, v0, bolt.new</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Voce fez seu primeiro projeto Vibe Coding: landing page criada e deployada</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-emerald-500/20">
+        <a href="modulo-1-1.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 1.1</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 1</span>
+        </a>
+        <a href="modulo-1-3.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Proximo Modulo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 1.2: O que e Vibe Coding em 2026 - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

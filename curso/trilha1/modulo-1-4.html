@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.4: Escopo e Definicao de Produto | Imersao Vibe Coding</title>
+  <meta name="description" content="Como definir escopo, priorizar features com MoSCoW e criar um documento de produto solido para seu SaaS.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.4</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-4">MODULO 1.4</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F3AF; Escopo e Definicao de Produto</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Como definir o que entra e o que fica de fora do seu MVP. Priorize com metodo, corte com coragem.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">50</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">T+P</div>
+          <div class="text-xs text-neutral-400">Teoria+Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: MVP: O Minimo que Entrega Valor -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F6F9; MVP: O Minimo que Entrega Valor</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        MVP nao e "a versao quebrada do produto". Nao e a versao sem CSS. Nao e a versao com bugs que voce promete arrumar "depois". MVP e a versao mais enxuta que resolve o problema principal do usuario de forma funcional e testavel. A palavra-chave e "viable", nao "minimum".
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A analogia classica do skateboard ilustra o ponto. Voce nao constroi um carro tirando as rodas. Voce constroi um skateboard, que ja resolve o problema de ir do ponto A ao ponto B. Depois evolui para bicicleta, moto e carro. Cada versao e completa e funcional por si so.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: Skateboard > Bicicleta > Carro</h3>
+        <p class="text-neutral-300 mb-4">
+          Henrik Kniberg popularizou a analogia de transporte para explicar MVP. O erro classico e construir a roda do carro na v1, a porta na v2, o motor na v3. Nenhuma dessas versoes funciona sozinha. A abordagem correta e entregar algo que funciona em cada iteracao.
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">v1</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Skateboard</h4>
+              <p class="text-neutral-300 text-sm">Resolve o problema de forma minima. Login + 1 tela principal + 1 acao core. Feio, simples, funcional.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">v2</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Bicicleta</h4>
+              <p class="text-neutral-300 text-sm">Mais eficiente. Dashboard com metricas, fluxo refinado, UX melhorada. Feedback dos primeiros usuarios incorporado.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">v3</span>
+            <div>
+              <h4 class="font-semibold text-primary">Carro</h4>
+              <p class="text-neutral-300 text-sm">Produto maduro. Integrancoes, automacoes, analytics, multi-usuario. So chega aqui com validacao real.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Por que MVP e Mais Importante com IA</h3>
+        <p class="text-neutral-300 mb-3">
+          IA tornou construir software absurdamente mais rapido. Isso e uma faca de dois gumes. Quando voce pode gerar 10 features em um dia, a tentacao de enfiar tudo na v1 e enorme. Mas velocidade de construcao nao muda a velocidade de validacao. Seu usuario ainda precisa de tempo para testar, entender e dar feedback.
+        </p>
+        <p class="text-neutral-300">
+          Dados do Y Combinator mostram que startups que lancam com menos de 5 features tem 3x mais chance de encontrar product-market fit do que startups que lancam com 15+. A razao e simples: com menos features, o feedback e mais claro e voce sabe o que esta funcionando.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Exemplos Reais de MVPs com IA</h3>
+        <p class="text-neutral-300 mb-3">
+          Muitos produtos de sucesso lancaram como MVPs absurdamente simples. O segredo e identificar a unica coisa que gera valor e entregar isso perfeitamente:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <p><strong class="text-emerald-400">Stripe:</strong> Lancou so com 7 linhas de integracao. Sem dashboard, sem analytics. So pagamento.</p>
+          <p><strong class="text-emerald-400">Dropbox:</strong> MVP foi um video de 3 minutos mostrando o conceito. Nem tinha produto funcional.</p>
+          <p><strong class="text-emerald-400">Buffer:</strong> Landing page com precos. Se alguem clicava "comprar", aparecia "ainda nao esta pronto". Validou demanda antes de construir.</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir a unica acao core do produto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Entregar algo funcional em cada versao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Lancar rapido e coletar feedback real</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Testar com 5-10 usuarios antes de expandir</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Tratar MVP como "versao ruim" do produto final</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar features porque a IA gera rapido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esperar o produto ficar "perfeito" para lancar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Construir o carro antes de validar o skateboard</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: User Flows e Wireframes Mentais -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F500; User Flows e Wireframes Mentais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Antes de pensar em telas, pense em fluxos. Um user flow e o caminho que o usuario percorre para completar uma tarefa no seu produto. Se voce nao mapear esse caminho antes de construir, vai acabar com telas bonitas que nao se conectam de forma logica.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Wireframes mentais sao uma tecnica onde voce descreve cada tela em uma unica frase, sem desenhar nada. Isso forca clareza: se voce nao consegue descrever uma tela em uma frase, ela provavelmente esta fazendo coisas demais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: Pensar em Fluxos, Nao em Telas</h3>
+        <p class="text-neutral-300 mb-4">
+          Um user flow tem tres elementos: <strong>entry points</strong> (de onde o usuario vem), <strong>decision trees</strong> (decisoes que ele toma no caminho) e <strong>error states</strong> (o que acontece quando algo da errado). A maioria dos builders esquece os error states, e e la que a experiencia do usuario quebra.
+        </p>
+        <div class="bg-dark-700/50 rounded-lg p-4 mt-4">
+          <h4 class="font-semibold text-emerald-400 mb-3">Exemplo: User Flow de um SaaS de Gestao</h4>
+          <div class="space-y-2 text-sm text-neutral-300">
+            <p class="flex items-start space-x-2"><span class="text-emerald-400">1.</span><span><strong>Entry:</strong> Usuario acessa o site pela primeira vez (landing page)</span></p>
+            <p class="flex items-start space-x-2"><span class="text-emerald-400">2.</span><span><strong>Decision:</strong> Cria conta ou faz login?</span></p>
+            <p class="flex items-start space-x-2"><span class="text-emerald-400">3.</span><span><strong>Action:</strong> Ve o dashboard com seus projetos</span></p>
+            <p class="flex items-start space-x-2"><span class="text-emerald-400">4.</span><span><strong>Core:</strong> Cria novo projeto ou acessa existente</span></p>
+            <p class="flex items-start space-x-2"><span class="text-emerald-400">5.</span><span><strong>Output:</strong> Executa a acao principal (ex: gera relatorio)</span></p>
+            <p class="flex items-start space-x-2"><span class="text-red-400">E.</span><span><strong>Error:</strong> O que acontece se o login falhar? Se nao tem projetos? Se a acao da erro?</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Wireframes Mentais: Descricao em 1 Frase</h3>
+        <p class="text-neutral-300 mb-3">
+          A tecnica de wireframe mental e simples: para cada tela do seu produto, escreva uma unica frase descrevendo o que o usuario ve e o que ele pode fazer. Essa frase vai ser a base dos seus prompts para a IA gerar as telas.
+        </p>
+        <div class="bg-dark-700/50 rounded-lg p-4 mt-3">
+          <div class="space-y-2 text-sm text-neutral-300">
+            <p><strong class="text-blue-400">Landing:</strong> "Pagina com headline, 3 beneficios, CTA de cadastro e social proof."</p>
+            <p><strong class="text-blue-400">Login:</strong> "Form com email e senha, botao de entrar, link para cadastro e recuperar senha."</p>
+            <p><strong class="text-blue-400">Dashboard:</strong> "Cards com metricas principais, lista de projetos recentes, botao de novo projeto."</p>
+            <p><strong class="text-blue-400">Core Feature:</strong> "Area de trabalho com sidebar de opcoes, area central para a acao principal, botao de salvar/exportar."</p>
+            <p><strong class="text-blue-400">Settings:</strong> "Tabs de perfil, plano e notificacoes. Forms simples com botao salvar."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: IA Gera Wireframes a Partir de Descricoes</h3>
+        <p class="text-neutral-300 mb-3">
+          Ferramentas como v0 da Vercel, Claude e Cursor conseguem gerar componentes visuais diretamente das suas descricoes de wireframe mental. O prompt ideal combina o wireframe mental com restricoes de stack:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300">
+          <p class="text-emerald-400 mb-2">// Prompt para gerar wireframe:</p>
+          <p>"[Contexto] Projeto Next.js + Tailwind. Tela de dashboard.</p>
+          <p>[Descricao] Cards com metricas (3 cards: total usuarios, receita mensal, tarefas ativas), lista dos 5 projetos mais recentes com status, botao 'Novo Projeto' no topo direito.</p>
+          <p>[Restricao] Mobile-first, sem lib de UI, dados mockados.</p>
+          <p>[Formato] Um arquivo page.tsx."</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Mapear o fluxo completo antes de desenhar telas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Incluir error states em todo fluxo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Descrever cada tela em 1 frase</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar wireframes mentais como base dos prompts</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comecar pelo design visual antes do fluxo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar o que acontece quando da erro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar telas que nao se conectam logicamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar horas no Figma antes de validar o fluxo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Lista de Telas da v1 -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F4F1; Lista de Telas da v1</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Se a v1 do seu produto tem mais de 7 telas, seu escopo esta grande demais. Ponto final. Cada tela adicional e mais codigo para escrever, mais bugs para resolver, mais edge cases para tratar, mais tempo ate o lancamento. A regra de ouro e: 5 telas ideais, 7 no maximo absoluto.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A lista de telas nao e uma lista de desejos. E uma lista de necessidades. Cada tela precisa justificar sua existencia respondendo: "sem essa tela, o usuario consegue completar o fluxo principal?" Se a resposta for sim, a tela nao e essencial para a v1.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: As 5 Telas Essenciais</h3>
+        <p class="text-neutral-300 mb-4">
+          Quase todo SaaS pode ser reduzido a 5 telas essenciais. Nao significa que seu produto so vai ter 5 telas para sempre. Significa que a v1 funciona com 5. O resto vem depois, com dados reais guiando as decisoes.
+        </p>
+        <div class="space-y-3">
+          <div class="bg-dark-700/50 rounded-lg p-4 flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Landing Page</h4>
+              <p class="text-neutral-300 text-sm">Primeiro contato. Headline, beneficios, CTA. Convence o visitante a criar conta. Sem landing page, ninguem sabe que seu produto existe.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Login / Signup</h4>
+              <p class="text-neutral-300 text-sm">Autenticacao. Pode ser uma unica tela com toggle entre login e cadastro. OAuth (Google, GitHub) simplifica muito.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-emerald-400">Dashboard</h4>
+              <p class="text-neutral-300 text-sm">Visao geral. O usuario logou e precisa ver o estado atual: metricas, itens recentes, acoes rapidas. Centro de comando.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">4</span>
+            <div>
+              <h4 class="font-semibold text-primary">Core Feature</h4>
+              <p class="text-neutral-300 text-sm">A razao de existir do seu produto. A tela onde o usuario faz A COISA. Se e um chat, e aqui. Se e um editor, e aqui. Se e um gerador de relatorios, e aqui.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4 flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">5</span>
+            <div>
+              <h4 class="font-semibold text-primary">Settings</h4>
+              <p class="text-neutral-300 text-sm">Configuracoes basicas: perfil, senha, preferencias. Na v1, mantenha simples. Nada de tabs infinitas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Mais Telas = Mais Problemas</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">+1 tela</div>
+            <p class="text-neutral-400 text-sm">= +2-3 horas de dev, +1 rota de API, +N edge cases, +1 lugar para bugs</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">5 telas</div>
+            <p class="text-neutral-400 text-sm">= ~20 rotas de API, ~30 componentes, ~50 testes. Gerenciavel para 1 pessoa.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">15 telas</div>
+            <p class="text-neutral-400 text-sm">= ~60 rotas, ~100 componentes, ~150 testes. Precisa de time. Nao e MVP.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: O Teste da Necessidade</h3>
+        <p class="text-neutral-300 mb-3">
+          Para cada tela que voce quer incluir na v1, faca o teste: "Se eu remover essa tela, o usuario ainda consegue usar o produto?" Se sim, tire da v1. Exemplos praticos:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <p><strong class="text-primary">Pagina "Sobre"?</strong> Nao essencial. Coloque no rodape da landing.</p>
+          <p><strong class="text-primary">Pagina de precos?</strong> Na v1, pode ser uma secao da landing. Tela separada so quando tiver multiplos planos.</p>
+          <p><strong class="text-primary">Perfil publico?</strong> A menos que seja core do produto (como Twitter), nao e v1.</p>
+          <p><strong class="text-primary">Admin panel?</strong> Na v1, use o Supabase/Firebase dashboard direto. Zero telas extras.</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Limitar a 5-7 telas na v1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Justificar cada tela com o teste da necessidade</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Combinar funcionalidades em telas existentes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Documentar telas removidas como "v2"</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar tela separada para cada funcionalidade</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Incluir admin panel na v1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Copiar a quantidade de telas de apps maduros</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar "so mais uma tela" depois de definido</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Prioridade MoSCoW -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F4CA; Prioridade MoSCoW</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        MoSCoW e um framework de priorizacao criado por Dai Clegg na Oracle nos anos 90 e usado ate hoje por times ageis do mundo inteiro. O nome vem das iniciais: Must Have, Should Have, Could Have, Won't Have. Os "o"s sao so para formar a palavra.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A forca do MoSCoW esta na clareza que ele traz. Em vez de uma lista infinita de features com prioridades vagas ("alta", "media", "baixa"), voce classifica cada feature em uma de quatro categorias com definicoes rigidas. Nao tem espaco para ambiguidade.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Framework MoSCoW: As 4 Categorias</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-2">M - Must Have (Obrigatorio)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Sem isso, o produto nao funciona. E o bloqueador de lancamento. Se uma feature Must nao esta pronta, voce nao lanca.</p>
+            <p class="text-neutral-400 text-xs">Exemplo: Autenticacao, tela principal, fluxo core, persistencia de dados.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-400 mb-2">S - Should Have (Importante)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Importante, mas o produto funciona sem. Entra na semana 2 ou sprint 2. Se faltar tempo, pode esperar.</p>
+            <p class="text-neutral-400 text-xs">Exemplo: Recuperacao de senha, filtros avancados, notificacoes por email, export CSV.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-2">C - Could Have (Desejavel)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Seria bom ter. Melhora a experiencia, mas nao e critico. Entra no mes 2 se tiver tempo e se os dados mostrarem demanda.</p>
+            <p class="text-neutral-400 text-xs">Exemplo: Dark mode, atalhos de teclado, integracao com Slack, avatar customizado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-red-400 mb-2">W - Won't Have (Descartado)</h4>
+            <p class="text-neutral-300 text-sm mb-2">Nao vai entrar. Nem agora, nem no curto prazo. Pode ser revisitado na v3 ou nunca. Essa categoria e a mais importante do framework.</p>
+            <p class="text-neutral-400 text-xs">Exemplo: App mobile, multi-idioma, marketplace de plugins, AI voice, chat em tempo real.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Matriz de Decisao: Exemplo Real</h3>
+        <p class="text-neutral-300 mb-4">
+          Veja como classificar features de um SaaS de gestao de projetos com IA:
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-neutral-400 font-semibold">Feature</th>
+                <th class="text-center py-2 text-emerald-400 font-semibold">MoSCoW</th>
+                <th class="text-left py-2 text-neutral-400 font-semibold">Quando</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700"><td class="py-2">Login com email/senha</td><td class="text-center text-emerald-400 font-bold">Must</td><td class="text-neutral-400">Sprint 1</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Dashboard com projetos</td><td class="text-center text-emerald-400 font-bold">Must</td><td class="text-neutral-400">Sprint 1</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Criar/editar tarefas</td><td class="text-center text-emerald-400 font-bold">Must</td><td class="text-neutral-400">Sprint 2</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Recuperar senha</td><td class="text-center text-blue-400 font-bold">Should</td><td class="text-neutral-400">Semana 2</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Filtros por status</td><td class="text-center text-blue-400 font-bold">Should</td><td class="text-neutral-400">Semana 3</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Dark mode</td><td class="text-center text-primary font-bold">Could</td><td class="text-neutral-400">Mes 2</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">App mobile</td><td class="text-center text-red-400 font-bold">Won't</td><td class="text-neutral-400">Nunca (v1)</td></tr>
+              <tr><td class="py-2">Multi-idioma</td><td class="text-center text-red-400 font-bold">Won't</td><td class="text-neutral-400">Nunca (v1)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: A Regra 60-20-20</h3>
+        <p class="text-neutral-300 mb-3">
+          Uma distribuicao saudavel de MoSCoW para um MVP:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <p><strong class="text-emerald-400">~60% Must Have:</strong> As features essenciais que fazem o produto funcionar. Se voce tem 10 features, 6 sao Must.</p>
+          <p><strong class="text-blue-400">~20% Should Have:</strong> 2 features importantes para a segunda semana.</p>
+          <p><strong class="text-primary">~20% Could + Won't:</strong> 2 features que voce reconhece como desejaveis mas corta conscientemente.</p>
+        </div>
+        <p class="text-neutral-300 mt-3">
+          Se mais de 80% das suas features sao "Must", voce esta classificando errado. Seja honesto: e realmente bloqueador de lancamento?
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Classificar TODA feature antes de comecar a construir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ser brutal: Must so se for bloqueador de lancamento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ter pelo menos 2-3 itens no Won't Have</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Revisar a classificacao apos feedback de usuarios</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Colocar tudo como Must Have</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar a categoria Won't Have</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Mudar classificacoes no meio do sprint</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Classificar sem envolver stakeholders</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Lista de Exclusao: O que NAO Fazer -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F6AB; Lista de Exclusao: O que NAO Fazer</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        A lista de exclusao e o documento mais importante do seu projeto. Mais importante que o roadmap, mais importante que o backlog, mais importante que o design system. Parece contraditorio, mas a lista do que voce NAO vai fazer salva mais tempo do que a lista do que voce vai fazer.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O conceito vem de Warren Buffett, que diz que pessoas bem-sucedidas dizem "nao" para quase tudo. No contexto de produto, isso significa criar um contrato explicito consigo mesmo (e com seu time, se tiver) sobre limites inegociaveis. Quando a tentacao de adicionar "so mais uma feature" aparecer, voce abre a lista de exclusao e lembra: "ja decidimos que isso nao entra".
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: O Anti-Roadmap</h3>
+        <p class="text-neutral-300 mb-4">
+          Um roadmap diz "vamos construir X, Y e Z". Um anti-roadmap diz "nao vamos construir A, B, C, D, E, F, G". A segunda lista e maior, e e isso que a torna poderosa. Ela define os limites do projeto e protege o foco.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          Cada item na lista de exclusao deve incluir tres coisas: <strong>o que</strong> (a feature), <strong>por que nao</strong> (a justificativa) e <strong>quando talvez</strong> (em que condicao pode ser reconsiderada).
+        </p>
+        <div class="bg-dark-700/50 rounded-lg p-4 mt-4">
+          <h4 class="font-semibold text-emerald-400 mb-3">Exemplo: Lista de Exclusao de um SaaS de Chat com IA</h4>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">&#10007;</span>
+              <div>
+                <p class="text-neutral-300"><strong>App mobile nativo</strong></p>
+                <p class="text-neutral-400 text-xs">Por que: PWA resolve 90% dos casos. Custo de manter 2 plataformas e proibitivo. Quando: se passar de 10k usuarios ativos mensais.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">&#10007;</span>
+              <div>
+                <p class="text-neutral-300"><strong>Admin panel customizado</strong></p>
+                <p class="text-neutral-400 text-xs">Por que: Supabase dashboard resolve. Quando: se precisar de operacoes que o Supabase nao suporta.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">&#10007;</span>
+              <div>
+                <p class="text-neutral-300"><strong>Multi-idioma (i18n)</strong></p>
+                <p class="text-neutral-400 text-xs">Por que: foco no mercado BR primeiro. Quando: se validar demanda internacional significativa.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">&#10007;</span>
+              <div>
+                <p class="text-neutral-300"><strong>Integracao WhatsApp</strong></p>
+                <p class="text-neutral-400 text-xs">Por que: API cara ($), complexa, e nao e core do produto. Quando: se for a feature mais pedida por pagantes.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-2">
+              <span class="text-red-400 mt-0.5 flex-shrink-0">&#10007;</span>
+              <div>
+                <p class="text-neutral-300"><strong>Marketplace de plugins</strong></p>
+                <p class="text-neutral-400 text-xs">Por que: complexidade absurda para v1. Quando: talvez v3, se o ecossistema justificar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">O Custo Invisivel de Cada Feature</h3>
+        <p class="text-neutral-300 mb-3">
+          Toda feature tem um custo visivel (tempo de dev) e custos invisiveis que se acumulam ao longo do tempo. Pesquisas de engenharia de software estimam que para cada hora gasta construindo uma feature, voce vai gastar 4-6 horas mantendo ela ao longo da vida do produto.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">4-6x</div>
+            <p class="text-neutral-400 text-sm">custo de manutencao vs custo de construcao para cada feature</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">35%</div>
+            <p class="text-neutral-400 text-sm">das features em produtos SaaS nunca sao usadas pelos usuarios (Pendo, 2024)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Kill Your Darlings</h3>
+        <p class="text-neutral-300 mb-3">
+          A expressao "kill your darlings" vem da literatura: corte as partes que voce mais ama no texto se elas nao servem a historia. No produto, e igual: corte as features que voce mais quer construir se elas nao servem ao usuario na v1.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          Crie a lista de exclusao antes de comecar a construir e trate como contrato. Cole em algum lugar visivel. Quando a tentacao aparecer ("sera que devo adicionar um chatbot?"), abra a lista e diga "nao, ja decidimos".
+        </p>
+        <p class="text-neutral-300">
+          Uma boa lista de exclusao tem pelo menos <strong>o dobro de itens</strong> da sua lista de features. Se voce tem 6 features na v1, tenha pelo menos 12 itens na lista de exclusao.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Criar a lista de exclusao ANTES de comecar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Incluir "por que nao" e "quando talvez" em cada item</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ter pelo menos 2x mais exclusoes que features</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Tratar como contrato, nao como sugestao</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao ter lista de exclusao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar excecos "so dessa vez"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Incluir features na v1 porque a IA gera rapido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Mudar a lista toda semana</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Documento de Escopo do seu SaaS -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F4DD; Exercicio: Documento de Escopo do seu SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Este exercicio junta tudo que voce aprendeu nos topicos 1-5 em um unico documento de escopo de uma pagina. Esse documento vai ser a bussola do seu projeto. Toda decisao de "incluo ou nao?" passa por ele. Todo prompt para a IA referencia ele. Toda conversa sobre o produto comeca nele.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O documento de escopo nao e um business plan de 30 paginas. E um documento vivo, curto e afiado, que cabe em uma pagina A4. Se precisa de mais de uma pagina, o escopo esta grande demais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Template: Documento de Escopo (1 pagina)</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">1. Product Sentence</h4>
+            <p class="text-neutral-300 text-sm mb-2">Uma unica frase que define o produto:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-sm text-emerald-400">
+              "Um [tipo de app] que ajuda [usuario] a [resolver problema] atraves de [mecanismo]."
+            </div>
+            <p class="text-neutral-400 text-xs mt-2">Exemplo: "Um dashboard web que ajuda freelancers a organizar clientes e projetos atraves de automacao com IA."</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">2. Lista de 5 Telas</h4>
+            <p class="text-neutral-300 text-sm mb-2">As telas da v1 com wireframe mental (1 frase cada):</p>
+            <div class="text-sm text-neutral-300 space-y-1">
+              <p>1. <strong>Landing:</strong> [descricao em 1 frase]</p>
+              <p>2. <strong>Auth:</strong> [descricao em 1 frase]</p>
+              <p>3. <strong>Dashboard:</strong> [descricao em 1 frase]</p>
+              <p>4. <strong>Core Feature:</strong> [descricao em 1 frase]</p>
+              <p>5. <strong>Settings:</strong> [descricao em 1 frase]</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">3. Tabela MoSCoW</h4>
+            <p class="text-neutral-300 text-sm mb-2">Classifique suas features:</p>
+            <div class="text-sm text-neutral-300 space-y-1">
+              <p><span class="text-emerald-400 font-bold">Must:</span> [3-5 features essenciais]</p>
+              <p><span class="text-blue-400 font-bold">Should:</span> [2-3 features importantes]</p>
+              <p><span class="text-primary font-bold">Could:</span> [1-2 features desejaveis]</p>
+              <p><span class="text-red-400 font-bold">Won't:</span> [3-5 features descartadas]</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-red-400 mb-2">4. Lista de Exclusao</h4>
+            <p class="text-neutral-300 text-sm mb-2">Pelo menos 8 itens que voce NAO vai construir:</p>
+            <div class="text-sm text-neutral-300">
+              <p>Para cada item: <strong>O que</strong> | <strong>Por que nao</strong> | <strong>Quando talvez</strong></p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">5. Timeline</h4>
+            <p class="text-neutral-300 text-sm mb-2">Cronograma de 2 semanas:</p>
+            <div class="text-sm text-neutral-300 space-y-1">
+              <p><strong>Semana 1:</strong> Setup + Auth + Dashboard + Core Feature (Must Haves)</p>
+              <p><strong>Semana 2:</strong> Polish + Should Haves + Deploy + Landing Page</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Por que 1 Pagina e Suficiente</h3>
+        <p class="text-neutral-300 mb-3">
+          Jeff Bezos e famoso por proibir PowerPoints na Amazon e exigir "narrativas de 6 paginas". Para startups e projetos solo, ate 6 paginas e demais. Uma pagina forca voce a ser conciso e priorizar o que realmente importa.
+        </p>
+        <p class="text-neutral-300">
+          Estudos da Harvard Business Review mostram que documentos de planejamento mais curtos sao mais consultados e mais seguidos. Um doc de 30 paginas ninguem abre depois da primeira semana. Um doc de 1 pagina voce cola na parede e consulta todo dia.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Use a IA para Revisar seu Escopo</h3>
+        <p class="text-neutral-300 mb-3">
+          Depois de preencher o template, use este prompt para a IA fazer uma revisao critica:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-3">
+          <p class="text-emerald-400 mb-2">// Prompt de revisao de escopo:</p>
+          <p>"Analise este documento de escopo de um MVP SaaS:</p>
+          <p>[Cole seu documento aqui]</p>
+          <p>Avalie: 1) O escopo e realista para 2 semanas com Vibe Coding? 2) Alguma tela pode ser combinada ou eliminada? 3) Algum Must Have e na verdade Should Have? 4) A lista de exclusao esta completa? 5) O user flow faz sentido? Seja direto e critico."</p>
+        </div>
+        <p class="text-neutral-300 text-sm">
+          A IA vai apontar furos que voce nao viu. E mais facil cortar escopo no papel do que depois de construido.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Preencher TODOS os 5 campos do template</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Caber em 1 pagina (se nao cabe, corte)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir revisao da IA antes de comecar a construir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Salvar e consultar durante todo o projeto</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Escrever um doc de 10 paginas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular a lista de exclusao ("ja sei o que nao fazer")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Fazer sozinho sem feedback externo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Engavetar o documento e nunca mais abrir</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-emerald-500/30">
+      <h2 class="text-2xl font-bold text-emerald-400 mb-6 text-center">Resumo do Modulo 1.4</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora tem as ferramentas para definir escopo de forma disciplinada. O segredo nao e o que voce constroi, e o que voce escolhe nao construir.
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">MVP e a versao mais enxuta que funciona, nao a versao quebrada do produto</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Pense em fluxos antes de telas. Wireframes mentais forcam clareza.</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Maximo 5-7 telas na v1. Cada tela extra multiplica complexidade.</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">MoSCoW classifica features com rigidez: Must, Should, Could, Won't.</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">A lista de exclusao e o documento mais importante do projeto.</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Seu documento de escopo cabe em 1 pagina e guia todas as decisoes.</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center pt-6 border-t border-emerald-500/20">
+        <a href="modulo-1-3.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 1.3</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 1</span>
+        </a>
+        <a href="modulo-1-5.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Modulo 1.5</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 1.4: Escopo e Definicao de Produto - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

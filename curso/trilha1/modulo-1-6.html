@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 1.6: Erros Comuns em Projetos com IA | Imersao Vibe Coding</title>
+  <meta name="description" content="Vulnerabilidades em codigo IA, alucinacoes, over-reliance e como construir redes de seguranca com code review e testes.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-emerald-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400 transition-colors">Trilha 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Modulo 1.6</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-4">MODULO 1.6</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x26A0;&#xFE0F; Erros Comuns em Projetos com IA</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Vulnerabilidades reais, alucinacoes de codigo, dependencia excessiva e como construir redes de seguranca que salvam projetos.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">45</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-emerald-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: 45% de Vulnerabilidades: Pesquisa Stanford -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F50D; 45% de Vulnerabilidades: Pesquisa Stanford</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Em 2022, pesquisadores da Stanford University e da University of Illinois publicaram um estudo que deveria ter sido um alarme para qualquer pessoa que usa IA para gerar codigo. Eles pediram a assistentes de IA que gerassem codigo para tarefas comuns de programacao e analisaram os resultados. A conclusao foi devastadora: quase metade do codigo gerado continha pelo menos uma vulnerabilidade de seguranca.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O mais perturbador nao foram as vulnerabilidades em si. Foi o fato de que os participantes do estudo que usaram IA acreditavam que seu codigo era MAIS seguro do que o dos participantes que codaram manualmente. A IA criou uma falsa sensacao de competencia que tornou os desenvolvedores menos cautelosos, nao mais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          O estudo analisou codigo gerado por LLMs em cenarios realistas: criptografia, manipulacao de strings, queries SQL, autenticacao e manipulacao de arquivos. Os tipos mais comuns de vulnerabilidade encontrados foram:
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-red-400">SQL Injection</h4>
+              <p class="text-neutral-300 text-sm">A IA frequentemente gera queries SQL concatenando strings diretamente com input do usuario, sem usar prepared statements ou parametrizacao. Um atacante pode injetar comandos SQL maliciosos e acessar, modificar ou deletar dados inteiros do banco.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-red-400">Cross-Site Scripting (XSS)</h4>
+              <p class="text-neutral-300 text-sm">Codigo que renderiza input do usuario diretamente no HTML sem sanitizar. Isso permite que atacantes injetem scripts maliciosos que rodam no navegador de outros usuarios, roubando cookies, sessoes e dados pessoais.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-red-400">Path Traversal</h4>
+              <p class="text-neutral-300 text-sm">A IA gera codigo que aceita caminhos de arquivo do usuario sem validar, permitindo acesso a arquivos fora do diretorio permitido. Um input como "../../etc/passwd" pode expor arquivos sensivos do servidor.</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-neutral-300 mt-4">
+          A razao fundamental: LLMs aprendem com codigo publico, e uma quantidade enorme de codigo publico contem vulnerabilidades. O modelo reproduz os padroes mais comuns, e vulnerabilidades sao padroes comuns.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Dados da Pesquisa Stanford/UIUC</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">45%</div>
+            <p class="text-neutral-400 text-sm">do codigo gerado continha pelo menos uma vulnerabilidade de seguranca (CWE catalogada)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">67%</div>
+            <p class="text-neutral-400 text-sm">dos participantes que usaram IA acreditavam que seu codigo era seguro (vs 40% do grupo controle)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Top 3</div>
+            <p class="text-neutral-400 text-sm">CWE-89 (SQL Injection), CWE-79 (XSS), CWE-22 (Path Traversal) foram as mais frequentes</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2x</div>
+            <p class="text-neutral-400 text-sm">mais provavel que desenvolvedores com IA ignorem verificacoes de seguranca manuais</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Toda vez que a IA gerar codigo que interage com input do usuario, banco de dados, ou sistema de arquivos, assuma que o codigo e vulneravel ate que voce prove o contrario. Adicione ao seu prompt:
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-emerald-400 mb-3">
+          "Use prepared statements para todas as queries. Sanitize todo input do usuario. Valide caminhos de arquivo contra path traversal. Inclua tratamento de erros que nao exponha informacoes internas."
+        </div>
+        <p class="text-neutral-300">
+          Tratar seguranca como requisito explicito no prompt, nao como algo que a IA "deveria saber", reduz drasticamente o numero de vulnerabilidades no codigo gerado.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir prepared statements explicitamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Validar todo input do usuario no servidor</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Rodar scanners de seguranca no codigo gerado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ler o estudo original para entender os riscos</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Assumir que a IA gera codigo seguro por padrao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Concatenar strings em queries SQL</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Renderizar input do usuario sem sanitizar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar no "parece certo" sem testar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: Os 5 Erros Fatais em Projetos com IA -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F4A5; Os 5 Erros Fatais em Projetos com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Depois de analisar centenas de projetos construidos com Vibe Coding, cinco padroes de falha aparecem repetidamente. Eles nao sao erros tecnicos obscuros. Sao erros de processo e mentalidade que destroem projetos inteiros, geralmente quando ja e tarde demais para corrigir.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O perigo desses erros e que eles nao parecem erros no momento. Cada um deles parece uma decisao razoavel ("a IA gerou, deve estar certo", "vou adicionar so mais essa feature", "pra que commitar se ta funcionando"). O resultado so aparece depois, quando o projeto esta grande demais para consertar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Os 5 Erros Fatais: Deep Dive</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-start space-x-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">1</span>
+              <h4 class="font-semibold text-red-400 text-lg">Confianca Cega (Copy-Paste sem Review)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-3">
+              Voce pede a IA para criar um componente. Ela gera 200 linhas de codigo. Voce cola no projeto, roda, funciona. Proximo. Esse ciclo se repete dezenas de vezes ate que voce tem um projeto de 5.000 linhas que voce nao entende. Quando algo quebra (e vai quebrar), voce nao sabe nem por onde comecar a debugar.
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm">
+              <p class="text-red-400 font-semibold mb-1">Caso real:</p>
+              <p class="text-neutral-400">Um desenvolvedor construiu um SaaS inteiro com Cursor em 3 dias. Na quarta versao de deploy, um bug de autenticacao permitiu que qualquer pessoa acessasse dados de qualquer usuario. O dev nao conseguiu encontrar o bug porque nao entendia o fluxo de auth que a IA gerou. Levou 2 semanas para corrigir algo que teria sido pego em 5 minutos de code review.</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-start space-x-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">2</span>
+              <h4 class="font-semibold text-red-400 text-lg">Ignorar Seguranca (Sem Validacao de Input)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-3">
+              A IA gera codigo que funciona para o "happy path" (o caminho feliz onde tudo da certo). Mas software de verdade recebe inputs invalidos, maliciosos e inesperados. Sem validacao, seu app e um convite aberto para atacantes.
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm">
+              <p class="text-red-400 font-semibold mb-1">Caso real:</p>
+              <p class="text-neutral-400">Um projeto de marketplace gerado com IA tinha um endpoint de pagamento que aceitava valores negativos. Um usuario descobriu e "comprou" produtos por -R$50, efetivamente recebendo dinheiro a cada compra. O dev nao tinha validacao de input em nenhum endpoint porque "a IA cuidou disso".</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-start space-x-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">3</span>
+              <h4 class="font-semibold text-red-400 text-lg">Zero Testes ("Works on My Machine")</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-3">
+              "Testei manualmente e funciona" nao e teste. Teste manual verifica um caminho especifico com dados especificos em um momento especifico. Sem testes automatizados, cada mudanca que voce faz pode quebrar algo que funcionava antes, e voce so descobre quando o usuario reclama.
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm">
+              <p class="text-red-400 font-semibold mb-1">Caso real:</p>
+              <p class="text-neutral-400">Um SaaS de automacao de emails funcionava perfeitamente nos testes manuais. No primeiro dia com usuarios reais, emails duplicados foram enviados para 2.000 pessoas porque o codigo nao tratava retries em caso de timeout da API. Um unico teste de integracao teria pego isso.</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-start space-x-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">4</span>
+              <h4 class="font-semibold text-red-400 text-lg">Escopo Infinito ("A IA Faz Parecer Facil")</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-3">
+              A IA gera features em minutos. Isso cria a ilusao de que adicionar mais coisas nao tem custo. Mas cada feature adicionada aumenta a superficie de bugs, a complexidade de manutencao, e a confusao do usuario. O resultado e um produto que faz 20 coisas meia-boca em vez de 3 coisas muito bem.
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm">
+              <p class="text-red-400 font-semibold mb-1">Caso real:</p>
+              <p class="text-neutral-400">Um builder comecou com "um app de lista de tarefas com IA". Em 2 semanas, adicionou: chat com IA, geracao de relatorios, integracao com calendario, dashboard de analytics, notificacoes push e modo offline. O app travava a cada 10 minutos, nenhuma feature funcionava direito, e zero usuarios ficaram apos o primeiro uso.</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-start space-x-3 mb-3">
+              <span class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">5</span>
+              <h4 class="font-semibold text-red-400 text-lg">Sem Versionamento (YOLO Commits)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-3">
+              Voce esta no flow, a IA gerando codigo, tudo funcionando. Ai voce pede uma mudanca e tudo quebra. Sem Git, sem commits regulares, sem branches, voce nao tem para onde voltar. O unico caminho e tentar desfazer mentalmente o que mudou, o que e praticamente impossivel quando a IA gerou centenas de linhas.
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 text-sm">
+              <p class="text-red-400 font-semibold mb-1">Caso real:</p>
+              <p class="text-neutral-400">Um projeto de 3 semanas de trabalho foi destruido em 30 minutos quando o dev pediu para a IA "refatorar a estrutura do banco de dados". A IA alterou schemas, migrations e queries. Metade do app quebrou. Sem um unico commit no historico, o dev teve que comecar do zero.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">O Custo Real dos Erros</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">5-100x</div>
+            <p class="text-neutral-400 text-sm">mais caro corrigir um bug em producao do que durante o desenvolvimento (IBM Systems Sciences Institute)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">60%</div>
+            <p class="text-neutral-400 text-sm">dos projetos solo com IA sao abandonados antes de completar 1 mes (pesquisa com builders indie, 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$4.45M</div>
+            <p class="text-neutral-400 text-sm">custo medio de um data breach em 2023 (IBM Cost of a Data Breach Report)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">85%</div>
+            <p class="text-neutral-400 text-sm">dos bugs em codigo IA sao detectaveis com testes basicos (unit + integration)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: A Regra dos 3 Commits</h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de pedir qualquer mudanca significativa para a IA, faca um commit. Depois de implementar a mudanca e verificar que funciona, faca outro commit. Se algo quebrar depois, voce tem exatamente onde voltar.
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+          <p class="text-emerald-400">// Fluxo seguro:</p>
+          <p>1. git commit -m "before: auth refactor"</p>
+          <p>2. Pedir mudanca para IA</p>
+          <p>3. Revisar codigo gerado</p>
+          <p>4. Testar</p>
+          <p>5. git commit -m "feat: new auth flow with sessions"</p>
+          <p class="text-red-400 mt-2">// Se quebrar, voltar e simples:</p>
+          <p>git checkout [hash do commit 1]</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Commit antes de cada mudanca grande</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Ler todo codigo antes de aceitar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Validar inputs em todo endpoint</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Definir escopo e respeitar o limite</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Aceitar codigo sem entender o que faz</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Trabalhar sem Git inicializado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar features "porque e facil"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deployer sem testes automatizados</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Alucinacoes de Codigo: Detectar e Prevenir -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F47B; Alucinacoes de Codigo: Detectar e Prevenir</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Alucinacoes nao sao exclusivas de texto. Quando uma IA gera codigo, ela pode inventar APIs que nao existem, usar funcoes com assinaturas erradas, importar pacotes ficticios e referenciar metodos que nunca foram implementados na biblioteca que ela esta usando. O codigo parece perfeitamente valido, a sintaxe esta correta, os nomes fazem sentido. Mas nao funciona.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O problema e que alucinacoes de codigo sao mais dificeis de detectar do que alucinacoes de texto. Um fato errado voce pode verificar no Google. Uma API inventada pode parecer real ate voce tentar executar o codigo e receber um erro criptico.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: Tipos de Alucinacao em Codigo</h3>
+        <div class="space-y-4 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-red-400 mb-1">APIs Fantasma</h4>
+            <p class="text-neutral-300 text-sm">A IA inventa metodos que "fazem sentido" mas nao existem na biblioteca. Exemplo: <code class="bg-dark-800 px-2 py-0.5 rounded text-emerald-400">supabase.auth.getUserProfile()</code> parece real mas nao existe na API do Supabase. O metodo correto seria <code class="bg-dark-800 px-2 py-0.5 rounded text-emerald-400">supabase.auth.getUser()</code>.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-red-400 mb-1">Pacotes Ficticios</h4>
+            <p class="text-neutral-300 text-sm">A IA sugere instalar pacotes npm/pip que nao existem. Isso e especialmente perigoso porque atacantes criam pacotes com nomes que LLMs costumam alucinar (supply chain attack via "slopsquatting"). Se voce rodar <code class="bg-dark-800 px-2 py-0.5 rounded text-emerald-400">npm install nome-inventado</code> e o pacote existir, pode conter malware.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-red-400 mb-1">Assinaturas Erradas</h4>
+            <p class="text-neutral-300 text-sm">A funcao existe mas os parametros estao errados. A IA mistura versoes de bibliotecas ou combina APIs de frameworks diferentes. Exemplo: usar a sintaxe de React Router v5 em um projeto v6, onde os hooks e componentes mudaram completamente.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-red-400 mb-1">Logica Plausivel mas Errada</h4>
+            <p class="text-neutral-300 text-sm">O tipo mais perigoso. O codigo roda sem erros, parece correto, mas implementa a logica de forma errada. Exemplo: um calculo de juros compostos que usa juros simples, ou um filtro de data que compara strings em vez de objetos Date.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Escala do Problema</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">30%</div>
+            <p class="text-neutral-400 text-sm">das sugestoes de codigo de LLMs contem pelo menos uma referencia a API inexistente (estudo Purdue University, 2024)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">580K+</div>
+            <p class="text-neutral-400 text-sm">nomes de pacotes unicos que LLMs alucinam repetidamente, criando vetores para supply chain attacks</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">19%</div>
+            <p class="text-neutral-400 text-sm">dos pacotes pip/npm sugeridos por GPT-4 nao existiam nos registros oficiais (pesquisa Vulcan Cyber, 2024)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">v5 vs v6</div>
+            <p class="text-neutral-400 text-sm">confusao de versoes e a fonte mais comum de APIs "quase certas" mas incompativeis</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: O Teste de Verificacao em 3 Passos</h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de usar qualquer codigo gerado por IA, passe por este checklist rapido:
+        </p>
+        <div class="space-y-3 text-sm text-neutral-300">
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">1</span>
+            <div>
+              <strong class="text-emerald-400">Teste de Import:</strong> Cada import/require aponta para um pacote real? Verifique no npmjs.com ou pypi.org antes de instalar. Se nao existir, e alucinacao.
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">2</span>
+            <div>
+              <strong class="text-emerald-400">Teste de API:</strong> Os metodos usados existem na versao que voce esta usando? Consulte a documentacao oficial, nao confie na "memoria" da IA.
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xs flex-shrink-0">3</span>
+            <div>
+              <strong class="text-emerald-400">Teste de Edge Case:</strong> O que acontece com input vazio, null, muito grande, ou no formato errado? Se o codigo so funciona com o "input perfeito", a logica e fragil.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Verificar cada pacote no registro oficial antes de instalar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Consultar a documentacao da versao que voce usa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Testar com dados invalidos e edge cases</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Especificar versoes de libs no prompt</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Rodar npm install sem verificar o pacote</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar em nomes de funcoes que "parecem certos"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Misturar versoes de bibliotecas no projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar erros de tipo/compilacao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Over-Reliance: Quando a IA Vira Muleta -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F9AF; Over-Reliance: Quando a IA Vira Muleta</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Existe uma diferenca fundamental entre usar IA como ferramenta e depender da IA como muleta. A ferramenta amplifica suas capacidades. A muleta substitui elas. E quando a muleta e tirada (API fora do ar, limite de tokens atingido, bug que a IA nao consegue resolver), voce cai.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O fenomeno de over-reliance (dependencia excessiva) nao e novo. Aconteceu com calculadoras, GPS, autocorrect. Mas com codigo gerado por IA, as consequencias sao mais severas: voce pode construir um produto inteiro sem entender como ele funciona. E um dia voce vai precisar entender.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-3">Conceito Principal: A Armadilha da Dependencia</h3>
+        <p class="text-neutral-300 mb-4">
+          A dependencia excessiva se manifesta em tres estagios progressivos:
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-sm flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-primary">Conforto</h4>
+              <p class="text-neutral-300 text-sm">Voce usa IA para tudo porque e mais rapido. Faz sentido. E produtivo. Mas voce para de praticar resolucao de problemas por conta propria.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-sm flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-amber-400">Atrofia</h4>
+              <p class="text-neutral-300 text-sm">Depois de semanas sem pensar em logica por conta propria, voce percebe que precisa da IA ate para tarefas simples. Escrever um loop, debugar um erro basico, entender um stack trace. Skills que voce tinha estao enferrujadas.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-red-500/30 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-red-400">Paralisia</h4>
+              <p class="text-neutral-300 text-sm">A IA nao consegue resolver um problema (isso acontece mais do que voce imagina). Voce nao consegue resolver sozinho. O projeto para. Voce esta bloqueado por uma ferramenta que deveria te desbloquear.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">A Regra 80/20 do Vibe Coding</h3>
+        <p class="text-neutral-300 mb-4">
+          A utilizacao ideal de IA em desenvolvimento segue um padrao claro. Nem tudo deve ser delegado, e nem tudo deve ser feito manualmente.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-emerald-900/20 rounded-lg p-4 border border-emerald-500/20">
+            <h4 class="font-semibold text-emerald-400 mb-2">IA Brilha (80% do tempo)</h4>
+            <ul class="space-y-1 text-sm text-neutral-300">
+              <li>Boilerplate e codigo repetitivo</li>
+              <li>Setup de projetos e configuracao</li>
+              <li>Componentes UI padrao</li>
+              <li>Testes unitarios basicos</li>
+              <li>Documentacao e comentarios</li>
+              <li>Conversao entre formatos</li>
+            </ul>
+          </div>
+          <div class="bg-red-900/20 rounded-lg p-4 border border-red-500/20">
+            <h4 class="font-semibold text-red-400 mb-2">Voce Precisa Pensar (20% do tempo)</h4>
+            <ul class="space-y-1 text-sm text-neutral-300">
+              <li>Decisoes de arquitetura</li>
+              <li>Logica de negocio complexa</li>
+              <li>Seguranca e autenticacao</li>
+              <li>Performance e otimizacao</li>
+              <li>Debug de problemas sutis</li>
+              <li>Decisoes de trade-off</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: O Exercicio Semanal</h3>
+        <p class="text-neutral-300 mb-3">
+          Uma vez por semana, resolva um problema pequeno sem IA. Pode ser um bug, um componente novo, ou um algoritmo. Nao precisa ser grande. O objetivo e manter suas habilidades de raciocinio ativas.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          Outra pratica eficaz: antes de pedir para a IA resolver algo, tente descrever a solucao em pseudocodigo ou palavras. Isso forca voce a pensar na logica primeiro. Depois peca para a IA implementar a partir da sua descricao, nao do zero.
+        </p>
+        <p class="text-neutral-300">
+          Pense na IA como um junior muito rapido: voce da a direcao, ele executa. Se voce nao sabe a direcao, ele vai escolher uma para voce. E pode nao ser a melhor.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Usar IA para boilerplate e tarefas repetitivas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pensar na logica antes de pedir implementacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Praticar resolucao manual semanalmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Entender cada parte do codigo do seu projeto</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Delegar decisoes de arquitetura para a IA</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pedir solucao sem entender o problema primeiro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Parar de estudar porque "a IA faz por mim"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar erros que voce nao entende</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Code Review e Testes como Rede de Seguranca -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F6E1;&#xFE0F; Code Review e Testes como Rede de Seguranca</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Se os topicos anteriores mostraram os riscos, este topico mostra a solucao. Code review e testes automatizados sao as duas praticas que transformam codigo IA de "potencialmente perigoso" para "confiavel em producao". A ironia e que a propria IA pode te ajudar a implementar essas redes de seguranca.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Codigo gerado por IA precisa de MAIS review, nao menos. A velocidade de geracao cria volume, e volume sem verificacao e um campo minado. A boa noticia: com um processo estruturado, o review de codigo IA e mais rapido que escrever o codigo do zero.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">Conceito Principal: O Processo de Review em 4 Camadas</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-1">Camada 1: Logica</h4>
+            <p class="text-neutral-300 text-sm">O codigo faz o que deveria fazer? Trace o fluxo mentalmente: dado um input X, o output sera Y? Verifique condicoes (if/else), loops (vai terminar?), e retornos (esta retornando o tipo certo?).</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-1">Camada 2: Seguranca</h4>
+            <p class="text-neutral-300 text-sm">Inputs sao validados? Queries sao parametrizadas? Secrets estao protegidos? Autenticacao e verificada em cada rota protegida? Dados sensiveis estao sendo logados? Rate limiting existe?</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-emerald-400 mb-1">Camada 3: Performance</h4>
+            <p class="text-neutral-300 text-sm">Tem queries N+1? Loops desnecessarios? Dados grandes carregados sem paginacao? Chamadas de API sem cache? Imagens sem otimizacao? Componentes re-renderizando sem necessidade?</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-primary mb-1">Camada 4: Edge Cases</h4>
+            <p class="text-neutral-300 text-sm">O que acontece com input vazio? Null? Undefined? Muito grande? No formato errado? Quando a API externa esta fora do ar? Quando o usuario nao tem permissao? Quando dois usuarios fazem a mesma acao ao mesmo tempo?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Meta-Testing: IA Testando IA</h3>
+        <p class="text-neutral-300 mb-4">
+          Uma das tecnicas mais poderosas de Vibe Coding e pedir para a IA escrever testes para o codigo que ela mesma gerou. Isso cria uma camada de verificacao cruzada que pega erros que o review manual pode perder.
+        </p>
+        <div class="bg-dark-700 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-2">
+          <p class="text-emerald-400">// Prompt para meta-testing:</p>
+          <p>"Aqui esta a funcao que voce gerou. Agora escreva:</p>
+          <p>1. 5 testes unitarios cobrindo o happy path</p>
+          <p>2. 5 testes cobrindo edge cases (null, vazio, tipo errado)</p>
+          <p>3. 2 testes de integracao com a API externa</p>
+          <p>4. 1 teste de performance com 1000 items"</p>
+        </div>
+        <p class="text-neutral-300 mt-3 text-sm">
+          Importante: revise os testes tambem. A IA pode gerar testes que so passam (testes que nao testam nada de verdade). Verifique se os assertions sao especificos e se os testes realmente falhariam se o codigo estivesse errado.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Checklist de Review para Codigo IA</h3>
+        <p class="text-neutral-300 mb-3">
+          Imprima ou salve esse checklist. Use antes de aceitar qualquer bloco significativo de codigo gerado:
+        </p>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Logica:</strong> Eu consigo explicar o que cada funcao faz?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Logica:</strong> Os tipos/retornos estao corretos?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Seguranca:</strong> Inputs sao validados e sanitizados?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Seguranca:</strong> Nenhum secret esta hardcoded?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Performance:</strong> Sem queries N+1 ou loops desnecessarios?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Edge Cases:</strong> Funciona com input null, vazio, enorme?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Testes:</strong> Pedi testes e eles cobrem happy + sad paths?</span></label>
+          <label class="flex items-start space-x-2"><span class="text-primary mt-0.5">&#x25A2;</span><span><strong>Git:</strong> Commitei a versao anterior antes de aceitar?</span></label>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Pedir testes junto com cada feature nova</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Revisar as 4 camadas antes de aceitar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Rodar testes a cada mudanca significativa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Verificar que os testes realmente testam algo</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Aceitar codigo sem nenhuma verificacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Escrever testes so no final do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar testes que falham ("depois eu arrumo")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar em testes gerados pela IA sem revisar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Checklist de Qualidade para Codigo IA -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F4CB; Exercicio: Checklist de Qualidade para Codigo IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Teoria sem pratica e entretenimento. Neste exercicio voce vai construir seu proprio checklist de qualidade personalizado e aplica-lo a codigo real. O objetivo e criar um habito: nenhum codigo IA entra no seu projeto sem passar pelo checklist.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Ao final deste exercicio voce tera um documento que vai usar em todos os projetos das proximas trilhas. Trate isso como um investimento: 30 minutos agora para economizar horas de debug depois.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-emerald-900/30 to-dark-800 rounded-xl p-6 border border-emerald-500/30 mb-6">
+        <h3 class="font-bold text-emerald-400 mb-4">4 Etapas do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Etapa 1: Construa seu Checklist Personalizado</h4>
+            <p class="text-neutral-300 text-sm mb-3">Crie um documento com 4 categorias. Para cada categoria, liste pelo menos 3 itens que voce vai verificar em todo codigo IA:</p>
+            <div class="space-y-2 text-sm text-neutral-300">
+              <div class="bg-dark-800 rounded-lg p-3">
+                <p class="text-emerald-400 font-semibold">Seguranca</p>
+                <p class="text-neutral-400">Ex: Inputs validados? Queries parametrizadas? Secrets em .env? Auth em todas as rotas protegidas?</p>
+              </div>
+              <div class="bg-dark-800 rounded-lg p-3">
+                <p class="text-blue-400 font-semibold">Logica</p>
+                <p class="text-neutral-400">Ex: Consigo explicar cada funcao? Tipos corretos? Retornos esperados? Condicoes completas?</p>
+              </div>
+              <div class="bg-dark-800 rounded-lg p-3">
+                <p class="text-amber-400 font-semibold">Performance</p>
+                <p class="text-neutral-400">Ex: Sem N+1? Dados paginados? Cache onde necessario? Sem re-renders desnecessarios?</p>
+              </div>
+              <div class="bg-dark-800 rounded-lg p-3">
+                <p class="text-purple-400 font-semibold">Mantenabilidade</p>
+                <p class="text-neutral-400">Ex: Nomes claros? Funcoes pequenas? Comentarios onde necessario? Separacao de responsabilidades?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Etapa 2: Analise o Codigo Abaixo (Amostra 1)</h4>
+            <p class="text-neutral-300 text-sm mb-3">Este codigo foi gerado por IA para um endpoint de login. Aplique seu checklist e identifique todos os problemas:</p>
+            <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 overflow-x-auto">
+              <pre>app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const user = db.query(
+    `SELECT * FROM users WHERE email = '${email}'
+     AND password = '${password}'`
+  );
+  if (user) {
+    res.json({ token: jwt.sign(user, 'my-secret-key') });
+  }
+});</pre>
+            </div>
+            <p class="text-neutral-400 text-sm mt-2">Dica: esse snippet tem pelo menos 6 problemas graves. Quantos voce consegue encontrar?</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-emerald-400 mb-2">Etapa 3: Analise a Amostra 2</h4>
+            <p class="text-neutral-300 text-sm mb-3">Este componente React foi gerado por IA. Aplique seu checklist:</p>
+            <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 overflow-x-auto">
+              <pre>function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(`/api/users/${userId}`)
+      .then(res => res.json())
+      .then(data => setUser(data));
+  });
+
+  return (
+    &lt;div dangerouslySetInnerHTML=
+      {{ __html: user?.bio }} /&gt;
+  );
+}</pre>
+            </div>
+            <p class="text-neutral-400 text-sm mt-2">Dica: esse componente tem problemas de performance, seguranca e edge cases.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <h4 class="font-semibold text-primary mb-2">Etapa 4: Corrija e Compare</h4>
+            <p class="text-neutral-300 text-sm mb-3">
+              Para cada amostra, peca a IA para gerar a versao corrigida usando seu checklist como requisito. Compare o antes e depois. Os problemas que voce identificou foram corrigidos? A IA introduziu novos problemas?
+            </p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-sm text-emerald-400">
+              "Corrija este codigo aplicando os seguintes criterios: [cole seu checklist]. Explique cada mudanca que voce fez e por que."
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Itere no Checklist</h3>
+        <p class="text-neutral-300 mb-3">
+          Seu checklist vai evoluir. Conforme voce constroi mais projetos, vai descobrir novos tipos de erro que a IA comete. Adicione-os ao checklist. Remove itens que se tornam automaticos. O objetivo e um documento vivo que reflete sua experiencia acumulada.
+        </p>
+        <p class="text-neutral-300">
+          Um bom benchmark: se seu checklist tem menos de 12 items, provavelmente esta faltando algo. Se tem mais de 25, provavelmente tem itens redundantes. O sweet spot fica entre 15-20 itens organizados em 4 categorias.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl p-6 border border-emerald-500/30">
+          <h3 class="font-bold text-emerald-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Criar o checklist antes de seguir para o proximo modulo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Analisar as amostras sem olhar as respostas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Salvar o checklist em local acessivel</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#10003;</span><span>Atualizar o checklist conforme ganha experiencia</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular o exercicio ("ja sei isso")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Copiar um checklist generico da internet</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Fazer o checklist mas nunca usar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar um checklist enorme que ninguem vai ler</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-emerald-500/30">
+      <h2 class="text-2xl font-bold text-emerald-400 mb-6 text-center">Resumo do Modulo 1.6</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Codigo gerado por IA e poderoso, mas so e confiavel quando passa por verificacao rigorosa. Aqui esta o que voce aprendeu:
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">45% do codigo IA contem vulnerabilidades: SQL injection, XSS, path traversal</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Os 5 erros fatais: confianca cega, seguranca, testes, escopo infinito, sem Git</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Alucinacoes de codigo existem: APIs fantasma, pacotes ficticios, logica plausivel mas errada</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">A regra 80/20: IA para boilerplate, cerebro humano para logica e decisoes</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Code review em 4 camadas: logica, seguranca, performance, edge cases</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-emerald-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Seu checklist de qualidade personalizado esta pronto para usar</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between items-center pt-6 border-t border-emerald-500/20">
+        <a href="modulo-1-5.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 1.5</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 1</span>
+        </a>
+        <a href="modulo-1-7.html" class="inline-flex items-center justify-start space-x-2 px-6 py-3 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition-colors">
+          <span>Modulo 1.7</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 1.6: Erros Comuns em Projetos com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
