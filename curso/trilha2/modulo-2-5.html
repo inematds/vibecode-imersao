@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.5 - Contexto Global vs por Agente | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.5</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.5</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">🧠 Contexto Global vs por Agente</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Neste modulo voce vai entender como o contexto define o comportamento de cada agente. Da hierarquia de system prompts ate estrategias de compactacao, o gerenciamento de contexto e o que separa um chatbot basico de uma plataforma de agentes inteligente que escala sem estourar custos.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">50</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Intermediario</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Teoria+Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">💬 O que e Contexto em Sistemas de IA</h2>
+          <p class="text-neutral-300">Contexto e tudo que o modelo sabe no momento de gerar uma resposta. Nao e so o que o usuario acabou de digitar. E a soma de instrucoes do sistema, historico de conversa, dados do usuario, resultados de ferramentas e qualquer informacao que molde o comportamento do modelo. Controlar o contexto e controlar o agente.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O contexto de um modelo de linguagem e composto por quatro camadas distintas, cada uma com um papel na formacao da resposta:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">System Prompts:</strong> As instrucoes fundamentais que definem quem o agente e, como ele se comporta, o que ele pode e nao pode fazer. Sao carregadas antes de qualquer interacao com o usuario. Um system prompt bem escrito e como um briefing detalhado para um funcionario novo: define o papel, as regras e as expectativas.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Conversation History:</strong> O registro de mensagens trocadas entre usuario e agente na sessao atual. Cada mensagem anterior consome tokens da context window. Uma conversa com 50 turnos pode facilmente consumir 20.000+ tokens so em historico, antes de qualquer novo processamento.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">User Data:</strong> Informacoes sobre o usuario que nao vem da conversa: nome, preferencias, plano de assinatura, timezone, idioma, historico de interacoes anteriores. Esses dados enriquecem as respostas sem que o usuario precise repetir informacoes a cada sessao.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Tool Results:</strong> Quando um agente chama uma ferramenta (buscar email, consultar banco, pesquisar na web), o resultado entra no contexto como uma mensagem do tipo "tool". O modelo usa esse resultado para formular a resposta final. Um unico resultado de busca pode adicionar 5.000+ tokens ao contexto.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Anatomia completa de um request a API
+const messages = [
+  // 1. System Prompt (~500-2000 tokens)
+  {
+    role: 'system',
+    content: `Voce e o assistente da plataforma AgentSaaS.
+    Regras: responda em portugues, seja direto, nunca invente dados.
+    Usuario: ${user.name}, plano ${user.plan}, timezone ${user.tz}.`
+  },
+
+  // 2. Historico de conversa (~100-500 tokens por turno)
+  { role: 'user', content: 'Quantos emails recebi hoje?' },
+  { role: 'assistant', content: 'Deixa eu verificar seus emails.' },
+
+  // 3. Tool Results (~200-5000 tokens por resultado)
+  {
+    role: 'tool',
+    tool_call_id: 'call_abc123',
+    content: JSON.stringify({
+      total: 12,
+      unread: 3,
+      important: ['Reuniao amanha 14h', 'Fatura vencendo']
+    })
+  },
+
+  // 4. Nova mensagem do usuario (~10-500 tokens)
+  { role: 'user', content: 'Algum urgente?' }
+];
+
+// Token budget: model_limit - system - history - tools = disponivel
+// Ex: 128K - 1K - 8K - 3K = 116K disponivel para resposta</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A context window dos modelos evoluiu de 4K tokens (GPT-3.5 original) para 200K tokens (Claude 3.5) e 1M tokens (Gemini 1.5 Pro) em apenas 2 anos. Porem, pesquisa de Stanford ("Lost in the Middle", 2023) demonstrou que modelos perdem ate 30% de accuracy quando a informacao relevante esta no meio de contextos longos. O "sweet spot" para qualidade de resposta esta entre 2K e 32K tokens de contexto efetivo. Cada token de contexto custa dinheiro: a $3/MTok de input, uma conversa com 100K tokens de contexto custa $0.30 por request.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Monitore o consumo de tokens por request. Adicione um log que registra quantos tokens de contexto cada chamada usa. Quando o contexto passar de 50% do limite do modelo, e hora de compactar. Em producao, mantenha um "token budget" por agente: o agente de pesquisa pode usar ate 50K tokens (precisa de muito contexto), mas o agente de classificacao nao deve passar de 4K (precisa ser rapido e barato).</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Entender exatamente o que compoe o contexto de cada request. Monitorar consumo de tokens. Definir token budgets por tipo de agente. Colocar informacao critica no inicio e no final do contexto, nunca no meio.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Tratar contexto como infinito. Jogar toda informacao disponivel no prompt sem filtrar relevancia. Ignorar o custo de tokens de contexto. Nao monitorar quanto contexto cada agente esta consumindo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📋 Hierarquia de System Prompts</h2>
+          <p class="text-neutral-300">System prompts nao sao um unico bloco de texto. Em uma plataforma multi-agente, eles formam uma hierarquia de instrucoes que herdam, sobrescrevem e especializam comportamento. Pensar em system prompts como camadas de heranca e o que permite escalar de 1 para 20 agentes sem copiar e colar instrucoes.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">A hierarquia de prompts funciona em tres niveis, do mais geral para o mais especifico:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Nivel 1 - Global Instructions:</strong> Regras que se aplicam a todos os agentes sem excecao. Identidade da plataforma, politicas de seguranca, formato padrao de resposta, restricoes legais. Esse nivel vive em um arquivo unico (ex: prompts/global.md) e e carregado para todo agente.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Nivel 2 - Agent Role:</strong> Instrucoes especificas de cada agente. O agente de pesquisa sabe buscar na web e citar fontes. O agente de comunicacao sabe escrever emails e formatar mensagens. Cada agente tem seu arquivo (ex: prompts/agents/research.md) com dominio, tom, ferramentas e restricoes locais.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Nivel 3 - Task-Specific:</strong> Instrucoes injetadas dinamicamente com base na tarefa atual. Se o usuario pede "resuma este PDF", o sistema injeta instrucoes especificas de sumarizacao. Se pede "agende uma reuniao", injeta instrucoes de calendario. Esse nivel e montado em runtime.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// prompts/global.md
+# Regras Globais da Plataforma
+
+Voce faz parte da plataforma AgentSaaS.
+- Responda sempre em portugues brasileiro
+- Nunca invente informacoes. Se nao sabe, diga
+- Nunca execute acoes destrutivas sem confirmacao
+- Formate respostas para Telegram (texto limpo, sem markdown pesado)
+- Proteja dados do usuario. Nunca exponha dados de outros usuarios
+
+---
+
+// prompts/agents/research.md
+# Agente de Pesquisa
+
+Voce e o agente de pesquisa da plataforma.
+Seu dominio: buscar, analisar e sintetizar informacoes.
+
+## Ferramentas disponiveis
+- web_search: buscar na web
+- read_url: ler conteudo de uma URL
+- summarize: resumir textos longos
+
+## Regras especificas
+- Sempre cite a fonte das informacoes
+- Priorize fontes oficiais e recentes
+- Se os resultados sao ambiguos, apresente as opcoes
+
+---
+
+// prompts/tasks/summarize.md
+# Tarefa: Sumarizacao
+
+Para esta tarefa especifica:
+- Extraia os 3-5 pontos principais
+- Use bullet points
+- Limite a resposta a 200 palavras
+- Inclua uma frase de conclusao</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">A composicao acontece em runtime. O sistema carrega global + agent + task e concatena na ordem. Se houver conflito, o nivel mais especifico vence. Se o global diz "responda em portugues" e o agent role diz "for technical terms, keep English", o agente vai responder em portugues usando termos tecnicos em ingles.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// lib/prompt-builder.ts
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const PROMPTS_DIR = join(process.cwd(), 'prompts');
+
+export function buildSystemPrompt(
+  agentId: string,
+  taskType?: string,
+  userContext?: Record&lt;string, string&gt;
+): string {
+  const layers: string[] = [];
+
+  // Nivel 1: Global (sempre presente)
+  layers.push(readFileSync(join(PROMPTS_DIR, 'global.md'), 'utf-8'));
+
+  // Nivel 2: Agent role
+  const agentPromptPath = join(PROMPTS_DIR, 'agents', `${agentId}.md`);
+  try {
+    layers.push(readFileSync(agentPromptPath, 'utf-8'));
+  } catch {
+    // Agent sem prompt especifico usa apenas o global
+  }
+
+  // Nivel 3: Task-specific (se aplicavel)
+  if (taskType) {
+    const taskPromptPath = join(PROMPTS_DIR, 'tasks', `${taskType}.md`);
+    try {
+      layers.push(readFileSync(taskPromptPath, 'utf-8'));
+    } catch {
+      // Sem prompt de tarefa especifica
+    }
+  }
+
+  // Injetar contexto do usuario
+  let prompt = layers.join('\n\n---\n\n');
+  if (userContext) {
+    for (const [key, value] of Object.entries(userContext)) {
+      prompt = prompt.replace(`{{${key}}}`, value);
+    }
+  }
+
+  return prompt;
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A Anthropic documenta que system prompts sao processados com "prioridade elevada" pelo modelo, tendo mais influencia que mensagens do usuario no comportamento geral. OpenAI reporta que system prompts com instrucoes estruturadas (headers, listas, delimitadores claros) geram aderencia 40% maior do que blocos de texto corrido. O padrao de heranca de prompts e usado por plataformas como AutoGPT, CrewAI e Microsoft Semantic Kernel. Manter prompts versionados em arquivos separados permite A/B testing de instrucoes sem alterar codigo.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Trate prompts como codigo: versione no git, faca review, teste antes de deployar. Uma mudanca de uma palavra no system prompt pode alterar drasticamente o comportamento do agente. Use delimitadores claros (--- ou headers markdown) entre as camadas para que o modelo saiba onde cada bloco comeca e termina. Teste cada prompt isoladamente antes de compor. Se o prompt global ja funciona bem, adicione o agent role e teste novamente. Adicione complexidade incremental.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar prompt global com regras universais. Criar prompt por agente com especializacao. Compor em runtime com funcao reutilizavel. Versionar prompts no git como arquivos markdown. Usar delimitadores claros entre camadas.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Hardcodar prompts dentro do codigo TypeScript. Copiar as mesmas instrucoes em multiplos arquivos de agente. Criar prompts enormes sem estrutura ou delimitadores. Mudar prompts em producao sem testar primeiro.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🔗 Contexto Compartilhado</h2>
+          <p class="text-neutral-300">Em uma plataforma multi-agente, alguns dados precisam ser acessiveis por todos os agentes. O perfil do usuario, seu plano de assinatura, suas preferencias de idioma. Se cada agente mantivesse sua propria copia desses dados, a plataforma viraria um caos de informacoes desatualizadas e inconsistentes.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O contexto compartilhado e o estado que multiplos agentes precisam ler (e as vezes escrever). Ele funciona como uma area comum em um escritorio: todos podem consultar, mas as regras de acesso sao claras.</p>
+          <p class="text-neutral-300 mt-3">Os tipos mais comuns de contexto compartilhado sao:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">User Profile:</strong> Nome, email, plano, timezone, idioma preferido. Todos os agentes precisam saber quem esta falando para personalizar respostas. Armazenado no banco de dados, carregado uma vez por sessao.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Subscription & Limits:</strong> Qual plano o usuario tem, quantos requests ja usou no mes, quais features estao disponiveis. O agente de pesquisa precisa saber se o usuario tem cota de busca. O agente de codigo precisa saber se pode usar modelos premium.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">User Preferences:</strong> Formatacao preferida, topicos de interesse, horarios de notificacao. Detectadas ao longo do tempo e armazenadas para enriquecer respostas futuras.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// context/shared.ts - Global Context Store
+interface SharedContext {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    plan: 'free' | 'pro' | 'enterprise';
+    timezone: string;
+    locale: string;
+  };
+  limits: {
+    requestsRemaining: number;
+    tokensRemaining: number;
+    canUseTools: boolean;
+    canUsePremiumModels: boolean;
+  };
+  preferences: {
+    responseFormat: 'concise' | 'detailed';
+    notifyVia: 'telegram' | 'email' | 'both';
+    topics: string[];
+  };
+}
+
+// Implementacao com diferentes backends
+class ContextStore {
+  // Em memoria (dev, single-instance)
+  private cache = new Map&lt;string, SharedContext&gt;();
+
+  // Redis (producao, multi-instance)
+  // private redis: Redis;
+
+  async get(userId: string): Promise&lt;SharedContext&gt; {
+    // 1. Verificar cache em memoria (mais rapido)
+    if (this.cache.has(userId)) return this.cache.get(userId)!;
+
+    // 2. Verificar Redis (compartilhado entre instances)
+    // const cached = await this.redis.get(`ctx:${userId}`);
+    // if (cached) return JSON.parse(cached);
+
+    // 3. Carregar do banco (source of truth)
+    const context = await this.loadFromDB(userId);
+    this.cache.set(userId, context);
+    return context;
+  }
+
+  async update(userId: string, partial: Partial&lt;SharedContext&gt;) {
+    const current = await this.get(userId);
+    const updated = { ...current, ...partial };
+    this.cache.set(userId, updated);
+    // await this.redis.set(`ctx:${userId}`, JSON.stringify(updated), 'EX', 3600);
+    await this.saveToDB(userId, updated);
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Redis e usado como cache de contexto por 85% das plataformas multi-agente em producao, com latencia media de 0.1ms para leitura. A arquitetura CQRS (Command Query Responsibility Segregation) usada por plataformas como Discord e Slack separa leitura de escrita de contexto, permitindo que milhares de agentes leiam simultaneamente sem conflito. O padrao de eventual consistency (onde diferentes agentes podem ver versoes ligeiramente diferentes do contexto por breves periodos) e aceitavel para a maioria dos casos. Para dados criticos como saldo de tokens, strong consistency via transacoes do banco e obrigatorio.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Comece com um Map em memoria para desenvolvimento. Quando o projeto precisar de multiplas instancias (mais de um servidor), migre para Redis. A interface do ContextStore nao muda. Para o contexto injetado no prompt, gere um texto resumido em vez de jogar o JSON inteiro. "Usuario: Joao, plano Pro, timezone BRT, prefere respostas concisas" e mais eficiente em tokens e mais facil para o modelo processar do que um JSON com 20 campos.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Centralizar dados do usuario em um ContextStore unico. Cachear contexto em memoria com TTL. Converter para texto resumido antes de injetar no prompt. Definir claramente quais dados sao compartilhados vs privados.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Cada agente carregar dados do usuario do banco independentemente. Jogar o objeto JSON inteiro no prompt. Compartilhar dados que deveriam ser privados de um agente. Nao ter cache (carregar do banco a cada request).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🔐 Contexto Isolado por Agente</h2>
+          <p class="text-neutral-300">Se o contexto compartilhado e o que todos precisam saber, o contexto isolado e o que so um agente especifico deve saber. Isolamento de contexto e um principio de seguranca e eficiencia: cada agente opera no seu dominio, com suas ferramentas e suas memorias, sem poluir ou ser poluido por outros.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O isolamento de contexto opera em quatro dimensoes:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">API Keys Isoladas:</strong> Cada agente pode ter suas proprias credenciais. O agente de pesquisa tem sua propria chave de busca com limite de rate separado. O agente de email tem seu proprio OAuth token. Se uma chave vaza, o dano e contido ao escopo daquele agente.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Memorias Separadas:</strong> Cada agente tem seu proprio namespace de memoria. O que o agente de pesquisa descobriu em sessoes anteriores nao contamina a memoria do agente de comunicacao. Isso evita que um agente "alucine" com contexto de outro dominio.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Capabilities Restritas:</strong> Cada agente so tem acesso as ferramentas que precisa. O agente de leitura nao pode escrever. O agente de email nao pode executar codigo. O principio do minimo privilegio aplicado a ferramentas de IA.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Namespace Isolation:</strong> Todas as operacoes de um agente sao prefixadas com seu ID. Chaves no Redis: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">agent:research:memory:user123</code>. Tabelas no banco: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">agent_memories</code> com coluna agent_id. Logs: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">[research] Processing query...</code>.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// agents/base.ts - Agent com contexto isolado
+interface AgentConfig {
+  id: string;
+  name: string;
+  provider: AIProvider;
+  tools: Tool[];
+  memoryNamespace: string;
+  apiKeys: Record&lt;string, string&gt;;
+}
+
+class Agent {
+  constructor(private config: AgentConfig) {}
+
+  // Cada agente tem suas proprias credenciais
+  private getApiKey(service: string): string {
+    return this.config.apiKeys[service]
+      || env[`${this.config.id.toUpperCase()}_${service}_KEY`]
+      || env[`${service}_KEY`]; // fallback global
+  }
+
+  // Memoria isolada por namespace
+  async getMemories(userId: string): Promise&lt;Memory[]&gt; {
+    return db.query(
+      'SELECT * FROM agent_memories WHERE agent_id = ? AND user_id = ?',
+      [this.config.id, userId]
+    );
+  }
+
+  async saveMemory(userId: string, content: string): Promise&lt;void&gt; {
+    await db.insert('agent_memories', {
+      agent_id: this.config.id,
+      user_id: userId,
+      content,
+      created_at: new Date(),
+    });
+  }
+
+  // Apenas as tools autorizadas
+  getAvailableTools(): Tool[] {
+    return this.config.tools; // Nao tem acesso a tools de outros agentes
+  }
+}
+
+// Configuracao dos agentes com isolamento
+const researchAgent = new Agent({
+  id: 'research',
+  name: 'Agente de Pesquisa',
+  provider: openrouter, // Provider mais barato para pesquisa
+  tools: [webSearch, readUrl, summarize],
+  memoryNamespace: 'research',
+  apiKeys: { SERPER: env.RESEARCH_SERPER_KEY },
+});
+
+const commsAgent = new Agent({
+  id: 'comms',
+  name: 'Agente de Comunicacao',
+  provider: ollama, // Local, privado
+  tools: [sendEmail, readEmail, formatMessage],
+  memoryNamespace: 'comms',
+  apiKeys: { GMAIL: env.COMMS_GMAIL_TOKEN },
+});</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O principio do minimo privilegio (PoLP) e um dos fundamentos de seguranca da informacao, formalizado pelo Departamento de Defesa dos EUA nos anos 70 e adotado como padrao por NIST, ISO 27001 e SOC 2. Em sistemas multi-agente, pesquisa da DeepMind mostra que agentes com escopo restrito de ferramentas cometem 60% menos erros do que agentes com acesso total. A Microsoft usa isolamento de namespace por agente no Copilot para garantir que dados de um usuario nunca vazem para o contexto de outro. O padrao de "sandbox per agent" e recomendado pela OWASP para LLM Applications.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Comece restritivo e abra conforme necessario. Crie cada agente com zero tools e adicione uma por vez, testando se funciona corretamente. E muito mais facil adicionar uma permissao do que descobrir qual permissao excessiva causou um problema. Para comunicacao entre agentes (quando um precisa de dados do outro), use um message bus explicito em vez de acesso direto ao contexto. O agente de pesquisa envia o resultado para o orquestrador, que decide se e quando repassar ao agente de comunicacao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Dar a cada agente apenas as tools que precisa. Isolar memorias por namespace. Usar chaves de API separadas quando possivel. Comunicar entre agentes via orquestrador, nunca diretamente.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Dar todas as tools para todos os agentes. Compartilhar o mesmo namespace de memoria entre agentes diferentes. Permitir que agentes acessem credenciais de outros agentes. Criar um "super agente" com acesso a tudo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📊 Context Window Management</h2>
+          <p class="text-neutral-300">A context window e finita e cara. Toda mensagem, todo resultado de tool, todo dado do usuario consome tokens desse espaco limitado. Gerenciar a context window e uma habilidade de engenharia: decidir o que entra, o que sai, e quando compactar a conversa para manter qualidade sem estourar custos.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">Existem quatro estrategias principais para gerenciar a context window, cada uma apropriada para cenarios diferentes:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">1. Sliding Window:</strong> Manter apenas as N ultimas mensagens da conversa. Simples e previsivel. Funciona bem para conversas curtas e diretas. Desvantagem: perde completamente o contexto de mensagens mais antigas. Se o usuario mencionou algo 20 mensagens atras, o agente nao vai lembrar.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">2. Summarization (Compactacao):</strong> Quando o historico atinge um threshold (ex: 60% da context window), o sistema gera um resumo das mensagens mais antigas e substitui as mensagens originais pelo resumo. O resumo captura decisoes, fatos e contexto importante em uma fracao dos tokens. E a estrategia mais usada em producao.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">3. RAG (Retrieval-Augmented Generation):</strong> Em vez de manter todo o historico no contexto, armazene as mensagens em um vector database e recupere apenas as partes relevantes para a pergunta atual. Ideal para conversas longas e recorrentes. O usuario pode perguntar sobre algo discutido semanas atras e o sistema encontra o trecho relevante.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">4. Reset Strategico:</strong> Para certos agentes, comecar uma sessao limpa e a melhor opcao. O agente de classificacao nao precisa de historico. O agente de pesquisa web pode funcionar melhor sem contexto anterior enviesando os resultados. O reset nao e falha. E design intencional.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// context/manager.ts - Context Window Manager
+import { encode } from 'gpt-tokenizer'; // Token counting
+
+interface ContextManagerConfig {
+  maxTokens: number;       // Limite do modelo (ex: 128000)
+  compactThreshold: number; // Quando compactar (ex: 0.6 = 60%)
+  strategy: 'sliding' | 'summarize' | 'rag' | 'reset';
+  keepLastN: number;       // Mensagens recentes que nunca sao removidas
+}
+
+class ContextManager {
+  constructor(private config: ContextManagerConfig) {}
+
+  async manage(messages: Message[]): Promise&lt;Message[]&gt; {
+    const totalTokens = this.countTokens(messages);
+    const threshold = this.config.maxTokens * this.config.compactThreshold;
+
+    if (totalTokens &lt; threshold) return messages; // Dentro do budget
+
+    switch (this.config.strategy) {
+      case 'sliding':
+        return messages.slice(-this.config.keepLastN);
+
+      case 'summarize':
+        return this.compactWithSummary(messages);
+
+      case 'rag':
+        return this.retrieveRelevant(messages);
+
+      case 'reset':
+        return [messages[0], ...messages.slice(-2)]; // System + last exchange
+    }
+  }
+
+  private async compactWithSummary(messages: Message[]): Promise&lt;Message[]&gt; {
+    const system = messages[0]; // Preservar system prompt
+    const recent = messages.slice(-this.config.keepLastN);
+    const old = messages.slice(1, -this.config.keepLastN);
+
+    // Pedir ao modelo para resumir as mensagens antigas
+    const summary = await this.summarize(old);
+
+    return [
+      system,
+      { role: 'system', content: `[Resumo da conversa anterior]\n${summary}` },
+      ...recent,
+    ];
+  }
+
+  private countTokens(messages: Message[]): number {
+    return messages.reduce((sum, m) => sum + encode(m.content).length, 0);
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A compactacao por sumarizacao reduz o consumo de tokens em 70-90% com perda de informacao estimada em apenas 5-15% (segundo benchmarks do LangChain). RAG com vector databases (Pinecone, Weaviate, pgvector) consegue recuperar o trecho relevante com 85-95% de accuracy para conversas com milhares de turnos. O custo de processar 128K tokens de contexto e aproximadamente $0.38 na Anthropic e $0.64 na OpenAI. Compactar para 20K tokens reduz esse custo para $0.06 e $0.10 respectivamente. Para um SaaS com 1000 usuarios ativos, a diferenca anual e de milhares de dolares.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Use a biblioteca tiktoken (OpenAI) ou gpt-tokenizer (npm) para contar tokens antes de enviar ao modelo. Nunca estime. A contagem real evita erros de "context length exceeded" em producao. Para compactacao, use o modelo mais barato disponivel para gerar o resumo. Nao gaste GPT-4o para resumir historico quando GPT-4o-mini ou um modelo local faz o mesmo com qualidade suficiente. Defina o threshold de compactacao em 60%, nao 90%. Compactar cedo e melhor do que compactar tarde e perder informacao porque o modelo cortou o contexto.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Contar tokens reais antes de cada request. Implementar compactacao automatica. Preservar system prompt e mensagens recentes na compactacao. Monitorar tokens por sessao e alertar quando consumo e alto.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Enviar historico completo a cada request sem verificar tamanho. Compactar descartando mensagens sem resumir. Usar o modelo mais caro para gerar resumos. Esperar atingir 100% da context window para agir.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🛠️ Exercicio: Projetar Contexto do seu SaaS</h2>
+          <p class="text-neutral-300">Hora de aplicar tudo. Neste exercicio voce vai projetar o sistema de contexto completo da sua plataforma: definir o que e global, o que e por agente, como os dados sao compartilhados e qual estrategia de compactacao usar para manter custos sob controle.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O exercicio e dividido em 4 entregas que juntas formam o documento de design de contexto da sua plataforma:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 1 - Mapa de Contexto Global:</strong> Escreva o prompt global da sua plataforma (prompts/global.md). Inclua: identidade, regras de seguranca, formato de resposta, restricoes. Teste com pelo menos 2 perguntas diferentes e verifique se o modelo segue as regras.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 2 - Prompts por Agente:</strong> Para cada agente do seu SaaS (minimo 2), crie o arquivo de prompt especifico (prompts/agents/[nome].md). Defina dominio, tom, ferramentas e restricoes. Teste a composicao global + agent e verifique que nao ha conflito.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 3 - Regras de Compartilhamento:</strong> Crie uma tabela que define para cada tipo de dado quem pode ler e quem pode escrever. Exemplo: "user_profile: todos leem, nenhum escreve (vem do auth)". Implemente o SharedContext store com os campos definidos.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 4 - Estrategia de Compactacao:</strong> Defina o token budget por agente, o threshold de compactacao e a estrategia (sliding, summarize, rag, reset) para cada agente. Justifique cada escolha. Implemente o ContextManager basico.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// docs/context-design.md - Template do documento de design
+
+# Design de Contexto - [Nome do SaaS]
+
+## 1. Contexto Global
+- Identidade: [Quem e a plataforma]
+- Regras universais: [Lista de regras]
+- Formato padrao: [Como respostas devem ser formatadas]
+
+## 2. Agentes e seus Contextos
+| Agente | Provider | Token Budget | Tools | Estrategia |
+|--------|----------|-------------|-------|------------|
+| research | openrouter | 50K | web_search, summarize | RAG |
+| comms | ollama | 8K | send_email, read_email | sliding |
+| coding | claude | 100K | file_read, file_write | summarize |
+| classifier | ollama | 4K | - | reset |
+
+## 3. Regras de Compartilhamento
+| Dado | Leitura | Escrita | Storage |
+|------|---------|---------|---------|
+| user_profile | todos | auth service | DB |
+| user_preferences | todos | qualquer agente | DB + cache |
+| conversation_history | agente da sessao | agente da sessao | DB |
+| agent_memories | agente dono | agente dono | DB (namespaced) |
+
+## 4. Compactacao
+- Threshold global: 60% da context window
+- Modelo para sumarizacao: [modelo barato]
+- Frequencia de compactacao: a cada N turnos ou ao atingir threshold
+- Dados que nunca sao compactados: system prompt, user profile</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Nao precisa implementar tudo de uma vez. Comece com o prompt global e um agente. Teste extensivamente. Adicione o segundo agente e verifique que o contexto nao conflita. So entao implemente o SharedContext store e a compactacao. O documento de design e tao importante quanto o codigo. Quando voce tiver 10 agentes e precisar debugar por que um deles esta se comportando estranho, a primeira coisa que vai consultar e o mapa de contexto.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Documento context-design.md com o mapa completo de contexto do seu SaaS. Arquivo prompts/global.md funcional e testado. Pelo menos 2 arquivos prompts/agents/[nome].md com prompts especificos. Funcao buildSystemPrompt() que compoe as camadas. ContextManager basico com pelo menos uma estrategia implementada (recomendado: summarize). Tabela de regras de compartilhamento definindo quem acessa o que.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Entendeu as quatro camadas de contexto: system prompts, historico, dados do usuario e resultados de tools.</p>
+        <p>&#10003; Dominou a hierarquia de system prompts: global, agent role e task-specific com composicao em runtime.</p>
+        <p>&#10003; Aprendeu quando e como compartilhar contexto entre agentes usando stores centralizados.</p>
+        <p>&#10003; Implementou isolamento de contexto por agente: credentials, memoria, tools e namespace separados.</p>
+        <p>&#10003; Conheceu as estrategias de context window management: sliding, summarize, RAG e reset.</p>
+        <p>&#10003; Projetou o sistema de contexto completo para seu SaaS com documento de design.</p>
+      </div>
+      <div class="flex justify-start space-x-3">
+        <a href="modulo-2-4.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">Modulo Anterior</a>
+        <a href="modulo-2-6.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">Proximo Modulo</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

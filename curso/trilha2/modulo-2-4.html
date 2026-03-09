@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.4 - Configuracao de APIs e Variaveis | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.4</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.4</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">🔐 Configuracao de APIs e Variaveis</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Neste modulo voce vai dominar o gerenciamento de configuracao profissional. De chaves de API a connection strings, cada variavel de ambiente e uma porta de entrada ou saida do seu sistema. Configurar certo e a diferenca entre um SaaS seguro e uma manchete de vazamento de dados.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">45</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Basico</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📁 O Arquivo .env e Seus Segredos</h2>
+          <p class="text-neutral-300">O arquivo .env e o cofre do seu projeto. Ele guarda tudo que e sensivel e tudo que muda entre ambientes. Tratar esse arquivo com descuido e o equivalente digital de deixar a chave da sua casa debaixo do tapete e postar a foto no Instagram.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O ecossistema de arquivos .env segue uma hierarquia precisa de prioridade. O arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.env</code> e o arquivo base, carregado por padrao em todos os ambientes. Contem valores genericos que funcionam para desenvolvimento local. O arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.env.local</code> sobrescreve o .env com valores especificos da sua maquina. E pessoal, nunca commitado. Se voce e dois colegas trabalham no mesmo projeto, cada um tem seu .env.local com suas proprias chaves. O arquivo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.env.production</code> contem valores para o ambiente de producao. Em setups profissionais, esse arquivo nao existe como arquivo fisico. Os valores vem de um secrets manager (AWS, GCP, Doppler).</p>
+          <p class="text-neutral-300 mt-3">A hierarquia de carregamento funciona assim: process.env (variaveis do sistema) > .env.local > .env.production (ou .env.staging) > .env. Variaveis definidas em niveis mais altos nunca sao sobrescritas por niveis mais baixos. Isso significa que se voce define PORT=4000 no sistema operacional, o .env com PORT=3000 nao vai sobrescrever.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># .env - Base (commitado como .env.example)
+NODE_ENV=development
+PORT=3000
+LOG_LEVEL=debug
+APP_URL=http://localhost:3000
+
+# Provedores de IA
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+GOOGLE_API_KEY=
+
+# Banco de dados
+DATABASE_URL=
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_KEY=
+
+# Telegram
+TELEGRAM_TOKEN=
+ALLOWED_CHAT_ID=
+
+# Dashboard
+DASHBOARD_TOKEN=
+DASHBOARD_PORT=3141</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">O <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">.gitignore</code> deve ser configurado no primeiro commit, antes de qualquer arquivo sensivel existir. Uma vez que um secret entra no historico do git, ele esta la para sempre (a menos que voce reescreva o historico, o que e doloroso e arriscado).</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># .gitignore - Padrao para plataformas de agentes
+.env
+.env.local
+.env.production
+.env.staging
+*.pem
+*.key
+credentials.json
+service-account.json
+node_modules/
+dist/
+.turbo/
+.next/</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O GitHub Secret Scanning detectou mais de 2.8 milhoes de secrets em repositorios publicos apenas em 2024. Os mais comuns: chaves de AWS (34%), tokens de API genericos (28%), chaves de banco de dados (15%). O custo medio de um vazamento de credenciais de cloud e de $4.45 milhoes segundo o IBM Cost of a Data Breach Report 2024. O framework dotenv, criado em 2013, e usado por mais de 25 milhoes de projetos npm. Frameworks modernos como Next.js, Vite e Nuxt ja tem suporte nativo a .env sem biblioteca adicional.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Crie o .gitignore antes de criar o .env. Se voce criar o .env primeiro e fizer git add ., o arquivo ja entra no tracking do git e o .gitignore nao vai ajudar. Use pre-commit hooks com ferramentas como gitleaks ou truffleHog para scanear automaticamente cada commit antes de ir para o repositorio. Se uma chave vazar acidentalmente, revogue ela imediatamente. Nao basta deletar do codigo. A chave ja esta no historico.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar .gitignore como primeiro arquivo do repositorio. Manter .env.example atualizado com todas as variaveis (sem valores reais). Documentar cada variavel com comentarios no .env.example. Usar pre-commit hooks para detectar secrets.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Commitar .env em qualquer circunstancia. Compartilhar secrets por Slack, email ou qualquer canal nao criptografado. Usar o mesmo arquivo .env para desenvolvimento e producao. Deixar variaveis sem documentacao no .env.example.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🤖 Multiplos Providers de IA</h2>
+          <p class="text-neutral-300">Um SaaS de agentes serio nunca depende de um unico provedor. Se a OpenAI cai, seu sistema precisa continuar funcionando. Se a Anthropic e mais barata para certo tipo de tarefa, o sistema deve ser esperto o suficiente para usar o provedor certo para cada situacao.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">A provider abstraction layer e o padrao que desacopla seu codigo de qualquer provedor especifico. Em vez de chamar diretamente <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">openai.chat.completions.create()</code> espalhado pelo codigo, voce cria uma interface unificada que aceita qualquer provedor. O agente pede "gere uma resposta" e a camada de abstracao decide qual API chamar.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// providers/index.ts - Camada de abstracao
+interface AIProvider {
+  name: string;
+  chat(messages: Message[], options?: ChatOptions): Promise&lt;ChatResponse&gt;;
+  costPer1kTokens: { input: number; output: number };
+}
+
+// providers/openai.ts
+export const openai: AIProvider = {
+  name: 'openai',
+  costPer1kTokens: { input: 0.003, output: 0.015 },
+  async chat(messages, options) {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: options?.model || 'gpt-4o',
+        messages,
+        temperature: options?.temperature || 0.7,
+      }),
+    });
+    return parseResponse(response);
+  }
+};
+
+// providers/anthropic.ts
+export const anthropic: AIProvider = {
+  name: 'anthropic',
+  costPer1kTokens: { input: 0.003, output: 0.015 },
+  async chat(messages, options) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: options?.model || 'claude-sonnet-4-20250514',
+        max_tokens: options?.maxTokens || 4096,
+        messages,
+      }),
+    });
+    return parseResponse(response);
+  }
+};</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">A fallback chain define a ordem de tentativa quando um provedor falha. Uma configuracao tipica: tentar Anthropic primeiro (melhor para reasoning), se falhar tentar OpenAI (amplo e confiavel), se falhar tentar Ollama local (sem custo, sem dependencia externa). O roteamento por custo permite que tarefas simples (classificacao, extracao) usem modelos baratos e tarefas complexas (analise, geracao longa) usem modelos premium.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// config/providers.ts - Fallback chain
+export const providerChain = [
+  { provider: anthropic, priority: 1, tasks: ['reasoning', 'analysis'] },
+  { provider: openai,    priority: 2, tasks: ['general', 'coding'] },
+  { provider: google,    priority: 3, tasks: ['vision', 'multimodal'] },
+  { provider: ollama,    priority: 99, tasks: ['*'] }, // fallback local
+];
+
+async function chatWithFallback(messages: Message[], task: string) {
+  const sorted = providerChain
+    .filter(p => p.tasks.includes(task) || p.tasks.includes('*'))
+    .sort((a, b) => a.priority - b.priority);
+
+  for (const { provider } of sorted) {
+    try {
+      return await provider.chat(messages);
+    } catch (error) {
+      log.warn(`${provider.name} failed, trying next...`);
+    }
+  }
+  throw new Error('All providers failed');
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A disponibilidade media das APIs de IA em 2025 foi de 99.5%, o que significa aproximadamente 1.8 dias de downtime por ano. Para um SaaS com SLA de 99.9%, depender de um unico provedor e inviavel. O custo por token varia ate 100x entre provedores: GPT-4o custa $5/MTok de output, enquanto Ollama local com Qwen2.5 custa $0. Empresas como Vercel (AI SDK) e LangChain ja oferecem provider abstraction como feature core dos seus frameworks. O padrao adapter/strategy e o mais usado para essa abstracao.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Configure pelo menos dois provedores desde o dia um: um provider cloud (OpenAI ou Anthropic) e um local (Ollama). O local serve como fallback gratuito e para desenvolvimento offline. Para otimizacao de custo, use um classificador leve (modelo local pequeno) para decidir a complexidade da tarefa antes de rotear para o provedor. Tarefas simples como "qual horario do dentista" nao precisam de GPT-4o. Um modelo de 7B parametros resolve.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar interface AIProvider unificada. Implementar pelo menos 2 providers. Configurar fallback chain com ordem de prioridade. Rotear por tipo de tarefa para otimizar custo. Logar qual provider respondeu cada request.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Chamar APIs de provedores diretamente no codigo dos agentes. Depender de um unico provedor sem fallback. Usar o modelo mais caro para todas as tarefas. Ignorar os limites de rate limiting de cada provider.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🔒 Gerenciamento Seguro de Chaves</h2>
+          <p class="text-neutral-300">Chaves de API sao as credenciais do seu sistema. Cada chave e uma permissao para gastar dinheiro, acessar dados ou executar acoes em nome do seu servico. Gerenciar chaves com profissionalismo nao e paranoia. E o minimo para operar um SaaS em producao.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O gerenciamento de chaves profissional opera em tres dimensoes: armazenamento, acesso e rotacao.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Armazenamento:</strong> Em desenvolvimento, .env e suficiente. Em producao, secrets devem viver em um vault. Doppler, 1Password Secrets Automation, AWS Secrets Manager e HashiCorp Vault sao as opcoes mais usadas. O vault criptografa os secrets em repouso, controla quem pode acessar, e mantem um audit log de cada acesso.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Acesso:</strong> A regra fundamental e que chaves de API nunca devem ser acessiveis pelo cliente (browser, app mobile). Variaveis com prefixo <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">NEXT_PUBLIC_</code> ou <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">VITE_</code> sao expostas ao browser. Chaves de IA, banco de dados e servicos externos devem ser server-side only. A unica chave que pode ir ao client e a anon key do Supabase (que e publica por design e protegida por RLS).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Rotacao:</strong> Trocar chaves periodicamente (mensal ou trimestral) limita o dano de um vazamento nao detectado. O processo ideal: gerar nova chave, atualizar no vault, fazer deploy com a nova chave, verificar que tudo funciona, revogar a chave antiga. Nunca revogar a chave antiga antes de confirmar que a nova esta ativa.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Exemplo: Doppler como vault em producao
+// Em vez de .env, o Doppler injeta variaveis no processo
+// doppler run -- node dist/server.js
+
+// Exemplo: 1Password CLI para desenvolvimento
+// op run --env-file=.env -- npm run dev
+
+// Para rotacao automatizada:
+// 1. Gerar nova chave no provider
+const newKey = await openai.apiKeys.create({ name: 'prod-v2' });
+
+// 2. Atualizar no vault
+await doppler.secrets.update('OPENAI_API_KEY', newKey.key);
+
+// 3. Trigger redeploy (a nova chave e injetada automaticamente)
+await triggerDeploy();
+
+// 4. Verificar health check
+await waitForHealthy();
+
+// 5. Revogar chave antiga
+await openai.apiKeys.delete(oldKeyId);</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Segundo a Verizon Data Breach Report 2024, 86% dos vazamentos envolvem credenciais comprometidas. O tempo medio para detectar um vazamento de chave e de 204 dias. Doppler reporta que empresas com rotacao automatica de chaves reduzem o tempo de exposicao de meses para minutos. O OWASP Top 10 lista "Broken Authentication" e "Security Misconfiguration" consistentemente nos top 5. A regra do principio do minimo privilegio (cada chave so tem permissao para o que precisa) reduz o blast radius de um vazamento em ate 80%.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Se voce esta comecando e vaults parecem overkill, comece com o basico que ja faz diferenca: .env no .gitignore, chaves diferentes por ambiente, e alertas de billing configurados em cada provedor. Coloque um limite de gasto mensal na OpenAI ($50 para comeco) e na Anthropic. Se alguem vazar sua chave e tentar minerar tokens, voce perde no maximo o limite configurado, nao sua poupanca inteira. Conforme o projeto cresce, migre para Doppler (tem free tier generoso).</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Separar chaves client-side de server-side. Configurar limites de billing em todos os providers. Ter um plano de rotacao (mesmo que manual no inicio). Usar chaves diferentes para desenvolvimento, staging e producao.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Usar a mesma chave em todos os ambientes. Dar permissoes admin para chaves que so precisam de leitura. Nao configurar limites de gasto nos provedores. Compartilhar chaves por mensagem de texto ou chat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🗄️ Configuracao de Banco de Dados</h2>
+          <p class="text-neutral-300">Todo SaaS de agentes precisa de persistencia. Conversas, preferencias de usuario, historico de execucao, metricas. O banco de dados e a memoria de longo prazo da plataforma, e configura-lo certo desde o inicio evita dores de cabeca monumentais depois.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O Supabase se tornou o padrao de facto para SaaS modernos por um motivo: PostgreSQL completo, autenticacao pronta, storage de arquivos, realtime por websockets, e tudo acessivel por uma API REST auto-gerada. A configuracao envolve tres connection strings diferentes, cada uma com um proposito especifico.</p>
+          <p class="text-neutral-300 mt-3">A <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">SUPABASE_URL</code> e o endpoint publico do seu projeto. E seguro expor no client porque toda seguranca e feita via Row Level Security (RLS). A <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">SUPABASE_ANON_KEY</code> e a chave publica usada pelo client. Ela so permite operacoes que as politicas de RLS autorizam. A <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">SUPABASE_SERVICE_KEY</code> e a chave admin que bypassa toda a RLS. Essa chave NUNCA vai ao client. E usada apenas no servidor para operacoes administrativas.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># .env - Configuracao Supabase
+SUPABASE_URL=https://xyzproject.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...  # Publica, pode ir ao client
+SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIs... # SECRETA, server-only
+
+# Connection string direta (para migrations e queries complexas)
+DATABASE_URL=postgresql://postgres:[PASSWORD]@db.xyzproject.supabase.co:5432/postgres
+
+# Connection pooling (para producao com muitas conexoes)
+DATABASE_POOL_URL=postgresql://postgres:[PASSWORD]@db.xyzproject.supabase.co:6543/postgres?pgbouncer=true</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Connection Pooling:</strong> Em producao, cada request ao banco abre uma conexao. PostgreSQL tem limite padrao de 100 conexoes simultaneas. Com 50 usuarios ativos, voce ja esta na metade. O PgBouncer (porta 6543 no Supabase) reaproveita conexoes, permitindo centenas de requests com poucas conexoes reais ao banco.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Migrations:</strong> Toda mudanca na estrutura do banco deve ser versionada como codigo. O Supabase CLI (<code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">supabase migration new</code>) gera arquivos SQL sequenciais que podem ser aplicados em qualquer ordem, em qualquer ambiente. Nunca altere o banco manualmente em producao.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>-- migrations/001_create_conversations.sql
+CREATE TABLE conversations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id),
+  agent_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Row Level Security: usuarios so veem suas conversas
+ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users see own conversations"
+  ON conversations FOR SELECT
+  USING (auth.uid() = user_id);
+
+CREATE POLICY "Users create own conversations"
+  ON conversations FOR INSERT
+  WITH CHECK (auth.uid() = user_id);</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Supabase cresceu de 0 para 1 milhao de bancos de dados ativos em 3 anos, sendo o backend mais adotado por startups em 2025. PostgreSQL e o banco de dados mais popular do mundo para novos projetos segundo o Stack Overflow Survey. Connection pooling com PgBouncer reduz o uso de conexoes em 10-50x, essencial quando serverless functions (Vercel, Netlify) criam uma conexao por invocacao. Row Level Security elimina a necessidade de verificar permissoes no codigo da aplicacao, reduzindo bugs de autorizacao em ate 90%.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Ative RLS em todas as tabelas imediatamente apos cria-las. A configuracao padrao do Supabase nega todo acesso quando RLS esta ativo e nenhuma policy existe. Isso e seguro por padrao: se voce esquecer de criar uma policy, ninguem acessa os dados (em vez de todo mundo acessar). Use a porta 6543 (pooling) para a aplicacao e a porta 5432 (direta) apenas para migrations e scripts administrativos.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Ativar RLS em toda tabela. Usar connection pooling em producao. Versionar migrations como codigo. Separar ANON_KEY (client) de SERVICE_KEY (server). Testar queries com EXPLAIN ANALYZE.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Expor SERVICE_KEY no frontend. Alterar o banco manualmente sem migration. Ignorar connection pooling ate ficar sem conexoes em producao. Criar tabelas sem RLS e "adicionar depois".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">✅ Validacao de Configuracao</h2>
+          <p class="text-neutral-300">O app nao pode descobrir que falta uma variavel de ambiente quando o primeiro usuario tenta usar o agente. Validacao na inicializacao e o principio fail-fast aplicado a configuracao: se algo esta errado, o sistema para antes de causar dano.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O Zod e a biblioteca padrao para validacao de schemas em TypeScript. Para variaveis de ambiente, ele traz tres vantagens criticas: validacao em runtime (o TypeScript so checa tipos em compile time, nao em runtime), mensagens de erro claras (diz exatamente qual variavel esta faltando ou com formato errado), e inferencia de tipos (o TypeScript automaticamente sabe o tipo de cada variavel apos a validacao).</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// config/env.ts - Validacao com Zod
+import { z } from 'zod';
+import { config } from 'dotenv';
+
+config(); // Carrega .env
+
+const envSchema = z.object({
+  // App
+  NODE_ENV: z.enum(['development', 'staging', 'production']).default('development'),
+  PORT: z.string().transform(Number).default('3000'),
+  APP_URL: z.string().url().default('http://localhost:3000'),
+
+  // Provedores de IA (pelo menos um obrigatorio)
+  OPENAI_API_KEY: z.string().startsWith('sk-').optional(),
+  ANTHROPIC_API_KEY: z.string().startsWith('sk-ant-').optional(),
+  GOOGLE_API_KEY: z.string().optional(),
+
+  // Banco de dados
+  DATABASE_URL: z.string().startsWith('postgresql://'),
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_ANON_KEY: z.string().min(100), // JWTs sao longos
+  SUPABASE_SERVICE_KEY: z.string().min(100),
+
+  // Telegram
+  TELEGRAM_TOKEN: z.string().regex(/^\d+:[A-Za-z0-9_-]+$/),
+  ALLOWED_CHAT_ID: z.string().regex(/^\d+$/),
+
+  // Dashboard
+  DASHBOARD_TOKEN: z.string().min(8),
+  DASHBOARD_PORT: z.string().transform(Number).default('3141'),
+}).refine(
+  (data) => data.OPENAI_API_KEY || data.ANTHROPIC_API_KEY || data.GOOGLE_API_KEY,
+  { message: 'At least one AI provider key is required' }
+);
+
+// Validar e exportar
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error('Invalid environment variables:');
+  console.error(parsed.error.flatten().fieldErrors);
+  process.exit(1); // Fail fast
+}
+
+export const env = parsed.data;
+export type Env = z.infer&lt;typeof envSchema&gt;;</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">O <code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400">process.exit(1)</code> e intencional. Se a configuracao esta invalida, o app nao deve iniciar. Nenhum request deve ser processado com configuracao quebrada. Em ambientes com orquestracao (Docker, Kubernetes), o exit code 1 sinaliza falha e o orquestrador pode tentar reiniciar ou alertar. Em desenvolvimento, o erro aparece imediatamente no terminal com a lista exata de variaveis problematicas.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O Zod e a biblioteca de validacao mais popular do ecossistema TypeScript, com mais de 35 milhoes de downloads semanais no npm. O principio fail-fast foi formalizado por Jim Shore em 2004 e e pratica padrao em sistemas distribuidos. A Microsoft usa validacao de configuracao no startup de todos os servicos Azure. O T3 Stack (Next.js + tRPC + Prisma) popularizou o padrao de validar env com Zod, adotado por milhares de projetos. Erros de configuracao sao a segunda causa mais comum de incidentes em producao, atras apenas de mudancas de codigo.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Alem de validar presenca e formato, adicione validacoes de negocio. Se DASHBOARD_PORT e igual a PORT, o app vai falhar por conflito de porta. Adicione um .refine() para verificar. Se NODE_ENV e production mas SUPABASE_SERVICE_KEY nao esta definida, alerte. Use .transform() para converter strings em numeros, booleans ou arrays diretamente no schema. O resultado e um objeto tipado e ja transformado, pronto para uso em qualquer parte do codigo.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Usar Zod para validar todas as variaveis no startup. Falhar imediatamente com mensagem clara se algo esta errado. Adicionar .default() para variaveis opcionais. Exportar tipos inferidos para usar no resto do codigo.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Acessar process.env diretamente espalhado pelo codigo. Confiar que a variavel "provavelmente esta la". Deixar o app iniciar com configuracao incompleta. Mostrar valores de secrets em mensagens de erro.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🛠️ Exercicio: Setup Completo do .env</h2>
+          <p class="text-neutral-300">Hora de colocar tudo junto. Neste exercicio voce vai criar o arquivo .env completo do seu SaaS, configurar multiplos provedores, adicionar as credenciais de banco de dados, implementar validacao com Zod, e testar que o sistema inicia corretamente.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O exercicio cobre 5 passos que juntos formam o sistema de configuracao completo da plataforma:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 1 - Criar .env.example documentado:</strong> Liste todas as variaveis com comentarios explicando o proposito e formato de cada uma. Agrupe por categoria (app, providers, database, integrations).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 2 - Criar .env com valores reais:</strong> Copie .env.example e preencha com suas chaves. Obtenha API keys de pelo menos dois provedores (OpenAI + Anthropic, ou um deles + Ollama local).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 3 - Implementar config/env.ts com Zod:</strong> Crie o schema de validacao com todos os campos, tipos, defaults e regras de negocio. Exporte o objeto tipado.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 4 - Testar validacao:</strong> Remova uma variavel obrigatoria e confirme que o app falha com mensagem clara. Adicione um valor invalido e veja o erro. Restaure e confirme que inicia normalmente.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 5 - Testar conectividade:</strong> Crie um script test-config.ts que importa o env validado e faz um health check em cada provedor configurado (uma chamada simples "ola" para cada API).</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// scripts/test-config.ts
+import { env } from '../config/env';
+
+async function testProviders() {
+  console.log('Environment:', env.NODE_ENV);
+  console.log('Port:', env.PORT);
+
+  // Testar OpenAI
+  if (env.OPENAI_API_KEY) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/models', {
+        headers: { 'Authorization': `Bearer ${env.OPENAI_API_KEY}` }
+      });
+      console.log('OpenAI:', res.ok ? 'OK' : 'FAIL');
+    } catch (e) {
+      console.log('OpenAI: UNREACHABLE');
+    }
+  }
+
+  // Testar Anthropic
+  if (env.ANTHROPIC_API_KEY) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': env.ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 10,
+          messages: [{ role: 'user', content: 'ping' }]
+        })
+      });
+      console.log('Anthropic:', res.ok ? 'OK' : 'FAIL');
+    } catch (e) {
+      console.log('Anthropic: UNREACHABLE');
+    }
+  }
+
+  // Testar Supabase
+  try {
+    const res = await fetch(`${env.SUPABASE_URL}/rest/v1/`, {
+      headers: {
+        'apikey': env.SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${env.SUPABASE_ANON_KEY}`
+      }
+    });
+    console.log('Supabase:', res.ok ? 'OK' : 'FAIL');
+  } catch (e) {
+    console.log('Supabase: UNREACHABLE');
+  }
+
+  console.log('\nAll checks complete.');
+}
+
+testProviders();</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Execute o test-config.ts a cada deploy para confirmar que todas as variaveis estao corretas e todos os servicos estao acessiveis. Adicione isso como step no CI/CD pipeline. Se qualquer provider falhar o health check, o deploy deve ser bloqueado. Em desenvolvimento, rode o script uma vez por dia ou quando mudar de branch. Diferentes branches podem precisar de configuracoes diferentes.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Arquivo .env.example completo e documentado com todas as variaveis. Arquivo .env preenchido com chaves de pelo menos dois provedores e banco de dados. Modulo config/env.ts com schema Zod validando tipos, formatos e regras de negocio. Script test-config.ts que verifica conectividade com cada servico. O app inicia e falha corretamente quando variaveis estao faltando.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Dominou a hierarquia de arquivos .env: base, local, production e suas prioridades.</p>
+        <p>&#10003; Configurou multiplos provedores de IA com interface unificada e fallback chain.</p>
+        <p>&#10003; Aprendeu gerenciamento profissional de chaves: vault, rotacao e principio do minimo privilegio.</p>
+        <p>&#10003; Configurou Supabase com connection pooling, migrations e Row Level Security.</p>
+        <p>&#10003; Implementou validacao de configuracao com Zod e principio fail-fast.</p>
+        <p>&#10003; Criou setup completo do .env com teste de conectividade automatizado.</p>
+      </div>
+      <div class="flex justify-start space-x-3">
+        <a href="modulo-2-3.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">Modulo Anterior</a>
+        <a href="modulo-2-5.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">Proximo Modulo</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

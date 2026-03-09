@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.7 - Criar Estrutura Base | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.7</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.7</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">&#x1F528; Criar Estrutura Base</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Este e o modulo final da Trilha 2 e o mais importante: voce sai com um projeto funcional. Repositorio inicializado, pastas criadas, dependencias instaladas, banco de dados configurado, e um agente skeleton que recebe input e retorna output de um LLM. No exercicio final, voce faz deploy e tem seu SaaS de agentes rodando na internet.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">60</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Basico</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F4E6; Inicializar o Repositorio</h2>
+          <p class="text-neutral-300">Todo projeto serio comeca com um repositorio git. Nao amanha, nao depois de ter codigo. Agora. O primeiro commit define a fundacao sobre a qual tudo vai ser construido. E a estrategia de branching que voce escolhe hoje define como o projeto evolui sem caos.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O <strong class="text-blue-400">git init</strong> cria o repositorio local. Mas antes de qualquer codigo, voce precisa de tres arquivos fundamentais. O <strong>.gitignore</strong> protege o que nunca deve entrar no repositorio: .env com suas chaves de API, node_modules com milhares de arquivos de dependencia, dist/ com codigo compilado, e qualquer arquivo que contenha secrets. O <strong>README.md</strong> documenta o que o projeto e, como rodar, e quais variaveis de ambiente sao necessarias. A <strong>LICENSE</strong> define legalmente quem pode usar, modificar e distribuir o codigo.</p>
+          <p class="text-neutral-300 mt-3">A filosofia do <strong class="text-blue-400">primeiro commit</strong> e simples: ele deve conter a infraestrutura minima, nao logica de negocio. Configuracao do projeto, estrutura de pastas, .gitignore, README. Isso cria uma baseline limpa que qualquer colaborador (humano ou IA) pode clonar e comecar a trabalhar imediatamente.</p>
+          <p class="text-neutral-300 mt-3">Para <strong class="text-blue-400">branching strategy</strong> de um dev solo com IA, o modelo mais eficiente e o trunk-based: voce trabalha direto na main para features pequenas e cria branches curtas (1-3 commits) para features maiores. Sem develop, staging ou release branches. Isso funciona porque com IA voce itera rapido e feature branches longas geram conflitos desnecessarios. Quando o projeto cresce e adiciona colaboradores, voce migra para GitHub Flow (main + feature branches com PR).</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Inicializar o projeto completo
+mkdir meu-saas-agentes &amp;&amp; cd meu-saas-agentes
+git init
+
+# .gitignore robusto
+cat &gt; .gitignore &lt;&lt; 'EOF'
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Build
+dist/
+.next/
+.turbo/
+out/
+
+# Secrets
+*.pem
+*.key
+credentials.json
+service-account.json
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database local
+*.sqlite
+*.db
+EOF
+
+# README minimo
+cat &gt; README.md &lt;&lt; 'EOF'
+# Meu SaaS de Agentes
+
+Plataforma de agentes de IA com Next.js, Supabase e multiplos provedores.
+
+## Setup
+```bash
+cp .env.example .env  # Preencher com suas chaves
+npm install
+npm run dev
+```
+
+## Variaveis de Ambiente
+Ver `.env.example` para a lista completa.
+EOF
+
+# Primeiro commit
+git add .gitignore README.md
+git commit -m "chore: init repo com gitignore e readme"
+
+# Conectar ao GitHub
+gh repo create meu-saas-agentes --private --source=. --push</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">GitHub hospeda mais de 400 milhoes de repositorios. Pesquisas da GitLab mostram que equipes usando trunk-based development fazem deploy 2x mais rapido que equipes com branching complexo. Google, com um dos maiores monorepos do mundo (86TB), usa trunk-based development. O .gitignore e a primeira linha de defesa: GitHub detectou 2 milhoes de secrets vazados em repos publicos em 2023, e a maioria poderia ter sido evitada com um .gitignore correto. Conventional commits (feat:, fix:, chore:) facilitam changelogs automaticos e sao adotados por Angular, Vue, e a maioria dos projetos open source relevantes.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Use o GitHub CLI (gh) para criar o repo remoto direto do terminal. "gh repo create --private --source=. --push" cria o repo no GitHub, conecta como origin, e faz o push do primeiro commit em um unico comando. Para commits, adote conventional commits desde o primeiro dia: "feat:" para features, "fix:" para bugfixes, "chore:" para infraestrutura. Quando seu projeto crescer, voce pode gerar changelogs automaticos com base nesse padrao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar .gitignore antes de qualquer codigo. Ter README com instrucoes de setup. Usar conventional commits. Conectar ao GitHub remoto imediatamente. Primeiro commit = infraestrutura, nao logica.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Escrever 500 linhas de codigo antes do primeiro commit. Commitar .env ou node_modules. Ter mensagens de commit como "update" ou "fix stuff". Usar branching strategy complexa para projeto solo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F4C1; Scaffold de Pastas</h2>
+          <p class="text-neutral-300">A estrutura de pastas e o esqueleto do projeto. Criar todas as pastas com seus index files antes de escrever logica garante que cada nova feature ja tem um lugar definido. Voce nunca precisa pensar "onde coloco isso?" porque a resposta esta na estrutura.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">A estrutura completa para uma plataforma de agentes com Next.js organiza o codigo em diretorios funcionais. O diretorio <strong class="text-blue-400">app/</strong> contem a aplicacao Next.js com suas rotas, layouts e paginas. O <strong class="text-blue-400">agents/</strong> armazena a logica de cada agente de IA com uma interface padronizada. O <strong class="text-blue-400">prompts/</strong> guarda system prompts versionados, templates de instrucao e exemplos. O <strong class="text-blue-400">skills/</strong> contem capacidades compostas que combinam multiplas tools. O <strong class="text-blue-400">tools/</strong> oferece acoes atomicas que os agentes podem invocar. O <strong class="text-blue-400">memory/</strong> gerencia persistencia de estado, historico e cache. O <strong class="text-blue-400">config/</strong> centraliza configuracao, validacao de env vars e constantes.</p>
+          <p class="text-neutral-300 mt-3">Cada diretorio recebe um <strong class="text-blue-400">index.ts</strong> (barrel export) que controla o que o modulo expoe para o resto do sistema. Se agents/index.ts exporta apenas createAgent() e listAgents(), nenhum outro modulo precisa conhecer os detalhes internos de como cada agente e implementado. Isso cria fronteiras claras entre modulos e permite refatorar internamente sem quebrar consumers.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Scaffold completo com mkdir -p
+mkdir -p app/api/chat app/api/agents app/(dashboard)
+mkdir -p agents
+mkdir -p prompts/agents prompts/templates
+mkdir -p skills
+mkdir -p tools
+mkdir -p memory/migrations
+mkdir -p config
+mkdir -p lib/utils
+mkdir -p types
+
+# Index files (barrel exports)
+cat &gt; agents/index.ts &lt;&lt; 'EOF'
+export { SimpleAgent } from './simple';
+export type { Agent, AgentConfig, AgentResponse } from '../types/agent';
+EOF
+
+cat &gt; tools/index.ts &lt;&lt; 'EOF'
+export { webSearch } from './web-search';
+export { readFile } from './file-read';
+export type { Tool, ToolResult } from '../types/tool';
+EOF
+
+cat &gt; config/index.ts &lt;&lt; 'EOF'
+export { env } from './env';
+export { providers } from './providers';
+EOF
+
+# Types compartilhados
+cat &gt; types/agent.ts &lt;&lt; 'EOF'
+export interface Agent {
+  id: string;
+  name: string;
+  run(input: string, context?: AgentContext): Promise&lt;AgentResponse&gt;;
+}
+
+export interface AgentConfig {
+  provider: 'openai' | 'anthropic' | 'ollama';
+  model: string;
+  systemPrompt: string;
+  temperature?: number;
+  maxTokens?: number;
+}
+
+export interface AgentResponse {
+  text: string;
+  usage: { promptTokens: number; completionTokens: number; cost: number };
+  latencyMs: number;
+}
+
+export interface AgentContext {
+  history: Array&lt;{ role: string; content: string }&gt;;
+  userPrefs?: Record&lt;string, string&gt;;
+}
+EOF
+
+# Global system prompt
+cat &gt; prompts/global.md &lt;&lt; 'EOF'
+Voce e um assistente inteligente. Responda de forma clara e direta.
+Nao use emojis excessivos. Seja preciso e util.
+Se nao souber algo, diga que nao sabe.
+EOF
+
+echo "Scaffold completo. $(find . -type f | wc -l) arquivos criados."</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Estudos de engenharia de software mostram que a previsibilidade da estrutura reduz o tempo de onboarding de novos membros (humanos ou IA) de dias para horas. O padrao Next.js App Router (app/ directory) e a convencao oficial desde Next.js 13 e e adotada pela maioria dos projetos novos. Barrel exports (index.ts) sao recomendados pela documentacao do TypeScript e reduzem a complexidade de imports em projetos grandes. Projetos com types/ separados reportam 40% menos bugs de tipagem em comparacao com tipos espalhados pelo codigo.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Crie um script scaffold.sh que gera toda a estrutura com um comando. Assim, se voce precisar criar um segundo projeto (ou ajudar alguem a criar o dele), e um unico bash script. Cada pasta deve ter no maximo 7-10 arquivos. Se passar disso, crie subpastas. Uma pasta com 30 arquivos e tao ruim quanto um unico arquivo com 3000 linhas.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar todas as pastas antes de escrever logica. Adicionar index.ts em cada modulo. Manter types/ separado. Nomear arquivos com kebab-case descritivo. Documentar a responsabilidade de cada pasta no README.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Criar pastas conforme necessidade sem plano. Misturar tipos com implementacao. Ter pastas vazias sem proposito definido. Usar nomes ambiguos como "shared/", "common/" ou "misc/".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F4E6; Configurar Package.json e Dependencias</h2>
+          <p class="text-neutral-300">O package.json e o contrato do seu projeto. Ele define quais bibliotecas o sistema usa, quais scripts estao disponiveis, e como o projeto e executado. Escolher as dependencias certas no inicio evita refatoracoes dolorosas depois.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">As dependencias essenciais de uma plataforma de agentes se dividem em categorias claras. O <strong class="text-blue-400">framework web</strong> (Next.js) fornece rotas, server-side rendering, API routes e deploy simplificado. O <strong class="text-blue-400">banco de dados</strong> (Supabase client) oferece PostgreSQL gerenciado com auth, storage e realtime built-in. Os <strong class="text-blue-400">SDKs de IA</strong> (openai, @anthropic-ai/sdk) conectam aos provedores de LLM. A <strong class="text-blue-400">validacao</strong> (zod) garante type safety em runtime para inputs, configs e respostas de API. O <strong class="text-blue-400">styling</strong> (tailwindcss) permite construir UI rapidamente sem escrever CSS customizado.</p>
+          <p class="text-neutral-300 mt-3">A distincao entre <strong class="text-blue-400">dependencies</strong> e <strong class="text-blue-400">devDependencies</strong> importa para deploy. Dependencies sao pacotes que rodam em producao (next, openai, supabase). DevDependencies sao pacotes usados apenas em desenvolvimento (typescript, eslint, prettier, @types/*). Em plataformas como Vercel, apenas dependencies sao instaladas no build de producao, o que reduz o tamanho do deploy.</p>
+          <p class="text-neutral-300 mt-3">Os <strong class="text-blue-400">scripts</strong> do package.json sao atalhos para comandos frequentes. O dev roda o servidor de desenvolvimento com hot reload. O build compila para producao. O start roda o build compilado. O lint verifica padroes de codigo. O db:migrate roda migracoes do banco. Ter scripts bem definidos significa que qualquer pessoa (ou CI/CD) pode operar o projeto com npm run [script].</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Criar Next.js app com TypeScript + Tailwind
+npx create-next-app@latest . --typescript --tailwind --eslint \
+  --app --src-dir --import-alias "@/*" --no-git
+
+# Dependencias de producao
+npm install @supabase/supabase-js   # Banco de dados
+npm install openai                   # OpenAI SDK
+npm install @anthropic-ai/sdk        # Anthropic SDK
+npm install zod                      # Validacao runtime
+npm install ai                       # Vercel AI SDK (streaming)
+
+# DevDependencies
+npm install -D @types/node prettier
+
+# package.json scripts
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "db:migrate": "supabase db push",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local &gt; types/database.ts"
+  }
+}
+
+# Verificar tudo instalou correto
+npm run type-check  # Zero errors = pronto
+npm run dev         # Server rodando em localhost:3000</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Next.js e usado por mais de 1 milhao de sites em producao incluindo Netflix, TikTok, Twitch e Notion. Supabase cresceu de 0 para 1 milhao de bancos de dados em 3 anos e oferece tier gratuito com 500MB de storage e 50.000 requests por mes. A combinacao Next.js + Supabase + Vercel e chamada de "T3 Stack simplificado" e e a escolha mais comum para MVPs em 2025-2026. Zod e a biblioteca de validacao mais popular do ecossistema TypeScript com mais de 30 milhoes de downloads semanais no npm. O Vercel AI SDK simplifica streaming de respostas de LLM com hooks React prontos.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Rode npm run type-check apos instalar tudo. Se retornar zero errors, seu setup esta correto. Se der erro, resolva antes de escrever codigo. Fixe versoes de dependencias criticas (openai, @anthropic-ai/sdk) no package.json usando versoes exatas em vez de ^ranges. Isso evita que um npm install futuro quebre algo por conta de uma atualizacao automatica. Use o script db:types do Supabase para gerar tipos TypeScript automaticamente a partir do schema do banco.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Separar dependencies de devDependencies. Ter scripts para dev, build, start, lint, type-check. Fixar versoes de SDKs de IA. Verificar type-check antes de commitar. Documentar cada dependencia no README.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Instalar 30 pacotes "por via das duvidas". Misturar dependencies e devDependencies. Nao ter script de build e lint. Commitar node_modules. Ignorar warnings de versao durante npm install.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F5C4;&#xFE0F; Setup do Banco de Dados</h2>
+          <p class="text-neutral-300">Uma plataforma de agentes sem banco de dados e um chatbot stateless. Com banco, voce tem historico de conversas, perfis de usuario, configuracoes de agentes e metricas de uso. Supabase oferece PostgreSQL gerenciado com auth, storage e API REST automatica.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O <strong class="text-blue-400">Supabase</strong> e um backend-as-a-service open source que fornece PostgreSQL, autenticacao, storage de arquivos e realtime subscriptions. Para uma plataforma de agentes, voce precisa de quatro tabelas fundamentais.</p>
+          <p class="text-neutral-300 mt-3">A tabela <strong class="text-blue-400">users</strong> armazena informacoes do usuario: id (UUID), email, name, created_at, preferences (JSONB). Se voce usa Supabase Auth, essa tabela ja existe em auth.users e voce pode extende-la com uma tabela profiles vinculada.</p>
+          <p class="text-neutral-300 mt-3">A tabela <strong class="text-blue-400">conversations</strong> agrupa mensagens em sessoes: id, user_id (FK para users), title, agent_id, created_at, updated_at. Cada conversa pertence a um usuario e a um agente.</p>
+          <p class="text-neutral-300 mt-3">A tabela <strong class="text-blue-400">messages</strong> armazena cada mensagem individual: id, conversation_id (FK), role ('user' | 'assistant' | 'system'), content (TEXT), tokens_used (INT), cost_usd (DECIMAL), created_at. E o registro completo de tudo que foi dito e quanto custou.</p>
+          <p class="text-neutral-300 mt-3">A tabela <strong class="text-blue-400">agents</strong> define a configuracao de cada agente: id, name, provider, model, system_prompt, temperature, max_tokens, is_active, created_at. Isso permite configurar agentes via banco em vez de hardcodar no codigo.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>-- Migracao inicial: create tables
+-- Arquivo: memory/migrations/001_initial.sql
+
+-- Profiles (extende auth.users)
+CREATE TABLE profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT,
+  preferences JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Agents
+CREATE TABLE agents (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  provider TEXT NOT NULL CHECK (provider IN ('openai', 'anthropic', 'ollama')),
+  model TEXT NOT NULL,
+  system_prompt TEXT,
+  temperature REAL DEFAULT 0.7,
+  max_tokens INT DEFAULT 4096,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Conversations
+CREATE TABLE conversations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  agent_id TEXT REFERENCES agents(id),
+  title TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Messages
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id UUID REFERENCES conversations(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+  content TEXT NOT NULL,
+  tokens_used INT DEFAULT 0,
+  cost_usd DECIMAL(10, 6) DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Indices para queries frequentes
+CREATE INDEX idx_messages_conversation ON messages(conversation_id, created_at);
+CREATE INDEX idx_conversations_user ON conversations(user_id, updated_at DESC);
+
+-- Seed: primeiro agente
+INSERT INTO agents (id, name, provider, model, system_prompt)
+VALUES ('simple', 'Agente Simples', 'openai', 'gpt-4o-mini',
+  'Voce e um assistente util. Responda de forma clara e direta.');</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">PostgreSQL e o banco de dados relacional mais popular do mundo para novas aplicacoes, ultrapassando MySQL em adocao desde 2023. O tipo JSONB do PostgreSQL permite armazenar dados semi-estruturados com performance de consulta comparavel a bancos NoSQL. Supabase gera automaticamente uma API REST (PostgREST) e uma API realtime (via WebSockets) para cada tabela, eliminando a necessidade de escrever endpoints CRUD manualmente. Row Level Security (RLS) do PostgreSQL garante que cada usuario so acessa seus proprios dados, mesmo que a API seja exposta publicamente.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Instale o Supabase CLI (npx supabase init) para ter um banco local identico ao de producao. Use migracoes (arquivos SQL numerados) em vez de criar tabelas manualmente no dashboard. Isso permite versionar o schema do banco junto com o codigo. Rode "supabase gen types typescript" para gerar tipos TypeScript automaticamente a partir das tabelas. Habilite RLS em todas as tabelas e crie policies especificas: "users can read their own conversations", "users can insert messages to their conversations".</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Usar migracoes SQL versionadas. Criar indices para queries frequentes. Habilitar RLS em todas as tabelas. Gerar tipos TypeScript do schema. Ter um seed com dados iniciais para desenvolvimento.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Criar tabelas manualmente no dashboard sem migracao. Armazenar dados sensiveis sem criptografia. Deixar RLS desabilitado em producao. Usar TEXT para campos que deveriam ser ENUM ou CHECK constraint.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F916; Primeiro Agente Skeleton</h2>
+          <p class="text-neutral-300">O agente skeleton e a implementacao mais simples possivel que funciona: recebe input, chama um LLM, retorna output. Sem ferramentas, sem memoria, sem roteamento complexo. Apenas o ciclo basico input > LLM > output. A partir desse esqueleto minimo, tudo vai ser construido nas proximas trilhas.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O agente skeleton implementa a interface <strong class="text-blue-400">Agent</strong> definida em types/: tem um id, um nome, e um metodo run() que recebe input (string) e context (opcional) e retorna uma AgentResponse com texto, uso de tokens e latencia. Internamente, ele monta o array de messages com system prompt + historico + input do usuario, chama o SDK do provedor, e retorna o resultado formatado.</p>
+          <p class="text-neutral-300 mt-3">O ponto crucial e a <strong class="text-blue-400">separacao entre agente e provedor</strong>. O agente decide o que perguntar e como estruturar o prompt. O provedor (OpenAI, Anthropic, Ollama) e apenas o motor de inferencia. Essa separacao permite trocar de provedor mudando uma config, nao reescrevendo o agente. O agente nao sabe e nao se importa se esta falando com GPT-4 ou com um modelo local.</p>
+          <p class="text-neutral-300 mt-3">O skeleton tambem inclui <strong class="text-blue-400">metricas basicas</strong>: registra quantos tokens foram usados (prompt + completion), calcula o custo estimado baseado na tabela de precos do provedor, e mede a latencia total da chamada. Esses numeros sao retornados na resposta e permitem rastrear custo e performance desde o primeiro request.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// agents/simple.ts
+import OpenAI from 'openai';
+import type { Agent, AgentConfig, AgentContext, AgentResponse } from '@/types/agent';
+
+const COST_PER_1K = { 'gpt-4o-mini': { input: 0.00015, output: 0.0006 } };
+
+export class SimpleAgent implements Agent {
+  id = 'simple';
+  name = 'Agente Simples';
+  private client: OpenAI;
+  private config: AgentConfig;
+
+  constructor(config?: Partial&lt;AgentConfig&gt;) {
+    this.config = {
+      provider: 'openai',
+      model: 'gpt-4o-mini',
+      systemPrompt: 'Voce e um assistente util. Responda de forma clara.',
+      temperature: 0.7,
+      maxTokens: 4096,
+      ...config,
+    };
+    this.client = new OpenAI(); // Usa OPENAI_API_KEY do env
+  }
+
+  async run(input: string, context?: AgentContext): Promise&lt;AgentResponse&gt; {
+    const start = Date.now();
+
+    // Montar messages
+    const messages: OpenAI.ChatCompletionMessageParam[] = [
+      { role: 'system', content: this.config.systemPrompt },
+      ...(context?.history || []).map(h =&gt; ({
+        role: h.role as 'user' | 'assistant',
+        content: h.content,
+      })),
+      { role: 'user', content: input },
+    ];
+
+    // Chamar o provedor
+    const completion = await this.client.chat.completions.create({
+      model: this.config.model,
+      messages,
+      temperature: this.config.temperature,
+      max_tokens: this.config.maxTokens,
+    });
+
+    const text = completion.choices[0]?.message?.content || '';
+    const usage = completion.usage;
+    const model = this.config.model as keyof typeof COST_PER_1K;
+    const pricing = COST_PER_1K[model] || { input: 0, output: 0 };
+
+    return {
+      text,
+      usage: {
+        promptTokens: usage?.prompt_tokens || 0,
+        completionTokens: usage?.completion_tokens || 0,
+        cost: ((usage?.prompt_tokens || 0) / 1000 * pricing.input) +
+              ((usage?.completion_tokens || 0) / 1000 * pricing.output),
+      },
+      latencyMs: Date.now() - start,
+    };
+  }
+}
+
+// Teste rapido
+// npx tsx agents/simple.ts
+if (require.main === module) {
+  const agent = new SimpleAgent();
+  agent.run('O que e uma plataforma de agentes de IA?').then(r =&gt; {
+    console.log('Resposta:', r.text);
+    console.log('Tokens:', r.usage.promptTokens, '+', r.usage.completionTokens);
+    console.log('Custo: $' + r.usage.cost.toFixed(6));
+    console.log('Latencia:', r.latencyMs + 'ms');
+  });
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A interface Agent (id, name, run()) segue o padrao Strategy do Gang of Four: cada agente implementa a mesma interface mas com comportamento diferente internamente. Isso e exatamente como LangChain, CrewAI e AutoGen estruturam seus agentes. O custo medio de uma chamada ao GPT-4o-mini e de $0.00015/1K tokens de input e $0.0006/1K tokens de output. Uma conversa tipica de 10 turnos consome cerca de 5K-10K tokens totais, custando menos de $0.01. Para Anthropic Claude, os precos sao similares para modelos menores (Haiku) e mais altos para modelos maiores (Opus).</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Teste o agente skeleton com "npx tsx agents/simple.ts" diretamente do terminal antes de integrar com o resto da aplicacao. Se funciona isolado, voce sabe que o problema nao e o agente quando integrar com rotas e banco. Sempre retorne metricas (tokens, custo, latencia) na resposta do agente. Voce vai precisar desses numeros para o dashboard, para alertas de custo, e para otimizar prompts. Um agente que funciona mas nao te diz quanto custou e uma caixa preta perigosa.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Implementar a interface Agent padrao. Separar agente de provedor. Retornar metricas (tokens, custo, latencia) em toda resposta. Ter teste standalone que roda sem servidor. Manter o skeleton o mais simples possivel.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Adicionar tools, memoria e roteamento no skeleton (isso vem nas proximas trilhas). Hardcodar API keys no codigo. Nao tratar o caso de resposta vazia. Ignorar metricas de uso. Fazer o agente depender de banco ou servidor para funcionar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F3AF; Exercicio: Projeto Funcional Minimo</h2>
+          <p class="text-neutral-300">Este e o exercicio mais importante de toda a Trilha 2. Voce vai sair dele com uma aplicacao Next.js rodando, Supabase conectado, um agente funcional respondendo perguntas, uma UI basica para interagir, e o primeiro deploy na internet via Vercel. E o MVP do seu SaaS de agentes.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">O Exercicio</h3>
+          <p class="text-neutral-300">Este exercicio integra tudo que voce aprendeu na Trilha 2. Sao 6 passos que resultam em um projeto funcional rodando na internet:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 1 - Next.js + Dependencias:</strong> Crie a aplicacao Next.js com TypeScript e Tailwind. Instale supabase-js, openai SDK, zod, e o Vercel AI SDK. Verifique com npm run type-check que tudo esta correto.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 2 - Supabase:</strong> Crie um projeto no Supabase (supabase.com), copie SUPABASE_URL e SUPABASE_ANON_KEY para o .env. Rode a migracao SQL para criar as tabelas (profiles, agents, conversations, messages). Insira o agente "simple" como seed.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 3 - API Route de Chat:</strong> Crie app/api/chat/route.ts que recebe uma mensagem via POST, carrega o agente do banco, chama o LLM com o SimpleAgent, salva a mensagem e resposta no banco, e retorna o resultado. Use zod para validar o body do request.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 4 - UI Basica:</strong> Crie uma pagina com input de texto, botao de enviar, e area de exibicao de resposta. Use useState para mensagens e useRef para scroll automatico. Estilize com Tailwind. Nao precisa ser bonito. Precisa funcionar.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 5 - Conectar Tudo:</strong> A UI faz POST para /api/chat. A API valida, chama o agente, salva no banco, retorna. A UI exibe a resposta. Teste uma conversa de 5 turnos. Verifique no Supabase dashboard que as mensagens foram salvas.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 6 - Deploy:</strong> Conecte o repo ao Vercel (vercel.com), configure as env vars (OPENAI_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY), faca deploy. Acesse a URL publica e envie uma mensagem. Se o agente respondeu, voce completou a Trilha 2.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// app/api/chat/route.ts - API Route completa
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { SimpleAgent } from '@/agents/simple';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_ANON_KEY!
+);
+
+const chatSchema = z.object({
+  message: z.string().min(1).max(10000),
+  conversationId: z.string().uuid().optional(),
+});
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { message, conversationId } = chatSchema.parse(body);
+
+    // Criar ou reusar conversa
+    let convId = conversationId;
+    if (!convId) {
+      const { data } = await supabase
+        .from('conversations')
+        .insert({ agent_id: 'simple', title: message.slice(0, 50) })
+        .select('id')
+        .single();
+      convId = data?.id;
+    }
+
+    // Buscar historico
+    const { data: history } = await supabase
+      .from('messages')
+      .select('role, content')
+      .eq('conversation_id', convId)
+      .order('created_at', { ascending: true })
+      .limit(20);
+
+    // Salvar mensagem do usuario
+    await supabase.from('messages').insert({
+      conversation_id: convId,
+      role: 'user',
+      content: message,
+    });
+
+    // Chamar agente
+    const agent = new SimpleAgent();
+    const result = await agent.run(message, { history: history || [] });
+
+    // Salvar resposta
+    await supabase.from('messages').insert({
+      conversation_id: convId,
+      role: 'assistant',
+      content: result.text,
+      tokens_used: result.usage.promptTokens + result.usage.completionTokens,
+      cost_usd: result.usage.cost,
+    });
+
+    return NextResponse.json({
+      text: result.text,
+      conversationId: convId,
+      usage: result.usage,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors }, { status: 400 });
+    }
+    console.error('Chat error:', error);
+    return NextResponse.json(
+      { error: 'Erro interno. Tente novamente.' },
+      { status: 500 }
+    );
+  }
+}
+
+# Checklist de deploy
+# 1. git add . && git commit -m "feat: MVP completo com agente e chat"
+# 2. git push origin main
+# 3. vercel (ou conectar via vercel.com dashboard)
+# 4. Configurar env vars no Vercel
+# 5. Acessar URL publica e testar
+# 6. Verificar dados no Supabase dashboard</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Faca cada passo funcionar isoladamente antes de seguir para o proximo. Passo 1: npm run dev mostra a pagina default do Next.js. Passo 2: voce consegue inserir e ler dados no Supabase dashboard. Passo 3: voce testa a API com curl ou Postman. Passo 4: a UI renderiza sem erros. Passo 5: a conversa funciona end-to-end local. Passo 6: funciona na URL publica. Se voce pular etapas e tentar fazer tudo de uma vez, quando der erro voce nao vai saber onde o problema esta.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Uma aplicacao Next.js deployada na Vercel com: Supabase conectado e tabelas criadas, um agente SimpleAgent que chama GPT-4o-mini, API route /api/chat validando input com zod, UI basica de chat funcional, mensagens salvas no banco com tokens e custo registrados, e uma URL publica acessivel pela internet. Esse e o ponto de partida para tudo que vem nas proximas trilhas: multiplos agentes, ferramentas, memoria, dashboard e escala.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final - Trilha 2 Completa</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Inicializou o repositorio com git, .gitignore robusto, README e conventional commits.</p>
+        <p>&#10003; Criou a estrutura de pastas profissional com barrel exports e separacao por dominio.</p>
+        <p>&#10003; Configurou package.json com dependencias essenciais: Next.js, Supabase, OpenAI SDK, Zod.</p>
+        <p>&#10003; Montou o banco de dados com 4 tabelas (profiles, agents, conversations, messages) e migracoes SQL.</p>
+        <p>&#10003; Construiu o primeiro agente skeleton com interface padrao, metricas e teste standalone.</p>
+        <p>&#10003; Deployou o projeto funcional minimo na Vercel com chat end-to-end e dados persistidos.</p>
+      </div>
+      <p class="text-neutral-300 mb-8">A Trilha 2 esta completa. Voce tem a arquitetura, a estrutura, o banco e o primeiro agente funcional. Na Trilha 3 voce vai construir a UI profissional, adicionar autenticacao, e implementar o sistema de conversas completo.</p>
+      <div class="flex justify-start space-x-3">
+        <a href="modulo-2-6.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">Modulo Anterior</a>
+        <a href="../trilha3/index.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">Proxima Trilha &#x2192;</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

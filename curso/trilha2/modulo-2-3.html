@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.3 - Estrutura de Pastas Profissional | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.3</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.3</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">📂 Estrutura de Pastas Profissional</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Neste modulo voce vai aprender a organizar o codigo de uma plataforma de agentes de forma que humanos naveguem com facilidade e IAs gerem codigo melhor. A estrutura de pastas e a primeira coisa que um novo desenvolvedor (ou um LLM) ve quando abre o projeto.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">45</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Basico</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🧠 Por que Estrutura Importa</h2>
+          <p class="text-neutral-300">A estrutura de pastas do seu projeto nao e estetica. E uma decisao de engenharia que afeta diretamente tres coisas: o tempo que um humano leva para encontrar algo, o tempo que um novo dev leva para contribuir, e a qualidade do codigo que uma IA gera quando tem acesso ao projeto.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Cognitive Load:</strong> Carga cognitiva e o esforco mental necessario para entender algo. Quando voce abre um projeto e ve 50 arquivos na raiz sem organizacao, seu cerebro gasta energia tentando classificar mentalmente o que cada arquivo faz. Isso e carga cognitiva desperdicada. Uma estrutura clara reduz essa carga porque a organizacao ja comunica a funcao de cada parte. Voce ve "agents/" e ja sabe onde estao os agentes. Ve "tools/" e sabe onde estao as ferramentas. Zero esforco mental.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Onboarding Time:</strong> O tempo que um novo desenvolvedor leva para fazer o primeiro commit produtivo. Em projetos bem estruturados, esse tempo e de horas. Em projetos mal organizados, pode ser dias ou semanas. A estrutura de pastas e o mapa do projeto. Se o mapa e claro, qualquer pessoa encontra o caminho. Se o mapa e confuso, ate gente experiente se perde.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">AI Context:</strong> Quando voce usa Claude, Copilot ou qualquer LLM para gerar codigo, a IA usa a estrutura do projeto como contexto para suas decisoes. Se ela ve uma pasta agents/ com arquivos bem nomeados (claude.ts, ollama.ts), ela entende o padrao e gera um novo agente seguindo a mesma convencao. Se ela ve um amontoado de arquivos sem padrao, ela gera codigo que reflete essa bagunca. Boa estrutura funciona como um system prompt implicito para qualquer IA que toque o projeto.</p>
+          <p class="text-neutral-300 mt-3">O ponto central: a estrutura de pastas nao e sobre onde os arquivos ficam. E sobre como o conhecimento do projeto e comunicado. Para humanos, e legibilidade. Para IAs, e contexto. Para o time, e produtividade.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Estudos de produtividade em engenharia de software (Google DORA Report, State of DevOps) mostram que desenvolvedores gastam entre 55% e 65% do tempo lendo e navegando codigo, nao escrevendo. Uma reducao de 20% no tempo de navegacao (alcancavel com boa estrutura) equivale a ganhar aproximadamente 1 hora por dia por desenvolvedor. Em times de 10 pessoas, sao 50 horas por semana de produtividade recuperada. Pesquisas da GitHub sobre AI-assisted coding mostram que ferramentas como Copilot geram codigo 30% mais preciso em repositorios com estrutura consistente comparado a projetos desorganizados.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Faca o teste do "5 segundos": mostre a arvore de pastas do seu projeto para alguem que nunca viu o codigo. Se em 5 segundos essa pessoa consegue dizer "e um bot de Telegram com multiplos agentes de IA", a estrutura esta funcionando. Se ela nao consegue, reorganize ate que a estrutura comunique o proposito do projeto sem precisar de explicacao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Definir a estrutura antes de escrever codigo. Usar nomes de pastas que descrevem funcao, nao tipo de arquivo. Manter no maximo 7-10 itens por diretorio (limite cognitivo humano). Documentar a estrutura no README com uma arvore simples.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Ter mais de 15 arquivos na raiz do projeto. Criar pastas so porque "pode precisar depois" (YAGNI). Mudar a estrutura toda semana. Usar nomes de pastas diferentes do que a comunidade espera (nao invente "modules/" quando todo mundo usa "src/").</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🏢 Monorepo vs Multi-repo para IA</h2>
+          <p class="text-neutral-300">A decisao entre manter tudo num unico repositorio ou separar em multiplos repos afeta diretamente como a IA consegue entender e gerar codigo para o projeto. Cada abordagem tem vantagens claras dependendo do contexto.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Monorepo</strong> e manter todo o codigo num unico repositorio. O bot, o dashboard, os agentes, as ferramentas, os scripts de deploy. Tudo junto. A grande vantagem para plataformas de agentes e o contexto compartilhado. Quando voce pede para a IA "criar um novo agente", ela ve a pasta agents/ com todos os agentes existentes, ve as interfaces, ve como sao chamados pelo router, e gera codigo consistente. Num monorepo, a IA tem visao completa do sistema.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Quando Monorepo Ganha:</strong> Projetos com equipe de ate 10-15 pessoas. Componentes fortemente acoplados que mudam juntos (bot + dashboard + agentes). Quando voce quer que a IA tenha contexto total para gerar codigo. Quando mudancas em uma parte exigem mudancas em outra (mudar a interface de um agente requer atualizar o router). Monorepo permite fazer tudo num unico commit atomico.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Multi-repo</strong> e separar cada componente em seu proprio repositorio: um repo para o bot, outro para o dashboard, outro para cada agente independente. A vantagem e isolamento total. Cada repo tem seu CI/CD, suas dependencias, seu ciclo de deploy. Um bug no dashboard nao afeta o deploy do bot.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Quando Multi-repo Ganha:</strong> Times grandes (20+ pessoas) onde equipes diferentes cuidam de componentes diferentes. Componentes com ciclos de vida independentes (o dashboard muda toda semana, o bot muda todo mes). Quando voce precisa de isolamento forte de dependencias (o bot usa Node 18, o ML pipeline usa Python 3.11). Microsservicos com APIs bem definidas entre si.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Ferramentas de Monorepo:</strong> Turborepo (da Vercel, focado em velocidade de build), Nx (da Nrwl, focado em dependencias inteligentes), Lerna (classico, mais simples). Essas ferramentas resolvem o principal problema do monorepo: builds lentos. Elas detectam quais pacotes mudaram e buildam apenas o necessario. Um push que muda so o dashboard nao rebuilda o bot.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Google mantem um dos maiores monorepos do mundo: mais de 2 bilhoes de linhas de codigo num unico repositorio. Meta, Microsoft e Uber tambem usam monorepos para seus produtos principais. Por outro lado, Netflix e Amazon preferem multi-repo com microsservicos independentes. Nao existe resposta universal. O Turborepo reporta reducao de 40-70% no tempo de build em monorepos grandes com caching remoto. Para plataformas de agentes em fase inicial (menos de 50k linhas de codigo), monorepo e quase sempre a escolha certa pela simplicidade e pelo contexto unificado que oferece a ferramentas de IA.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Comece com monorepo. Sempre. Quando (e se) a complexidade exigir separacao, migre componentes especificos para repos proprios. O custo de juntar repos depois e muito maior do que separar. Num monorepo, use workspaces do npm/pnpm para gerenciar pacotes internos com dependencias independentes. Adicione um turbo.json na raiz para que Turborepo saiba a ordem de build e quais tarefas podem rodar em paralelo.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Usar monorepo para projetos novos ate que haja uma razao real para separar. Configurar workspaces (npm/pnpm) para pacotes internos. Adotar Turborepo ou Nx se o build ficar lento. Manter uma pasta packages/ para codigo compartilhado entre componentes.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Separar em multi-repo antes de ter um motivo concreto. Ter dependencias circulares entre repos (bot importa do dashboard que importa do bot). Monorepo sem ferramenta de build incremental (build do zero toda vez). Manter repos separados que sempre deployam juntos (se deployam juntos, deviam ser um repo so).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🏗️ Clean Architecture Aplicada</h2>
+          <p class="text-neutral-300">Clean Architecture, proposta por Robert C. Martin (Uncle Bob), define regras claras sobre como as camadas do sistema devem depender umas das outras. Quando aplicada a plataformas de agentes, ela garante que o nucleo do sistema (a logica dos agentes) nunca depende de detalhes de infraestrutura.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O principio central da Clean Architecture e a <strong class="text-blue-400">Regra da Dependencia</strong>: dependencias de codigo so apontam para dentro, nunca para fora. A camada de dominio (regras de negocio) nao sabe que PostgreSQL existe. Nao sabe que Telegram existe. Nao sabe que OpenAI existe. Ela define interfaces (contratos), e as camadas externas implementam esses contratos.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Domain Layer (centro):</strong> Entidades e regras de negocio puras. Para uma plataforma de agentes: a interface Agent (recebe mensagem, retorna resposta), a interface Tool (recebe parametros, executa acao), as regras de roteamento (como decidir qual agente responde). Esse codigo nao importa nenhuma biblioteca externa. E TypeScript puro.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Application Layer:</strong> Casos de uso que orquestram o dominio. "Processar mensagem do usuario" e um caso de uso: recebe a mensagem, chama o router (dominio), seleciona o agente (dominio), executa (dominio), salva o historico (interface de persistencia). O caso de uso sabe a ordem das operacoes, mas nao sabe os detalhes de implementacao.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Infrastructure Layer (borda):</strong> Implementacoes concretas das interfaces do dominio. O adapter para Telegram que implementa a interface de "canal de entrada". O adapter para PostgreSQL que implementa a interface de "persistencia". O adapter para OpenAI que implementa a interface de "provedor de IA". Se amanha voce trocar PostgreSQL por MongoDB, so muda o adapter. O dominio e os casos de uso nao mudam uma linha.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Dependency Inversion:</strong> Em vez de o agente importar diretamente o modulo do OpenAI, o agente depende de uma interface AIProvider. Na inicializacao, voce injeta a implementacao concreta (OpenAIProvider, AnthropicProvider, OllamaProvider). Isso e inversao de dependencia na pratica: o codigo de alto nivel define o contrato, o codigo de baixo nivel implementa.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// domain/interfaces/ai-provider.ts
+export interface AIProvider {
+  name: string;
+  generate(prompt: string, context: string): Promise&lt;AIResponse&gt;;
+}
+
+// domain/interfaces/message-store.ts
+export interface MessageStore {
+  save(chatId: string, message: Message): Promise&lt;void&gt;;
+  getHistory(chatId: string, limit: number): Promise&lt;Message[]&gt;;
+}
+
+// infrastructure/providers/openai-provider.ts
+import OpenAI from 'openai';
+import { AIProvider, AIResponse } from '../../domain/interfaces/ai-provider';
+
+export class OpenAIProvider implements AIProvider {
+  name = 'openai';
+  private client: OpenAI;
+
+  constructor(apiKey: string) {
+    this.client = new OpenAI({ apiKey });
+  }
+
+  async generate(prompt: string, context: string): Promise&lt;AIResponse&gt; {
+    const response = await this.client.chat.completions.create({
+      model: 'gpt-4',
+      messages: [{ role: 'system', content: context }, { role: 'user', content: prompt }],
+    });
+    return { text: response.choices[0].message.content, tokens: response.usage };
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Clean Architecture e Hexagonal Architecture (Ports and Adapters, de Alistair Cockburn) sao padroes consolidados com mais de 15 anos de uso em producao. A inversao de dependencia e o "D" do SOLID, os cinco principios de design orientado a objetos mais ensinados em engenharia de software. Para plataformas de agentes, a principal vantagem e a testabilidade: quando o dominio nao depende de nenhuma infraestrutura, voce testa toda a logica de roteamento, processamento e formatacao sem precisar de banco de dados, sem precisar de API externa, sem precisar de Telegram. Testes rodam em milissegundos, nao em segundos.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Nao precisa implementar Clean Architecture pura no dia um. Mas aplique o principio: se voce pode trocar o provedor de IA mudando uma unica variavel de ambiente e um unico adapter, voce esta no caminho certo. Se trocar o provedor exige mudar 15 arquivos, a arquitetura esta acoplada demais. Comece definindo interfaces para as dependencias externas (provedor de IA, banco de dados, canal de mensagem) e injete implementacoes na inicializacao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Definir interfaces para provedores de IA, persistencia e canais de entrada. Manter o dominio livre de imports de bibliotecas externas. Injetar dependencias na inicializacao do sistema. Testar o dominio isoladamente com mocks simples.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Importar diretamente o SDK do OpenAI dentro da logica do agente. Acoplar a logica de negocio ao formato de resposta do Telegram. Criar "God classes" que fazem tudo (recebem mensagem, processam, salvam, enviam). Over-engineering com 15 camadas de abstracao quando 3 resolvem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📁 Feature Folders vs Layer Folders</h2>
+          <p class="text-neutral-300">Existem duas filosofias fundamentais para organizar codigo dentro de um projeto. A escolha entre elas define como voce navega, como adiciona features e como o projeto escala conforme cresce. Nenhuma e universalmente melhor. Mas uma tende a funcionar muito melhor para plataformas de agentes.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Layer Folders (Organizacao por Tipo):</strong> O classico. Uma pasta para controllers, uma para services, uma para models, uma para routes. Cada pasta agrupa arquivos pelo que eles sao, nao pelo que eles fazem.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Layer Folders (por tipo)
+src/
+├── controllers/
+│   ├── auth.controller.ts
+│   ├── chat.controller.ts
+│   └── billing.controller.ts
+├── services/
+│   ├── auth.service.ts
+│   ├── chat.service.ts
+│   └── billing.service.ts
+├── models/
+│   ├── user.model.ts
+│   ├── conversation.model.ts
+│   └── subscription.model.ts
+└── routes/
+    ├── auth.routes.ts
+    ├── chat.routes.ts
+    └── billing.routes.ts</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">O problema: para entender tudo sobre "chat", voce precisa abrir 4 pastas diferentes. Para adicionar uma feature nova, precisa criar um arquivo em cada pasta. E cada pasta cresce horizontalmente sem limite (50 controllers numa pasta so).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Feature Folders (Organizacao por Funcionalidade):</strong> Agrupa tudo que pertence a uma feature no mesmo lugar. Controller, service, model, routes de "chat" ficam juntos em chat/.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Feature Folders (por funcionalidade)
+src/
+├── auth/
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── auth.model.ts
+│   ├── auth.routes.ts
+│   └── auth.test.ts
+├── chat/
+│   ├── chat.controller.ts
+│   ├── chat.service.ts
+│   ├── chat.model.ts
+│   ├── chat.routes.ts
+│   └── chat.test.ts
+└── billing/
+    ├── billing.controller.ts
+    ├── billing.service.ts
+    ├── billing.model.ts
+    ├── billing.routes.ts
+    └── billing.test.ts</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">A vantagem: para entender tudo sobre "chat", voce abre uma unica pasta. Para adicionar uma feature nova, cria uma unica pasta. Para deletar uma feature, deleta uma unica pasta. Alta coesao, baixo acoplamento.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Abordagem Hibrida (recomendada):</strong> Use feature folders para o codigo de negocio e layer folders para infraestrutura compartilhada. Agents/, tools/, skills/ sao feature folders. Config/, middleware/, lib/ sao layer folders que servem a todas as features.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Hibrido (recomendado para plataformas de agentes)
+src/
+├── agents/          # Feature: cada agente autocontido
+│   ├── claude/
+│   ├── ollama/
+│   └── openrouter/
+├── tools/           # Feature: cada tool autocontida
+│   ├── web-search/
+│   └── file-read/
+├── channels/        # Feature: cada canal autocontido
+│   ├── telegram/
+│   └── api/
+├── lib/             # Compartilhado: utilidades genericas
+│   ├── logger.ts
+│   └── errors.ts
+├── config/          # Compartilhado: configuracao
+│   └── env.ts
+└── middleware/      # Compartilhado: middlewares
+    ├── auth.ts
+    └── rate-limit.ts</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Angular adotou feature folders como padrao oficial a partir da versao 14. Next.js 13+ usa o App Router com feature folders (cada rota e uma pasta autocontida). O pattern "screaming architecture" (cunhado por Uncle Bob) argumenta que a estrutura de pastas de um projeto deve gritar o que o sistema faz, nao que framework usa. Quando voce ve agents/, tools/, channels/, sabe que e uma plataforma de agentes. Quando ve controllers/, services/, models/, sabe que e... alguma coisa que usa MVC. Feature folders comunicam o dominio. Layer folders comunicam a tecnologia.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">A regra pratica: se dois arquivos quase sempre mudam juntos, eles devem estar na mesma pasta. Se voce muda o controller de chat, quase sempre muda o service de chat tambem. Entao coloque juntos. Se voce muda o logger, isso nao tem relacao com nenhuma feature especifica. Entao fica em lib/ compartilhado. Essa heuristica simples resolve 90% das decisoes de organizacao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Usar feature folders para codigo de negocio (agentes, ferramentas, canais). Manter codigo compartilhado em pastas de infraestrutura (lib/, config/, middleware/). Colocar testes junto ao codigo que testam. Manter cada feature autocontida o suficiente para ser entendida olhando so sua pasta.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Misturar as abordagens sem criterio (algumas features em feature folders, outras espalhadas em layer folders). Criar pastas com um unico arquivo dentro (overhead sem beneficio). Ter features que dependem fortemente dos detalhes internos de outras features (acoplamento entre features).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📦 Barrel Exports e Convencoes</h2>
+          <p class="text-neutral-300">Convencoes de nomenclatura e padroes de exportacao sao o que transformam uma colecao de arquivos num sistema coeso. Barrel exports controlam o que cada modulo expoe ao mundo. Naming conventions garantem que qualquer pessoa (ou IA) encontre o que procura sem adivinhar.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Barrel Exports (index.ts):</strong> Um barrel e um arquivo index.ts que re-exporta os itens publicos de uma pasta. Ele funciona como a API publica de um modulo. O resto do sistema importa do barrel, nunca de arquivos internos. Isso cria uma fronteira clara: o que esta no index.ts e publico, o que nao esta e detalhe de implementacao.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// agents/index.ts (barrel export)
+export { ClaudeAgent } from './claude';
+export { OllamaAgent } from './ollama';
+export { OpenRouterAgent } from './openrouter';
+export { createAgent } from './factory';
+export type { Agent, AgentConfig } from './types';
+
+// Em qualquer outro lugar do sistema:
+import { ClaudeAgent, createAgent } from '../agents';
+// NUNCA: import { ClaudeAgent } from '../agents/claude/internal-stuff';</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Naming Conventions:</strong> Nomes previsíveis eliminam decisoes desnecessarias. Adote um padrao e siga religiosamente:</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Convencao recomendada para plataformas de agentes
+Arquivos:    kebab-case     → web-search.ts, claude-agent.ts
+Classes:     PascalCase     → WebSearchTool, ClaudeAgent
+Funcoes:     camelCase      → createAgent(), processMessage()
+Constantes:  UPPER_SNAKE    → MAX_TOKENS, DEFAULT_MODEL
+Tipos:       PascalCase     → AgentConfig, ToolResult
+Pastas:      kebab-case     → web-search/, rate-limiter/
+Env vars:    UPPER_SNAKE    → OPENAI_API_KEY, TELEGRAM_TOKEN</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Path Aliases:</strong> Em vez de imports com caminhos relativos longos (import { logger } from '../../../../lib/logger'), configure path aliases no tsconfig.json. Isso torna os imports limpos, legíveis e independentes da posicao do arquivo no projeto.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@agents/*": ["src/agents/*"],
+      "@tools/*": ["src/tools/*"],
+      "@lib/*": ["src/lib/*"],
+      "@config/*": ["src/config/*"]
+    }
+  }
+}
+
+// Agora em qualquer arquivo:
+import { ClaudeAgent } from '@agents';
+import { logger } from '@lib/logger';
+import { env } from '@config/env';</pre>
+          </div>
+          <p class="text-neutral-300 mt-3">Para Node.js resolver os aliases em runtime, use tsx (que ja resolve automaticamente) ou configure o modulo tsconfig-paths. Para bundlers como esbuild ou webpack, configure os aliases no arquivo de configuracao do bundler tambem.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O padrao de barrel exports e o padrao oficial do Angular e e amplamente adotado em projetos TypeScript de grande escala. Path aliases sao suportados nativamente pelo TypeScript desde a versao 2.0 e sao recomendados pela documentacao oficial para projetos com mais de 20 arquivos. Estudos de legibilidade de codigo mostram que imports consistentes e curtos reduzem erros de merge em 25% porque menos caminhos mudam quando arquivos sao movidos. Para IAs, path aliases como @agents/ sao mais informativos que ../../../agents/, ajudando o modelo a entender a estrutura do projeto a partir dos imports.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Crie o index.ts de cada pasta no momento em que cria a pasta, nao depois. Se voce cria agents/ e adiciona um agente, o index.ts ja deve existir exportando esse agente. Isso evita o cenario comum de "tenho 30 modulos mas nenhum barrel, agora e tarde demais". Para naming, configure ESLint com a regra @typescript-eslint/naming-convention para enforcar o padrao automaticamente. O CI rejeita codigo que nao segue a convencao.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar index.ts em cada pasta de feature. Configurar path aliases no tsconfig.json. Adotar uma convencao de nomes e documentar no README. Configurar ESLint para enforcar a convencao. Importar sempre do barrel, nunca de arquivos internos.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Misturar kebab-case e camelCase em nomes de arquivos. Ter imports com 5 niveis de ../ (sinal de que faltam path aliases). Exportar tudo no barrel (re-exportar apenas a API publica, nao detalhes internos). Ter funcoes com nomes genericos como "process", "handle", "run" sem contexto.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🛠️ Exercicio: Scaffold do Projeto</h2>
+          <p class="text-neutral-300">Hora de colocar tudo em pratica. Voce vai criar a estrutura completa de pastas da plataforma de agentes, configurar barrel exports, definir path aliases e garantir que o projeto esta pronto para receber codigo de verdade nas proximas trilhas.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O exercicio cobre 5 entregas concretas. Ao final, voce tera um projeto esqueleto pronto para desenvolvimento, com convencoes definidas e configuracoes profissionais.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 1 - Estrutura de Pastas:</strong> Crie a arvore completa usando mkdir. Cada diretorio tem uma razao de existir.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Criar toda a estrutura de uma vez
+mkdir -p src/agents/claude src/agents/ollama src/agents/openrouter
+mkdir -p src/tools/web-search src/tools/file-read src/tools/db-query
+mkdir -p src/channels/telegram src/channels/api
+mkdir -p src/skills/gmail src/skills/calendar
+mkdir -p src/memory
+mkdir -p src/lib
+mkdir -p src/config
+mkdir -p src/middleware
+mkdir -p prompts/agents
+mkdir -p docs/architecture</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 2 - Index Files (Barrel Exports):</strong> Crie um index.ts em cada pasta de feature. Mesmo que vazio por enquanto, o arquivo ja estabelece o padrao de que tudo e acessado pelo barrel.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Criar todos os index files
+touch src/agents/index.ts
+touch src/agents/claude/index.ts
+touch src/agents/ollama/index.ts
+touch src/agents/openrouter/index.ts
+touch src/tools/index.ts
+touch src/tools/web-search/index.ts
+touch src/tools/file-read/index.ts
+touch src/tools/db-query/index.ts
+touch src/channels/index.ts
+touch src/channels/telegram/index.ts
+touch src/channels/api/index.ts
+touch src/skills/index.ts
+touch src/memory/index.ts
+touch src/lib/index.ts
+touch src/config/index.ts
+touch src/config/env.ts
+touch src/middleware/index.ts</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 3 - Path Aliases:</strong> Configure o tsconfig.json com aliases para todos os modulos principais.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@agents/*": ["src/agents/*"],
+      "@agents": ["src/agents/index.ts"],
+      "@tools/*": ["src/tools/*"],
+      "@tools": ["src/tools/index.ts"],
+      "@channels/*": ["src/channels/*"],
+      "@skills/*": ["src/skills/*"],
+      "@memory/*": ["src/memory/*"],
+      "@lib/*": ["src/lib/*"],
+      "@config/*": ["src/config/*"],
+      "@middleware/*": ["src/middleware/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 4 - Arquivos de Configuracao:</strong> .env.example, .gitignore, .eslintrc com naming conventions, e package.json com scripts basicos.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># .env.example
+TELEGRAM_TOKEN=bot-token-here
+ALLOWED_CHAT_ID=your-chat-id
+OPENAI_API_KEY=sk-xxx
+ANTHROPIC_API_KEY=sk-ant-xxx
+OLLAMA_HOST=http://localhost:11434
+PORT=3000
+NODE_ENV=development
+
+# .gitignore
+.env
+node_modules/
+dist/
+*.pem
+credentials.json</pre>
+          </div>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Entrega 5 - Validacao:</strong> Rode a arvore de diretorios e confirme que a estrutura esta completa. Faca o primeiro commit com a mensagem "feat: project scaffold with folder structure, barrel exports, and path aliases".</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Validar a estrutura
+tree src/ --dirsfirst
+
+# Resultado esperado:
+# src/
+# ├── agents/
+# │   ├── claude/
+# │   │   └── index.ts
+# │   ├── ollama/
+# │   │   └── index.ts
+# │   ├── openrouter/
+# │   │   └── index.ts
+# │   └── index.ts
+# ├── channels/
+# │   ├── api/
+# │   │   └── index.ts
+# │   ├── telegram/
+# │   │   └── index.ts
+# │   └── index.ts
+# ├── tools/
+# │   ├── web-search/
+# │   │   └── index.ts
+# │   ├── file-read/
+# │   │   └── index.ts
+# │   ├── db-query/
+# │   │   └── index.ts
+# │   └── index.ts
+# ... (remaining folders)
+
+# Primeiro commit
+git add .
+git commit -m "feat: project scaffold with folder structure, barrel exports, and path aliases"</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Salve esse scaffold como um template. Da proxima vez que iniciar um projeto de agentes, clone o template em vez de criar do zero. Ferramentas como degit (npx degit usuario/template meu-projeto) permitem criar projetos a partir de templates do GitHub sem o historico de git. Algumas equipes mantem um repositorio "platform-template" que e a base de todo novo projeto. Invista 30 minutos agora criando esse template e economize horas em cada projeto futuro.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Repositorio git com a estrutura completa de pastas (feature folders para agentes, ferramentas e canais; layer folders para lib, config e middleware), barrel exports (index.ts) em cada pasta de feature, tsconfig.json com path aliases configurados, .env.example documentado, .gitignore protegendo secrets, e primeiro commit feito. Esse esqueleto e a base que vai receber toda a implementacao das proximas trilhas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Entendeu como a estrutura de pastas impacta cognitive load, onboarding e qualidade do codigo de IA.</p>
+        <p>&#10003; Aprendeu quando usar monorepo vs multi-repo e as ferramentas de cada abordagem.</p>
+        <p>&#10003; Aplicou principios de Clean Architecture com inversao de dependencia para agentes.</p>
+        <p>&#10003; Dominou feature folders vs layer folders e a abordagem hibrida recomendada.</p>
+        <p>&#10003; Configurou barrel exports, naming conventions e path aliases profissionais.</p>
+        <p>&#10003; Criou o scaffold completo do projeto pronto para receber implementacao.</p>
+      </div>
+      <div class="flex justify-start space-x-3">
+        <a href="modulo-2-2.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">&#9664;</span> Modulo Anterior
+        </a>
+        <a href="modulo-2-4.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors flex items-center gap-2">
+          Proximo Modulo <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">&#9654;</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

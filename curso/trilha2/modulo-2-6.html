@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.6 - Fluxo Padrao de Execucao | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.6</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.6</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">&#x26A1; Fluxo Padrao de Execucao</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Cada request que entra na sua plataforma segue um caminho de quatro fases: entrada, decisao, execucao, saida. Neste modulo voce vai dominar cada fase, implementar middleware e interceptors, construir error handling resiliente, adicionar retry com circuit breaker, e entregar respostas via streaming. No exercicio final, voce monta o pipeline completo do zero.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">50</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Intermediario</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Teoria+Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F4E5; Pipeline Entrada > Decisao > Execucao > Saida</h2>
+          <p class="text-neutral-300">Todo request na sua plataforma passa por exatamente quatro fases. Nao importa se vem do Telegram, de uma API REST ou de um webhook. O pipeline e o mesmo. Quando voce internaliza esse fluxo, debugar qualquer problema se resume a identificar em qual fase ele quebrou.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">A fase de <strong class="text-blue-400">Entrada</strong> e a porta de acesso ao sistema. Aqui voce recebe o payload bruto, valida o formato (a mensagem tem texto? o chat_id existe?), autentica o usuario (e um chat_id permitido? tem rate limit estourado?), e gera um request ID unico para rastreabilidade. Cada request que entra recebe um UUID. Esse ID acompanha o request por todas as fases, aparece em todos os logs, e permite reconstruir a jornada completa de qualquer mensagem.</p>
+          <p class="text-neutral-300 mt-3">A fase de <strong class="text-blue-400">Decisao</strong> e onde o sistema classifica a intencao do usuario e escolhe qual agente vai processar. Pode ser baseado em comandos explicitos (/claude, /ollama), em palavras-chave, ou em um classificador de IA (como um modelo leve que analisa a mensagem e retorna qual agente e mais adequado). Nesta fase, o contexto relevante tambem e montado: historico de conversa, preferencias do usuario, system prompt do agente selecionado.</p>
+          <p class="text-neutral-300 mt-3">A fase de <strong class="text-blue-400">Execucao</strong> e o coracao do sistema. O agente selecionado recebe a mensagem junto com o contexto montado e chama o provedor de IA (OpenAI, Anthropic, Ollama local). Durante a execucao, o agente pode chamar ferramentas (web search, leitura de arquivo, consulta a banco) e iterar sobre os resultados. Se o provedor principal falha, um mecanismo de fallback redireciona para um provedor alternativo.</p>
+          <p class="text-neutral-300 mt-3">A fase de <strong class="text-blue-400">Saida</strong> e onde a resposta e formatada para o canal de origem (Telegram tem limites de caracteres, Markdown diferente de HTML), metricas sao registradas (tokens consumidos, tempo de resposta, custo estimado), o historico de conversa e atualizado, e a mensagem e finalmente enviada ao usuario.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Pipeline de 4 fases
+async function pipeline(rawInput: RawMessage): Promise&lt;void&gt; {
+  const requestId = crypto.randomUUID();
+  const start = Date.now();
+
+  // FASE 1: Entrada
+  const validated = validateInput(rawInput);
+  const user = await authenticate(validated.chatId);
+  await checkRateLimit(user.id);
+  log.info({ requestId, chatId: validated.chatId }, 'pipeline.entrada');
+
+  // FASE 2: Decisao
+  const intent = classifyIntent(validated.text);
+  const agent = selectAgent(intent);
+  const context = await buildContext({
+    history: await getHistory(validated.chatId, 20),
+    systemPrompt: agent.systemPrompt,
+    userPrefs: user.preferences,
+  });
+  log.info({ requestId, agent: agent.id, intent }, 'pipeline.decisao');
+
+  // FASE 3: Execucao
+  const result = await executeWithFallback(
+    () =&gt; agent.run(validated.text, context),
+    () =&gt; fallbackAgent.run(validated.text, context)
+  );
+  log.info({ requestId, tokens: result.usage }, 'pipeline.execucao');
+
+  // FASE 4: Saida
+  const formatted = formatForChannel(result.text, 'telegram');
+  await trackMetrics({ requestId, agent: agent.id, ...result.usage,
+    latencyMs: Date.now() - start });
+  await saveToHistory(validated.chatId, validated.text, formatted);
+  await sendMessage(validated.chatId, formatted);
+  log.info({ requestId, latencyMs: Date.now() - start }, 'pipeline.saida');
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O padrao de pipeline de processamento e usado em praticamente toda infraestrutura de software de escala. O Linux kernel processa pacotes de rede em um pipeline de fases (netfilter). O Apache Kafka processa eventos em etapas com producers, brokers e consumers. CDNs como Cloudflare processam requests em um pipeline de regras de firewall, cache, transformacao e origem. Em plataformas de agentes de IA, a latencia media de um pipeline bem implementado fica entre 800ms e 3s para respostas de modelos cloud. Sem pipeline definido, a latencia pode explodir para 10s+ por conta de chamadas redundantes e falta de paralelismo.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Nomeie cada fase nos logs com um prefixo consistente: pipeline.entrada, pipeline.decisao, pipeline.execucao, pipeline.saida. Quando algo quebra em producao, voce filtra os logs pelo requestId e ve exatamente onde parou. Adicione timestamps entre fases para medir quanto tempo cada uma leva. Se a fase de execucao esta levando 5s mas a saida so 50ms, voce sabe onde otimizar.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Gerar um requestId unico no inicio de cada request e propagar em todas as fases. Validar input antes de qualquer processamento. Medir latencia de cada fase individualmente. Ter logs estruturados (JSON) com requestId em cada etapa.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Misturar logica de entrada com logica de execucao no mesmo bloco. Processar sem validar primeiro. Enviar resposta ao usuario antes de salvar metricas e historico. Ter um unico try/catch gigante ao redor de tudo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F6E1;&#xFE0F; Middleware e Interceptors</h2>
+          <p class="text-neutral-300">Middleware e o que acontece antes e depois do processamento principal. Auth check, rate limiting, logging, formatacao de resposta, cache. Cada uma dessas responsabilidades e isolada numa funcao que o request atravessa em sequencia, como uma linha de montagem.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">Middleware de <strong class="text-blue-400">pre-processamento</strong> executa antes do agente. E onde voce coloca autenticacao (esse usuario pode usar o sistema?), rate limiting (quantas mensagens por minuto?), logging de entrada (registrar que o request chegou), e transformacao de input (normalizar texto, extrair comandos, detectar idioma). Cada middleware recebe o request, faz sua verificacao, e passa adiante. Se qualquer middleware rejeita o request, o pipeline para ali.</p>
+          <p class="text-neutral-300 mt-3">Middleware de <strong class="text-blue-400">pos-processamento</strong> executa depois que o agente gerou a resposta. E onde voce coloca formatacao (truncar para limite do Telegram, escapar caracteres especiais), cache (salvar resposta para perguntas frequentes), analytics (registrar tokens, custo, tempo), e transformacao de output (adicionar assinaturas, links uteis, botoes inline).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Interceptors</strong> sao um padrao complementar ao middleware. Enquanto middleware forma uma cadeia linear (A > B > C > Handler > C' > B' > A'), interceptors podem se registrar para eventos especificos. Um interceptor de erro pode escutar "request.failed" e notificar o admin. Um interceptor de custo pode escutar "tokens.consumed" e alertar quando o gasto diario ultrapassa um limite. A vantagem dos interceptors e o desacoplamento: adicionar um novo interceptor nao exige mudar o pipeline existente.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Middleware pattern - Express style
+type Middleware = (ctx: Context, next: () =&gt; Promise&lt;void&gt;) =&gt; Promise&lt;void&gt;;
+
+// Pre-processamento
+const authMiddleware: Middleware = async (ctx, next) =&gt; {
+  if (!ALLOWED_IDS.includes(ctx.chatId)) {
+    ctx.reply('Acesso negado.');
+    return; // Para o pipeline
+  }
+  await next(); // Continua
+};
+
+const rateLimitMiddleware: Middleware = async (ctx, next) =&gt; {
+  const count = await redis.incr(`rate:${ctx.chatId}`);
+  await redis.expire(`rate:${ctx.chatId}`, 60);
+  if (count &gt; 30) {
+    ctx.reply('Rate limit. Aguarde 1 minuto.');
+    return;
+  }
+  await next();
+};
+
+const loggingMiddleware: Middleware = async (ctx, next) =&gt; {
+  const start = Date.now();
+  log.info({ requestId: ctx.id, input: ctx.text }, 'request.start');
+  await next();
+  log.info({ requestId: ctx.id, ms: Date.now() - start }, 'request.end');
+};
+
+// Pos-processamento
+const formattingMiddleware: Middleware = async (ctx, next) =&gt; {
+  await next();
+  if (ctx.response &amp;&amp; ctx.response.length &gt; 4096) {
+    ctx.response = ctx.response.slice(0, 4090) + '\n[...]';
+  }
+};
+
+// Compor a cadeia
+const pipeline = compose([
+  loggingMiddleware,
+  authMiddleware,
+  rateLimitMiddleware,
+  formattingMiddleware,
+  agentHandler,
+]);</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O padrao middleware foi popularizado pelo Express.js e hoje e usado por Koa, Fastify, Hono, Next.js API routes, e praticamente todo framework web moderno. O Koa introduziu o "onion model" onde cada middleware envolve o proximo como camadas de cebola, permitindo pre e pos-processamento elegante. Em plataformas de agentes como LangChain e CrewAI, callbacks e hooks funcionam como interceptors: on_llm_start, on_llm_end, on_tool_start, on_tool_error. Esse padrao permite adicionar observabilidade (LangSmith, Helicone) sem mudar uma linha do codigo do agente.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">A ordem dos middlewares importa. Logging deve ser o primeiro (para registrar tudo, inclusive requests rejeitados). Auth deve vir logo depois (para nao gastar recursos com usuarios nao autorizados). Rate limiting vem apos auth (so limita usuarios validos). Formatacao vem no final, apos o agente gerar a resposta. Se voce inverter essa ordem, vai ter logs incompletos, rate limiting aplicado em requests anonimos, e formatacao corrompida.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Isolar cada responsabilidade em seu proprio middleware. Ordenar middlewares do mais generico ao mais especifico. Usar interceptors para funcionalidades opcionais (analytics, alertas). Testar cada middleware isoladamente com mocks.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Colocar auth, logging e rate limiting tudo na mesma funcao. Ter middleware que depende de estado global mutavel. Esquecer de chamar next() e travar o pipeline silenciosamente. Ter mais de 10 middlewares encadeados sem agrupar por responsabilidade.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F6A8; Error Handling e Recovery</h2>
+          <p class="text-neutral-300">Em uma plataforma de agentes, erros nao sao excecao. Sao rotina. APIs caem, tokens estourem, modelos alucinam, timeouts acontecem. O que diferencia um sistema amador de um profissional e o que acontece quando o erro chega. Engolir erros e morrer silenciosamente ou capturar, classificar e recuperar.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">Erros se dividem em tres categorias. <strong class="text-blue-400">Erros de usuario</strong> sao causados pelo input: mensagem vazia, comando invalido, arquivo muito grande. O usuario precisa saber o que errou e como corrigir. A mensagem deve ser clara e acionavel: "Mensagem vazia. Envia um texto ou comando." e nao "Error 400: Bad Request".</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Erros de sistema</strong> sao falhas internas: banco de dados offline, disco cheio, memoria insuficiente. O usuario recebe uma mensagem generica ("Erro interno. Tente novamente em instantes.") enquanto o sistema registra o stack trace completo, o contexto do request, e envia alerta ao admin.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Erros de IA</strong> sao especificos de plataformas de agentes: API retornou 429 (rate limit), 503 (service unavailable), timeout, resposta malformada, content filter triggered, modelo alucinando. Cada um tem uma estrategia diferente: 429 pede retry com backoff, 503 pede fallback para outro provedor, timeout pede re-tentativa com prompt mais curto.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Graceful degradation</strong> e o principio de que o sistema nunca deve simplesmente parar. Se o provedor principal esta fora, use o secundario. Se todos estao fora, use uma resposta cacheada. Se nao ha cache, informe o usuario que o sistema esta indisponivel e que a mensagem sera processada quando o servico voltar. Em nenhum cenario o sistema fica mudo.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Error taxonomy
+class AppError extends Error {
+  constructor(
+    message: string,
+    public type: 'user' | 'system' | 'ai',
+    public statusCode: number,
+    public retryable: boolean = false,
+    public context?: Record&lt;string, unknown&gt;
+  ) {
+    super(message);
+  }
+}
+
+// Erro de usuario - nao retentar, informar
+throw new AppError('Mensagem vazia.', 'user', 400, false);
+
+// Erro de IA - retentar com backoff
+throw new AppError('OpenAI 429', 'ai', 429, true, { provider: 'openai' });
+
+// Erro de sistema - logar, alertar, fallback
+throw new AppError('DB connection lost', 'system', 500, true);
+
+// Handler centralizado
+async function handleError(error: AppError, ctx: Context) {
+  log.error({
+    requestId: ctx.id,
+    type: error.type,
+    message: error.message,
+    context: error.context,
+    stack: error.type === 'system' ? error.stack : undefined,
+  });
+
+  switch (error.type) {
+    case 'user':
+      await ctx.reply(error.message); // Mensagem clara pro usuario
+      break;
+    case 'ai':
+      if (error.retryable) throw error; // Deixa o retry handler cuidar
+      await ctx.reply('O servico de IA esta temporariamente indisponivel.');
+      break;
+    case 'system':
+      await ctx.reply('Erro interno. Tente novamente em instantes.');
+      await alertAdmin(error); // Notifica admin
+      break;
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Amazon reporta que cada 100ms de latencia adicional causa 1% de perda em vendas. Em plataformas de IA, erros nao tratados resultam em requests presos que consomem memoria indefinidamente. APIs de LLM tem taxas de erro de 1-5% em operacao normal (rate limits, timeouts, content filters). Netflix implementou o "Chaos Monkey" para simular falhas aleatoriamente e garantir que toda equipe tratasse erros corretamente. O resultado: mesmo com servidores caindo, o servico de streaming continua funcionando.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Nunca mostre stack traces ao usuario. Registre com log.error() e mostre uma mensagem humana. Crie uma classe de erro customizada (AppError) que carrega tipo, codigo HTTP, se e retentavel, e contexto adicional. Isso permite que o handler centralizado tome a decisao correta automaticamente. E sempre, sempre logue o requestId junto com o erro. Sem isso, voce nao consegue correlacionar o erro com o request que o causou.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Classificar erros por tipo (user, system, ai). Logar erros com contexto completo (requestId, stack, input). Responder ao usuario com mensagem clara e acionavel. Ter alertas automaticos para erros de sistema.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Catch vazio que engole o erro. Mostrar stack trace ao usuario final. Tratar todos os erros da mesma forma. Nao ter mecanismo de alerta para erros criticos. Deixar o processo crashar por um erro de um unico request.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F504; Retry e Circuit Breaker</h2>
+          <p class="text-neutral-300">APIs de IA vao falhar. A questao nao e "se", e "quando" e "com que frequencia". Retry com exponential backoff e circuit breaker sao os dois padroes que transformam falhas temporarias em meros blips no log em vez de cascatas de erros que derrubam o sistema.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Exponential backoff</strong> e a estrategia de esperar progressivamente mais entre tentativas. Primeira falha: espera 1 segundo. Segunda: 2 segundos. Terceira: 4 segundos. Depois de N tentativas (geralmente 3-5), desiste e aciona o fallback. O "jitter" adiciona uma variacao aleatoria ao tempo de espera para evitar que centenas de requests retentem exatamente ao mesmo instante (thundering herd problem).</p>
+          <p class="text-neutral-300 mt-3">O <strong class="text-blue-400">circuit breaker</strong> funciona como um disjuntor eletrico. Tem tres estados. <strong>Fechado (closed)</strong>: operacao normal, requests passam direto. Se o numero de falhas ultrapassa um threshold (exemplo: 5 falhas em 60 segundos), o circuito <strong>abre (open)</strong>. No estado aberto, nenhum request e enviado ao provedor. Todos vao direto para o fallback. Apos um timeout (exemplo: 30 segundos), o circuito muda para <strong>meio-aberto (half-open)</strong> e deixa passar um request de teste. Se funciona, o circuito fecha. Se falha, abre de novo.</p>
+          <p class="text-neutral-300 mt-3">A combinacao dos dois padroes e poderosa. O retry com backoff trata falhas individuais transientes. O circuit breaker trata degradacao sistematica. Juntos, eles garantem que o sistema nunca fica martelando um provedor que esta fora do ar (desperdicando tempo e dinheiro) e nunca desiste cedo demais de uma falha que seria resolvida com uma simples re-tentativa.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Retry com exponential backoff + jitter
+async function retryWithBackoff&lt;T&gt;(
+  fn: () =&gt; Promise&lt;T&gt;,
+  opts: { maxRetries: number; baseDelay: number; maxDelay: number }
+): Promise&lt;T&gt; {
+  for (let attempt = 0; attempt &lt;= opts.maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (attempt === opts.maxRetries) throw error;
+      const delay = Math.min(
+        opts.baseDelay * Math.pow(2, attempt) + Math.random() * 1000,
+        opts.maxDelay
+      );
+      log.warn({ attempt, delay, error: error.message }, 'retry.backoff');
+      await sleep(delay);
+    }
+  }
+  throw new Error('Unreachable');
+}
+
+// Circuit Breaker
+class CircuitBreaker {
+  private state: 'closed' | 'open' | 'half-open' = 'closed';
+  private failures = 0;
+  private lastFailure = 0;
+
+  constructor(
+    private threshold: number = 5,
+    private resetTimeout: number = 30_000
+  ) {}
+
+  async execute&lt;T&gt;(fn: () =&gt; Promise&lt;T&gt;, fallback: () =&gt; Promise&lt;T&gt;): Promise&lt;T&gt; {
+    if (this.state === 'open') {
+      if (Date.now() - this.lastFailure &gt; this.resetTimeout) {
+        this.state = 'half-open';
+      } else {
+        log.info('circuit.open - using fallback');
+        return fallback();
+      }
+    }
+    try {
+      const result = await fn();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      if (this.state === 'open') return fallback();
+      throw error;
+    }
+  }
+
+  private onSuccess() { this.failures = 0; this.state = 'closed'; }
+  private onFailure() {
+    this.failures++;
+    this.lastFailure = Date.now();
+    if (this.failures &gt;= this.threshold) this.state = 'open';
+  }
+}
+
+// Uso combinado
+const openaiBreaker = new CircuitBreaker(5, 30_000);
+const response = await openaiBreaker.execute(
+  () =&gt; retryWithBackoff(() =&gt; openai.chat(prompt), {
+    maxRetries: 3, baseDelay: 1000, maxDelay: 10_000
+  }),
+  () =&gt; ollamaFallback.chat(prompt)
+);</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O circuit breaker pattern foi introduzido por Michael Nygard no livro "Release It!" (2007) e desde entao se tornou padrao em arquiteturas distribuidas. Netflix popularizou o padrao com sua biblioteca Hystrix, que gerenciava circuit breakers para centenas de microservicos. AWS recomenda exponential backoff com jitter em toda chamada de API e documenta que "backoff sem jitter pode causar picos de carga sincronizados que amplificam o problema original". Em testes de resiliencia, sistemas com circuit breaker se recuperam de falhas de dependencia em media 10x mais rapido que sistemas sem.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Configure um circuit breaker separado para cada provedor de IA. Se OpenAI esta fora, o breaker da OpenAI abre mas o do Ollama continua fechado. Registre transicoes de estado do breaker nos logs: "openai.circuit: closed > open" e crucial para entender o comportamento do sistema. Para desenvolvimento, comece com threshold baixo (3 falhas) e resetTimeout curto (10s). Para producao, ajuste baseado no padrao real de falhas.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Implementar retry com backoff exponencial + jitter em toda chamada externa. Usar circuit breaker por provedor. Ter fallback definido para cada provedor principal. Logar transicoes de estado do breaker e metricas de retry.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Retry infinito sem limite de tentativas. Retry sem backoff (retentar imediatamente amplifica a carga). Compartilhar um unico circuit breaker entre provedores diferentes. Nao ter fallback quando o circuit breaker abre.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F30A; Streaming e Resposta Progressiva</h2>
+          <p class="text-neutral-300">Quando voce conversa com o ChatGPT, as palavras aparecem uma a uma. Isso nao e efeito visual. E uma decisao de arquitetura chamada streaming que transforma a experiencia do usuario de "esperando 5 segundos por um bloco de texto" para "vendo a resposta sendo construida em tempo real".</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300"><strong class="text-blue-400">Server-Sent Events (SSE)</strong> e o protocolo mais usado para streaming de respostas de IA. O cliente abre uma conexao HTTP e o servidor envia chunks de dados progressivamente. Diferente de WebSockets (bidirecional), SSE e unidirecional (servidor para cliente), mais simples de implementar, funciona com proxies e CDNs, e reconecta automaticamente se a conexao cair.</p>
+          <p class="text-neutral-300 mt-3">Quando voce chama a API da OpenAI ou Anthropic com <strong class="text-blue-400">stream: true</strong>, o provedor retorna tokens individualmente em vez de esperar a resposta completa. Cada token chega como um evento SSE. Sua plataforma recebe esses tokens, acumula num buffer, e decide quando enviar ao usuario. No Telegram, voce nao pode enviar token por token (seria spam de mensagens), entao a estrategia e acumular e enviar atualizacoes a cada 1-2 segundos usando editMessage para atualizar a mesma mensagem progressivamente.</p>
+          <p class="text-neutral-300 mt-3">Para interfaces web, a UX e diferente. Cada token pode ser renderizado imediatamente no DOM, dando aquele efeito de digitacao que os usuarios ja esperam. O frontend consome o SSE stream e atualiza um elemento de texto em tempo real. Isso e particularmente importante para respostas longas: em vez de esperar 8 segundos por um paragrafo completo, o usuario ve a primeira palavra em 200ms e pode comecar a ler enquanto o resto chega.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Streaming com OpenAI SDK
+import OpenAI from 'openai';
+
+async function streamResponse(prompt: string, onChunk: (text: string) =&gt; void) {
+  const openai = new OpenAI();
+  const stream = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [{ role: 'user', content: prompt }],
+    stream: true,
+  });
+
+  let fullText = '';
+  for await (const chunk of stream) {
+    const delta = chunk.choices[0]?.delta?.content || '';
+    fullText += delta;
+    onChunk(fullText); // Callback com texto acumulado
+  }
+  return fullText;
+}
+
+// Streaming para Telegram (atualiza mesma mensagem)
+async function streamToTelegram(chatId: number, prompt: string) {
+  let messageId: number | null = null;
+  let lastUpdate = 0;
+
+  await streamResponse(prompt, async (text) =&gt; {
+    const now = Date.now();
+    if (now - lastUpdate &lt; 1500) return; // Throttle: 1.5s entre updates
+    lastUpdate = now;
+
+    if (!messageId) {
+      const msg = await bot.sendMessage(chatId, text + ' &#x25CF;');
+      messageId = msg.message_id;
+    } else {
+      await bot.editMessageText(text + ' &#x25CF;', {
+        chat_id: chatId,
+        message_id: messageId,
+      }).catch(() =&gt; {}); // Ignora erro se texto nao mudou
+    }
+  });
+
+  // Update final sem o indicador de typing
+  if (messageId) {
+    await bot.editMessageText(fullText, {
+      chat_id: chatId,
+      message_id: messageId,
+    });
+  }
+}
+
+// SSE para interface web (Next.js API route)
+export async function GET(req: Request) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      await streamResponse(prompt, (text) =&gt; {
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
+        );
+      });
+      controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  });
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Pesquisas de UX mostram que usuarios percebem latencia acima de 1 segundo como "lenta" e acima de 3 segundos como "quebrada". Streaming reduz a latencia percebida de 3-10 segundos (esperar resposta completa) para 200-500ms (primeiro token). Google reporta que Time to First Byte (TTFB) e uma das metricas mais correlacionadas com satisfacao do usuario. APIs da OpenAI, Anthropic e Google Gemini todas suportam streaming nativo. O Telegram Bot API permite editMessageText ate 4096 caracteres, e a API tem rate limit de ~30 mensagens por segundo por chat.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">No Telegram, use throttle de 1-2 segundos entre updates e sempre trate o erro de editMessageText silenciosamente (o Telegram retorna erro se o texto nao mudou). Adicione um indicador visual de que a resposta esta sendo gerada (um caracter pulsante no final como "..."). Para web, use o padrao EventSource no frontend e ReadableStream no backend. E lembre: mesmo com streaming, voce precisa salvar a resposta completa no historico. Acumule os tokens num buffer e salve quando o stream terminar.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Usar stream: true em toda chamada de LLM em producao. Throttle updates no Telegram (1-2s). Acumular resposta completa para historico e metricas. Adicionar indicador visual de digitacao. Tratar reconexao em caso de stream interrompido.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Enviar cada token como mensagem separada no Telegram (spam). Nao tratar erros durante o stream (stream pode falhar no meio). Esquecer de fechar o stream quando o usuario cancela. Ignorar limites de rate do Telegram ao editar mensagens.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">&#x1F3D7;&#xFE0F; Exercicio: Implementar Pipeline Completo</h2>
+          <p class="text-neutral-300">Hora de juntar tudo. Neste exercicio voce constroi o pipeline completo de execucao com middleware, error handling, retry com circuit breaker e streaming. No final, voce tera a espinha dorsal funcional que toda plataforma de agentes precisa.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">O Exercicio</h3>
+          <p class="text-neutral-300">Voce vai construir 5 componentes que se conectam para formar o pipeline completo:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Componente 1 - Pipeline Runner:</strong> Crie uma funcao pipeline() que recebe um request bruto e executa as 4 fases em sequencia: validacao de entrada, selecao de agente, execucao com fallback, e formatacao + envio da saida. Cada fase deve gerar logs estruturados com requestId e timestamp.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Componente 2 - Middleware Chain:</strong> Implemente 3 middlewares: authMiddleware (verifica se o chatId esta na allowlist), rateLimitMiddleware (maximo 20 requests por minuto usando um Map em memoria), e loggingMiddleware (registra inicio/fim de cada request com duracao em ms).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Componente 3 - Error Handler:</strong> Crie a classe AppError com tipo (user/system/ai), statusCode, retryable flag, e contexto. Implemente um handler centralizado que toma decisao diferente para cada tipo de erro: responde ao usuario para erros de usuario, retenta para erros de IA retentaveis, alerta admin para erros de sistema.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Componente 4 - Retry + Circuit Breaker:</strong> Implemente retryWithBackoff() com 3 tentativas, delay base de 1 segundo, jitter aleatorio, e delay maximo de 10 segundos. Implemente CircuitBreaker com threshold de 5 falhas, resetTimeout de 30 segundos, e os 3 estados (closed/open/half-open).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Componente 5 - Stream Handler:</strong> Implemente uma funcao que consome o stream de tokens do provedor de IA, acumula num buffer, e envia updates throttled ao usuario. Para Telegram: editMessage a cada 1.5 segundos. Para web: emitir SSE events. Salvar resposta completa no historico quando o stream terminar.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Estrutura do exercicio
+pipeline/
+├── pipeline.ts         # Funcao principal que orquestra as 4 fases
+├── middleware.ts        # auth, rateLimit, logging middlewares
+├── errors.ts           # AppError class + error handler
+├── resilience.ts       # retryWithBackoff + CircuitBreaker
+├── stream.ts           # Stream consumer + throttled output
+└── test.ts             # Testes simulando falhas e sucesso
+
+# Testes para validar
+1. Request valido: pipeline completo executa com sucesso, logs corretos
+2. Auth falha: middleware bloqueia, usuario recebe "Acesso negado"
+3. Rate limit: 21o request em 1 min retorna "Limite atingido"
+4. Provider 429: retry com backoff, sucesso na 2a tentativa
+5. Provider down: circuit breaker abre, fallback ativado
+6. Stream: resposta chega progressivamente, historico salvo completo</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Comece pelo componente de erros (errors.ts) porque todos os outros dependem dele. Depois resilience.ts (retry + breaker), depois middleware.ts, depois stream.ts, e finalmente pipeline.ts que conecta tudo. Use console.log inicialmente para ver o fluxo. Substitua por um logger estruturado (pino ou winston) quando tudo funcionar. Teste cada componente isoladamente antes de integrar. Um test.ts com cenarios de falha simulada vale mais que rodar contra a API real.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Cinco arquivos TypeScript formando o pipeline completo: pipeline.ts orquestra as fases, middleware.ts com auth/rate/logging, errors.ts com AppError e handler, resilience.ts com retry e circuit breaker, stream.ts com consumer de stream e output throttled. Todos conectados e testados com cenarios de sucesso e falha. Os logs devem mostrar o fluxo completo de cada request incluindo requestId, fase atual, duracao, e resultado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Dominou o pipeline de 4 fases: entrada, decisao, execucao e saida com requestId em cada etapa.</p>
+        <p>&#10003; Implementou middleware de pre e pos-processamento: auth, rate limiting, logging, formatacao.</p>
+        <p>&#10003; Construiu error handling com taxonomia de erros (user/system/ai) e graceful degradation.</p>
+        <p>&#10003; Adicionou retry com exponential backoff + jitter e circuit breaker com 3 estados.</p>
+        <p>&#10003; Integrou streaming de respostas com SSE para web e editMessage throttled para Telegram.</p>
+        <p>&#10003; Montou o pipeline completo com todos os componentes conectados e testados.</p>
+      </div>
+      <div class="flex justify-start space-x-3">
+        <a href="modulo-2-5.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">Modulo Anterior</a>
+        <a href="modulo-2-7.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">Proximo Modulo</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
