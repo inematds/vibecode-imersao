@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turno 1 - Mentalidade e Metodo de Vibe Coding | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">⚡</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">D1</span>
+            <span class="hidden sm:inline">Dia 1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">D2</span>
+            <span class="hidden sm:inline">Dia 2</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">D3</span>
+            <span class="hidden sm:inline">Dia 3</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-emerald-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-emerald-400">Dia 1</a>
+      <span>/</span>
+      <span class="text-emerald-400">Turno 1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
+        TURNO 1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧠 Mentalidade e Metodo de Vibe Coding</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Aprenda o que e Vibe Coding em 2026, como transformar ideias em software com IA, definir escopo de produto, escrever prompts de construcao e evitar os erros mais comuns.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">~2h</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Basico</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-emerald-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que e Vibe Coding em 2026 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">💡 O que e Vibe Coding em 2026</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Vibe Coding mudou tudo sobre como software e criado. Em vez de escrever cada linha manualmente, voce descreve o que quer e a <strong class="text-emerald-400">IA gera o codigo por voce</strong>. Mas nao confunda com magia: o resultado depende da qualidade da sua descricao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Vibe Coding e um estilo de desenvolvimento onde voce descreve o que quer em linguagem natural e a IA escreve o codigo. Criado por <strong class="text-white">Andrej Karpathy</strong> em fevereiro de 2025, definiu: <em>"voce da a vibe, a IA da o codigo"</em>.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          Em 2026, Karpathy ja considera o termo ultrapassado e usa <strong class="text-white">"Agentic Engineering"</strong> - voce orquestra agentes que codificam enquanto faz oversight. A evolucao foi de "pedir codigo" para "dirigir agentes que constroem sistemas inteiros".
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">2025:</strong> Voce descreve, a IA gera codigo num chat. Voce copia, cola e reza</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400 mt-1">•</span>
+            <span><strong class="text-white">2026:</strong> Voce orquestra agentes que leem seu codebase, editam arquivos, rodam testes e fazem deploy. Voce dirige</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dados 2026 -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados 2026
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">92%</strong> dos devs nos EUA usam IA diariamente no workflow de desenvolvimento</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">41%</strong> do codigo global e gerado por IA (GitHub Octoverse 2026)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">82%</strong> dos devs globais usam IA semanalmente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">De Vibe Coding para Vibe Shipping</strong> - o foco saiu de "gerar codigo" para "entregar produto"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Tools dominantes:</strong> Claude Code, Cursor, Replit, Bolt</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Vibe Coding nao e apertar um botao e esperar. O ciclo real e: <strong class="text-white">descrever > gerar > verificar > corrigir</strong>. Quanto melhor voce descreve, menos corrige. A habilidade mais valiosa em 2026 nao e escrever codigo - e saber descrever exatamente o que voce quer.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Da Ideia ao Software -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🎯 Da Ideia ao Software</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Ter uma ideia e facil. Transformar em software que funciona e onde a maioria trava. O problema quase nunca e a tecnologia. E o <strong class="text-emerald-400">escopo mal definido</strong>, o usuario errado, ou tentar resolver tudo de uma vez.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300">
+          O processo e: identificar um <strong class="text-white">problema real</strong>, definir <strong class="text-white">quem sofre com ele</strong> e traduzir isso em funcionalidades. A maioria dos projetos falha por escopo ruim, nao por tech. Se voce acerta o problema e o usuario, a IA constroi o resto.
+        </p>
+      </div>
+
+      <!-- Framework Visual -->
+      <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔄</span> Framework: Da Ideia ao MVP
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">🔍</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Problema</h4>
+            <p class="text-neutral-400 text-xs">O que doi?</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">👤</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Usuario</h4>
+            <p class="text-neutral-400 text-xs">Quem sofre?</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">💡</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Solucao</h4>
+            <p class="text-neutral-400 text-xs">O que resolve?</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">🚀</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">MVP</h4>
+            <p class="text-neutral-400 text-xs">Versao minima</p>
+          </div>
+        </div>
+        <div class="flex justify-center mt-4">
+          <p class="text-neutral-500 text-sm">Cada passo alimenta o seguinte. Nao pule etapas.</p>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Comecar pelo problema, nao pela tecnologia</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Definir um usuario especifico (persona real)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Planejar MVP que caiba em 1 semana de construcao</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Comecar pela tecnologia ("quero usar Next.js!")</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>"Todo mundo" como usuario-alvo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Feature creep - adicionar funcionalidades sem parar</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Escreva a frase: <strong class="text-white">"Meu produto resolve [PROBLEMA] para [USUARIO] fazendo [SOLUCAO]"</strong>. Se nao couber em uma frase, o escopo esta grande demais. Simplifique ate caber.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Escopo e Definicao de Produto -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📋 Escopo e Definicao de Produto</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Escopo e o <strong class="text-emerald-400">contrato com voce mesmo</strong> sobre o que o produto faz e o que nao faz. Sem escopo claro, a IA gera codigo inconsistente. Com escopo bem definido, cada prompt produz resultado previsivel.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300">
+          Delimitar exatamente o que o produto faz e nao faz. Sem escopo, a IA gera codigo inconsistente porque cada prompt vira uma direcao diferente. Com escopo definido, voce cria um <strong class="text-white">documento-ancora</strong> que guia todas as decisoes tecnicas e cada prompt produz resultado previsivel.
+        </p>
+      </div>
+
+      <!-- Checklist -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">✅</span> Checklist de Escopo
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">Problema definido em 1 frase</span>
+              <span class="text-neutral-400 text-sm block">Sem frase clara = sem produto claro</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">Usuario-alvo identificado</span>
+              <span class="text-neutral-400 text-sm block">Pessoa real, nao "todo mundo"</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">Fluxo principal mapeado (3-5 passos)</span>
+              <span class="text-neutral-400 text-sm block">O caminho que o usuario percorre do inicio ao fim</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">Telas listadas</span>
+              <span class="text-neutral-400 text-sm block">Cada tela que o usuario vai ver</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">Dados necessarios definidos</span>
+              <span class="text-neutral-400 text-sm block">O que precisa guardar, de onde vem, como organiza</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="text-emerald-400 text-lg">✓</span>
+            <div>
+              <span class="text-white font-medium">O que NAO faz (limites claros)</span>
+              <span class="text-neutral-400 text-sm block">Tao importante quanto o que faz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">MVP = versao minima que resolve o problema.</strong> Se leva mais de 1 semana pra construir, corte funcionalidades. A versao 1 nao precisa ser bonita. Precisa funcionar e validar a ideia. Beleza vem depois.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Prompts Estruturados para Construcao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✍️ Prompts Estruturados para Construcao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Prompts de construcao sao <strong class="text-emerald-400">fundamentalmente diferentes</strong> de prompts conversacionais. Voce nao esta batendo papo com a IA. Voce esta dando uma ordem de servico. Quanto mais precisa a ordem, melhor o resultado.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300">
+          Prompts de construcao precisam de quatro elementos: <strong class="text-white">contexto do projeto</strong>, <strong class="text-white">instrucao precisa</strong>, <strong class="text-white">restricoes tecnicas</strong> e <strong class="text-white">formato esperado</strong>. Sem esses quatro, a IA adivinha - e adivinha errado na maioria das vezes.
+        </p>
+      </div>
+
+      <!-- Code Block - Comparacao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Prompt Ruim vs Prompt Bom
+        </h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-red-400 text-sm font-semibold mb-2">✗ Prompt ruim:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-red-500/20">
+              <span class="text-neutral-300">faz um login</span>
+            </div>
+          </div>
+          <div>
+            <p class="text-emerald-400 text-sm font-semibold mb-2">✓ Prompt bom:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-emerald-500/20">
+              <span class="text-neutral-300">No projeto Next.js 14 com Supabase, crie componente de login com email/senha usando server actions. Use o design system shadcn/ui. Trate erros e mostre no formulario.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estrutura - 4 Boxes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="font-bold text-emerald-400 mb-2 flex items-center">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm font-bold mr-2">1</span>
+            Contexto
+          </h4>
+          <p class="text-neutral-300 text-sm">Onde estou? Stack, projeto, arquivo atual. A IA precisa saber em que mundo esta operando.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="font-bold text-emerald-400 mb-2 flex items-center">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm font-bold mr-2">2</span>
+            Instrucao
+          </h4>
+          <p class="text-neutral-300 text-sm">O que quero? Acao clara e especifica. Um verbo, um objetivo. Nao ambiguidade.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="font-bold text-emerald-400 mb-2 flex items-center">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm font-bold mr-2">3</span>
+            Restricoes
+          </h4>
+          <p class="text-neutral-300 text-sm">Como? Limites, padroes, proibicoes. O que nao pode fazer e tao importante quanto o que deve.</p>
+        </div>
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="font-bold text-emerald-400 mb-2 flex items-center">
+            <span class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-sm font-bold mr-2">4</span>
+            Formato
+          </h4>
+          <p class="text-neutral-300 text-sm">Saida? Componente, funcao, API route, pagina completa. Diga exatamente o que espera receber.</p>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Sempre diga ao Claude/Cursor <strong class="text-white">ONDE voce esta no projeto</strong> e <strong class="text-white">O QUE ja existe</strong>. Contexto economiza 80% do retrabalho. A IA nao le sua mente. Ela le seu prompt.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Erros Comuns em Projetos com IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚠️ Erros Comuns em Projetos com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Os erros mais caros nao sao bugs. Sao <strong class="text-emerald-400">decisoes ruins repetidas</strong>: aceitar codigo sem revisar, ignorar seguranca, escopo infinito, nao testar, pedir tudo de uma vez. Conhecer esses padroes antes e a diferenca entre sucesso e fracasso.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300">
+          Os erros mais caros em projetos com IA: aceitar codigo sem revisar, ignorar seguranca, escopo infinito, nao testar, pedir tudo de uma vez. Cada um deles multiplica o custo do projeto exponencialmente. <strong class="text-white">Conhecer o erro antes de cometer e a habilidade mais valiosa.</strong>
+        </p>
+      </div>
+
+      <!-- Alert Box -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> Alerta de Seguranca
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">45% do codigo gerado por IA contem vulnerabilidades de seguranca</strong> (CodeRabbit, dezembro 2025). SQL injection, XSS, credenciais hardcoded, endpoints sem autenticacao. NUNCA faca deploy sem review. A IA gera rapido, mas nao pensa em seguranca por padrao.
+        </p>
+      </div>
+
+      <!-- 5 Erros com Solucao -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold">1</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Aceitar o primeiro draft</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-start space-x-2">
+                  <span class="text-red-400 mt-0.5">✗</span>
+                  <span class="text-neutral-400 text-sm">Copiar e colar sem ler</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <span class="text-emerald-400 mt-0.5">✓</span>
+                  <span class="text-neutral-300 text-sm">Usar two-stage: gerar + revisar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold">2</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escopo infinito</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-start space-x-2">
+                  <span class="text-red-400 mt-0.5">✗</span>
+                  <span class="text-neutral-400 text-sm">"Ah, so mais essa feature..."</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <span class="text-emerald-400 mt-0.5">✓</span>
+                  <span class="text-neutral-300 text-sm">Definir MVP antes de comecar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold">3</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Prompt vago</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-start space-x-2">
+                  <span class="text-red-400 mt-0.5">✗</span>
+                  <span class="text-neutral-400 text-sm">"faz um dashboard bonito"</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <span class="text-emerald-400 mt-0.5">✓</span>
+                  <span class="text-neutral-300 text-sm">Usar [Contexto+Instrucao+Restricao+Formato]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold">4</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Ignorar testes</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-start space-x-2">
+                  <span class="text-red-400 mt-0.5">✗</span>
+                  <span class="text-neutral-400 text-sm">"Funciona no meu PC, ta bom"</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <span class="text-emerald-400 mt-0.5">✓</span>
+                  <span class="text-neutral-300 text-sm">Pedir testes junto com o codigo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold">5</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Nao versionar</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-start space-x-2">
+                  <span class="text-red-400 mt-0.5">✗</span>
+                  <span class="text-neutral-400 text-sm">Codigo solto sem historico</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                  <span class="text-emerald-400 mt-0.5">✓</span>
+                  <span class="text-neutral-300 text-sm">Git commit a cada feature funcional</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Regra de ouro: <strong class="text-white">"Se voce nao entende o codigo gerado, nao use."</strong> Peca pra IA explicar antes de aceitar. Se a explicacao nao faz sentido, peca pra refazer. Voce e o piloto, nao a IA.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio Pratico: Defina seu SaaS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🏗️ Exercicio Pratico: Defina seu SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de aplicar tudo. Este e o <strong class="text-emerald-400">exercicio principal do Turno 1</strong>. Voce vai sair daqui com o projeto completamente definido, pronto para comecar a construir nos proximos turnos.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border-2 border-emerald-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏗️</span>
+          <div>
+            <h3 class="text-xl font-bold text-emerald-400">Exercicio: Defina seu SaaS</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-40 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escreva a frase do produto</h4>
+              <p class="text-neutral-300 text-sm mb-3">Complete esta frase com dados reais do seu projeto:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-emerald-500/20">
+                <span class="text-emerald-400">"Meu SaaS resolve</span> <span class="text-neutral-500">___</span> <span class="text-emerald-400">para</span> <span class="text-neutral-500">___</span> <span class="text-emerald-400">fazendo</span> <span class="text-neutral-500">___</span><span class="text-emerald-400">"</span>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Se nao cabe em uma frase, o escopo esta grande demais.</p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Liste 3 dores do usuario-alvo</h4>
+              <p class="text-neutral-300 text-sm mb-3">Problemas reais que seu usuario sente hoje. Nao invente, pesquise:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-neutral-500">1.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">2.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">3.</span> <span class="text-neutral-400">________________</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Desenhe o fluxo principal (3-5 passos)</h4>
+              <p class="text-neutral-300 text-sm mb-3">O caminho que o usuario percorre do inicio ao objetivo. Exemplo:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm">
+                <span class="text-emerald-400">Login</span> <span class="text-neutral-500">></span>
+                <span class="text-emerald-400"> Dashboard</span> <span class="text-neutral-500">></span>
+                <span class="text-emerald-400"> Criar Agente</span> <span class="text-neutral-500">></span>
+                <span class="text-emerald-400"> Conversar</span> <span class="text-neutral-500">></span>
+                <span class="text-emerald-400"> Ver Historico</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Liste as telas necessarias (maximo 5 para MVP)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cada tela e um arquivo/componente. Menos telas = entrega mais rapida:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-neutral-500">1.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">2.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">3.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">4.</span> <span class="text-neutral-400">________________</span></div>
+                <div><span class="text-neutral-500">5.</span> <span class="text-neutral-400">________________</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/30 flex items-center justify-center border border-emerald-500/40">
+              <span class="text-emerald-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Defina o que o produto NAO faz (pelo menos 3)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Limites claros evitam feature creep e mantem o escopo no trilho:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1">
+                <div><span class="text-red-400">✗</span> <span class="text-neutral-400">Nao faz ________________</span></div>
+                <div><span class="text-red-400">✗</span> <span class="text-neutral-400">Nao faz ________________</span></div>
+                <div><span class="text-red-400">✗</span> <span class="text-neutral-400">Nao faz ________________</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Frase do produto clara e objetiva</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Fluxo principal em 3-5 passos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Maximo 5 telas no MVP</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Limites definidos (o que nao faz)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-emerald-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-emerald-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Compartilhe sua definicao com outro participante. <strong class="text-white">Se ele entendeu em 30 segundos, ta claro o suficiente.</strong> Se precisou de explicacao extra, volte e simplifique. Clareza e a skill mais subestimada em produto.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Turno
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Vibe Coding e descrever > gerar > verificar > corrigir</strong>
+              <span class="text-neutral-400"> - Em 2026 evoluiu para Agentic Engineering: voce orquestra agentes, nao escreve codigo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Comece pelo problema, nao pela tech</strong>
+              <span class="text-neutral-400"> - Defina problema, usuario e solucao antes de abrir o editor. Escopo ruim mata projetos.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Escopo e um contrato com voce mesmo</strong>
+              <span class="text-neutral-400"> - MVP em 1 semana, maximo 5 telas, limites claros do que NAO faz.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Prompts de construcao: Contexto + Instrucao + Restricao + Formato</strong>
+              <span class="text-neutral-400"> - Sem esses 4 elementos, a IA adivinha e adivinha errado.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Nunca aceite codigo que voce nao entende</strong>
+              <span class="text-neutral-400"> - 45% do codigo gerado por IA tem vulnerabilidades. Review e obrigatorio.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Seu SaaS esta definido</strong>
+              <span class="text-neutral-400"> - Frase do produto, fluxo principal, telas e limites. Pronto para construir.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-emerald-400 mb-2">Proximo Turno:</h3>
+          <p class="text-neutral-300">1.2 - Proximo modulo da imersao</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <span class="text-center px-6 py-3 bg-dark-700/50 text-neutral-500 rounded-lg font-semibold cursor-not-allowed">
+            ← Turno Anterior
+          </span>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Dia 1
+          </a>
+          <a href="modulo-1-2.html" class="text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">
+            Proximo Turno →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
