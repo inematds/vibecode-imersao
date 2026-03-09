@@ -3,45 +3,389 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dia 2 - Construcao e Inteligencia | Imersao Vibe Coding</title>
+  <title>Trilha 2 - Arquitetura da Plataforma de Agentes | Imersao Vibe Coding</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } }
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    html:not(.dark) body { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%); }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
     html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
     html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
     html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
   </style>
 </head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen flex items-center justify-center">
-  <div class="text-center px-6">
-    <span class="text-6xl mb-6 block">🔨</span>
-    <h1 class="text-3xl font-bold mb-4">Dia 2 - Construcao e Inteligencia</h1>
-    <p class="text-neutral-400 mb-4 max-w-xl mx-auto">Do codigo ao produto inteligente. Construa o SaaS e adicione agentes, MCP e skills.</p>
-    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-8">
-      <div class="bg-dark-800 rounded-lg p-4 border border-dark-600">
-        <div class="text-blue-400 font-bold">Turno 3</div>
-        <div class="text-sm text-neutral-400">Construcao do SaaS</div>
-      </div>
-      <div class="bg-dark-800 rounded-lg p-4 border border-dark-600">
-        <div class="text-blue-400 font-bold">Turno 4</div>
-        <div class="text-sm text-neutral-400">Agentes, MCP e Skills</div>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-    <span class="inline-block px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-sm font-semibold mb-8">Em breve</span>
-    <div class="flex justify-center">
-      <a href="../../index.html" class="px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg hover:bg-dark-600 transition-colors">← Voltar ao Inicio</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- HEADER -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-5">TRILHA 2</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">🏗️ Arquitetura da Plataforma de Agentes</h1>
+      <p class="text-lg text-neutral-300 mb-8 max-w-3xl">A estrutura decide o destino do projeto. Nesta trilha voce monta a base que sustenta agentes, ferramentas, memoria e multiplos provedores de IA. Arquitetura profissional desde o dia zero.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">1</div><div class="text-sm text-neutral-400">Modulo</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">~45min</div><div class="text-sm text-neutral-400">Duracao</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Basico</div><div class="text-sm text-neutral-400">Nivel</div></div>
+      </div>
+    </section>
+
+    <!-- INFO -->
+    <section class="mt-8">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="px-3 py-1 bg-dark-700 text-neutral-300 text-sm font-semibold rounded-full">DIA 1</span>
+        <span class="text-neutral-500 text-sm">Turno 2</span>
+      </div>
+    </section>
+
+    <!-- MODULE CARD -->
+    <section class="mt-6">
+      <div class="space-y-6">
+
+        <!-- Modulo 2.1 -->
+        <div class="bg-dark-800 rounded-3xl border border-dark-600 overflow-hidden">
+          <div class="p-6 border-b border-dark-600">
+            <div class="text-blue-400 font-semibold mb-1">Modulo 2.1 - ~45 min</div>
+            <h3 class="text-2xl font-bold mb-2">🏗️ Arquitetura da Plataforma de Agentes</h3>
+            <p class="text-neutral-400">Da estrutura de pastas ao fluxo de execucao. Este modulo cobre tudo que voce precisa para montar a base de uma plataforma de agentes de IA profissional, escalavel e segura.</p>
+          </div>
+          <div class="divide-y divide-dark-600">
+
+            <!-- Topic 1 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">1</span>
+                <div>
+                  <div class="font-semibold">🏛️ Arquitetura de Plataformas de Agentes</div>
+                  <div class="text-sm text-neutral-400">Estrutura event-driven, A-tier, multi-tenant</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">A arquitetura de referencia para plataformas de agentes organiza o codigo em camadas funcionais: app/ (entrada e roteamento), agents/ (logica de decisao), prompts/ (instrucoes versionadas), skills/ (capacidades reutilizaveis), tools/ (acoes atomicas) e memory/ (persistencia de estado). O modelo event-driven permite que cada componente reaja a eventos sem acoplamento direto, possibilitando escalar para milhoes de transacoes por segundo.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">Sem uma arquitetura clara desde o inicio, a plataforma cresce como um emaranhado de funcoes, prompts e chamadas de API misturadas. Quando voce precisa adicionar um segundo agente, trocar de provedor de IA ou isolar dados entre clientes, tudo quebra. Arquitetura profissional e a diferenca entre um projeto que morre em 3 meses e um que escala para producao real.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">Event-driven architecture, separation of concerns, multi-tenant isolation, A-tier (application tier), message bus, handler pattern, domain boundaries.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topic 2 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">2</span>
+                <div>
+                  <div class="font-semibold">📂 Estrutura de Pastas Profissional</div>
+                  <div class="text-sm text-neutral-400">Separacao de concerns que escala</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">A organizacao fisica do repositorio reflete a arquitetura logica do sistema. Cada diretorio tem uma responsabilidade unica: agents/ contem as definicoes e logica dos agentes, tools/ contem as funcoes que os agentes podem chamar, prompts/ armazena system prompts e templates versionados, skills/ guarda capacidades compostas que combinam multiplas tools, e memory/ gerencia estado persistente. Padroes de monorepo e clean architecture garantem que o projeto cresca sem virar caos.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">Desenvolvedores que nao pensam em estrutura no inicio acabam com arquivos de 2000 linhas, imports circulares e funcoes que fazem tudo ao mesmo tempo. Quando um novo membro entra no time, precisa de dias para entender onde cada coisa fica. Uma estrutura profissional permite onboarding em minutos e refactoring sem medo.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">Feature folders, clean architecture, monorepo, barrel exports, index files, colocation, single responsibility per directory.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topic 3 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">3</span>
+                <div>
+                  <div class="font-semibold">🔑 Configuracao de APIs e Variaveis</div>
+                  <div class="text-sm text-neutral-400">.env, secrets, multiplos provedores</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">Toda plataforma de agentes conversa com provedores externos: OpenAI, Anthropic, Google, servicos de banco de dados, APIs de terceiros. A configuracao correta usa arquivos .env para variaveis de ambiente, secrets managers para producao, e um pattern de inicializacao que valida todas as chaves antes do sistema subir. Rotacao segura de chaves garante que um vazamento nao comprometa o sistema inteiro.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">Chaves de API expostas em repositorios publicos sao a causa numero um de incidentes de seguranca em projetos de IA. Alem disso, trocar de provedor sem um sistema de configuracao robusto exige reescrever codigo em dezenas de arquivos. Uma camada de configuracao bem feita torna a troca de OpenAI para Anthropic uma mudanca de uma linha.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">.env, .env.example, dotenv, secrets management, key rotation, provider abstraction, config validation, environment parity.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topic 4 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">4</span>
+                <div>
+                  <div class="font-semibold">🧠 Contexto Global vs por Agente</div>
+                  <div class="text-sm text-neutral-400">Quando compartilhar vs isolar contexto</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">Em uma plataforma multi-agente, existem instrucoes que valem para todos (regras de seguranca, formato de resposta, identidade da marca) e instrucoes que sao especificas de cada agente (dominio de atuacao, ferramentas disponiveis, tom de voz). A hierarquia de system prompts define uma camada global (CLAUDE.md, regras da plataforma) e camadas especificas por agente (agent.yaml, prompts contextuais). Contexto compartilhado em excesso gera confusao; isolamento excessivo gera inconsistencia.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">A maioria dos projetos multi-agente falha por dar o mesmo contexto gigante para todos os agentes, ou por isolar tanto que agentes nao conseguem cooperar. Entender a hierarquia de prompts e a divisao de responsabilidade de contexto e o que separa uma plataforma funcional de um brinquedo que so funciona em demos.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">System prompt hierarchy, global instructions, agent-specific context, context window management, prompt inheritance, context isolation, shared state.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topic 5 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">5</span>
+                <div>
+                  <div class="font-semibold">⚡ Fluxo Padrao de Execucao</div>
+                  <div class="text-sm text-neutral-400">Pipeline: entrada, decisao, execucao, saida</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">Todo request numa plataforma de agentes segue um pipeline previsivel: Entrada (recebe mensagem, valida formato, identifica usuario) > Decisao (classifica intencao, seleciona agente, monta contexto) > Execucao (agente processa, chama tools, gera resposta) > Saida (formata resultado, registra metricas, envia resposta). Cada etapa tem seu proprio tratamento de erros, retries e fallbacks. Se a API do provedor cai, o sistema tenta outro provedor. Se o agente falha, o sistema responde com mensagem de erro clara em vez de travar.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">Sem um fluxo padrao, cada feature nova inventa sua propria forma de processar requests. O resultado e codigo duplicado, tratamento de erro inconsistente e bugs que so aparecem em producao. Um pipeline bem definido garante que qualquer novo agente ou tool adicionado ao sistema ja herda logging, error handling e metricas automaticamente.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">Request pipeline, middleware pattern, error boundaries, retry with backoff, fallback chain, circuit breaker, structured logging, graceful degradation.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topic 6 -->
+            <div class="topic-item">
+              <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
+                <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center">6</span>
+                <div>
+                  <div class="font-semibold">🛠️ Exercicio: Criar Estrutura Base</div>
+                  <div class="text-sm text-neutral-400">Repo, pastas, .env e primeiro agente</div>
+                </div>
+              </button>
+              <div class="topic-explanation px-6 pb-5">
+                <div class="grid gap-3">
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">O que e:</strong>
+                    <p class="text-neutral-300 mt-1">Exercicio pratico guiado para inicializar o repositorio do projeto, criar a estrutura de pastas profissional (app/, agents/, prompts/, skills/, tools/, memory/, config/), configurar o arquivo .env com chaves dos provedores, criar o .env.example para documentacao, configurar .gitignore para proteger secrets, e construir o esqueleto do primeiro agente com system prompt, handler e registro de metricas.</p>
+                  </div>
+                  <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4">
+                    <strong class="text-blue-400">Por que aprender:</strong>
+                    <p class="text-neutral-300 mt-1">A teoria so vira habilidade quando vira codigo. Este exercicio garante que voce saia da trilha com uma estrutura real, funcional e pronta para receber os agentes e features das proximas trilhas. O esqueleto criado aqui sera a base de todo o resto do curso.</p>
+                  </div>
+                  <div class="rounded-2xl border border-primary/40 bg-primary/10 p-4">
+                    <strong class="text-primary">Conceitos-chave:</strong>
+                    <p class="text-neutral-300 mt-1">git init, npm init, folder scaffold, .env setup, .gitignore, agent skeleton, handler pattern, first test run.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="p-6 border-t border-dark-600">
+            <div class="flex justify-start space-x-3">
+              <a href="modulo-2-1.html" class="px-4 py-2 text-sm bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-lg transition-colors hover:bg-blue-500/30">Abrir modulo</a>
+              <button onclick="openModal('modal-2-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- NAVIGATION LINKS -->
+    <section class="mt-12 flex justify-between items-center">
+      <a href="../trilha1/index.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">
+        ← Trilha Anterior
+      </a>
+      <a href="../trilha3/index.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">
+        Proxima Trilha →
+      </a>
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal-2-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
+    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
+      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400 font-bold">2.1</span>
+          <span class="font-semibold">Arquitetura da Plataforma de Agentes</span>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+      </div>
+      <iframe src="modulo-2-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
     </div>
-    <p class="mt-8 text-neutral-500 text-sm"><a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
   </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
 </body>
 </html>

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.1 - Agentes, MCP e Skills | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.1</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.1</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">Agentes, MCP e Skills</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">De automacao basica a agentes inteligentes com ferramentas, protocolo MCP e orquestracao multiagente.</p>
+
+      <div class="grid grid-cols-3 gap-4 max-w-md mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Inter</div>
+          <div class="text-xs text-neutral-400">Intermediario</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: O que sao Agentes de IA -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">O que sao Agentes de IA</h2>
+          <p class="text-neutral-400 text-sm mt-1">Automacao vs agentes inteligentes, loops de decisao, ReAct pattern</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Um agente de IA nao e apenas um chatbot que responde perguntas. E um sistema autonomo que <strong class="text-amber-400">percebe, raciocina, planeja e age</strong> no mundo real. Enquanto automacao tradicional segue regras fixas (se X entao Y), um agente usa um LLM como "cerebro" para tomar decisoes dinamicas, escolher ferramentas e adaptar seu comportamento com base no contexto.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O padrao mais usado e o <strong class="text-amber-400">ReAct</strong> (Reason + Act): o agente raciocina sobre a situacao, executa uma acao, observa o resultado, e repete ate atingir o objetivo. Esse loop de decisao e o que diferencia um agente de um script.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Dados do Mercado
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">42%</div>
+            <p class="text-neutral-400 text-sm">das empresas ja tem agentes em producao (2025/26)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">92%</div>
+            <p class="text-neutral-400 text-sm">dos devs nos EUA usam IA no dia a dia de desenvolvimento</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">ReAct</div>
+            <p class="text-neutral-400 text-sm">padrao dominante para agentes: Reason + Act em loop</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2026</div>
+            <p class="text-neutral-400 text-sm">ano em que agentes saem de PoC para producao em escala</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Automacao vs Agentes Inteligentes</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Aspecto</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Automacao Tradicional</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Agente de IA</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Decisao</td>
+                  <td class="py-2">Regras fixas (if/else)</td>
+                  <td class="py-2">LLM raciocina em tempo real</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Adaptacao</td>
+                  <td class="py-2">Nenhuma, precisa recodificar</td>
+                  <td class="py-2">Adapta com base no contexto</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Ferramentas</td>
+                  <td class="py-2">Hardcoded no fluxo</td>
+                  <td class="py-2">Escolhe qual usar dinamicamente</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium">Falha</td>
+                  <td class="py-2">Para ou ignora</td>
+                  <td class="py-2">Tenta abordagem alternativa</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O Loop ReAct</h3>
+          <p class="text-neutral-300 text-sm mb-4">O padrao ReAct e um ciclo que se repete ate o agente resolver a tarefa:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-1">1. Think</div>
+              <p class="text-neutral-400 text-xs">Raciocina sobre o problema e planeja proxima acao</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-1">2. Act</div>
+              <p class="text-neutral-400 text-xs">Executa uma acao (chamar tool, buscar dado)</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-1">3. Observe</div>
+              <p class="text-neutral-400 text-xs">Analisa o resultado da acao executada</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-1">4. Repeat</div>
+              <p class="text-neutral-400 text-xs">Volta ao passo 1 ate concluir</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Comece simples: um agente com 2-3 tools ja resolve muitos problemas reais. A complexidade vem do loop de decisao, nao da quantidade de ferramentas. Um agente com acesso a filesystem + web search + code execution cobre 80% dos casos de uso.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir objetivo claro para o agente antes de construir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Limitar o numero de tools para reduzir confusao do LLM</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar timeout e max iterations no loop</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar cada passo do ReAct para debug</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Deixar agente em loop infinito sem limite de iteracoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Dar acesso a tools destrutivas sem confirmacao humana</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Assumir que o agente sempre escolhera a tool correta</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar custo: cada iteracao do loop consome tokens</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: Multiagentes e Orquestracao -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">Multiagentes e Orquestracao</h2>
+          <p class="text-neutral-400 text-sm mt-1">Executor, Analyst, Reviewer, pods especializados, routing</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Um unico agente tem limitacoes: context window finita, risco de confusao com muitas tools, e incapacidade de processar em paralelo. <strong class="text-amber-400">Sistemas multiagentes</strong> resolvem isso dividindo responsabilidades entre agentes especializados, cada um com seu papel, suas tools e seu escopo de atuacao.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O <strong class="text-amber-400">orquestrador</strong> e o componente central: recebe a tarefa, classifica a intencao, roteia para o agente correto e coordena o fluxo entre eles. Pode ser um LLM leve (para classificacao) ou um router baseado em regras.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Dados e Referencia
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Devin</div>
+            <p class="text-neutral-400 text-sm">primeiro agente de engenharia end-to-end (planner + coder + tester)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Manus AI</div>
+            <p class="text-neutral-400 text-sm">agente generalista com multiagentes internos para browser, code, research</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">CrewAI</div>
+            <p class="text-neutral-400 text-sm">framework Python para multiagentes com roles, goals e backstory</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">OpenAI Swarm</div>
+            <p class="text-neutral-400 text-sm">padrao de handoff entre agentes com funcoes de transferencia</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Padroes de Orquestracao</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Sequential Chain</p>
+                <p class="text-neutral-400 text-sm">Agente A processa, passa resultado para Agente B, que passa para Agente C. Ideal para pipelines lineares como: gerar conteudo > revisar > publicar.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Parallel Execution</p>
+                <p class="text-neutral-400 text-sm">Multiplos agentes processam partes diferentes ao mesmo tempo. Ex: um pesquisa dados enquanto outro gera template e outro prepara assets.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Router Pattern</p>
+                <p class="text-neutral-400 text-sm">Um classificador (LLM leve ou regra) analisa a mensagem e roteia para o agente especialista. Ex: mensagem sobre codigo vai para o Code Agent, sobre dados vai para o Data Agent.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Supervisor Pattern</p>
+                <p class="text-neutral-400 text-sm">Um agente supervisor delega tarefas, monitora progresso e valida resultados dos agentes workers. Controle centralizado com execucao distribuida.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Roles Comuns em Multiagentes</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Executor</div>
+              <p class="text-neutral-400 text-xs">Faz o trabalho: gera codigo, redige texto, processa dados. E o "braco" do sistema.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Analyst</div>
+              <p class="text-neutral-400 text-xs">Avalia resultados, identifica problemas, sugere melhorias. E o "olho critico".</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Reviewer</div>
+              <p class="text-neutral-400 text-xs">Valida qualidade, checa consistencia, aprova ou rejeita output. E o "QA".</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use modelos diferentes por role: um modelo barato e rapido (como Qwen 14B ou Llama 3.2) para o router/classificador, e um modelo potente (Claude Sonnet, GPT-4o) para o executor que precisa de raciocinio complexo. Isso otimiza custo sem perder qualidade.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir roles claros com system prompts especificos por agente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar modelo leve para routing e classificacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar fallback quando o agente alvo falha</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar cada handoff com contexto passado e recebido</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar agentes demais: comece com 2-3, escale conforme necessidade</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Deixar agentes conversarem entre si sem limite (loop infinito)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar modelo caro para classificacao simples</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar latencia acumulada de multiplos hops entre agentes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Skills e Tools -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">Skills e Tools</h2>
+          <p class="text-neutral-400 text-sm mt-1">Capacidades especializadas, JSON schemas, function calling, structured outputs</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          <strong class="text-amber-400">Tools</strong> sao funcoes que o agente pode chamar para interagir com o mundo externo. Cada tool tem um nome, uma descricao e um JSON Schema que define seus parametros. O LLM decide quando e qual tool chamar baseado na conversa, e retorna uma chamada estruturada em vez de texto.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          <strong class="text-amber-400">Skills</strong> sao pacotes de tools + logica + prompts que implementam uma capacidade completa: "enviar email", "consultar clima", "analisar PDF". Uma skill pode usar multiplas tools internamente e ter seu proprio fluxo de execucao.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Anatomia de uma Tool</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "name": "search_database",
+  "description": "Busca registros no banco de dados por query",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Termo de busca"
+      },
+      "limit": {
+        "type": "number",
+        "description": "Maximo de resultados",
+        "default": 10
+      }
+    },
+    "required": ["query"]
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O LLM recebe esse schema e decide chamar a tool quando faz sentido. A resposta vem como <code class="text-amber-400 bg-dark-700 px-1 rounded">tool_calls</code> com os parametros preenchidos, nao como texto livre.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Fluxo de Function Calling</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">1. Prompt</div>
+              <p class="text-neutral-400 text-xs">Usuario pede algo que requer acao externa</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">2. LLM decide</div>
+              <p class="text-neutral-400 text-xs">Modelo escolhe tool + preenche params</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">3. Executa</div>
+              <p class="text-neutral-400 text-xs">App executa a funcao com os params</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">4. Retorno</div>
+              <p class="text-neutral-400 text-xs">Resultado volta ao LLM como contexto</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">5. Resposta</div>
+              <p class="text-neutral-400 text-xs">LLM gera resposta final com o dado</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Structured Outputs</h3>
+          <p class="text-neutral-300 text-sm mb-3">Structured outputs garantem que o LLM retorne dados em formato tipado e validavel, nao texto livre. Isso e essencial para integracoes programaticas.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-dark-700 rounded-lg p-3">
+              <p class="text-red-400 text-xs font-semibold mb-1">Sem structured output:</p>
+              <p class="text-neutral-400 text-sm">"O preco e R$49,90 e o produto esta disponivel"</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3">
+              <p class="text-emerald-400 text-xs font-semibold mb-1">Com structured output:</p>
+              <p class="text-neutral-400 text-sm font-mono">{"price": 49.90, "available": true}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">A descricao da tool e mais importante que o nome. O LLM usa a descricao para decidir quando chamar. Seja especifico: em vez de "busca dados", escreva "busca registros de clientes por nome, email ou ID no banco PostgreSQL".</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Escrever descricoes claras e especificas para cada tool</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Validar parametros antes de executar a funcao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retornar erros estruturados quando a tool falha</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Agrupar tools relacionadas em skills coerentes</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Registrar dezenas de tools: LLMs confundem com muitas opcoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Descricoes vagas como "faz coisas no sistema"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confiar que o LLM sempre vai preencher params corretos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor tools que modificam dados sem confirmacao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: MCP (Model Context Protocol) -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">MCP (Model Context Protocol)</h2>
+          <p class="text-neutral-400 text-sm mt-1">Anthropic open standard, Host/Client/Server, milhares de conectores</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-amber-400">Model Context Protocol (MCP)</strong> e um padrao aberto criado pela Anthropic que padroniza como aplicacoes de IA se conectam a fontes de dados e ferramentas externas. Pense nele como o <strong class="text-amber-400">USB-C das integracoes de IA</strong>: em vez de cada aplicacao implementar cada conector do zero, um MCP Server padronizado serve qualquer host compativel.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A arquitetura e simples: o <strong class="text-amber-400">Host</strong> (sua aplicacao) cria <strong class="text-amber-400">Clients</strong> que conectam a <strong class="text-amber-400">MCP Servers</strong>. Cada server expoe resources (dados), tools (acoes) e prompts (templates). Ja existem milhares de servers prontos para GitHub, Slack, bancos de dados, APIs e muito mais.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Ecossistema MCP
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">1000+</div>
+            <p class="text-neutral-400 text-sm">MCP Servers disponiveis no ecossistema open-source</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3 SDKs</div>
+            <p class="text-neutral-400 text-sm">Python, TypeScript e Java oficiais da Anthropic</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Open</div>
+            <p class="text-neutral-400 text-sm">Padrao aberto: qualquer app pode implementar, nao so da Anthropic</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2 Transports</div>
+            <p class="text-neutral-400 text-sm">stdio (local, subprocess) e HTTP+SSE (remoto, cloud)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Arquitetura Host / Client / Server</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Host</p>
+                <p class="text-neutral-400 text-sm">A aplicacao principal que inicia conexoes MCP. Exemplos: Claude Desktop, VS Code, sua app SaaS. O Host cria e gerencia multiplos Clients.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Client</p>
+                <p class="text-neutral-400 text-sm">Mantém conexao 1:1 com um MCP Server especifico. Gerencia protocolo, capacidades e estado da conexao. Um Host pode ter varios Clients simultanios.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Server</p>
+                <p class="text-neutral-400 text-sm">Expoe capabilities para os Clients: resources (fontes de dados), tools (acoes executaveis) e prompts (templates reutilizaveis). Pode rodar localmente ou remotamente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O que um MCP Server expoe</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Resources</div>
+              <p class="text-neutral-400 text-xs">Dados que o host pode ler: arquivos, registros de banco, conteudo de APIs. Acesso read-only com URI padronizado.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Tools</div>
+              <p class="text-neutral-400 text-xs">Acoes executaveis: criar arquivo, enviar mensagem, executar query. Mesmo formato JSON Schema de function calling.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Prompts</div>
+              <p class="text-neutral-400 text-xs">Templates reutilizaveis com parametros: "resuma este documento", "analise este PR". Prompts versionados e parametrizaveis.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo: Configuracao MCP</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem",
+               "/home/user/projetos"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "ghp_..." }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres",
+               "postgresql://localhost:5432/mydb"]
+    }
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Essa configuracao conecta sua app a 3 MCP Servers simultaneamente: filesystem local, GitHub e um banco PostgreSQL. Cada um expoe suas tools e resources de forma padronizada.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Comece com o MCP Server de filesystem: e o mais simples de configurar e ja permite ao agente ler/escrever arquivos. Depois adicione GitHub para repos e um banco de dados. A maioria dos MCP Servers funciona com um simples <code class="text-amber-400 bg-dark-700 px-1 rounded">npx -y @modelcontextprotocol/server-nome</code>.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar MCP Servers oficiais do ecossistema quando disponiveis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Isolar tokens e credenciais em variaveis de ambiente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Limitar escopo de acesso (ex: somente diretorio especifico)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar cada server isoladamente antes de integrar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Dar acesso ao filesystem raiz inteiro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Hardcodar tokens no arquivo de configuracao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Conectar muitos servers sem necessidade (overhead)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar MCP Servers nao-oficiais sem revisar o codigo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Memoria e Handoff entre Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">Memoria e Handoff entre Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Short vs long-term memory, context passing, tenant isolation</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Agentes sem memoria sao como conversas com um desconhecido toda vez: comecam do zero, nao lembram preferencias, repetem perguntas. <strong class="text-amber-400">Memoria</strong> e o que transforma um agente em um assistente util a longo prazo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Em sistemas multiagentes, o <strong class="text-amber-400">handoff</strong> e igualmente critico: quando o Agente A passa a tarefa para o Agente B, precisa transferir contexto suficiente para que B continue sem pedir ao usuario para repetir tudo. Em SaaS multi-tenant, cada usuario precisa ter sua memoria isolada por seguranca.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Tipos de Memoria
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Short-term</div>
+            <p class="text-neutral-400 text-sm">Context window do LLM. Dura uma sessao. Limitada (128k-200k tokens). Inclui mensagens recentes.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Long-term</div>
+            <p class="text-neutral-400 text-sm">Banco de dados ou vector store. Persiste entre sessoes. Sem limite pratico. Precisa de retrieval.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Episodica</div>
+            <p class="text-neutral-400 text-sm">Eventos especificos: "usuario preferiu formato JSON na ultima vez". Fatos pontuais recuperaveis.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Semantica</div>
+            <p class="text-neutral-400 text-sm">Conhecimento geral: "usuario trabalha com marketing digital". Perfil acumulado ao longo do tempo.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Implementacoes de Memoria</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">SQLite / PostgreSQL</p>
+                <p class="text-neutral-400 text-sm">Armazena memorias como registros com campos: content, type, salience, created_at. Busca por query SQL. Simples e eficiente para memorias estruturadas.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Vector Store (Pinecone, Chroma, pgvector)</p>
+                <p class="text-neutral-400 text-sm">Converte memorias em embeddings e busca por similaridade semantica. Ideal para encontrar informacoes relevantes sem query exata. Ex: "usuario gosta de cafe" encontrado por "preferencias alimentares".</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Arquivos Markdown (CLAUDE.md, MEMORY.md)</p>
+                <p class="text-neutral-400 text-sm">Abordagem simples usada pelo Claude Code: um arquivo de texto que o agente le e atualiza. Sem infraestrutura extra. Funciona bem para agentes pessoais com volume baixo de memorias.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Handoff entre Agentes</h3>
+          <p class="text-neutral-300 text-sm mb-3">Quando um agente passa uma tarefa para outro, o contexto precisa ser transferido de forma estruturada:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "handoff": {
+    "from": "research-agent",
+    "to": "writer-agent",
+    "task": "Escrever artigo sobre MCP",
+    "context": {
+      "research_results": [...],
+      "user_preferences": "tom tecnico, exemplos praticos",
+      "constraints": "maximo 2000 palavras"
+    },
+    "conversation_summary": "Usuario pediu artigo sobre MCP.
+      Pesquisa concluida: 5 fontes, 3 exemplos de codigo."
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O handoff inclui: quem enviou, quem recebe, a tarefa, contexto relevante e um resumo da conversa ate o momento. Isso evita que o agente receptor peca ao usuario para repetir informacoes.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Tenant Isolation</h3>
+          <p class="text-neutral-300 text-sm mb-3">Em SaaS multi-tenant, cada usuario precisa de memoria isolada. Padroes comuns:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Por Coluna</div>
+              <p class="text-neutral-400 text-xs">Tabela unica com coluna tenant_id. Simples mas requer WHERE em toda query. Risco se esquecer o filtro.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Por Schema</div>
+              <p class="text-neutral-400 text-xs">Schema separado por tenant no PostgreSQL. Melhor isolamento, facil de migrar. Custo medio.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Por Database</div>
+              <p class="text-neutral-400 text-xs">Banco separado por tenant. Isolamento maximo, mas caro e complexo de gerenciar em escala.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Para projetos iniciais, SQLite + coluna tenant_id resolve. Nao precisa de vector store no dia 1. Adicione embeddings quando o volume de memorias crescer e busca por keyword nao for mais suficiente. Premature optimization e a raiz de todo mal em infra de memoria.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Isolar memoria por tenant desde o inicio do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir conversation_summary em todo handoff</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir TTL para memorias de curto prazo (limpar sessoes antigas)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Versionar o formato de memoria para migracoes futuras</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Guardar tudo: memorias sem curadoria viram ruido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Handoff sem contexto: agente receptor fica perdido</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Memoria compartilhada entre tenants (vazamento de dados)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Injetar toda a memoria no prompt (estoura context window)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: Integrar Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">Exercicio: Integrar Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Criar 2+ agentes com skills e MCP trabalhando juntos</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Hora de colocar tudo em pratica. Neste exercicio voce vai criar um <strong class="text-amber-400">sistema multiagente funcional</strong> com pelo menos 2 agentes especializados, cada um com suas tools registradas, conectados a fontes de dados via MCP, com orquestracao e handoff entre eles.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O objetivo nao e perfeicao: e ter um sistema que <strong class="text-amber-400">funciona end-to-end</strong>. Agente recebe tarefa, decide quem executa, passa contexto, entrega resultado. Se funcionar com 2 agentes e 3 tools, voce ja domina o padrao para escalar para 10.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Entregas do Exercicio</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">2+ Agentes com roles definidos</p>
+                <p class="text-neutral-400 text-sm">Crie pelo menos um Executor (gera conteudo, processa dados) e um Revisor (valida, sugere melhorias). Cada um com system prompt especifico.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Skills com JSON Schema</p>
+                <p class="text-neutral-400 text-sm">Registre pelo menos 2 tools por agente com JSON Schema completo (nome, descricao, parametros). Teste function calling isolado antes de integrar.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">MCP Server conectado</p>
+                <p class="text-neutral-400 text-sm">Configure pelo menos 1 MCP Server (filesystem, GitHub ou outro). O agente deve conseguir ler/escrever via MCP.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Router + Handoff funcional</p>
+                <p class="text-neutral-400 text-sm">Implemente routing (qual agente responde) e handoff (passagem de contexto entre agentes). Pode ser regra simples ou LLM classifier.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo de Arquitetura</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>projeto/
+  agents/
+    executor.ts      // Agente que gera conteudo
+    reviewer.ts      // Agente que valida e corrige
+  skills/
+    web-search.ts    // Tool: busca na web
+    file-writer.ts   // Tool: escreve arquivos
+    code-review.ts   // Tool: analisa codigo
+  router.ts          // Classifica e roteia mensagens
+  orchestrator.ts    // Coordena fluxo entre agentes
+  mcp-config.json    // Configuracao dos MCP Servers
+  .env               // API keys e tokens</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Agente Executor responde quando recebe tarefa de criacao</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Agente Revisor recebe output do Executor e retorna feedback</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Tools sao chamadas via function calling (nao hardcoded)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>MCP Server conectado e funcional (ler/escrever via protocolo)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Router classifica mensagem e envia para agente correto</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Handoff inclui contexto suficiente (sem perda de informacao)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use Vibe Coding para construir o proprio sistema de agentes. Descreva a arquitetura no prompt, deixe o LLM gerar o scaffold, e itere. O exercicio valida tudo que voce aprendeu nesta trilha, e o resultado se integra diretamente no SaaS que voce esta construindo na imersao.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com 2 agentes e expandir depois que funcionar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar cada tool isoladamente antes de conectar ao agente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar tudo: input, tool calls, handoffs, output final</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar o checklist acima para validar antes de considerar "pronto"</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Tentar fazer tudo de uma vez: construa incremental</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular o routing e hardcodar qual agente responde</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar error handling: agentes falham, trate gracefully</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Copiar codigo sem entender: o objetivo e aprender o padrao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.1
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Agentes de IA</strong> usam LLMs para raciocinar e agir em loop (ReAct), diferente de automacao baseada em regras fixas.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Multiagentes</strong> dividem responsabilidades entre agentes especializados, coordenados por um orquestrador.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Tools e Skills</strong> dao ao agente capacidade de agir: JSON Schema define a interface, function calling executa.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">MCP</strong> padroniza conexao a ferramentas/dados com arquitetura Host/Client/Server e milhares de conectores.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Memoria</strong> (short/long-term) e handoff estruturado sao essenciais para agentes uteis e multiagentes coerentes.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na pratica</strong>: comece com 2 agentes + 3 tools + 1 MCP Server. Funcional primeiro, sofisticado depois.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Voltar para Trilha 4</span>
+      </a>
+      <a href="../trilha5/index.html" class="flex items-center space-x-2 text-neutral-400 hover:text-teal-400 transition-colors">
+        <span class="text-sm font-medium">Trilha 5: Assistentes e Multibots</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

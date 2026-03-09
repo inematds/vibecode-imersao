@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Imersao Vibe Coding | Do Zero ao SaaS com IA em 3 Dias</title>
+  <title>Imersao Vibe Coding - Do Zero ao SaaS com IA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -23,7 +23,7 @@
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
 
-    /* Light mode overrides - OBRIGATORIO */
+    /* Light mode overrides */
     html:not(.dark) body {
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     }
@@ -45,35 +45,39 @@
   <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-14">
-        <!-- Logo + INEMA.CLUB -->
         <div class="flex items-center space-x-4">
           <a href="index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-            <span class="text-2xl">&#x1F680;</span>
-            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
           </a>
           <span class="text-neutral-600">|</span>
           <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
         </div>
-
-        <!-- Trilhas + Theme Toggle -->
         <div class="flex items-center space-x-1 sm:space-x-2">
-          <!-- Dia 1 (Emerald) -->
-          <a href="curso/trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
-            <span class="sm:hidden">D1</span>
-            <span class="hidden sm:inline">Dia 1</span>
+          <a href="curso/trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
           </a>
-          <!-- Dia 2 (Blue) -->
-          <a href="curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
-            <span class="sm:hidden">D2</span>
-            <span class="hidden sm:inline">Dia 2</span>
+          <a href="curso/trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
           </a>
-          <!-- Dia 3 (Purple) -->
-          <a href="curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
-            <span class="sm:hidden">D3</span>
-            <span class="hidden sm:inline">Dia 3</span>
+          <a href="curso/trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
           </a>
-
-          <!-- Theme Toggle -->
+          <a href="curso/trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="curso/trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="curso/trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -87,179 +91,248 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
-  <header class="bg-gradient-to-br from-primary/10 via-dark-800 to-dark-800 py-16 sm:py-24 border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-semibold rounded-full mb-6">
-        IMERSAO INTENSIVA
-      </span>
-      <h1 class="text-4xl sm:text-5xl font-bold mb-4">
-        <span class="text-2xl sm:text-3xl mr-2">&#x1F680;</span> Imersao Vibe Coding
-      </h1>
-      <p class="text-xl sm:text-2xl text-primary font-semibold mb-6">Do Zero ao SaaS com IA em 3 Dias</p>
-      <p class="text-lg text-neutral-400 max-w-3xl mb-10">
-        Construa um SaaS de assistentes com IA usando Vibe Coding. 3 dias intensivos, 6 turnos praticos, entrega real.
-      </p>
+  <!-- HERO -->
+  <header class="bg-gradient-to-br from-yellow-900/20 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-primary/20 text-primary text-sm font-semibold rounded-full mb-6">IMERSAO 3 DIAS / 6 TRILHAS</span>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6">🚀 Imersao Vibe Coding</h1>
+      <p class="text-xl text-neutral-400 max-w-3xl mx-auto mb-4">Do Zero ao SaaS com IA em 3 Dias</p>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-8">Construa um SaaS funcional com agentes de IA, deploy e monetizacao usando Vibe Coding. Da mentalidade ao produto publicado.</p>
 
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-4 gap-4 max-w-2xl">
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-primary">3</div>
-          <div class="text-xs text-neutral-400">Dias</div>
-        </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
           <div class="text-xl font-bold text-primary">6</div>
-          <div class="text-xs text-neutral-400">Turnos</div>
+          <div class="text-xs text-neutral-400">Trilhas</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
           <div class="text-xl font-bold text-primary">36</div>
           <div class="text-xs text-neutral-400">Topicos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-primary">6</div>
-          <div class="text-xs text-neutral-400">Entregas Praticas</div>
+          <div class="text-xl font-bold text-primary">3</div>
+          <div class="text-xs text-neutral-400">Dias</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-primary">1</div>
+          <div class="text-xs text-neutral-400">SaaS Completo</div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <!-- TRILHAS -->
   <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- TRAIL CARDS -->
-    <section class="mb-16">
-      <h2 class="text-2xl font-bold mb-8">Trilha da Imersao</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Dia 1 - Emerald - Disponivel -->
-        <a href="curso/trilha1/index.html" class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/50 transition-all duration-300 group">
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">
-                DIA 1
-              </span>
-              <span class="text-xs text-emerald-400 font-medium">Disponivel</span>
-            </div>
-            <h3 class="text-xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">Fundamentos e Arquitetura</h3>
-            <p class="text-neutral-400 text-sm">Da ideia ao projeto estruturado</p>
-          </div>
-          <div class="px-6 pb-6">
-            <div class="flex justify-start">
-              <span class="text-sm text-emerald-400 font-medium group-hover:translate-x-1 transition-transform inline-block">
-                Acessar &rarr;
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Dia 2 - Blue - Em breve -->
-        <a href="curso/trilha2/index.html" class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-all duration-300 opacity-60 group">
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">
-                DIA 2
-              </span>
-              <span class="text-xs text-neutral-500 font-medium">Em breve</span>
-            </div>
-            <h3 class="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">Construcao e Inteligencia</h3>
-            <p class="text-neutral-400 text-sm">Do codigo ao produto inteligente</p>
-          </div>
-          <div class="px-6 pb-6">
-            <div class="flex justify-start">
-              <span class="text-sm text-blue-400 font-medium group-hover:translate-x-1 transition-transform inline-block">
-                Em breve &rarr;
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Dia 3 - Purple - Em breve -->
-        <a href="curso/trilha3/index.html" class="block bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/50 transition-all duration-300 opacity-60 group">
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-4">
-              <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">
-                DIA 3
-              </span>
-              <span class="text-xs text-neutral-500 font-medium">Em breve</span>
-            </div>
-            <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">Produto e Operacao</h3>
-            <p class="text-neutral-400 text-sm">Do prototipo ao produto publicado</p>
-          </div>
-          <div class="px-6 pb-6">
-            <div class="flex justify-start">
-              <span class="text-sm text-purple-400 font-medium group-hover:translate-x-1 transition-transform inline-block">
-                Em breve &rarr;
-              </span>
-            </div>
-          </div>
-        </a>
-
+    <!-- Dia 1 -->
+    <div class="mb-12">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="px-3 py-1 bg-dark-700 text-neutral-300 text-sm font-semibold rounded-full">DIA 1</span>
+        <span class="text-neutral-500 text-sm">Fundamentos e Estrutura</span>
       </div>
-    </section>
 
-    <!-- DATA SECTION -->
-    <section class="mb-16">
-      <h2 class="text-2xl font-bold mb-8">Vibe Coding em 2026</h2>
-
-      <div class="bg-dark-800 rounded-xl border border-dark-600 p-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="text-2xl">&#x1F4CA;</span>
-              <h3 class="text-lg font-semibold text-blue-400">Adocao Massiva</h3>
-            </div>
-            <p class="text-neutral-300"><strong class="text-blue-400">92%</strong> dos devs nos EUA usam IA diariamente no desenvolvimento</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Trilha 1 - Emerald -->
+        <a href="curso/trilha1/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRILHA 1</span>
+            <span class="text-xs text-neutral-500">Turno 1</span>
           </div>
-
-          <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="text-2xl">&#x1F916;</span>
-              <h3 class="text-lg font-semibold text-blue-400">Codigo Gerado</h3>
-            </div>
-            <p class="text-neutral-300"><strong class="text-blue-400">41%</strong> do codigo global e gerado por IA</p>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🧠 Mentalidade e Metodo</h3>
+          <p class="text-neutral-400 text-sm mb-4">Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-emerald-400">Basico</span>
           </div>
+        </a>
 
-          <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="text-2xl">&#x1F4A1;</span>
-              <h3 class="text-lg font-semibold text-primary">Nova Era</h3>
-            </div>
-            <p class="text-neutral-300">Vibe Coding evolui para <strong class="text-primary">Agentic Engineering</strong> (Karpathy, 2026)</p>
+        <!-- Trilha 2 - Blue -->
+        <a href="curso/trilha2/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRILHA 2</span>
+            <span class="text-xs text-neutral-500">Turno 2</span>
           </div>
-
-          <div class="bg-primary/10 rounded-xl border border-primary/30 p-6">
-            <div class="flex items-center space-x-3 mb-3">
-              <span class="text-2xl">&#x1F680;</span>
-              <h3 class="text-lg font-semibold text-primary">Vibe Shipping</h3>
-            </div>
-            <p class="text-neutral-300">De gerar codigo para <strong class="text-primary">entregar produto</strong> completo</p>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🏗️ Arquitetura da Plataforma</h3>
+          <p class="text-neutral-400 text-sm mb-4">Estrutura base do projeto. Pastas, APIs, contexto global e fluxo de execucao.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-blue-400">Basico</span>
           </div>
+        </a>
+      </div>
+    </div>
 
+    <!-- Dia 2 -->
+    <div class="mb-12">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="px-3 py-1 bg-dark-700 text-neutral-300 text-sm font-semibold rounded-full">DIA 2</span>
+        <span class="text-neutral-500 text-sm">Produto e Inteligencia</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Trilha 3 - Purple -->
+        <a href="curso/trilha3/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRILHA 3</span>
+            <span class="text-xs text-neutral-500">Turno 3</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">💻 Construcao do SaaS</h3>
+          <p class="text-neutral-400 text-sm mb-4">Produto funcional. Auth, dashboard, system prompts, upload multimodal e historico.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-purple-400">Intermediario</span>
+          </div>
+        </a>
+
+        <!-- Trilha 4 - Amber -->
+        <a href="curso/trilha4/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TRILHA 4</span>
+            <span class="text-xs text-neutral-500">Turno 4</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-amber-400 transition-colors">🤖 Agentes, MCP e Skills</h3>
+          <p class="text-neutral-400 text-sm mb-4">Inteligencia no sistema. Multiagentes, orquestracao, MCP e memoria.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-amber-400">Intermediario</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Dia 3 -->
+    <div class="mb-12">
+      <div class="flex items-center space-x-3 mb-6">
+        <span class="px-3 py-1 bg-dark-700 text-neutral-300 text-sm font-semibold rounded-full">DIA 3</span>
+        <span class="text-neutral-500 text-sm">Plataforma e Producao</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Trilha 5 - Teal -->
+        <a href="curso/trilha5/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full">TRILHA 5</span>
+            <span class="text-xs text-neutral-500">Turno 5</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-teal-400 transition-colors">🔗 Assistentes e Multibots</h3>
+          <p class="text-neutral-400 text-sm mb-4">Plataforma de assistentes. Arquitetura multibot, bots especialistas e canais.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-teal-400">Avancado</span>
+          </div>
+        </a>
+
+        <!-- Trilha 6 - Rose -->
+        <a href="curso/trilha6/index.html" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-rose-500/50 transition-all p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full">TRILHA 6</span>
+            <span class="text-xs text-neutral-500">Turno 6</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 group-hover:text-rose-400 transition-colors">🛡️ Seguranca, Billing e Operacao</h3>
+          <p class="text-neutral-400 text-sm mb-4">Producao e monetizacao. Seguranca, pagamentos, landing page e deploy.</p>
+          <div class="flex items-center space-x-4 text-xs text-neutral-500">
+            <span>6 topicos</span>
+            <span>1 modulo</span>
+            <span class="text-rose-400">Avancado</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- O que voce vai construir -->
+    <div class="bg-gradient-to-br from-primary/10 via-dark-800 to-dark-800 rounded-xl border border-primary/30 p-8 mb-12">
+      <h2 class="text-2xl font-bold mb-6 flex items-center">
+        <span class="mr-3">🎯</span> O que voce vai construir
+      </h2>
+      <p class="text-neutral-300 mb-6">Uma <strong class="text-primary">Plataforma SaaS de Assistentes com IA</strong> completa e funcional:</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Login e autenticacao</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Dashboard interativo</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Agentes inteligentes</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Skills e ferramentas</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Upload multimodal</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Sistema multibot</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Pagamentos e planos</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Landing page</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-primary">✓</span>
+          <span class="text-neutral-300">Deploy em producao</span>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- Dados -->
+    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-8 mb-12">
+      <h2 class="text-2xl font-bold mb-6 flex items-center">
+        <span class="mr-3">📊</span> Por que Vibe Coding em 2026
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <div class="text-3xl font-bold text-blue-400 mb-1">92%</div>
+          <p class="text-neutral-400 text-sm">dos desenvolvedores nos EUA usam IA no dia a dia</p>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-400 mb-1">41%</div>
+          <p class="text-neutral-400 text-sm">do codigo global e gerado por IA</p>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-400 mb-1">42%</div>
+          <p class="text-neutral-400 text-sm">das empresas ja tem agentes em producao</p>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-400 mb-1">2030</div>
+          <p class="text-neutral-400 text-sm">Gartner preve pricing baseado em outcome para SaaS com IA</p>
+        </div>
+      </div>
+    </div>
 
   </main>
 
   <!-- FOOTER -->
   <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p class="mb-2">Imersao Vibe Coding - 2026</p>
-      <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
     </div>
   </footer>
 
   <!-- SCRIPTS -->
   <script>
-    // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
     const html = document.documentElement;
 
-    // Initialize correct icon
     if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
       themeToggleDarkIcon.classList.remove('hidden');
       html.classList.remove('dark');
@@ -267,7 +340,6 @@
       themeToggleLightIcon.classList.remove('hidden');
     }
 
-    // Click handler
     themeToggle.addEventListener('click', () => {
       themeToggleDarkIcon.classList.toggle('hidden');
       themeToggleLightIcon.classList.toggle('hidden');

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trilha 4 - Agentes, MCP e Skills | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center space-x-3 mb-4">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300 text-sm">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 text-sm font-medium">Trilha 4</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-6">TRILHA 4</span>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">🤖 Agentes, MCP e Skills</h1>
+      <p class="text-xl text-neutral-400 max-w-3xl mb-2">Inteligencia no sistema. Multiagentes, orquestracao, MCP e memoria.</p>
+      <p class="text-neutral-500 text-sm">Dia 2 / Turno 4</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mt-8">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30">
+          <div class="text-xl font-bold text-amber-400">1</div>
+          <div class="text-xs text-neutral-400">Modulo</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30">
+          <div class="text-xl font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30">
+          <div class="text-xl font-bold text-amber-400">~60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30">
+          <div class="text-xl font-bold text-amber-400">Inter</div>
+          <div class="text-xs text-neutral-400">Intermediario</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- MODULE 4.1 -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 transition-all mb-8">
+      <!-- Module Header -->
+      <div class="p-6 border-b border-dark-600">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">MODULO 4.1</span>
+          <span class="text-xs text-neutral-500">6 topicos</span>
+        </div>
+        <h2 class="text-2xl font-bold mb-2">Agentes, MCP e Skills</h2>
+        <p class="text-neutral-400 text-sm">De automacao basica a agentes inteligentes com ferramentas, protocolo MCP e orquestracao multiagente.</p>
+        <div class="mt-4">
+          <a href="modulo-4-1.html" class="inline-flex items-center px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg text-sm font-semibold hover:bg-amber-500/30 transition-colors">
+            Acessar Modulo Completo
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Topics List -->
+      <div class="divide-y divide-dark-600">
+
+        <!-- Topic 1 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t1')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">O que sao Agentes de IA</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Automacao vs agentes inteligentes, loops de decisao, ReAct pattern</p>
+            </div>
+            <svg id="t1-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t1-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">Agentes de IA sao sistemas autonomos que percebem o ambiente, tomam decisoes e executam acoes para atingir objetivos. Diferente de automacao tradicional (regras fixas), agentes usam LLMs para raciocinar, planejar e adaptar seu comportamento em tempo real usando o padrao ReAct (Reason + Act).</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">42% das empresas ja tem agentes em producao. Agentes sao a evolucao natural de chatbots: em vez de apenas responder, eles fazem. Saber construir agentes e a skill mais demandada em IA aplicada em 2026.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; Loop de decisao: Perceber > Raciocinar > Agir > Observar</li>
+                  <li>&#8226; ReAct pattern: Thought > Action > Observation em ciclo</li>
+                  <li>&#8226; Tool-use: agente decide qual ferramenta usar e quando</li>
+                  <li>&#8226; Planning: decomposicao de tarefas complexas em sub-tarefas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic 2 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t2')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">Multiagentes e Orquestracao</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Executor, Analyst, Reviewer, pods especializados, routing</p>
+            </div>
+            <svg id="t2-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t2-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">Sistemas multiagentes usam varios agentes especializados trabalhando juntos. Cada agente tem um papel definido (Executor, Analista, Revisor) e um orquestrador roteia tarefas entre eles. Podem operar em paralelo ou sequencialmente, com handoff de contexto entre etapas.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">Um unico agente nao escala para tarefas complexas. Multiagentes permitem dividir responsabilidades, usar modelos diferentes por funcao (barato para triagem, potente para raciocinio) e processar em paralelo. E a arquitetura por tras de Devin, Manus AI e outros agentes avancados.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; Roles: Executor (faz), Analyst (avalia), Reviewer (valida)</li>
+                  <li>&#8226; Pods especializados: grupos de agentes por dominio</li>
+                  <li>&#8226; Routing: classificador decide qual agente responde</li>
+                  <li>&#8226; Execucao paralela vs sequencial (chains)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic 3 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t3')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">Skills e Tools</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Capacidades especializadas, JSON schemas, function calling</p>
+            </div>
+            <svg id="t3-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t3-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">Skills sao capacidades especializadas que um agente pode executar: enviar email, consultar banco de dados, gerar relatorio. Tools sao a interface tecnica: funcoes com JSON Schema definindo parametros, que o LLM chama via function calling. O agente decide qual tool usar baseado no contexto.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">Sem tools, um agente so conversa. Com tools, ele age no mundo real: acessa APIs, manipula arquivos, consulta bancos. Function calling e o mecanismo que transforma um LLM de gerador de texto em executor de acoes. E a base de qualquer agente util.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; JSON Schema: define nome, descricao e parametros da tool</li>
+                  <li>&#8226; Function calling: LLM retorna tool_calls em vez de texto</li>
+                  <li>&#8226; Tool registration: registro de tools disponiveis no sistema</li>
+                  <li>&#8226; Structured outputs: respostas tipadas e validaveis</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic 4 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t4')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">MCP (Model Context Protocol)</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Anthropic open standard, Host/Client/Server, conectores</p>
+            </div>
+            <svg id="t4-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t4-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">MCP (Model Context Protocol) e um padrao aberto criado pela Anthropic que define como aplicacoes de IA se conectam a fontes de dados e ferramentas externas. Funciona com arquitetura Host/Client/Server: o Host (sua app) conecta a MCP Servers que expoem recursos, tools e prompts de forma padronizada.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">MCP resolve o problema de integracao M x N: em vez de cada app implementar cada conector, um MCP Server serve qualquer app compativel. Ja existem milhares de conectores (GitHub, Slack, bancos de dados, APIs). SDKs disponiveis em Python, TypeScript e Java. E o USB-C das integracoes de IA.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; Host: aplicacao que inicia conexoes (Claude Desktop, sua app)</li>
+                  <li>&#8226; Client: gerencia conexao 1:1 com um MCP Server</li>
+                  <li>&#8226; Server: expoe resources, tools e prompts</li>
+                  <li>&#8226; Transports: stdio (local) ou HTTP+SSE (remoto)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic 5 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t5')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">5</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">Memoria e Handoff entre Agentes</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Short vs long-term memory, context passing, tenant isolation</p>
+            </div>
+            <svg id="t5-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t5-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">Memoria de agentes e como o sistema retém informacao entre interacoes. Memoria de curto prazo (context window) dura uma sessao. Memoria de longo prazo persiste entre sessoes via banco de dados ou vector store. Handoff e a passagem de contexto entre agentes quando uma tarefa muda de responsavel.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">Sem memoria, cada interacao comeca do zero. Com memoria, o agente aprende preferencias, acumula contexto e melhora com o uso. Handoff mal feito entre agentes causa perda de contexto e repeticao. Em SaaS multi-tenant, isolar memoria por usuario e essencial para seguranca e privacidade.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; Short-term: context window do LLM (conversa atual)</li>
+                  <li>&#8226; Long-term: vector store, SQLite, embeddings semanticos</li>
+                  <li>&#8226; Handoff: passar estado + contexto entre agentes</li>
+                  <li>&#8226; Tenant isolation: memoria separada por usuario/organizacao</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic 6 -->
+        <div class="topic-item">
+          <button onclick="toggleTopic('t6')" class="w-full p-4 flex items-center justify-start space-x-4 hover:bg-dark-700/50 transition-colors text-left">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">6</div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm">Exercicio: Integrar Agentes</h3>
+              <p class="text-neutral-500 text-xs mt-0.5">Criar 2+ agentes com skills e MCP trabalhando juntos</p>
+            </div>
+            <svg id="t6-icon" class="w-5 h-5 text-neutral-500 flex-shrink-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="t6-content" class="hidden px-4 pb-4 pl-16">
+            <div class="space-y-3">
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">O que e</h4>
+                <p class="text-neutral-300 text-sm">Exercicio pratico onde voce implementa um sistema com pelo menos 2 agentes especializados, cada um com suas skills, conectados via MCP a fontes de dados externas, com orquestracao e handoff funcional entre eles.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Por que aprender</h4>
+                <p class="text-neutral-300 text-sm">Teoria sem pratica nao fixa. Integrar agentes reais force voce a lidar com problemas concretos: como passar contexto, como lidar com falhas, como rotear entre agentes. E a base do SaaS que voce vai entregar no fim da imersao.</p>
+              </div>
+              <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                <h4 class="text-amber-400 text-xs font-semibold mb-1">Conceitos-chave</h4>
+                <ul class="text-neutral-300 text-sm space-y-1">
+                  <li>&#8226; Criar agente Executor (gera conteudo) + Revisor (valida)</li>
+                  <li>&#8226; Registrar skills com JSON Schema em cada agente</li>
+                  <li>&#8226; Conectar MCP Server (ex: filesystem, GitHub, Slack)</li>
+                  <li>&#8226; Implementar routing e handoff entre agentes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between mt-8">
+      <a href="../trilha3/index.html" class="flex items-center space-x-2 text-neutral-400 hover:text-purple-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Trilha 3: Construcao do SaaS</span>
+      </a>
+      <a href="../trilha5/index.html" class="flex items-center space-x-2 text-neutral-400 hover:text-teal-400 transition-colors">
+        <span class="text-sm font-medium">Trilha 5: Assistentes e Multibots</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="topic-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="absolute inset-4 sm:inset-8 md:inset-16 lg:inset-24 bg-dark-800 rounded-xl border border-dark-600 overflow-y-auto">
+      <div class="sticky top-0 bg-dark-800/95 backdrop-blur-sm border-b border-dark-600 p-4 flex items-center justify-between">
+        <h3 id="modal-title" class="text-lg font-bold text-amber-400"></h3>
+        <button onclick="closeModal()" class="p-2 hover:bg-dark-700 rounded-lg transition-colors">
+          <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="modal-body" class="p-6"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Topic expand/collapse
+    function toggleTopic(id) {
+      const content = document.getElementById(id + '-content');
+      const icon = document.getElementById(id + '-icon');
+      content.classList.toggle('hidden');
+      icon.style.transform = content.classList.contains('hidden') ? '' : 'rotate(180deg)';
+    }
+
+    // Modal
+    function openModal(title, bodyHtml) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').innerHTML = bodyHtml;
+      document.getElementById('topic-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('topic-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+
+</body>
+</html>

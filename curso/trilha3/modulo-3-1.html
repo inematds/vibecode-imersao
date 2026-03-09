@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 3.1 - Construcao do SaaS | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-purple-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-purple-400">Trilha 3</a>
+      <span>/</span>
+      <span class="text-purple-400">Modulo 3.1</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 3.1
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">💻 Construcao do SaaS</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Do esqueleto ao produto funcional. Autenticacao, dashboard, system prompts, upload multimodal, estados do sistema e historico. Tudo que voce precisa para um SaaS com IA que funciona de verdade.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">60 min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-purple-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Autenticacao e Onboarding -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔐 Autenticacao e Onboarding</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Autenticacao e a porta de entrada do seu SaaS. Sem ela, nao existe conta de usuario, nao existe plano, nao existe cobranca. E o <strong class="text-purple-400">primeiro codigo que voce precisa fazer funcionar</strong> antes de qualquer feature.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Autenticacao moderna em SaaS usa <strong class="text-white">Supabase Auth</strong> (ou similar como Clerk, Auth.js) para gerenciar todo o ciclo: signup, login, logout, reset password e OAuth com provedores sociais. O resultado e um <strong class="text-white">JWT token</strong> que identifica o usuario em cada request.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O fluxo completo: usuario clica "Criar Conta" > preenche email/senha (ou clica "Entrar com Google") > backend valida e cria sessao > frontend recebe token > todas as chamadas subsequentes incluem esse token no header.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">JWT (JSON Web Token):</strong> Token assinado que carrega dados do usuario. O backend verifica a assinatura sem precisar consultar o banco a cada request</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Session Management:</strong> Quanto tempo o token dura, quando refresha, como invalida. Supabase gerencia isso automaticamente com refresh tokens</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Onboarding:</strong> O que acontece no primeiro acesso. Nome, preferencias, tutorial guiado. Primeira impressao define se o usuario volta</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados Relevantes
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">86%</strong> dos usuarios preferem social login (Google/GitHub) a criar senha nova</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">40%</strong> de abandono acontece no registro se o formulario tem mais de 3 campos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Supabase Auth:</strong> Setup completo em menos de 30 minutos. OAuth com Google em 5 linhas de codigo</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece com <strong class="text-white">email/senha + Google OAuth</strong>. Sao os dois metodos que cobrem 95% dos usuarios. Nao perca tempo implementando 10 provedores no MVP. Adicione GitHub se o publico for dev. O resto vem depois.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Usar Supabase Auth ou Clerk (nao reinvente a roda)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Implementar social login desde o dia 1</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Proteger todas as rotas da API com middleware de auth</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Guardar senhas em texto puro no banco</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Criar auth do zero quando existem libs prontas</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Deixar rotas de API acessiveis sem token</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Dashboard e Interface Principal -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">📊 Dashboard e Interface Principal</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O dashboard e onde o usuario <strong class="text-purple-400">vive dentro do seu produto</strong>. Nao e so uma tela bonita. E a experiencia central que define se o usuario continua usando ou abandona. Em apps de IA, o design do dashboard tem desafios unicos.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem dois paradigmas dominantes para SaaS com IA. O <strong class="text-white">conversation-centered</strong> (como ChatGPT, Claude) coloca a conversa no centro. O <strong class="text-white">transaction-centered</strong> (como Notion AI, Jasper) integra a IA dentro de workflows existentes.
+        </p>
+        <p class="text-neutral-300">
+          A escolha depende do seu produto. Se o usuario interage primariamente via texto/chat, va de conversation-centered. Se a IA e uma feature dentro de um produto maior, va de transaction-centered. A maioria dos SaaS novos com IA usa o modelo de conversa com sidebar de historico.
+        </p>
+      </div>
+
+      <!-- Layout Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🖥️</span> Anatomia de um Dashboard SaaS com IA
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">📋</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Sidebar</h4>
+            <p class="text-neutral-400 text-xs">Navegacao, historico, configuracoes</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">💬</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Area Principal</h4>
+            <p class="text-neutral-400 text-xs">Conversa, conteudo, output da IA</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⌨️</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Input Bar</h4>
+            <p class="text-neutral-400 text-xs">Texto, upload, acoes rapidas</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⚡</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Status Bar</h4>
+            <p class="text-neutral-400 text-xs">Loading, tokens, modelo ativo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> UX Data Points
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">3 segundos:</strong> Tempo maximo que um usuario espera sem feedback visual antes de achar que algo quebrou</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Streaming:</strong> Mostrar resposta sendo gerada em tempo real reduz percepcao de espera em 60%</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Sidebar colapsavel:</strong> Em mobile, sidebar vira drawer. 67% do trafego de SaaS vem de desktop, mas mobile precisa funcionar</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Copie o layout do ChatGPT ou Claude como base. Serio. <strong class="text-white">Sidebar esquerda com historico + area central de conversa + input bar na base.</strong> Usuarios ja sabem usar esse padrao. Nao invente. Inove no conteudo, nao no layout.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: System Prompts e Fluxo da Aplicacao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">⚙️ System Prompts e Fluxo da Aplicacao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O system prompt e o <strong class="text-purple-400">DNA do seu produto</strong>. Ele define como a IA se comporta, o que sabe, o que nao faz e como responde. Um SaaS com system prompt generico e um ChatGPT com login. Um SaaS com system prompt bem feito e uma ferramenta especializada.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O pipeline de processamento completo: <strong class="text-white">Input do usuario > System Prompt + Contexto > LLM Processing > Output formatado</strong>. Cada etapa tem configuracoes que afetam o resultado final.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">System Prompt:</strong> Instrucoes permanentes enviadas a cada chamada. Definem personalidade, capacidades e limites. E o "manual do funcionario" da IA</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Temperature:</strong> 0.0 = respostas deterministicas (sempre igual). 1.0 = maximo de criatividade. Para SaaS, use 0.1-0.3 para consistencia</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Context Window:</strong> A memoria de curto prazo. Tudo que voce envia (system prompt + historico + input) precisa caber. GPT-4o: 128k tokens. Claude: 200k tokens</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Anatomia de um System Prompt para SaaS
+        </h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-purple-400 text-sm font-semibold mb-2">Estrutura recomendada:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-2">
+              <div class="text-purple-400"># IDENTIDADE</div>
+              <div class="text-neutral-300">Voce e [nome], assistente especializado em [dominio].</div>
+              <div class="text-neutral-400 mt-2"></div>
+              <div class="text-purple-400"># CAPACIDADES</div>
+              <div class="text-neutral-300">Voce consegue: analisar documentos, gerar relatorios...</div>
+              <div class="text-neutral-400 mt-2"></div>
+              <div class="text-purple-400"># RESTRICOES</div>
+              <div class="text-neutral-300">Nunca invente dados. Se nao sabe, diga que nao sabe.</div>
+              <div class="text-neutral-400 mt-2"></div>
+              <div class="text-purple-400"># FORMATO DE RESPOSTA</div>
+              <div class="text-neutral-300">Responda em bullet points. Maximo 3 paragrafos.</div>
+              <div class="text-neutral-400 mt-2"></div>
+              <div class="text-purple-400"># CONTEXTO DO USUARIO</div>
+              <div class="text-neutral-300">Nome: {user.name} | Plano: {user.plan}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Versione seus system prompts.</strong> Guarde cada versao com data e resultado esperado. Quando algo quebrar (e vai), voce consegue voltar. Trate system prompts como codigo: com git, reviews e testes.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Definir identidade, capacidades e limites no prompt</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Injetar contexto do usuario dinamicamente</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Usar temperature baixa (0.1-0.3) para consistencia</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Deixar o system prompt vazio ou generico</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Enviar todo o historico sem truncar (estoura context window)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Hardcodar temperature 1.0 e esperar respostas consistentes</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Upload Multimodal -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📎 Upload Multimodal</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Um SaaS que so aceita texto e como um escritorio que nao aceita documentos impressos. <strong class="text-purple-400">Upload multimodal</strong> e o que separa um chatbot de um produto profissional. PDFs, imagens, planilhas, videos -- tudo vira input para a IA processar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Upload multimodal envolve tres etapas: <strong class="text-white">receber o arquivo</strong>, <strong class="text-white">extrair conteudo processavel</strong> e <strong class="text-white">enviar para a IA</strong>. Cada tipo de arquivo tem seu pipeline.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">PDF:</strong> Extrair texto com pdf-parse ou Apache Tika. Documentos grandes precisam de chunking (dividir em pedacos de ~1000 tokens)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Imagens:</strong> Enviar direto para vision models (GPT-4o, Claude 3.5) que "enxergam" o conteudo. Ou usar OCR (Tesseract) para extrair texto</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Video:</strong> Extrair frames-chave + transcrever audio (Whisper). Enviar frames para vision model + texto da transcricao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-400 mt-1">•</span>
+            <span><strong class="text-white">Chunking:</strong> Documentos grandes nao cabem no context window. Dividir em pedacos, processar cada um, e agregar resultados</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Limites Praticos
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">GPT-4o Vision:</strong> Ate 20MB por imagem, suporta PNG/JPEG/GIF/WebP. Custo: ~$0.003 por imagem 512x512</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Claude 3.5:</strong> Ate 5 imagens por request, 20MB cada. Processa PDFs nativamente ate 100 paginas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Supabase Storage:</strong> Free tier: 1GB. Upload direto do frontend com presigned URLs. Integra com auth automaticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Chunking ideal:</strong> 500-1500 tokens por chunk. Overlap de 100-200 tokens entre chunks para manter contexto</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Para o MVP, <strong class="text-white">suporte apenas PDF e imagens</strong>. Sao os formatos que 90% dos usuarios vao enviar. Use Supabase Storage para guardar os arquivos e processar no backend. Video e audio sao features de v2.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Validar tipo e tamanho do arquivo antes do upload</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Mostrar preview do arquivo e progresso de upload</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Implementar chunking para documentos grandes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Aceitar qualquer arquivo sem validacao (risco de seguranca)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Enviar PDF de 200 paginas inteiro para a API (estoura limite)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Guardar arquivos no servidor local (nao escala)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Estados do Sistema e Historico -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔄 Estados do Sistema e Historico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        IA demora. As vezes 2 segundos, as vezes 30. Se o usuario nao sabe o que esta acontecendo, ele acha que bugou e fecha a aba. <strong class="text-purple-400">Gerenciar estados visuais</strong> e tao importante quanto a propria resposta da IA.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Todo componente do SaaS precisa comunicar seu estado atual. Os <strong class="text-white">4 estados fundamentais</strong> sao: idle (esperando input), loading (processando), success (concluido) e error (algo deu errado).
+        </p>
+        <p class="text-neutral-300">
+          Alem dos estados, o <strong class="text-white">historico de conversas</strong> e feature obrigatoria. O usuario precisa poder fechar o browser, voltar no dia seguinte e continuar de onde parou. Isso exige persistencia no banco de dados e recuperacao de sessoes.
+        </p>
+      </div>
+
+      <!-- 4 Estados Visual -->
+      <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔄</span> Os 4 Estados Fundamentais
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-neutral-500/20 border-2 border-neutral-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⏸️</span>
+            </div>
+            <h4 class="font-bold text-neutral-400 mb-1">Idle</h4>
+            <p class="text-neutral-500 text-xs">Esperando input do usuario</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⏳</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Loading</h4>
+            <p class="text-neutral-500 text-xs">IA processando resposta</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">✅</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Success</h4>
+            <p class="text-neutral-500 text-xs">Resposta entregue com sucesso</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">❌</span>
+            </div>
+            <h4 class="font-bold text-red-400 mb-1">Error</h4>
+            <p class="text-neutral-500 text-xs">Algo falhou, opcao de retry</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Dados de UX
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Skeleton screens</strong> reduzem percepcao de espera em 35% comparado a spinners tradicionais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Streaming text</strong> (resposta aparecendo token por token) e o padrao de ouro para apps de IA. Usuarios preferem 10x mais que esperar a resposta completa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Retry automatico:</strong> Em caso de erro de API, tentar novamente 1-2 vezes antes de mostrar erro ao usuario reduz falhas visiveis em 70%</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Implemente streaming desde o dia 1.</strong> Tanto OpenAI quanto Anthropic suportam streaming nativamente. O usuario ve a resposta sendo construida em tempo real. Sem streaming, seu SaaS parece travado a cada pergunta.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">✓ O que FAZER</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Mostrar feedback visual em cada estado (idle, loading, success, error)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Salvar conversas no banco com session_id e timestamps</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">✓</span>
+              <span>Implementar retry automatico em erros transientes</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">✗ O que NAO fazer</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Mostrar tela em branco enquanto a IA processa</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Guardar historico apenas em localStorage (desaparece)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">✗</span>
+              <span>Ignorar erros da API e deixar o usuario sem feedback</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: SaaS Funcional -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛠️ Exercicio: SaaS Funcional</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de juntar tudo. Este exercicio e a <strong class="text-purple-400">entrega principal da Trilha 3</strong>. Voce vai sair daqui com um SaaS funcional: autenticacao, dashboard, fluxo de IA, upload e historico. Um produto que um usuario real consegue usar.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border-2 border-purple-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🛠️</span>
+          <div>
+            <h3 class="text-xl font-bold text-purple-400">Exercicio: Construir SaaS Funcional</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 40-60 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Autenticacao funcional</h4>
+              <p class="text-neutral-300 text-sm mb-3">Implementar signup, login e logout com Supabase Auth:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-purple-400">// Setup Supabase</div>
+                <div class="text-neutral-300">const supabase = createClient(url, key)</div>
+                <div class="text-neutral-400 mt-1"></div>
+                <div class="text-purple-400">// Login</div>
+                <div class="text-neutral-300">const { data, error } = await supabase.auth.signInWithPassword({</div>
+                <div class="text-neutral-300 ml-4">email, password</div>
+                <div class="text-neutral-300">})</div>
+                <div class="text-neutral-400 mt-1"></div>
+                <div class="text-purple-400">// OAuth</div>
+                <div class="text-neutral-300">await supabase.auth.signInWithOAuth({ provider: 'google' })</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Dashboard com sidebar e area principal</h4>
+              <p class="text-neutral-300 text-sm mb-3">Layout: sidebar esquerda com historico de conversas, area central para o chat, input bar na base:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20">
+                <span class="text-neutral-500">┌──────────┬────────────────────────┐</span><br>
+                <span class="text-neutral-500">│</span> <span class="text-purple-400">Sidebar</span>  <span class="text-neutral-500">│</span> <span class="text-purple-400">Area Principal (Chat)</span>    <span class="text-neutral-500">│</span><br>
+                <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 1</span>   <span class="text-neutral-500">│</span> <span class="text-neutral-400">Msgs do usuario + IA</span>     <span class="text-neutral-500">│</span><br>
+                <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 2</span>   <span class="text-neutral-500">│</span>                        <span class="text-neutral-500">│</span><br>
+                <span class="text-neutral-500">│</span> <span class="text-neutral-400">Conv 3</span>   <span class="text-neutral-500">│</span> <span class="text-neutral-400">┌──────────────────────┐</span> <span class="text-neutral-500">│</span><br>
+                <span class="text-neutral-500">│</span>          <span class="text-neutral-500">│</span> <span class="text-neutral-400">│ Input + Upload btn  │</span> <span class="text-neutral-500">│</span><br>
+                <span class="text-neutral-500">└──────────┴─┴──────────────────────┴─┘</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Fluxo de IA com system prompt</h4>
+              <p class="text-neutral-300 text-sm mb-3">Conectar o input do usuario ao LLM com system prompt, temperature e streaming:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-purple-500/20 space-y-1">
+                <div class="text-neutral-300">const response = await openai.chat.completions.create({</div>
+                <div class="text-neutral-300 ml-4">model: 'gpt-4o',</div>
+                <div class="text-neutral-300 ml-4">temperature: 0.2,</div>
+                <div class="text-neutral-300 ml-4">stream: true,</div>
+                <div class="text-neutral-300 ml-4">messages: [</div>
+                <div class="text-neutral-300 ml-8">{ role: 'system', content: systemPrompt },</div>
+                <div class="text-neutral-300 ml-8">...conversationHistory,</div>
+                <div class="text-neutral-300 ml-8">{ role: 'user', content: userInput }</div>
+                <div class="text-neutral-300 ml-4">]</div>
+                <div class="text-neutral-300">})</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Upload de arquivo processado</h4>
+              <p class="text-neutral-300 text-sm">Implementar upload de PDF/imagem, extrair conteudo e enviar como contexto para a IA. Mostrar preview e progresso.</p>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/30 flex items-center justify-center border border-purple-500/40">
+              <span class="text-purple-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Historico de conversas persistente</h4>
+              <p class="text-neutral-300 text-sm">Salvar cada conversa no Supabase com user_id, session_id e timestamps. Listar na sidebar. Clicar carrega a conversa anterior.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Login e registro funcionando</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Dashboard com sidebar + area de chat</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">IA respondendo com streaming</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Upload de arquivo processado pela IA</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Historico de conversas persistente</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Estados visuais (loading, error, success)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-emerald-900/20 rounded-xl border border-purple-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Adicione <strong class="text-white">dark mode toggle</strong> e <strong class="text-white">contagem de tokens</strong> no status bar. Mostrar ao usuario quantos tokens ele ja usou naquela conversa ajuda a gerenciar custos e da transparencia ao produto.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo da Trilha
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Auth e o gate de entrada</strong>
+              <span class="text-neutral-400"> - Supabase Auth com email/senha + Google OAuth. JWT em cada request. Onboarding no primeiro acesso.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Dashboard = sidebar + area central + input bar</strong>
+              <span class="text-neutral-400"> - Copie o padrao do ChatGPT. Inove no conteudo, nao no layout. Conversation-centered para apps de IA.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">System prompt e o DNA do produto</strong>
+              <span class="text-neutral-400"> - Identidade + capacidades + restricoes + formato. Temperature baixa para consistencia. Versione como codigo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Upload multimodal: PDF + imagens no MVP</strong>
+              <span class="text-neutral-400"> - Chunking para docs grandes, vision models para imagens, validacao de tipo e tamanho. Video e v2.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">4 estados: idle, loading, success, error</strong>
+              <span class="text-neutral-400"> - Streaming desde o dia 1. Skeleton screens. Retry automatico. Nunca tela em branco.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Historico persistente e obrigatorio</strong>
+              <span class="text-neutral-400"> - Salvar no banco com session_id. Usuario fecha e volta no dia seguinte. Listar na sidebar.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-purple-400 mb-2">Proxima Trilha:</h3>
+          <p class="text-neutral-300">Trilha 4 - Agentes, MCP e Skills. Adicionar inteligencia real ao SaaS com agentes autonomos e ferramentas.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="../trilha2/index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Trilha Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 3
+          </a>
+          <a href="../trilha4/index.html" class="text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">
+            Proxima Trilha →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

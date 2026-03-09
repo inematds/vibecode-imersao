@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trilha 1 - Fundamentos e Arquitetura | Imersao Vibe Coding</title>
+  <title>Trilha 1: Mentalidade e Metodo | Imersao Vibe Coding</title>
+  <meta name="description" content="Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -18,14 +20,14 @@
       }
     }
   </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    .topic-explanation { display: none; }
-    .topic-explanation.active { display: block; }
 
-    /* Light mode overrides - OBRIGATORIO */
+    /* Light mode overrides */
     html:not(.dark) body {
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     }
@@ -39,6 +41,68 @@
     html:not(.dark) .text-neutral-500 { color: #9ca3af; }
     html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
     html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* Topic toggle animation */
+    .topic-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .topic-content.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      width: 92%;
+      max-width: 1000px;
+      height: 90vh;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .dark .modal-box { background-color: #1f2937; border: 1px solid #4b5563; }
+    html:not(.dark) .modal-box { background-color: #ffffff; border: 1px solid #d1d5db; }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #4b5563;
+    }
+    html:not(.dark) .modal-header { border-bottom-color: #d1d5db; }
+
+    .modal-header .close-btn {
+      font-size: 1.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #9ca3af;
+      transition: color 0.2s;
+    }
+    .modal-header .close-btn:hover { color: #ef4444; }
+
+    .module-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .module-card:hover {
+      transform: translateY(-4px);
+    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -49,24 +113,36 @@
       <div class="flex justify-between items-center h-14">
         <div class="flex items-center space-x-4">
           <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
-            <span class="text-2xl">🚀</span>
-            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
           </a>
           <span class="text-neutral-600">|</span>
           <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
         </div>
         <div class="flex items-center space-x-1 sm:space-x-2">
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10">
-            <span class="sm:hidden">D1</span>
-            <span class="hidden sm:inline">D1 Fundamentos</span>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-emerald-400 bg-emerald-500/10">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
           </a>
-          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
-            <span class="sm:hidden">D2</span>
-            <span class="hidden sm:inline">D2 Construcao</span>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
           </a>
-          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
-            <span class="sm:hidden">D3</span>
-            <span class="hidden sm:inline">D3 Produto</span>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
           </a>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
@@ -82,26 +158,23 @@
   </nav>
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">
-        DIA 1
-      </span>
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 Fundamentos e Arquitetura</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">
-        Da ideia ao projeto estruturado. Aprenda a mentalidade Vibe Coding e monte a arquitetura da sua plataforma de agentes.
-      </p>
-      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+  <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-16 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-full mb-6">TRILHA 1</span>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">&#x1F9E0; Mentalidade e Metodo de Vibe Coding</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-8">Como pensar e estruturar projetos com IA. Da ideia ao MVP usando Vibe Coding.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">2</div>
-          <div class="text-xs text-neutral-400">Turnos</div>
+          <div class="text-xl font-bold text-emerald-400">1</div>
+          <div class="text-xs text-neutral-400">Modulo</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">12</div>
+          <div class="text-xl font-bold text-emerald-400">6</div>
           <div class="text-xs text-neutral-400">Topicos</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
-          <div class="text-xl font-bold text-emerald-400">~4h</div>
+          <div class="text-xl font-bold text-emerald-400">~45min</div>
           <div class="text-xs text-neutral-400">Duracao</div>
         </div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
@@ -112,473 +185,240 @@
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- MAIN CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-    <!-- NAVEGACAO RAPIDA -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-      <a href="#mod-1-1" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/50 p-4 transition-all">
-        <span class="text-emerald-400 font-bold text-sm">1.1</span>
-        <h3 class="font-semibold mt-1">🧠 Mentalidade e Metodo de Vibe Coding</h3>
-      </a>
-      <a href="#mod-1-2" class="bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/50 p-4 transition-all">
-        <span class="text-emerald-400 font-bold text-sm">1.2</span>
-        <h3 class="font-semibold mt-1">🏛️ Arquitetura da Plataforma de Agentes</h3>
-      </a>
-    </div>
-
-    <!-- DIVISOR -->
-    <div class="flex items-center space-x-4 mb-8">
-      <div class="flex-1 h-px bg-dark-600"></div>
-      <span class="text-neutral-500 text-sm font-medium">Conteudo Detalhado</span>
-      <div class="flex-1 h-px bg-dark-600"></div>
-    </div>
-
-    <!-- ===== MODULO 1.1 ===== -->
-    <div id="mod-1-1" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
-      <div class="p-6 border-b border-dark-600">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-emerald-400 font-bold">1.1</span>
-          <span class="text-xs text-neutral-500">~2h</span>
+    <!-- Module 1.1 Card -->
+    <div class="module-card bg-dark-800 rounded-2xl p-6 lg:p-8 mb-8 border border-dark-600">
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+            <span class="text-emerald-400 font-bold text-lg">1.1</span>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold">Mentalidade e Metodo de Vibe Coding</h2>
+            <p class="text-neutral-400">Fundamentos para construir com IA</p>
+          </div>
         </div>
-        <h3 class="text-2xl font-bold mb-2">🧠 Mentalidade e Metodo de Vibe Coding</h3>
-        <p class="text-neutral-400 text-sm">O que e Vibe Coding em 2026, como transformar ideias em software, escopo de produto, prompts estruturados e erros comuns.</p>
+        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold whitespace-nowrap">6 Topicos</span>
       </div>
-      <div class="divide-y divide-dark-600">
-        <!-- Topico 1 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">💡</span>
-            <div>
-              <span class="font-medium">O que e Vibe Coding em 2026</span>
-              <span class="text-neutral-500 text-sm ml-2">- Conceito de Karpathy, evolucao para Agentic Engineering</span>
-            </div>
+
+      <!-- Topics List -->
+      <ul class="space-y-2">
+
+        <!-- Topic 1 -->
+        <li>
+          <button onclick="toggleTopic('topic-1')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+            <span>O que e Vibe Coding em 2026</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Estilo de desenvolvimento onde voce descreve o que quer em linguagem natural e a IA escreve o codigo. Criado por Andrej Karpathy em fev 2025, evoluiu para Agentic Engineering em 2026.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">92% dos devs americanos ja usam IA diariamente. 41% do codigo global e gerado por IA. Entender o metodo e essencial pra nao ficar pra tras.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Vibe Coding nao e no-code. Voce guia, verifica e corrige. O ciclo e: descrever > gerar > verificar > corrigir. Em 2026 a tendencia e Vibe Shipping - foco em entregar produto, nao so gerar codigo.</p>
-              </div>
+          <div id="topic-1" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Vibe Coding e um termo cunhado por Andrej Karpathy para descrever a pratica de construir software conversando com IA. Em 2026, o conceito evoluiu para Agentic Engineering e Vibe Shipping, onde a IA nao apenas escreve codigo, mas planeja, executa e deploya sistemas inteiros.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> 92% dos desenvolvedores nos EUA ja usam IA no dia a dia e 41% do codigo global e gerado por IA. Quem nao dominar essa mentalidade vai ficar para tras. Vibe Coding nao e tendencia passageira, e a nova forma de construir software.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Karpathy e a origem do termo, evolucao de Prompt Engineering para Agentic Engineering, conceito de Vibe Shipping (da ideia ao deploy com IA), dados de adocao (92% devs, 41% codigo), ferramentas: Cursor, Claude Code, Copilot, Windsurf.</p>
             </div>
           </div>
-        </div>
-        <!-- Topico 2 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">🎯</span>
-            <div>
-              <span class="font-medium">Da Ideia ao Software</span>
-              <span class="text-neutral-500 text-sm ml-2">- Transformar problemas reais em produtos</span>
-            </div>
+        </li>
+
+        <!-- Topic 2 -->
+        <li>
+          <button onclick="toggleTopic('topic-2')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+            <span>Da Ideia ao Software</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Processo de identificar um problema real, definir quem sofre com ele e traduzir isso em funcionalidades que a IA consegue construir.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">A maioria dos projetos com IA falha por falta de escopo claro, nao por limitacao tecnica. Saber definir o problema e mais importante que saber programar.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Comece pelo problema, nao pela tecnologia. Defina: quem e o usuario? qual a dor? qual a solucao minima? Use o framework: Problema > Usuario > Solucao > MVP.</p>
-              </div>
+          <div id="topic-2" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> O pipeline completo que transforma uma ideia em software funcional: Problema > Usuario > Solucao > MVP. Cada etapa tem perguntas especificas que voce responde antes de escrever uma unica linha de codigo (ou prompt).</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A maioria dos projetos com IA falha nao por limitacao tecnica, mas por falta de clareza sobre o que construir. Definir bem o problema e o usuario antes de codar evita semanas de retrabalho.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Framework Problema > Usuario > Solucao > MVP, como validar uma ideia antes de construir, product-market fit basico, definicao de persona e dor principal, mapa de fluxo do usuario.</p>
             </div>
           </div>
-        </div>
-        <!-- Topico 3 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">📋</span>
-            <div>
-              <span class="font-medium">Escopo e Definicao de Produto</span>
-              <span class="text-neutral-500 text-sm ml-2">- MVP, fluxos e delimitacao</span>
-            </div>
+        </li>
+
+        <!-- Topic 3 -->
+        <li>
+          <button onclick="toggleTopic('topic-3')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+            <span>Escopo e Definicao de Produto</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">A pratica de delimitar exatamente o que o produto faz e o que nao faz. Definir fluxos principais, telas e interacoes antes de pedir pra IA construir.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Sem escopo claro, a IA gera codigo inconsistente. Com escopo definido, cada prompt produz resultado previsivel e aproveitavel.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">MVP = versao minima que resolve o problema. Fluxo principal = caminho feliz do usuario. Defina telas, acoes e dados antes de codificar.</p>
-              </div>
+          <div id="topic-3" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> A arte de definir o que entra e o que fica de fora do seu MVP. Inclui definicao de telas, fluxos de usuario, funcionalidades essenciais e limites claros do que a v1 vai entregar.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> Scope creep e o maior assassino de projetos. Com IA, e tentador adicionar mais e mais funcionalidades porque parece facil. Mas cada feature adicional multiplica a complexidade. Saber cortar e tao importante quanto saber construir.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> MVP (Minimum Viable Product), user flows, wireframes mentais, lista de telas da v1, o que NAO fazer (lista de exclusao), prioridade MoSCoW (Must/Should/Could/Won't), escopo como contrato consigo mesmo.</p>
             </div>
           </div>
-        </div>
-        <!-- Topico 4 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">✍️</span>
-            <div>
-              <span class="font-medium">Prompts Estruturados para Construcao</span>
-              <span class="text-neutral-500 text-sm ml-2">- Escrever prompts que geram codigo funcional</span>
-            </div>
+        </li>
+
+        <!-- Topic 4 -->
+        <li>
+          <button onclick="toggleTopic('topic-4')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
+            <span>Prompts Estruturados para Construcao</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Tecnica de escrever prompts com contexto, instrucao, restricoes e formato de saida definidos. Diferente de prompts conversacionais, estes sao prompts de construcao.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">A qualidade do codigo gerado depende diretamente da qualidade do prompt. Prompts vagos geram codigo vago. Prompts estruturados geram codigo utilizavel.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Estrutura: [Contexto] + [Instrucao] + [Restricoes] + [Formato]. Exemplo: "No projeto Next.js com Supabase, crie o componente de login com email/senha, use server actions, retorne erros no formulario."</p>
-              </div>
+          <div id="topic-4" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> O framework [Contexto + Instrucao + Restricao + Formato] para escrever prompts que geram codigo funcional, nao generico. Cada parte do prompt tem uma funcao especifica que maximiza a qualidade da saida da IA.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A diferenca entre um prompt vago e um prompt estruturado e a diferenca entre codigo que precisa de 10 iteracoes e codigo que funciona na primeira. Prompts bem escritos economizam horas de debug.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Framework CIRF (Contexto, Instrucao, Restricao, Formato), exemplos praticos de prompts para frontend, backend e deploy, como iterar prompts, chain-of-thought para problemas complexos, system prompts vs user prompts.</p>
             </div>
           </div>
-        </div>
-        <!-- Topico 5 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">⚠️</span>
-            <div>
-              <span class="font-medium">Erros Comuns em Projetos com IA</span>
-              <span class="text-neutral-500 text-sm ml-2">- Armadilhas e como evitar</span>
-            </div>
+        </li>
+
+        <!-- Topic 5 -->
+        <li>
+          <button onclick="toggleTopic('topic-5')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">5</span>
+            <span>Erros Comuns em Projetos com IA</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Os erros mais frequentes que devs cometem ao usar IA para construir software: aceitar codigo sem revisar, ignorar seguranca, escopo infinito, falta de testes.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">45% do codigo gerado por IA contem vulnerabilidades (CodeRabbit 2025). Conhecer as armadilhas antes de cair nelas economiza semanas de retrabalho.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Nunca aceite o primeiro draft. Use two-stage: gerar + revisar com IA. Sempre teste. Nao peca tudo de uma vez - quebre em pedacos pequenos e verificaveis.</p>
-              </div>
+          <div id="topic-5" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Os 5 erros fatais que destroem projetos construidos com IA: confiar cegamente no codigo gerado, ignorar seguranca, nao testar, escopo infinito e nao versionar. 45% do codigo gerado por IA contem vulnerabilidades se nao for revisado.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> A IA e uma ferramenta poderosa, mas nao e infalivel. Alucinacoes de codigo sao reais: a IA pode gerar funcoes que parecem corretas mas tem bugs sutis. Saber o que pode dar errado e a melhor forma de prevenir.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> 45% de vulnerabilidades em codigo IA (pesquisa Stanford), os 5 erros fatais, alucinacoes de codigo, over-reliance (dependencia excessiva), code review como habito obrigatorio, testes automatizados como rede de seguranca.</p>
             </div>
           </div>
-        </div>
-        <!-- Topico 6 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-            <span class="text-lg">🏗️</span>
-            <div>
-              <span class="font-medium">Exercicio: Definir seu SaaS</span>
-              <span class="text-neutral-500 text-sm ml-2">- Entrega pratica do turno</span>
-            </div>
+        </li>
+
+        <!-- Topic 6 -->
+        <li>
+          <button onclick="toggleTopic('topic-6')" class="w-full text-left px-4 py-3 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors font-medium text-neutral-300 flex items-center space-x-3">
+            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">6</span>
+            <span>Exercicio: Definir seu SaaS</span>
           </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Exercicio guiado para definir completamente o SaaS que sera construido na imersao: ideia, problema, usuario, fluxo principal e plano de construcao.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">E a base de tudo que vem depois. Sem essa definicao clara, os turnos seguintes nao produzem resultado coerente.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Entregaveis: 1) Ideia em uma frase, 2) Problema que resolve, 3) Usuario-alvo, 4) Fluxo principal (3-5 passos), 5) Plano de construcao (o que fazer em cada turno).</p>
-              </div>
+          <div id="topic-6" class="topic-content ml-9 mt-2 p-4 bg-emerald-900/10 rounded-lg border-l-4 border-emerald-500/50 space-y-3">
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">O que e:</strong> Exercicio pratico onde voce define seu produto SaaS: a frase do produto, o fluxo do usuario, as telas da v1, os limites do escopo e o plano de construcao.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Por que aprender:</strong> Teoria sem pratica nao constroi nada. Este exercicio transforma tudo que voce aprendeu nos topicos 1-5 em um plano concreto para o seu SaaS, que sera construido ao longo das trilhas seguintes.</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Conceitos-chave:</strong> Product sentence ("Um [tipo de app] que ajuda [usuario] a [resolver problema]"), user flow principal, lista de telas (max 5 para v1), lista de exclusao, cronograma de build com IA.</p>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-        <button onclick="openModal('modal-1-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
-          Ver em Modal
+        </li>
+
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-3 mt-6 pt-6 border-t border-dark-600 justify-start">
+        <button onclick="openModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          <span>Ver em Modal</span>
         </button>
-        <a href="modulo-1-1.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">
-          Ver Completo
+        <a href="modulo-1-1.html" class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <span>Ver Completo</span>
         </a>
       </div>
     </div>
 
-    <!-- ===== MODULO 1.2 ===== -->
-    <div id="mod-1-2" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
-      <div class="p-6 border-b border-dark-600">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-emerald-400 font-bold">1.2</span>
-          <span class="text-xs text-neutral-500">~2h</span>
-        </div>
-        <h3 class="text-2xl font-bold mb-2">🏛️ Arquitetura da Plataforma de Agentes</h3>
-        <p class="text-neutral-400 text-sm">Estrutura de pastas, configuracao de APIs, variaveis de ambiente, contexto de agentes e fluxo de execucao.</p>
-      </div>
-      <div class="divide-y divide-dark-600">
-        <!-- Topico 1 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
-            <span class="text-lg">📐</span>
-            <div>
-              <span class="font-medium">Arquitetura de Plataformas de Agentes</span>
-              <span class="text-neutral-500 text-sm ml-2">- Componentes fundamentais</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">A organizacao de uma plataforma de agentes com IA: app (interface), agents (logica), prompts (instrucoes), skills (capacidades), tools (ferramentas), memory (persistencia).</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Sem arquitetura clara, o projeto vira espaguete. Com ela, cada peca tem lugar definido e pode ser substituida ou escalada independentemente.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Separacao de concerns: agentes nao conhecem a UI, prompts nao conhecem o banco. Cada camada conversa com a proxima via interfaces claras.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Topico 2 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
-            <span class="text-lg">📁</span>
-            <div>
-              <span class="font-medium">Estrutura de Pastas Profissional</span>
-              <span class="text-neutral-500 text-sm ml-2">- Organizacao que escala</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Layout de diretorios padrao para projetos com agentes: app/, agents/, prompts/, skills/, tools/, memory/, workflows/, docs/.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">A IA gera codigo melhor quando a estrutura e clara e previsivel. Um projeto organizado tambem facilita onboarding de novos devs e manutencao futura.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">app/ = frontend e rotas. agents/ = logica dos agentes. prompts/ = system prompts e templates. skills/ = capacidades reutilizaveis. tools/ = integracoes externas.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Topico 3 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
-            <span class="text-lg">🔑</span>
-            <div>
-              <span class="font-medium">Configuracao de APIs e Variaveis</span>
-              <span class="text-neutral-500 text-sm ml-2">- .env, secrets, providers</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Como configurar chaves de API, tokens e variaveis de ambiente para conectar servicos externos (OpenAI, Anthropic, Supabase, Stripe).</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Uma config mal feita vaza secrets, quebra em producao ou nao funciona entre ambientes. E o tipo de erro que custa caro e e facil de prevenir.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">.env nunca vai pro git (.gitignore). Usar .env.example como template. Separar DEVELOPMENT, STAGING e PRODUCTION. Rotacionar keys regularmente.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Topico 4 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
-            <span class="text-lg">🧩</span>
-            <div>
-              <span class="font-medium">Contexto Global vs por Agente</span>
-              <span class="text-neutral-500 text-sm ml-2">- Quando compartilhar e isolar</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">A decisao de quais informacoes sao compartilhadas entre todos os agentes (contexto global) e quais sao privadas de cada agente (contexto local).</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Compartilhar tudo causa confusao e custo de tokens. Isolar tudo causa perda de contexto. O equilibrio certo e o que separa um sistema funcional de um caos.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Global: nome do usuario, plano, preferencias. Local: historico da conversa daquele agente, dados especificos da tarefa. Use memoria curta (sessao) vs longa (banco).</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Topico 5 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
-            <span class="text-lg">🔄</span>
-            <div>
-              <span class="font-medium">Fluxo Padrao de Execucao</span>
-              <span class="text-neutral-500 text-sm ml-2">- Entrada > Decisao > Execucao > Saida</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">O pipeline de processamento de um agente: recebe input, decide o que fazer (routing), executa a acao e retorna resultado formatado.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Todo agente segue esse fluxo. Entender ele permite debugar qualquer problema: a entrada esta errada? a decisao foi errada? a execucao falhou?</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">1) Entrada: texto, arquivo, webhook. 2) Decisao: classificar intencao, escolher agente/tool. 3) Execucao: chamar LLM, API ou tool. 4) Saida: formatar e retornar.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Topico 6 -->
-        <div class="topic-item">
-          <button onclick="toggleTopic(this)" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left">
-            <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
-            <span class="text-lg">🛠️</span>
-            <div>
-              <span class="font-medium">Exercicio: Criar Estrutura Base</span>
-              <span class="text-neutral-500 text-sm ml-2">- Entrega pratica do turno</span>
-            </div>
-          </button>
-          <div class="topic-explanation px-6 pb-4">
-            <div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
-              <div>
-                <span class="text-emerald-400 font-semibold">O que e:</span>
-                <p class="text-neutral-300 text-sm">Montar o projeto do SaaS com toda a estrutura de pastas, .env configurado, APIs conectadas e primeiro fluxo de execucao rodando.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Por que aprender:</span>
-                <p class="text-neutral-300 text-sm">Sair do turno com o esqueleto do projeto pronto significa que no Dia 2 voce so vai adicionar carne nos ossos, sem perder tempo com config.</p>
-              </div>
-              <div>
-                <span class="text-emerald-400 font-semibold">Conceitos-chave:</span>
-                <p class="text-neutral-300 text-sm">Entregaveis: 1) Repo criado com estrutura padrao, 2) .env com todas as keys, 3) API de teste respondendo, 4) Primeiro agente rodando (hello world).</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
-        <button onclick="openModal('modal-1-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">
-          Ver em Modal
-        </button>
-        <a href="modulo-1-2.html" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors">
-          Ver Completo
-        </a>
-      </div>
-    </div>
-
-    <!-- NAVEGACAO INFERIOR -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-12">
-      <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
-        ← Voltar ao Inicio
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between items-center mt-12">
+      <a href="../../index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span>Inicio</span>
       </a>
-      <a href="#" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors opacity-60 cursor-not-allowed">
-        Proxima: Dia 2 →
+      <a href="../trilha2/index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-lg transition-colors">
+        <span>Proxima Trilha</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </a>
     </div>
 
   </main>
 
-  <!-- MODAIS -->
-  <div id="modal-1-1" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
-    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-        <div class="flex items-center space-x-3">
-          <span class="text-emerald-400 font-bold">1.1</span>
-          <span class="font-semibold">Mentalidade e Metodo de Vibe Coding</span>
-        </div>
-        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
+  <!-- MODAL -->
+  <div id="module-modal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="text-lg font-bold text-neutral-100">Modulo 1.1 - Mentalidade e Metodo</h2>
+        <span class="close-btn" onclick="closeModal()">&times;</span>
       </div>
-      <iframe src="modulo-1-1.html" class="flex-1 w-full rounded-b-xl"></iframe>
-    </div>
-  </div>
-  <div id="modal-1-2" class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target === this) closeModal()">
-    <div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600">
-      <div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0">
-        <div class="flex items-center space-x-3">
-          <span class="text-emerald-400 font-bold">1.2</span>
-          <span class="font-semibold">Arquitetura da Plataforma de Agentes</span>
-        </div>
-        <button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button>
-      </div>
-      <iframe src="modulo-1-2.html" class="flex-1 w-full rounded-b-xl"></iframe>
+      <iframe id="modal-iframe" src="" style="width:100%; height:calc(90vh - 60px); border:none;"></iframe>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer class="border-t border-dark-600 py-8 mt-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+      <p>Imersao Vibe Coding - Trilha 1: Mentalidade e Metodo - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
     </div>
   </footer>
 
   <!-- SCRIPTS -->
   <script>
-    function toggleTopic(button) {
-      const topicItem = button.closest('.topic-item');
-      const explanation = topicItem.querySelector('.topic-explanation');
-      const moduleCard = button.closest('.bg-dark-800');
-      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
-        if (exp !== explanation) {
-          exp.classList.remove('active');
-        }
-      });
-      explanation.classList.toggle('active');
-    }
-
-    function openModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+    // Toggle Topic
+    function toggleTopic(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.toggle('open');
       }
     }
 
-    function closeModal() {
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.classList.add('hidden');
-      });
-      document.body.style.overflow = 'auto';
+    // Modal
+    function openModal() {
+      const modal = document.getElementById('module-modal');
+      const iframe = document.getElementById('modal-iframe');
+      iframe.src = 'modulo-1-1.html';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+    function closeModal(event) {
+      if (event && event.target !== event.currentTarget && event.target.className !== 'close-btn') return;
+      const modal = document.getElementById('module-modal');
+      const iframe = document.getElementById('modal-iframe');
+      modal.classList.remove('active');
+      iframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('module-modal');
+        if (modal.classList.contains('active')) {
+          modal.classList.remove('active');
+          document.getElementById('modal-iframe').src = '';
+          document.body.style.overflow = '';
+        }
+      }
     });
 
+    // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');

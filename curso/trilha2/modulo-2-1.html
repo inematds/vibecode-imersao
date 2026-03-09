@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 2.1 - Arquitetura da Plataforma de Agentes | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-400 bg-blue-500/10">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm4 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-.464 4.95.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 1.414-1.414ZM17 11h-1a1 1 0 1 1 0-2h1a1 1 0 1 1 0 2ZM4 10a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1Zm.636 4.95a1 1 0 0 1 0 1.414l-.707.707A1 1 0 0 1 2.515 15.657l.707-.707a1 1 0 0 1 1.414 0ZM10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM5.05 4.636a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 0 1 4.343 2.515l.707.707a1 1 0 0 1 0 1.414ZM14.95 4.636a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0Z"/>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- BREADCRUMB -->
+    <div class="text-sm text-neutral-400 mb-6">
+      <a href="../../index.html" class="hover:text-neutral-200">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="index.html" class="hover:text-blue-400">Trilha 2</a>
+      <span class="mx-2">/</span>
+      <span class="text-blue-400">Modulo 2.1</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8 sm:p-10 mb-12">
+      <div class="inline-flex items-center rounded-full bg-blue-500/20 text-blue-400 px-4 py-1.5 text-sm font-semibold mb-4">MODULO 2.1</div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4">🏗️ Arquitetura da Plataforma de Agentes</h1>
+      <p class="text-lg text-neutral-300 max-w-3xl mb-8">Neste modulo voce vai entender como organizar uma plataforma de agentes de IA desde o primeiro arquivo. Da estrutura de pastas ao fluxo de execucao, cada decisao arquitetural tomada aqui define se o projeto vai escalar ou colapsar.</p>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">6</div><div class="text-sm text-neutral-400">Topicos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">45</div><div class="text-sm text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Basico</div><div class="text-sm text-neutral-400">Nivel</div></div>
+        <div class="bg-dark-700 rounded-2xl p-4 border border-dark-600"><div class="text-2xl font-bold">Teoria+Pratica</div><div class="text-sm text-neutral-400">Tipo</div></div>
+      </div>
+    </header>
+
+    <!-- TOPICO 1 -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">1</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🏛️ Arquitetura de Plataformas de Agentes</h2>
+          <p class="text-neutral-300">A arquitetura de uma plataforma de agentes nao e um diagrama bonito num slide. E a decisao que define quantos agentes o sistema suporta, como eles se comunicam, e se a plataforma sobrevive quando voce precisa trocar de provedor de IA as 3h da manha porque a API caiu.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">Uma plataforma de agentes profissional se organiza em camadas com responsabilidades claras. A camada de entrada (app/) recebe requests de diferentes canais: Telegram, API REST, webhooks. A camada de decisao (agents/) contem a logica de cada agente e sua capacidade de raciocinio. A camada de ferramentas (tools/) oferece acoes atomicas que os agentes podem chamar. A camada de instrucoes (prompts/) armazena system prompts versionados e templates. A camada de habilidades (skills/) compoe multiplas tools em capacidades complexas. E a camada de estado (memory/) persiste tudo que precisa sobreviver entre execucoes.</p>
+          <p class="text-neutral-300 mt-3">O modelo event-driven e a cola entre essas camadas. Em vez de chamadas diretas e acopladas, cada componente emite e escuta eventos. Quando um usuario envia uma mensagem, o sistema emite um evento "message.received". O roteador escuta esse evento, classifica a intencao e emite "agent.selected". O agente processa e emite "response.ready". Esse desacoplamento permite adicionar novos agentes, trocar provedores ou adicionar logging sem mexer no codigo existente.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Plataformas event-driven como Kafka processam mais de 10 milhoes de mensagens por segundo em producao. A arquitetura A-tier (application tier) usada por Netflix, Uber e Stripe segue o mesmo principio: separar a camada de aplicacao da camada de dados e da camada de apresentacao. Em plataformas multi-tenant, o isolamento entre clientes nao e opcional. Um bug no agente de um cliente nao pode derrubar ou contaminar o agente de outro.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Comece com a estrutura mais simples que funcione, mas com os limites de responsabilidade ja definidos. Um arquivo router.ts que sabe para qual agente enviar, um arquivo por agente em agents/, e um arquivo por tool em tools/. Voce nao precisa de Kafka no dia um, mas precisa que cada peca saiba exatamente o que ela faz e o que ela nao faz.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Separar responsabilidades desde o primeiro commit. Cada camada em seu diretorio, cada agente em seu arquivo, cada tool com uma unica funcao. Documentar as fronteiras entre camadas.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Colocar tudo num unico arquivo "bot.js" de 3000 linhas. Misturar logica de roteamento com logica de agente. Fazer um agente chamar outro diretamente sem passar pelo orquestrador.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 2 -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">2</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">📂 Estrutura de Pastas Profissional</h2>
+          <p class="text-neutral-300">A estrutura de pastas nao e estetica. E a primeira decisao de arquitetura. Ela define como o time navega o codigo, como novas features sao adicionadas e como o sistema cresce sem perder coerencia.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">A estrutura de referencia para uma plataforma de agentes segue o principio de separacao por dominio funcional, nao por tipo de arquivo. Em vez de ter uma pasta "controllers/", outra "models/" e outra "services/" (que nao dizem nada sobre o que o sistema faz), voce organiza por responsabilidade:</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>projeto/
+├── app/              # Entrada: servidor, rotas, middleware
+│   ├── server.ts
+│   ├── router.ts
+│   └── middleware/
+├── agents/           # Logica de cada agente
+│   ├── claude.ts
+│   ├── ollama.ts
+│   └── openrouter.ts
+├── prompts/          # System prompts e templates
+│   ├── global.md
+│   └── agents/
+├── skills/           # Capacidades compostas
+│   ├── gmail.ts
+│   └── calendar.ts
+├── tools/            # Acoes atomicas
+│   ├── web-search.ts
+│   ├── file-read.ts
+│   └── db-query.ts
+├── memory/           # Persistencia de estado
+│   ├── store.ts
+│   └── migrations/
+├── config/           # Configuracao centralizada
+│   ├── env.ts
+│   └── providers.ts
+├── .env
+├── .env.example
+└── .gitignore</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">Estudos de produtividade em grandes codebases mostram que desenvolvedores gastam 60% do tempo lendo e navegando codigo, nao escrevendo. Uma estrutura previsivel reduz esse tempo drasticamente. O padrao de monorepo usado por Google, Meta e Microsoft mantem todo o codigo num unico repositorio com fronteiras internas claras. Feature folders (agrupar por funcionalidade em vez de por tipo) e o padrao recomendado por Angular, Next.js e a maioria dos frameworks modernos.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Use barrel exports (index.ts em cada pasta) para controlar o que cada modulo expoe. Se agents/index.ts exporta apenas createAgent() e listAgents(), o resto do sistema nao precisa saber dos detalhes internos de cada agente. Isso permite refatorar a implementacao interna sem quebrar nada de fora.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar a estrutura completa antes de escrever a primeira linha de logica. Adicionar README curto em cada pasta explicando sua responsabilidade. Usar nomes descritivos: agents/claude.ts, nao agents/a1.ts.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Criar pastas "utils/", "helpers/" ou "misc/" que viram lixeira. Ter mais de 10 arquivos numa unica pasta sem subpastas. Nomear arquivos com abreviacoes que so voce entende.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 3 -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">3</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🔑 Configuracao de APIs e Variaveis</h2>
+          <p class="text-neutral-300">Uma plataforma de agentes conversa com o mundo externo o tempo todo. Cada conversa precisa de credenciais, endpoints e configuracoes que mudam entre ambientes. Gerenciar isso de forma profissional e a diferenca entre dormir tranquilo e acordar com uma fatura de $50.000 porque sua chave vazou.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O padrao profissional de configuracao usa tres camadas. A primeira e o arquivo .env na raiz do projeto, que contem as variaveis de ambiente locais e nunca entra no git. A segunda e o arquivo .env.example, que contem as mesmas variaveis mas com valores placeholder, servindo de documentacao viva. A terceira e um modulo config/ que carrega, valida e exporta as configuracoes de forma tipada:</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// config/env.ts
+import { config } from 'dotenv';
+config();
+
+export const env = {
+  // Provedores de IA
+  OPENAI_API_KEY: requireEnv('OPENAI_API_KEY'),
+  ANTHROPIC_API_KEY: requireEnv('ANTHROPIC_API_KEY'),
+  GOOGLE_API_KEY: getEnv('GOOGLE_API_KEY', ''),
+
+  // Telegram
+  TELEGRAM_TOKEN: requireEnv('TELEGRAM_TOKEN'),
+  ALLOWED_CHAT_ID: requireEnv('ALLOWED_CHAT_ID'),
+
+  // Server
+  PORT: getEnv('PORT', '3000'),
+  NODE_ENV: getEnv('NODE_ENV', 'development'),
+};
+
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing: ${key}`);
+  return value;
+}
+
+function getEnv(key: string, fallback: string): string {
+  return process.env[key] || fallback;
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">GitHub reporta que mais de 2 milhoes de secrets sao detectados em repositorios publicos por ano. A rotacao de chaves (trocar a chave periodicamente e invalidar a anterior) e pratica padrao em empresas serias. Para producao, servicos como AWS Secrets Manager, Google Secret Manager ou Vault substituem o .env por um armazenamento criptografado e auditavel. A provider abstraction (uma camada que abstrai qual provedor de IA esta sendo usado) permite trocar entre OpenAI, Anthropic e Google mudando apenas uma variavel de ambiente.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Sempre valide todas as variaveis obrigatorias na inicializacao do sistema. Se OPENAI_API_KEY nao esta definida, o sistema deve falhar imediatamente com mensagem clara, nao 20 minutos depois quando alguem tenta usar o agente. Adicione ao .gitignore: .env, *.pem, credentials.json, e qualquer arquivo que tenha "secret" ou "key" no nome.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar .env.example com todos os campos documentados. Validar variaveis no startup. Usar nomes descritivos: OPENAI_API_KEY, nao KEY1. Ter fallbacks sensiveis para variaveis opcionais.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Hardcodar chaves no codigo. Commitar .env no repositorio. Usar a mesma chave de API em desenvolvimento e producao. Ignorar limites de rate limiting dos provedores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 4 -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">4</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🧠 Contexto Global vs por Agente</h2>
+          <p class="text-neutral-300">Em uma plataforma com multiplos agentes, nem todo agente precisa saber tudo. Um agente de pesquisa nao precisa das regras de formatacao de email. Um agente de comunicacao nao precisa dos detalhes tecnicos de deploy. A hierarquia de contexto define o que cada agente sabe e o que e compartilhado entre todos.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O sistema de contexto funciona como uma hierarquia de heranca. No topo esta o contexto global: identidade da plataforma, regras de seguranca, formato de resposta padrao, e restricoes que valem para todos os agentes. Esse contexto normalmente fica em um arquivo como CLAUDE.md ou system-prompt.md na raiz do projeto.</p>
+          <p class="text-neutral-300 mt-3">No segundo nivel esta o contexto por agente: dominio de atuacao, tom de voz especifico, ferramentas disponiveis e restricoes locais. Cada agente tem seu arquivo de configuracao (agents/research.yaml, agents/comms.yaml) que define essas instrucoes especificas.</p>
+          <p class="text-neutral-300 mt-3">No terceiro nivel esta o contexto por sessao: historico da conversa atual, preferencias do usuario detectadas durante a interacao, e estado temporario. Esse contexto existe apenas durante a execucao e nao persiste entre sessoes (a menos que explicitamente salvo em memory/).</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Hierarquia de contexto
+const context = {
+  global: loadFile('prompts/global.md'),     // Regras da plataforma
+  agent:  loadFile('prompts/agents/research.md'), // Instrucoes especificas
+  session: getSessionHistory(chatId),         // Historico da conversa
+  user:   getUserPreferences(userId),         // Preferencias do usuario
+};
+
+// O system prompt final e a composicao das camadas
+const systemPrompt = [
+  context.global,
+  context.agent,
+  context.user,
+].join('\n\n');</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">A janela de contexto dos modelos atuais varia de 8K a 200K tokens. Cada token de contexto adicional custa dinheiro e tempo de processamento. Pesquisas mostram que modelos perdem qualidade com contexto excessivo (fenomeno "lost in the middle" documentado por pesquisadores de Stanford). Plataformas de agentes bem projetadas mantendo o contexto enxuto e relevante geram respostas melhores e mais baratas do que as que despejam toda informacao disponivel no prompt.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">A regra de ouro: se uma instrucao vale para todos os agentes, coloque no global. Se vale so para um agente, coloque no arquivo daquele agente. Se vale so para aquela sessao, monte dinamicamente. Nunca repita a mesma instrucao em multiplos arquivos de agente. Centralize, depois especialize.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Criar um prompt global com regras de seguranca e identidade. Criar prompts por agente com dominio e ferramentas. Compor o contexto final em runtime concatenando as camadas relevantes.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Dar o contexto inteiro da plataforma para todos os agentes. Copiar e colar instrucoes entre arquivos de agentes diferentes. Deixar o historico de sessao crescer indefinidamente sem compactacao.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 5 -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">5</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">⚡ Fluxo Padrao de Execucao</h2>
+          <p class="text-neutral-300">Todo request que entra na plataforma precisa seguir um caminho previsivel. Da mensagem do usuario ate a resposta final, cada etapa tem um papel claro. Sem isso, bugs aparecem em lugares inesperados e diagnosticar problemas vira adivinhacao.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O pipeline padrao de execucao tem quatro fases:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">1. Entrada:</strong> O sistema recebe a mensagem (Telegram, API, webhook), valida o formato, autentica o usuario, e registra o inicio do request com um ID unico para rastreabilidade.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">2. Decisao:</strong> O roteador analisa a mensagem e decide qual agente deve processar. Isso pode ser baseado em comandos explicitos (/claude, /ollama), classificacao por IA, ou regras fixas. O contexto relevante e montado nesta fase.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">3. Execucao:</strong> O agente selecionado recebe a mensagem e o contexto, processa usando o provedor de IA correspondente, pode chamar tools durante o processo, e gera uma resposta. Se o provedor falha, o sistema tenta um fallback.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">4. Saida:</strong> A resposta e formatada para o canal de origem, metricas sao registradas (tokens usados, tempo de resposta, custo), o historico e atualizado, e a resposta e enviada ao usuario.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre>// Fluxo simplificado
+async function handleMessage(msg) {
+  const requestId = generateId();
+  log.info({ requestId, user: msg.from }, 'request.start');
+
+  try {
+    // 1. Entrada: validar e autenticar
+    validateMessage(msg);
+    authenticate(msg.from.id);
+
+    // 2. Decisao: rotear para agente
+    const agent = router.selectAgent(msg.text);
+    const context = await buildContext(msg, agent);
+
+    // 3. Execucao: processar com fallback
+    const response = await executeWithFallback(
+      () => agent.process(msg.text, context),
+      () => fallbackAgent.process(msg.text, context)
+    );
+
+    // 4. Saida: formatar, registrar, enviar
+    await trackUsage(requestId, response.usage);
+    await saveHistory(msg.chat.id, msg.text, response.text);
+    await sendResponse(msg.chat.id, response.text);
+
+    log.info({ requestId, tokens: response.usage }, 'request.done');
+  } catch (error) {
+    log.error({ requestId, error }, 'request.failed');
+    await sendResponse(msg.chat.id, 'Erro no processamento.');
+  }
+}</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dados e Pesquisa</h3>
+          <p class="text-neutral-300">O padrao de middleware (usado por Express, Koa, Fastify) e a forma mais testada de implementar pipelines de processamento. Cada middleware adiciona uma responsabilidade (auth, logging, rate limiting) sem que os outros precisem saber. O circuit breaker pattern (popularizado pelo livro "Release It!" de Michael Nygard) impede que falhas em cascata derrubem o sistema inteiro: se um provedor de IA falha 5 vezes seguidas, o circuito "abre" e redireciona para o fallback automaticamente.</p>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Implemente retry com exponential backoff: espere 1s na primeira falha, 2s na segunda, 4s na terceira, e desista apos 3 tentativas. Para producao, adicione um timeout global (60 segundos e um bom padrao) para garantir que requests travados nao acumulem e derrubem o servidor. Sempre registre o tempo total de cada request para identificar gargalos.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Fazer</h3>
+            <p class="text-neutral-300">Definir o pipeline antes de implementar features. Ter error handling em cada etapa. Registrar metricas de tempo e tokens. Ter fallback para pelo menos o provedor principal.</p>
+          </div>
+          <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+            <h3 class="text-lg font-semibold mb-2">Evitar</h3>
+            <p class="text-neutral-300">Tratar erro com catch vazio que engole a excecao. Nao ter timeout em chamadas de API externas. Deixar o sistema travar silenciosamente quando o provedor nao responde.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICO 6 -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-start gap-4 mb-6">
+        <span class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 text-lg font-bold flex items-center justify-center flex-shrink-0">6</span>
+        <div>
+          <h2 class="text-2xl font-bold mb-2">🛠️ Exercicio: Criar Estrutura Base</h2>
+          <p class="text-neutral-300">Hora de sair da teoria. Neste exercicio voce vai criar o repositorio, montar a estrutura de pastas, configurar as variaveis de ambiente e construir o esqueleto do primeiro agente. Ao final, voce tera a base funcional que vai receber tudo das proximas trilhas.</p>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-5">
+          <h3 class="text-xl font-bold mb-2">Conceito Principal</h3>
+          <p class="text-neutral-300">O exercicio cobre 5 passos concretos:</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 1 - Inicializar o repositorio:</strong> git init, npm init, instalar dependencias base (dotenv, typescript).</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 2 - Criar a estrutura de pastas:</strong> Criar todos os diretorios (app/, agents/, prompts/, skills/, tools/, memory/, config/) com seus index files.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 3 - Configurar .env:</strong> Criar .env com as chaves de pelo menos um provedor, .env.example como documentacao, e .gitignore para proteger os secrets.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 4 - Modulo de configuracao:</strong> Criar config/env.ts que carrega, valida e exporta as variaveis de ambiente de forma tipada.</p>
+          <p class="text-neutral-300 mt-3"><strong class="text-blue-400">Passo 5 - Esqueleto do primeiro agente:</strong> Criar agents/simple.ts com a interface basica: recebe mensagem, chama provedor de IA, retorna resposta. Testar com um script simples.</p>
+          <div class="bg-dark-900 rounded-xl p-4 mt-3 font-mono text-sm text-neutral-300 overflow-x-auto">
+            <pre># Passo 1: Inicializar
+mkdir meu-saas-agentes && cd meu-saas-agentes
+git init
+npm init -y
+npm install dotenv typescript @types/node
+npx tsc --init
+
+# Passo 2: Criar estrutura
+mkdir -p app agents prompts/agents skills tools memory config
+touch app/server.ts app/router.ts
+touch agents/simple.ts agents/index.ts
+touch prompts/global.md
+touch tools/index.ts skills/index.ts
+touch memory/store.ts
+touch config/env.ts
+
+# Passo 3: Configurar
+echo "OPENAI_API_KEY=sk-sua-chave" > .env
+echo "OPENAI_API_KEY=sk-xxx" > .env.example
+echo -e ".env\nnode_modules/\ndist/" > .gitignore
+
+# Passo 4: Primeiro commit
+git add .
+git commit -m "feat: scaffold inicial da plataforma"</pre>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-primary/40 bg-primary/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Dica Pratica</h3>
+          <p class="text-neutral-300">Nao pule nenhum passo. A tentacao e ir direto para o codigo do agente e "ver funcionando". Mas se a estrutura nao estiver certa agora, voce vai pagar o preco nas proximas trilhas quando precisar adicionar autenticacao, dashboard, multiplos agentes e deploy. Invista 15 minutos na base e economize horas de refactoring depois.</p>
+        </div>
+        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-5">
+          <h3 class="text-lg font-semibold mb-2">Entregavel</h3>
+          <p class="text-neutral-300">Repositorio git com a estrutura completa de pastas, .env configurado, .gitignore protegendo secrets, modulo de configuracao validando variaveis, e um agente simples que recebe texto e retorna resposta de um provedor de IA. Tudo rodando com um npm start.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUMO FINAL -->
+    <section class="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-blue-900/30 to-dark-800 p-8">
+      <h2 class="text-2xl font-bold mb-4">Resumo Final</h2>
+      <div class="space-y-3 text-neutral-300 mb-8">
+        <p>&#10003; Entendeu a arquitetura event-driven com camadas funcionais separadas.</p>
+        <p>&#10003; Montou a estrutura de pastas profissional com separacao por dominio.</p>
+        <p>&#10003; Configurou APIs e variaveis de ambiente com seguranca e validacao.</p>
+        <p>&#10003; Aprendeu a hierarquia de contexto: global, por agente e por sessao.</p>
+        <p>&#10003; Entendeu o pipeline padrao: entrada, decisao, execucao, saida.</p>
+        <p>&#10003; Criou a estrutura base do projeto com agente funcional.</p>
+      </div>
+      <div class="flex justify-start space-x-3">
+        <a href="index.html" class="px-5 py-3 rounded-xl bg-dark-700 border border-dark-600 text-neutral-200 font-semibold hover:bg-dark-600 transition-colors">Voltar para Trilha</a>
+        <a href="../trilha3/index.html" class="px-5 py-3 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 font-semibold hover:bg-blue-500/30 transition-colors">Proxima Trilha</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
