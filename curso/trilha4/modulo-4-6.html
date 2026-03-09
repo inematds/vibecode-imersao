@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.6 - Memoria e Handoff entre Agentes | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.6</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.6</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">Memoria e Handoff entre Agentes</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">Tipos de memoria, persistencia pratica, passagem de contexto entre agentes e isolamento multi-tenant para SaaS.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~50</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Avanc</div>
+          <div class="text-xs text-neutral-400">Avancado</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">T+P</div>
+          <div class="text-xs text-neutral-400">Teoria+Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: Tipos de Memoria -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">Tipos de Memoria: Curta, Longa, Episodica, Semantica</h2>
+          <p class="text-neutral-400 text-sm mt-1">Entenda cada tipo, quando usar, e como eles se complementam num agente de producao</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Memoria e o que separa um chatbot descartavel de um assistente que realmente conhece o usuario. Sem memoria, cada conversa comeca do zero. O usuario repete preferencias, contexto se perde, e o agente nunca evolui. Um sistema de memoria bem desenhado transforma a experiencia de "falar com uma maquina" para <strong class="text-amber-400">"falar com alguem que te conhece"</strong>.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem quatro tipos fundamentais de memoria para agentes de IA, cada um servindo um proposito diferente. A chave e entender <strong class="text-amber-400">quando usar cada um</strong> e como combiná-los para criar agentes que aprendem e se adaptam com o tempo.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Os 4 Tipos de Memoria
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Short-term</div>
+            <p class="text-neutral-400 text-sm">Context window do LLM. Dura uma sessao. Inclui as mensagens da conversa atual. Volatil: some ao encerrar.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Long-term</div>
+            <p class="text-neutral-400 text-sm">Persiste entre sessoes. Preferencias do usuario, configuracoes, historico de decisoes. Armazenada em banco de dados.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Episodica</div>
+            <p class="text-neutral-400 text-sm">Eventos passados especificos: "na terça o usuario pediu relatorio em PDF e preferiu formato paisagem". Fatos pontuais recuperaveis.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Semantica</div>
+            <p class="text-neutral-400 text-sm">Conhecimento geral acumulado: "usuario trabalha com marketing, usa Next.js, prefere tom tecnico". Perfil que evolui.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Comparacao Detalhada</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Tipo</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Duracao</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Storage</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Exemplo</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Short-term</td>
+                  <td class="py-2">1 sessao</td>
+                  <td class="py-2">Context window</td>
+                  <td class="py-2">"Estamos falando sobre o modulo de pagamentos"</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Long-term</td>
+                  <td class="py-2">Indefinida</td>
+                  <td class="py-2">DB / arquivo</td>
+                  <td class="py-2">"Usuario prefere respostas curtas e diretas"</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Episodica</td>
+                  <td class="py-2">Indefinida</td>
+                  <td class="py-2">DB com timestamp</td>
+                  <td class="py-2">"Em 05/03 usuario mudou stack de React para Svelte"</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium text-amber-400">Semantica</td>
+                  <td class="py-2">Indefinida</td>
+                  <td class="py-2">Vector store / DB</td>
+                  <td class="py-2">"Usuario e dev fullstack com foco em SaaS B2B"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Quando Usar Cada Tipo</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Short-term: Toda conversa</p>
+                <p class="text-neutral-400 text-sm">E automatica: as mensagens na context window sao a short-term memory. O desafio e quando a conversa fica grande demais e voce precisa comprimir ou sumarizar (veremos no topico 5).</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Long-term: Preferencias e configuracoes</p>
+                <p class="text-neutral-400 text-sm">Use para tudo que o usuario so deveria dizer uma vez: idioma preferido, formato de resposta, timezone, stack tecnologica, nome do projeto. Persiste entre sessoes, carregado no system prompt.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Episodica: Fatos com data e contexto</p>
+                <p class="text-neutral-400 text-sm">Para eventos que tem relevancia temporal: "deploy falhou em 03/03", "usuario cancelou feature X na sprint passada". Util para agentes que precisam de historico de acoes.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Semantica: Knowledge base do usuario</p>
+                <p class="text-neutral-400 text-sm">Para busca por similaridade: "o que esse usuario sabe sobre Docker?" ou "quais decisoes de arquitetura ja foram tomadas?". Embeddings + vector store brilham aqui.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Nao tente implementar os 4 tipos de uma vez. Comece com short-term (ja vem gratis) + long-term (um JSON ou tabela SQLite com preferencias). Adicione episodica quando precisar de historico, e semantica quando o volume de conhecimento justificar embeddings.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Mapear quais informacoes seu agente precisa lembrar entre sessoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Categorizar memorias por tipo para facilitar retrieval</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com cenarios reais: usuario volta 3 dias depois, o agente lembra?</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Guardar tudo indiscriminadamente (vira ruido que prejudica o agente)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confundir short-term com long-term (sessao vs persistente)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Injetar toda a memoria no prompt sem curadoria (estoura context)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: Implementacoes Praticas de Memoria -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">Implementacoes Praticas de Memoria</h2>
+          <p class="text-neutral-400 text-sm mt-1">SQLite, vector stores, markdown files - escolha a ferramenta certa pro seu caso</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          A teoria dos 4 tipos de memoria e util, mas o que importa e como voce implementa na pratica. A boa noticia: voce nao precisa de infraestrutura complexa. Um <strong class="text-amber-400">arquivo SQLite</strong> resolve 80% dos casos. Para busca semantica, <strong class="text-amber-400">pgvector</strong> ou <strong class="text-amber-400">Pinecone</strong> adicionam similaridade sem muita complexidade. E para agentes pessoais, um simples <strong class="text-amber-400">arquivo markdown</strong> (como CLAUDE.md) pode ser suficiente.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">SQLite para Memoria Estruturada</h3>
+          <p class="text-neutral-300 text-sm mb-4">A abordagem mais pratica e robusta para comecar. Zero infraestrutura, um unico arquivo, queries SQL poderosas.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>-- Tabela de memorias com tipos e relevancia
+CREATE TABLE memories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id TEXT NOT NULL,
+  content TEXT NOT NULL,
+  memory_type TEXT NOT NULL,  -- 'preference', 'episodic', 'semantic'
+  salience REAL DEFAULT 1.0,  -- 0.0 a 5.0 (maior = mais relevante)
+  created_at INTEGER NOT NULL,
+  accessed_at INTEGER NOT NULL,
+  access_count INTEGER DEFAULT 0
+);
+
+-- Indice para busca rapida por tenant + tipo
+CREATE INDEX idx_memories_tenant_type
+  ON memories(tenant_id, memory_type);
+
+-- Inserir uma memoria
+INSERT INTO memories (tenant_id, content, memory_type, salience,
+  created_at, accessed_at)
+VALUES ('user_123', 'Prefere respostas em portugues',
+  'preference', 4.0, unixepoch(), unixepoch());
+
+-- Buscar memorias mais relevantes do usuario
+SELECT content, memory_type, salience FROM memories
+WHERE tenant_id = 'user_123'
+ORDER BY salience DESC, accessed_at DESC
+LIMIT 20;</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O campo <code class="text-amber-400 bg-dark-700 px-1 rounded">salience</code> e fundamental: nem toda memoria tem o mesmo peso. "Usuario se chama Carlos" tem salience 5.0, enquanto "usuario mencionou que estava chovendo" tem salience 0.5. Isso permite carregar apenas o que importa no prompt.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Vector Stores para Busca Semantica</h3>
+          <p class="text-neutral-300 text-sm mb-4">Quando voce tem centenas de memorias e precisa encontrar as relevantes sem query exata. A busca e por significado, nao por keyword.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">pgvector</div>
+              <p class="text-neutral-400 text-xs">Extensao PostgreSQL. Roda no mesmo banco. Sem infraestrutura extra. Ideal para quem ja usa Postgres. Supabase inclui nativamente.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Pinecone</div>
+              <p class="text-neutral-400 text-xs">Managed service. Escala automaticamente. Free tier generoso. Boa DX com SDK TypeScript. Nao precisa gerenciar infra.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Chroma</div>
+              <p class="text-neutral-400 text-xs">Open-source, roda local. Bom para prototipacao e agentes pessoais. Sem custo. API simples em Python e JS.</p>
+            </div>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Exemplo com pgvector (via Supabase)
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(url, key)
+
+// Gerar embedding do texto
+const embedding = await openai.embeddings.create({
+  model: 'text-embedding-3-small',
+  input: 'Usuario prefere formato JSON para relatorios'
+})
+
+// Salvar memoria com embedding
+await supabase.from('memories').insert({
+  tenant_id: 'user_123',
+  content: 'Usuario prefere formato JSON para relatorios',
+  embedding: embedding.data[0].embedding,
+  memory_type: 'preference'
+})
+
+// Buscar memorias semanticamente similares
+const { data } = await supabase.rpc('match_memories', {
+  query_embedding: queryEmbedding,
+  match_threshold: 0.7,
+  match_count: 10,
+  filter_tenant: 'user_123'
+})</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Markdown Files para Agentes Pessoais</h3>
+          <p class="text-neutral-300 text-sm mb-3">A abordagem mais simples possivel. O Claude Code usa exatamente isso com CLAUDE.md e MEMORY.md. Zero infra, versionavel com git, legivel por humanos.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre># MEMORY.md - Memoria do Agente
+
+## Preferencias do Usuario
+- Idioma: portugues (Brasil)
+- Tom: tecnico mas acessivel
+- Formato preferido: exemplos de codigo antes de teoria
+
+## Projetos Ativos
+- SaaS de analytics: Next.js + Supabase, em producao
+- Bot Telegram: TypeScript, multi-agente, em dev
+
+## Decisoes Tomadas
+- 2026-03-05: Escolheu SQLite para memoria (simplicidade)
+- 2026-03-07: Migrou router de regras para LLM classifier
+- 2026-03-09: Adicionou Codex como agente de codigo</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Funciona incrivelmente bem para agentes pessoais (1 usuario). Para SaaS multi-tenant, migre para SQLite ou Postgres. O padrao de leitura-no-inicio-da-sessao + escrita-quando-aprende e o mesmo independente do storage.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Regra de ouro para escolher storage: <strong class="text-yellow-400">1 usuario? Markdown.</strong> <strong class="text-yellow-400">Ate 1000 usuarios? SQLite.</strong> <strong class="text-yellow-400">Escala grande + busca semantica? PostgreSQL + pgvector.</strong> Nao comece com Pinecone se voce tem 5 usuarios. Migrar para cima e facil; comecar complexo e caro.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com SQLite e migrar quando necessario</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar salience scoring para priorizar memorias no prompt</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Manter backup das memorias (sao dados valiosos do usuario)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar uma funcao unificada getMemories(tenantId, type, limit)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar embeddings para tudo (caro e desnecessario no inicio)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Guardar mensagens inteiras da conversa como memoria</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar o custo de embedding calls em volume alto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Armazenar dados sensiveis sem criptografia</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Context Passing entre Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">Context Passing entre Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Handoff estruturado, shared state, message queues para multiagentes</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Em sistemas multiagentes, o maior desafio nao e fazer cada agente funcionar isoladamente. E <strong class="text-amber-400">passar contexto entre eles sem perder informacao</strong>. Quando o Research Agent encontra dados e passa para o Writer Agent, o Writer precisa saber exatamente o que foi encontrado, o que o usuario pediu, e quais restricoes existem. Se o handoff for mal feito, o Writer vai pedir ao usuario para repetir tudo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem tres abordagens principais para context passing, cada uma com tradeoffs de complexidade, latencia e confiabilidade.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Padrao 1: Structured Handoff Messages</h3>
+          <p class="text-neutral-300 text-sm mb-4">O agente que termina sua tarefa cria um objeto JSON estruturado com tudo que o proximo agente precisa. Simples, explicito, sem estado compartilhado.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>interface HandoffMessage {
+  from: string           // ID do agente remetente
+  to: string             // ID do agente destinatario
+  task: string           // Descricao da tarefa delegada
+  context: {
+    original_request: string    // O que o usuario pediu
+    work_done: string           // O que ja foi feito
+    results: any                // Dados produzidos
+    constraints: string[]       // Restricoes a respeitar
+  }
+  conversation_summary: string  // Resumo da conversa ate aqui
+  metadata: {
+    timestamp: number
+    turn_count: number
+    tokens_used: number
+  }
+}
+
+// Exemplo real
+const handoff: HandoffMessage = {
+  from: 'research-agent',
+  to: 'writer-agent',
+  task: 'Escrever artigo sobre MCP baseado na pesquisa',
+  context: {
+    original_request: 'Artigo tecnico sobre MCP para devs',
+    work_done: 'Pesquisa completa: 5 fontes, 3 code samples',
+    results: { sources: [...], code_samples: [...] },
+    constraints: ['max 2000 palavras', 'tom tecnico', 'incluir exemplos']
+  },
+  conversation_summary: 'Usuario pediu artigo sobre MCP. ' +
+    'Pesquisa concluida com 5 fontes oficiais.',
+  metadata: { timestamp: Date.now(), turn_count: 4, tokens_used: 3200 }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Padrao 2: Shared State Store</h3>
+          <p class="text-neutral-300 text-sm mb-4">Todos os agentes leem e escrevem num estado compartilhado (Redis, banco de dados, objeto em memoria). Cada agente atualiza sua parte e le o que precisa dos outros.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Estado compartilhado entre agentes (in-memory ou Redis)
+interface SharedState {
+  task_id: string
+  user_id: string
+  original_request: string
+  agents: {
+    [agentId: string]: {
+      status: 'pending' | 'running' | 'done' | 'error'
+      output: any
+      updated_at: number
+    }
+  }
+  conversation_history: Message[]
+}
+
+// Research agent atualiza seu output
+state.agents['research'] = {
+  status: 'done',
+  output: { sources: [...], summary: '...' },
+  updated_at: Date.now()
+}
+
+// Writer agent le o output do research
+const researchResults = state.agents['research'].output
+if (state.agents['research'].status === 'done') {
+  // Pode comecar a escrever com os dados da pesquisa
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Vantagem: agentes podem rodar em paralelo e consumir resultados uns dos outros sem acoplamento direto. Desvantagem: precisa de lock/concurrency control e pode ficar complexo com muitos agentes.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Padrao 3: Message Queue</h3>
+          <p class="text-neutral-300 text-sm mb-4">Agentes se comunicam via fila de mensagens (BullMQ, RabbitMQ, SQS). Desacoplamento maximo, ideal para sistemas distribuidos e processamento assincrono.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">BullMQ</div>
+              <p class="text-neutral-400 text-xs">Node.js + Redis. Simples de configurar. Suporta retry, delay, prioridade. Ideal para monolitos distribuidos.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">SQS/SNS</div>
+              <p class="text-neutral-400 text-xs">AWS managed. Escala infinita. Pay-per-message. Bom para microservicos em cloud. Sem servidor pra gerenciar.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">In-Process</div>
+              <p class="text-neutral-400 text-xs">EventEmitter ou callback chain no mesmo processo. Zero latencia de rede. Suficiente para monolitos Node.js.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Para SaaS em estagio inicial, use Structured Handoff Messages com um objeto em memoria. E o mais simples de implementar e debugar. Quando escalar, migre para shared state com Redis. Message queues so fazem sentido quando voce tem agentes rodando em processos/servidores separados.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Sempre incluir conversation_summary no handoff</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar cada handoff com contexto completo para debug</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Validar que o agente receptor tem os dados que precisa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar timeout para handoffs que nunca completam</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Passar a conversa inteira no handoff (caro e ruidoso)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Assumir que o agente receptor sabe o contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Handoffs circulares: A passa para B que passa de volta para A</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar message queue para 2 agentes no mesmo processo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Tenant Isolation em Memoria -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">Tenant Isolation em Memoria</h2>
+          <p class="text-neutral-400 text-sm mt-1">Isolamento por usuario, Row Level Security, namespace prefixes e protecao de dados</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Em qualquer SaaS com agentes de IA, as memorias de um usuario <strong class="text-amber-400">nunca podem vazar para outro</strong>. Isso nao e opcional. Se o Agente do Usuario A acessa uma memoria do Usuario B, voce tem um data breach. A boa noticia: implementar isolamento correto desde o inicio e simples e previne dores de cabeca enormes depois.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem 3 niveis de isolamento, do mais simples ao mais robusto. A escolha depende do seu estagio e do nivel de seguranca exigido pelo seu mercado.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Nivel 1: Coluna tenant_id (Mais Comum)</h3>
+          <p class="text-neutral-300 text-sm mb-4">Todos os dados na mesma tabela, filtrados por tenant_id em cada query. Funciona bem para a maioria dos SaaS. O risco e esquecer o filtro em alguma query.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>-- Toda query DEVE incluir tenant_id
+-- CORRETO:
+SELECT * FROM memories
+WHERE tenant_id = $1 AND memory_type = 'preference'
+ORDER BY salience DESC;
+
+-- ERRADO (data breach!):
+SELECT * FROM memories
+WHERE memory_type = 'preference'
+ORDER BY salience DESC;
+
+-- Funcao helper que forca o filtro
+function getMemories(tenantId: string, type?: string) {
+  if (!tenantId) throw new Error('tenant_id required')
+  let query = db.prepare(
+    'SELECT * FROM memories WHERE tenant_id = ?'
+  )
+  // Nunca permita query sem tenant_id
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Nivel 2: Row Level Security (PostgreSQL)</h3>
+          <p class="text-neutral-300 text-sm mb-4">O banco de dados garante o isolamento automaticamente. Mesmo que voce esqueca o WHERE, o RLS impede acesso a dados de outro tenant. E a camada de seguranca mais solida.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>-- Habilitar RLS na tabela
+ALTER TABLE memories ENABLE ROW LEVEL SECURITY;
+
+-- Politica: usuario so ve suas proprias memorias
+CREATE POLICY tenant_isolation ON memories
+  FOR ALL
+  USING (tenant_id = current_setting('app.current_tenant'));
+
+-- Antes de cada request, setar o tenant
+SET app.current_tenant = 'user_123';
+
+-- Agora qualquer SELECT retorna apenas dados do user_123
+-- Mesmo sem WHERE tenant_id =, o RLS filtra automaticamente
+SELECT * FROM memories; -- so retorna dados do user_123
+
+-- Supabase faz isso nativamente com auth.uid()
+CREATE POLICY tenant_isolation ON memories
+  FOR ALL
+  USING (tenant_id = auth.uid());</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Com Supabase, o RLS ja vem integrado ao sistema de autenticacao. Cada request autenticado so acessa dados do proprio usuario. Sem codigo extra.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Nivel 3: Namespace Prefixes (Vector Stores)</h3>
+          <p class="text-neutral-300 text-sm mb-4">Para vector stores que nao suportam RLS nativamente, use namespaces ou prefixos para garantir isolamento nas buscas por similaridade.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Pinecone: usar namespace por tenant
+const index = pinecone.index('memories')
+
+// Salvar no namespace do tenant
+await index.namespace('tenant_user_123').upsert([{
+  id: 'mem_001',
+  values: embedding,
+  metadata: { content: '...', type: 'preference' }
+}])
+
+// Buscar APENAS no namespace do tenant
+const results = await index.namespace('tenant_user_123').query({
+  vector: queryEmbedding,
+  topK: 10,
+  includeMetadata: true
+})
+// Impossivel acessar dados de outro namespace</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning box -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-red-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">⚠️</span> Alerta de Seguranca
+        </h3>
+        <p class="text-neutral-300 text-sm">Em sistemas de IA, vazamento de memoria entre tenants e especialmente perigoso: memorias podem conter informacoes pessoais, decisoes de negocios, dados financeiros. Trate isolamento de memoria com o mesmo rigor que voce trata autenticacao. Teste com pelo menos 2 usuarios simultaneos e verifique que um nunca ve dados do outro.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar isolamento desde o dia 1 (dificil de adicionar depois)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar RLS se estiver em PostgreSQL/Supabase</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar isolamento com multi-user scenarios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Centralizar acesso a memorias em uma camada que forca tenant_id</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Queries sem filtro de tenant (mesmo "temporariamente")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confiar que "o frontend filtra" (backend deve garantir)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Memoria global compartilhada entre todos os tenants</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Adiar isolamento para "depois do MVP" (nunca funciona)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Compactacao e Sumarizacao -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">Compactacao e Sumarizacao</h2>
+          <p class="text-neutral-400 text-sm mt-1">Sliding window, sumarizacao automatica, extracao de fatos chave e descarte de ruido</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Toda context window tem limite. Uma conversa longa de 100 turnos pode consumir 50k+ tokens, sobrando pouco espaco para instrucoes e ferramentas. A <strong class="text-amber-400">compactacao de memoria</strong> resolve isso: sumariza conversas antigas, extrai fatos chave e descarta ruido, mantendo o agente funcional mesmo apos horas de interacao.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O padrao mais usado e <strong class="text-amber-400">Sliding Window + Summary</strong>: mantenha as N mensagens mais recentes intactas, e substitua as mais antigas por um resumo compacto. O agente mantem o contexto recente com detalhes e o historico com os pontos essenciais.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Sliding Window + Summary Pattern</h3>
+          <p class="text-neutral-300 text-sm mb-4">O padrao dominante para gerenciar contexto em conversas longas. Usado pelo Claude Code, ChatGPT e a maioria dos agentes em producao.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">1. Detectar</div>
+              <p class="text-neutral-400 text-xs">Context window acima de 80% do limite</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">2. Sumarizar</div>
+              <p class="text-neutral-400 text-xs">LLM cria resumo das mensagens antigas</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">3. Substituir</div>
+              <p class="text-neutral-400 text-xs">Troca mensagens antigas pelo resumo</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">4. Continuar</div>
+              <p class="text-neutral-400 text-xs">Agente segue com resumo + mensagens recentes</p>
+            </div>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function compactConversation(messages: Message[], maxTokens: number) {
+  const tokenCount = estimateTokens(messages)
+
+  if (tokenCount < maxTokens * 0.8) return messages // Ainda tem espaco
+
+  // Dividir: mensagens antigas (para sumarizar) e recentes (manter)
+  const splitIndex = Math.floor(messages.length * 0.6)
+  const oldMessages = messages.slice(0, splitIndex)
+  const recentMessages = messages.slice(splitIndex)
+
+  // Pedir ao LLM para sumarizar as mensagens antigas
+  const summary = await llm.chat([
+    { role: 'system', content: 'Resuma esta conversa em bullet points. ' +
+      'Mantenha: decisoes tomadas, fatos importantes, tarefas pendentes. ' +
+      'Descarte: saudacoes, perguntas ja respondidas, tentativas falhas.' },
+    { role: 'user', content: JSON.stringify(oldMessages) }
+  ])
+
+  // Retornar: system prompt + resumo + mensagens recentes
+  return [
+    { role: 'system', content: `Resumo da conversa anterior:\n${summary}` },
+    ...recentMessages
+  ]
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Extracao de Fatos Chave</h3>
+          <p class="text-neutral-300 text-sm mb-4">Alem de sumarizar, extraia fatos que devem virar memoria de longo prazo. Nem tudo na conversa merece ser lembrado para sempre, mas algumas coisas sim.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>const extractionPrompt = `Analise esta conversa e extraia APENAS fatos
+que o agente deve lembrar em sessoes futuras. Categorize cada fato:
+
+- preference: Algo que o usuario prefere ou nao gosta
+- decision: Uma decisao tomada sobre o projeto
+- fact: Um fato objetivo sobre o usuario ou seu contexto
+- task: Uma tarefa mencionada para o futuro
+
+Formato JSON:
+[{"content": "...", "type": "...", "salience": 1-5}]
+
+Nao inclua:
+- Saudacoes ou smalltalk
+- Perguntas que ja foram respondidas
+- Detalhes tecnicos transitorios (erros debugados, etc)
+- Informacoes que o agente ja tem no system prompt`
+
+// Resultado:
+[
+  {"content": "Usuario prefere TypeScript sobre JavaScript",
+   "type": "preference", "salience": 4},
+  {"content": "Decidiu usar Supabase em vez de Firebase",
+   "type": "decision", "salience": 5},
+  {"content": "Deadline do MVP e 15 de abril",
+   "type": "fact", "salience": 5}
+]</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Decay e Limpeza de Memorias</h3>
+          <p class="text-neutral-300 text-sm mb-3">Memorias nao acessadas perdem relevancia com o tempo. Implemente um decay natural para manter o store limpo e relevante.</p>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Time-based Decay</p>
+                <p class="text-neutral-400 text-sm">Reduza salience de memorias nao acessadas: a cada 7 dias sem acesso, reduza salience em 0.5. Quando chegar a 0, pode ser arquivada ou deletada.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Access-based Boost</p>
+                <p class="text-neutral-400 text-sm">Quando uma memoria e acessada (incluida no prompt e usada pelo agente), aumente sua salience. Memorias uteis se reforçam naturalmente.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Deduplicacao Periodica</p>
+                <p class="text-neutral-400 text-sm">Rode um job semanal que identifica memorias duplicadas ou contraditorias. "Prefere React" e "Decidiu migrar para Svelte" precisam ser resolvidas: a mais recente vence.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Uma boa regra: compacte quando a context window chegar a 80% da capacidade. Use um modelo barato (GPT-4o-mini ou Qwen 14B) para sumarizacao, nao o modelo principal. Sumarizar com Claude Opus e eficiente mas caro. O conteudo do resumo nao precisa de raciocinio complexo, so de compressao fiel.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Compactar proativamente (antes de estourar, nao depois)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Manter as ultimas N mensagens intactas (contexto recente precisa de detalhes)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Extrair fatos chave para long-term memory antes de descartar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar quantas compactacoes ocorreram por sessao</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Truncar mensagens antigas sem sumarizar (perda de contexto)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Sumarizar com o modelo mais caro da stack</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Compactar agressivamente demais (perde nuances importantes)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Nunca limpar memorias antigas (store cresce indefinidamente)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: Sistema de Memoria -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">Exercicio: Sistema de Memoria</h2>
+          <p class="text-neutral-400 text-sm mt-1">Implementar 3 tipos de memoria: historico de conversas, preferencias e knowledge base</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Neste exercicio voce vai implementar um <strong class="text-amber-400">sistema completo de memoria</strong> para o agente do seu SaaS. O objetivo e que o agente lembre preferencias entre sessoes, recupere historico de interacoes e busque conhecimento relevante. Ao final, seu agente passa de "chatbot que esquece tudo" para <strong class="text-amber-400">"assistente que conhece o usuario"</strong>.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Entregas do Exercicio</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Conversation History (SQLite)</p>
+                <p class="text-neutral-400 text-sm">Tabela <code class="text-amber-400 bg-dark-700 px-1 rounded">conversations</code> com tenant_id, messages (JSON), created_at. Funcoes: saveConversation(), getRecentConversations(tenantId, limit). Compactacao quando ultrapassar 50 mensagens por sessao.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">User Preferences (Database)</p>
+                <p class="text-neutral-400 text-sm">Tabela <code class="text-amber-400 bg-dark-700 px-1 rounded">preferences</code> com tenant_id, key, value, updated_at. Funcoes: setPreference(), getPreference(), getAllPreferences(). Carregadas automaticamente no system prompt de cada sessao.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Knowledge Base (Vector Store ou Search)</p>
+                <p class="text-neutral-400 text-sm">Tabela <code class="text-amber-400 bg-dark-700 px-1 rounded">knowledge</code> com tenant_id, content, embedding (se vector), type, salience. Funcoes: addKnowledge(), searchKnowledge(query). Busca por similaridade ou keyword. Extracao automatica de fatos das conversas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Arquitetura Sugerida</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>memory/
+  index.ts             // Exporta MemoryManager unificado
+  conversation.ts      // CRUD de historico de conversas
+  preferences.ts       // CRUD de preferencias do usuario
+  knowledge.ts         // CRUD de knowledge base + busca
+  compaction.ts        // Sumarizacao e limpeza
+  schema.sql           // DDL das tabelas
+
+// Interface unificada
+class MemoryManager {
+  constructor(private db: Database, private tenantId: string) {}
+
+  // Conversation history
+  async saveMessages(messages: Message[]): Promise&lt;void&gt;
+  async getRecentMessages(limit: number): Promise&lt;Message[]&gt;
+  async compactIfNeeded(): Promise&lt;boolean&gt;
+
+  // Preferences
+  async setPreference(key: string, value: string): Promise&lt;void&gt;
+  async getPreferences(): Promise&lt;Record&lt;string, string&gt;&gt;
+
+  // Knowledge
+  async addKnowledge(content: string, type: string): Promise&lt;void&gt;
+  async search(query: string, limit: number): Promise&lt;Knowledge[]&gt;
+  async extractFacts(conversation: Message[]): Promise&lt;Fact[]&gt;
+
+  // Lifecycle
+  async loadForPrompt(): Promise&lt;string&gt;  // Monta contexto pro system prompt
+  async cleanup(): Promise&lt;void&gt;           // Decay, dedup, archive
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Historico de conversas persiste entre sessoes (reiniciar e verificar)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Preferencias carregam automaticamente no prompt de cada sessao</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Knowledge base retorna resultados relevantes para queries</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Compactacao funciona quando conversa passa de 50 mensagens</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Tenant isolation: usuario A nao ve memorias do usuario B</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Extracao automatica de fatos ao final de cada conversa</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use Vibe Coding aqui: descreva a interface MemoryManager para o Claude ou Copilot e deixe gerar a implementacao. Depois revise, teste e itere. O exercicio valida que voce entende os conceitos. Se a implementacao gerada funciona, voce validou tanto seu entendimento quanto a capacidade de delegar para IA.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com SQLite para tudo (simples e funcional)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar loadForPrompt() que monta o contexto automaticamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com dados reais (suas proprias conversas com o agente)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir tokens consumidos por memorias no prompt</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Over-engineering: nao precisa de Kafka para 10 usuarios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular o teste de isolamento multi-tenant</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Carregar todas as memorias no prompt (use salience para filtrar)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Esquecer de implementar cleanup/decay de memorias antigas</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.6
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">4 tipos de memoria</strong>: short-term (sessao), long-term (persistente), episodica (eventos) e semantica (conhecimento acumulado).</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Implementacao pratica</strong>: SQLite resolve 80% dos casos. Vector stores para busca semantica. Markdown para agentes pessoais.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Context passing</strong>: structured handoff messages, shared state stores ou message queues conforme escala do sistema.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Tenant isolation</strong>: obrigatorio em SaaS. Use RLS no PostgreSQL ou filtro por tenant_id em toda query. Teste desde o dia 1.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Compactacao</strong>: sliding window + summary para conversas longas. Extraia fatos chave para long-term. Decay natural para memorias nao acessadas.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na pratica</strong>: MemoryManager unificado com conversations, preferences e knowledge. loadForPrompt() para carregar contexto automaticamente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-5.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.5</span>
+      </a>
+      <a href="modulo-4-7.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <span class="text-sm font-medium">Modulo 4.7: Exercicio Final</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.3 - Multiagentes e Orquestracao | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.3</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.3</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">Multiagentes e Orquestracao</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">Quando um agente nao basta: sistemas com multiplos agentes especializados, padroes de orquestracao e comunicacao estruturada.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~55</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Avanc</div>
+          <div class="text-xs text-neutral-400">Avancado</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">T+P</div>
+          <div class="text-xs text-neutral-400">Teoria+Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: Por que Multiplos Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">🧩 Por que Multiplos Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Limitacoes de agente unico. Quando dividir em multiplos agentes.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Um agente unico parece a solucao ideal: um sistema que faz tudo. Na pratica, <strong class="text-amber-400">agentes sobrecarregados falham mais</strong>. Quanto mais tools, mais contexto, mais roles voce empilha em um unico agente, mais provavel que ele se confunda, escolha a tool errada, ou perca o fio da tarefa.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A <strong class="text-amber-400">context window</strong> e a primeira limitacao fisica. Um agente que precisa carregar 20 tool definitions, um system prompt longo, historico de conversa e resultados de tools anteriores rapidamente enche 128k tokens. Quando o contexto esta cheio, o modelo comeca a "esquecer" instrucoes do inicio.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A segunda limitacao e <strong class="text-amber-400">especializacao</strong>. Um modelo com 5 tools de busca, 5 de escrita, 5 de analise e 5 de comunicacao tem 20 opcoes a cada decisao. Pesquisas mostram que LLMs perdem ate 40% de precisao na selecao de tools quando ha mais de 10-15 opcoes. Dividir em agentes especializados resolve isso: cada um tem 3-5 tools no maximo.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Por que Multiagentes Funcionam
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">-40%</div>
+            <p class="text-neutral-400 text-sm">precisao na selecao de tools quando agente tem 15+ tools registradas</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">128k</div>
+            <p class="text-neutral-400 text-sm">tokens de contexto tipico. Agente complexo facilmente usa 60-80% so com setup</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3-5</div>
+            <p class="text-neutral-400 text-sm">tools por agente e o sweet spot para maximizar precisao de selecao</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2-4x</div>
+            <p class="text-neutral-400 text-sm">ganho de velocidade com execucao paralela de agentes independentes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Quando Dividir em Multiplos Agentes</h3>
+          <p class="text-neutral-300 text-sm mb-4">Nem todo sistema precisa de multiagentes. Use os sinais abaixo para decidir:</p>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Muitas tools com propositos diferentes</p>
+                <p class="text-neutral-400 text-sm">Se voce tem tools de busca, escrita, analise e comunicacao no mesmo agente, divida. Um agente de pesquisa (busca tools), um de geracao (escrita tools), um de validacao (analise tools).</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Tarefas que podem rodar em paralelo</p>
+                <p class="text-neutral-400 text-sm">Se parte do trabalho e independente (ex: pesquisar dados E gerar template ao mesmo tempo), agentes separados permitem execucao paralela real. Um agente unico faz tudo sequencial.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Requisitos de qualidade diferentes por etapa</p>
+                <p class="text-neutral-400 text-sm">Classificacao de intencao precisa de velocidade (modelo leve). Geracao de codigo precisa de raciocinio profundo (modelo forte). Modelos diferentes por agente otimizam custo e qualidade.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Context window estourando</p>
+                <p class="text-neutral-400 text-sm">Se o agente regularmente atinge 70%+ da context window, e hora de dividir. Cada agente comeca com contexto limpo e recebe apenas o necessario via handoff.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Agente Unico vs Multiagentes</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Aspecto</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Agente Unico</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Multiagentes</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Complexidade</td>
+                  <td class="py-2">Simples de implementar</td>
+                  <td class="py-2">Requer orquestracao e handoff</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Precisao</td>
+                  <td class="py-2">Degrada com muitas tools</td>
+                  <td class="py-2">Alta (tools focadas por agente)</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Velocidade</td>
+                  <td class="py-2">Sequencial sempre</td>
+                  <td class="py-2">Paralelo quando possivel</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Custo</td>
+                  <td class="py-2">Menor overhead de setup</td>
+                  <td class="py-2">Pode otimizar por modelo/agente</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium">Debugging</td>
+                  <td class="py-2">Um log, um fluxo</td>
+                  <td class="py-2">Traces distribuidos, mais complexo</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Comece com agente unico. So divida quando sentir os problemas: tools demais, contexto estourando, ou tarefas que poderiam rodar em paralelo mas estao travadas esperando sequencia. Premature multi-agent e tao ruim quanto premature optimization.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com agente unico e evoluir quando necessario</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir precisao de tool selection antes de dividir</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar metricas (context usage, error rate) para justificar split</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Agrupar tools por dominio ao criar agentes especializados</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar 10 agentes quando 3 resolveriam</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Dividir sem planejar a comunicacao entre eles</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar o custo de orquestracao (cada hop = latencia + tokens)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Multiagentes para problemas simples (over-engineering)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: Padroes de Orquestracao -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">🔀 Padroes de Orquestracao</h2>
+          <p class="text-neutral-400 text-sm mt-1">Sequential, parallel, router, hierarchical. Quando usar cada um.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          <strong class="text-amber-400">Orquestracao</strong> e o codigo que decide quem faz o que, em que ordem, e como os resultados fluem entre agentes. Existem 4 padroes principais, e a escolha certa depende da natureza da tarefa. A maioria dos sistemas reais combina mais de um padrao.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O erro mais comum e escolher o padrao errado. Sequential chain para tarefas independentes desperica tempo. Parallel fan-out para tarefas dependentes causa race conditions. Router sem fallback deixa mensagens sem resposta. Entender quando usar cada padrao e tao importante quanto saber implementa-lo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Pense na orquestracao como a <strong class="text-amber-400">gestao de uma equipe</strong>: o orquestrador e o gerente que distribui tarefas, acompanha progresso e consolida resultados. Os agentes sao os especialistas que executam. A qualidade do sistema depende tanto do gerente quanto dos especialistas.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">4 Padroes Fundamentais</h3>
+          <div class="space-y-6">
+            <div class="bg-dark-700 rounded-lg p-5 border border-dark-600">
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">S</div>
+                <h4 class="text-blue-400 font-bold">Sequential Chain (Pipeline)</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-3">Agente A processa, passa resultado para Agente B, que passa para Agente C. Cada etapa transforma o output da anterior. Ordem fixa e previsivel.</p>
+              <div class="bg-dark-800 rounded-lg p-3 text-sm font-mono text-neutral-400">
+                Input → [Pesquisador] → dados → [Redator] → rascunho → [Revisor] → final
+              </div>
+              <p class="text-neutral-400 text-sm mt-3"><strong class="text-neutral-300">Quando usar:</strong> Pipelines de processamento com dependencia entre etapas. Geracao de conteudo (pesquisa > escrita > revisao). ETL de dados.</p>
+            </div>
+
+            <div class="bg-dark-700 rounded-lg p-5 border border-dark-600">
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold flex-shrink-0">P</div>
+                <h4 class="text-emerald-400 font-bold">Parallel Fan-out</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-3">Multiplos agentes recebem a mesma tarefa (ou partes independentes) e trabalham ao mesmo tempo. Um aggregator consolida os resultados no final.</p>
+              <div class="bg-dark-800 rounded-lg p-3 text-sm font-mono text-neutral-400">
+                Input → [Agent A] ↘<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ [Agent B] → [Aggregator] → Output<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ [Agent C] ↗
+              </div>
+              <p class="text-neutral-400 text-sm mt-3"><strong class="text-neutral-300">Quando usar:</strong> Pesquisas em multiplas fontes. Analise de multiplos documentos. Geracao de multiplas opcoes para comparacao.</p>
+            </div>
+
+            <div class="bg-dark-700 rounded-lg p-5 border border-dark-600">
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">R</div>
+                <h4 class="text-amber-400 font-bold">Router / Dispatcher</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-3">Um classificador analisa a mensagem e roteia para o agente especialista correto. Cada agente lida com um tipo de tarefa. O router pode ser LLM leve ou regra.</p>
+              <div class="bg-dark-800 rounded-lg p-3 text-sm font-mono text-neutral-400">
+                Input → [Router] → "codigo" → [Code Agent]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ "dados" &nbsp;→ [Data Agent]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ "texto" &nbsp;→ [Content Agent]
+              </div>
+              <p class="text-neutral-400 text-sm mt-3"><strong class="text-neutral-300">Quando usar:</strong> Chatbots multi-dominio. Sistemas com agentes especializados por area. Qualquer caso onde o tipo de tarefa determina quem resolve.</p>
+            </div>
+
+            <div class="bg-dark-700 rounded-lg p-5 border border-dark-600">
+              <div class="flex items-center space-x-3 mb-3">
+                <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm font-bold flex-shrink-0">H</div>
+                <h4 class="text-purple-400 font-bold">Hierarchical (Manager + Workers)</h4>
+              </div>
+              <p class="text-neutral-300 text-sm mb-3">Um agente gerente planeja, delega sub-tarefas para workers, monitora progresso e valida resultados. Os workers sao agentes especializados que executam.</p>
+              <div class="bg-dark-800 rounded-lg p-3 text-sm font-mono text-neutral-400">
+                Input → [Manager] → plan → delegate → [Worker A]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ [Worker B]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← validate ← results
+              </div>
+              <p class="text-neutral-400 text-sm mt-3"><strong class="text-neutral-300">Quando usar:</strong> Projetos complexos com multiplas etapas. Quando o plano precisa ser adaptavel. Quando a qualidade do output requer validacao centralizada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Na pratica, a maioria dos sistemas usa <strong class="text-yellow-400">Router + Sequential</strong>: o router classifica a mensagem, e dentro de cada agente especialista ha um pipeline sequencial. Comece com esse combo. So adicione parallel e hierarchical quando tiver necessidade comprovada.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Escolher padrao baseado na natureza da tarefa, nao em hype</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar fallback em todo router (caso nenhum agente match)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir latencia de cada padrao no seu caso de uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Combinar padroes quando necessario (router + pipeline)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Parallel para tarefas com dependencia (race condition)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Sequential para tarefas independentes (desperica tempo)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Hierarchical para tarefas simples (overhead de manager)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Router sem metricas de acuracia de classificacao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Roles: Executor, Analista, Revisor -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">👥 Roles: Executor, Analista, Revisor</h2>
+          <p class="text-neutral-400 text-sm mt-1">Papeis especializados para qualidade. Separacao de responsabilidades.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O poder dos sistemas multiagentes vem da <strong class="text-amber-400">especializacao de roles</strong>. Assim como em uma equipe real, cada agente tem um papel definido com responsabilidades claras, ferramentas especificas e criterios de sucesso proprios. O padrao mais comum e o trio: Executor (faz), Analista (avalia), Revisor (valida).
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A separacao de roles nao e burocracia. E <strong class="text-amber-400">controle de qualidade embutido no fluxo</strong>. Um agente que gera codigo E revisa seu proprio codigo tem vieses. Um agente separado de revisao, com criterios diferentes e sem acesso ao "raciocinio" do gerador, encontra problemas que o gerador original nunca veria. E o mesmo principio de code review entre humanos.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Cada role pode usar um modelo diferente otimizado para sua funcao. O Executor pode usar Claude Sonnet (raciocinio forte para geracao). O Analista pode usar DeepSeek R1 (barato, bom em analise logica). O Revisor pode usar um modelo com guidelines especificas de seguranca e qualidade.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Os 3 Roles Fundamentais</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-amber-500/10 rounded-lg p-5 border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-3">Executor</div>
+              <p class="text-neutral-300 text-sm mb-3">O "braco" do sistema. Gera codigo, redige texto, processa dados, cria arquivos. Faz o trabalho produtivo.</p>
+              <div class="space-y-2 text-xs text-neutral-400">
+                <p><strong class="text-neutral-300">Tools:</strong> code_write, file_create, data_transform</p>
+                <p><strong class="text-neutral-300">Modelo:</strong> Claude Sonnet, GPT-4o (raciocinio forte)</p>
+                <p><strong class="text-neutral-300">Criterio:</strong> Output funcional e completo</p>
+              </div>
+            </div>
+            <div class="bg-blue-500/10 rounded-lg p-5 border border-blue-500/20">
+              <div class="text-blue-400 font-bold text-lg mb-3">Analista</div>
+              <p class="text-neutral-300 text-sm mb-3">O "olho critico". Avalia resultados, identifica problemas de logica, sugere melhorias. Nao gera, analisa.</p>
+              <div class="space-y-2 text-xs text-neutral-400">
+                <p><strong class="text-neutral-300">Tools:</strong> code_analyze, run_tests, check_logic</p>
+                <p><strong class="text-neutral-300">Modelo:</strong> DeepSeek R1, Claude Haiku (analise barata)</p>
+                <p><strong class="text-neutral-300">Criterio:</strong> Problemas encontrados + sugestoes claras</p>
+              </div>
+            </div>
+            <div class="bg-emerald-500/10 rounded-lg p-5 border border-emerald-500/20">
+              <div class="text-emerald-400 font-bold text-lg mb-3">Revisor</div>
+              <p class="text-neutral-300 text-sm mb-3">O "QA final". Valida qualidade, checa seguranca, verifica consistencia. Aprova ou rejeita com justificativa.</p>
+              <div class="space-y-2 text-xs text-neutral-400">
+                <p><strong class="text-neutral-300">Tools:</strong> security_scan, lint, validate_schema</p>
+                <p><strong class="text-neutral-300">Modelo:</strong> Modelo com safety guidelines fortes</p>
+                <p><strong class="text-neutral-300">Criterio:</strong> Aprovado/Rejeitado + razoes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">System Prompts por Role</h3>
+          <p class="text-neutral-300 text-sm mb-3">Cada agente precisa de um system prompt que define claramente seu papel, limites e criterios:</p>
+          <div class="space-y-3">
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-amber-500">
+              <p class="text-xs text-amber-400 font-semibold mb-2">System Prompt: Executor</p>
+              <p class="text-neutral-300 text-sm font-mono">"Voce e um agente executor especializado em geracao de codigo TypeScript. Sua unica funcao e produzir codigo funcional e limpo. NAO faca analise de seguranca (o Revisor faz isso). NAO sugira melhorias (o Analista faz isso). Gere o codigo e pare."</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-blue-500">
+              <p class="text-xs text-blue-400 font-semibold mb-2">System Prompt: Analista</p>
+              <p class="text-neutral-300 text-sm font-mono">"Voce e um agente analista. Receba codigo e identifique: bugs logicos, edge cases nao tratados, problemas de performance, e oportunidades de melhoria. Retorne uma lista estruturada de issues com severidade (alta/media/baixa) e sugestao de correcao."</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-emerald-500">
+              <p class="text-xs text-emerald-400 font-semibold mb-2">System Prompt: Revisor</p>
+              <p class="text-neutral-300 text-sm font-mono">"Voce e um agente revisor de seguranca e qualidade. Valide: SQL injection, XSS, secrets expostos, type safety, error handling. Retorne APROVADO ou REJEITADO com lista de problemas criticos. Seja rigoroso: na duvida, rejeite."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Fluxo Executor → Analista → Revisor</h3>
+          <p class="text-neutral-300 text-sm mb-3">O pipeline completo com retry loop quando o revisor rejeita:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function pipeline(task: string, maxRetries = 3) {
+  for (let attempt = 0; attempt &lt; maxRetries; attempt++) {
+    // 1. Executor gera output
+    const output = await executor.run(task);
+
+    // 2. Analista avalia e sugere melhorias
+    const analysis = await analyst.run(output);
+
+    // 3. Se ha issues criticas, executor refaz com feedback
+    if (analysis.critical_issues.length > 0) {
+      task = `${task}\n\nFEEDBACK DO ANALISTA:\n${
+        analysis.suggestions.join('\n')}`;
+      continue;
+    }
+
+    // 4. Revisor da aprovacao final
+    const review = await reviewer.run(output);
+    if (review.approved) return output;
+
+    // 5. Se rejeitado, executor refaz com razoes
+    task = `${task}\n\nREJEICAO DO REVISOR:\n${
+      review.reasons.join('\n')}`;
+  }
+
+  throw new Error("Max retries reached");
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">O segredo e <strong class="text-yellow-400">nao dar ao agente informacao sobre os outros roles</strong>. O Executor nao sabe que sera revisado. Isso evita "preguica" (gerar output pior sabendo que outro vai corrigir). Cada agente deve produzir seu melhor trabalho como se fosse a versao final.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>System prompts claros e exclusivos por role</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Modelos diferentes por role (otimizar custo/qualidade)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retry loop com feedback do revisor para o executor</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Criterios de aprovacao/rejeicao explicitos e mensuaveis</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Mesmo modelo e prompt para todos os roles (perde o beneficio)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Revisor que sempre aprova (revisao cosmetic, nao funcional)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Retry infinito entre executor e revisor (limitar a 3 tentativas)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Roles ambiguos com responsabilidades sobrepostas</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Comunicacao entre Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">💬 Comunicacao entre Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Message passing, shared state, event bus. Protocolos de handoff.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Agentes isolados que nao se comunicam sao apenas agentes separados, nao um sistema. A <strong class="text-amber-400">comunicacao entre agentes</strong> e o que transforma agentes individuais em um time coordenado. Como os agentes trocam informacao, passam contexto e delegam tarefas determina a qualidade do sistema inteiro.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem tres abordagens principais: <strong class="text-amber-400">message passing</strong> (agentes enviam mensagens diretamente entre si), <strong class="text-amber-400">shared state</strong> (agentes leem e escrevem em um estado compartilhado), e <strong class="text-amber-400">event bus</strong> (agentes publicam e assinam eventos). Cada uma tem trade-offs de acoplamento, complexidade e escalabilidade.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O handoff entre agentes e o momento mais critico. Se o Agente A passa contexto insuficiente para o Agente B, o resultado sera ruim independente da qualidade de B. <strong class="text-amber-400">Structured handoff</strong> com formato JSON padronizado e a melhor forma de garantir que nenhuma informacao se perca na transicao.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">3 Padroes de Comunicacao</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Message Passing (Direto)</p>
+                <p class="text-neutral-400 text-sm mb-2">Agentes enviam mensagens diretamente uns aos outros. Simples, baixo acoplamento, mas precisa saber "para quem" enviar. Funciona bem com Router pattern.</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Pros:</strong> Simples, cada agente e independente, facil de testar isolado</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Cons:</strong> Ponto-a-ponto, nao escala bem com muitos agentes, coupling de enderecamento</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Shared State (Estado Compartilhado)</p>
+                <p class="text-neutral-400 text-sm mb-2">Agentes leem e escrevem em um objeto/banco compartilhado. Cada agente pega o que precisa e deixa seus resultados. Como um quadro branco onde todos escrevem.</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Pros:</strong> Desacoplado, agentes nao precisam se conhecer, facil de adicionar novos</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Cons:</strong> Race conditions, precisa de locking, mais complexo de debugar</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Event Bus (Pub/Sub)</p>
+                <p class="text-neutral-400 text-sm mb-2">Agentes publicam eventos ("pesquisa_concluida", "codigo_gerado") e outros agentes assinam os eventos relevantes. Desacoplamento maximo.</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Pros:</strong> Maximo desacoplamento, escala horizontal, facil de adicionar/remover agentes</p>
+                <p class="text-neutral-400 text-xs"><strong class="text-neutral-300">Cons:</strong> Mais complexo, debugging distribuido, pode ter eventos perdidos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Structured Handoff Protocol</h3>
+          <p class="text-neutral-300 text-sm mb-3">Todo handoff entre agentes deve seguir um formato padronizado para evitar perda de contexto:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "handoff": {
+    "id": "hf_001",
+    "timestamp": "2026-03-09T14:30:00Z",
+    "from": {
+      "agent_id": "research-agent",
+      "role": "researcher",
+      "model": "deepseek-r1"
+    },
+    "to": {
+      "agent_id": "writer-agent",
+      "role": "executor"
+    },
+    "task": {
+      "original": "Escrever artigo sobre MCP protocol",
+      "current_step": "Gerar rascunho baseado na pesquisa"
+    },
+    "context": {
+      "research_results": [
+        {"source": "anthropic.com/mcp", "summary": "..."},
+        {"source": "github.com/modelcontextprotocol", "summary": "..."}
+      ],
+      "user_preferences": "tom tecnico, exemplos praticos",
+      "constraints": "maximo 2000 palavras, PT-BR"
+    },
+    "conversation_summary": "Usuario pediu artigo sobre MCP.
+      Pesquisa concluida: 5 fontes, 3 exemplos de codigo.
+      Foco em implementacao pratica, nao teoria.",
+    "metadata": {
+      "total_tokens_used": 15420,
+      "elapsed_time_ms": 8500,
+      "iteration_count": 3
+    }
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Note como o handoff inclui tudo que o agente receptor precisa: quem enviou, a tarefa, o contexto coletado, um resumo da conversa ate agora, e metadados de custo/tempo. O receptor comeca com informacao completa.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">JSON Message Format entre Agentes</h3>
+          <p class="text-neutral-300 text-sm mb-3">Mensagens entre agentes devem ser estruturadas, nao texto livre. Formato padrao:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>interface AgentMessage {
+  type: "request" | "response" | "error" | "status";
+  from: string;       // agent_id
+  to: string;         // agent_id
+  correlation_id: string;  // rastrear request/response
+  payload: {
+    task?: string;
+    result?: any;
+    error?: { code: string; message: string };
+    status?: "working" | "done" | "blocked";
+  };
+  metadata: {
+    timestamp: string;
+    tokens_used?: number;
+    model?: string;
+  };
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Para projetos iniciais, use <strong class="text-yellow-400">message passing direto com JSON tipado</strong>. Shared state e event bus adicionam complexidade que so vale em sistemas com 5+ agentes. Um objeto TypeScript com interface definida resolve a comunicacao entre 2-3 agentes de forma simples e type-safe.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Padronizar formato de mensagem entre todos os agentes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir conversation_summary em todo handoff</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar correlation_id para rastrear request/response</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar toda comunicacao entre agentes para debug</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Handoff com texto livre (perde estrutura, dificil de parsear)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Agentes que conversam entre si sem limite (loop infinito)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Passar contexto inteiro (so passar o que o receptor precisa)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Comunicacao sem timeout (agente pode travar esperando)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Frameworks: CrewAI, LangGraph, Swarm -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">🏗️ Frameworks: CrewAI, LangGraph, Swarm</h2>
+          <p class="text-neutral-400 text-sm mt-1">Comparacao de frameworks multiagentes. Pros e cons de cada um.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Voce nao precisa construir tudo do zero. Existem frameworks que abstraem a complexidade de orquestracao, comunicacao e gerenciamento de agentes. Os tres mais relevantes em 2026 sao <strong class="text-amber-400">CrewAI</strong> (role-based, Python), <strong class="text-amber-400">LangGraph</strong> (graph-based, Python/JS) e <strong class="text-amber-400">OpenAI Swarm</strong> (lightweight, Python).
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Cada framework tem uma filosofia diferente. CrewAI pensa em agentes como "membros de uma equipe" com roles, goals e backstory. LangGraph modela o fluxo como um grafo de estados com edges condicionais. Swarm e minimalista: handoff functions que transferem controle entre agentes. A escolha depende do seu caso de uso e preferencia de abstraccao.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Uma quarta opcao que ganha tracao e <strong class="text-amber-400">construir do zero</strong>. Para sistemas simples (2-3 agentes, comunicacao direta), um orchestrator custom com 100-200 linhas de codigo pode ser mais simples de manter do que aprender e debugar um framework. Frameworks brilham quando a complexidade justifica a abstraccao.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Comparacao de Frameworks</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Aspecto</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">CrewAI</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">LangGraph</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Swarm</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Filosofia</td>
+                  <td class="py-2">Role-based crew</td>
+                  <td class="py-2">State graph</td>
+                  <td class="py-2">Handoff functions</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Linguagem</td>
+                  <td class="py-2">Python</td>
+                  <td class="py-2">Python, JS/TS</td>
+                  <td class="py-2">Python</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Complexidade</td>
+                  <td class="py-2">Media (muita magia)</td>
+                  <td class="py-2">Alta (grafo explicito)</td>
+                  <td class="py-2">Baixa (minimalista)</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Controle</td>
+                  <td class="py-2">Abstrato (framework decide)</td>
+                  <td class="py-2">Total (voce define edges)</td>
+                  <td class="py-2">Alto (handoff explicito)</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Provider</td>
+                  <td class="py-2">Multi (OpenAI, Anthropic...)</td>
+                  <td class="py-2">Multi (via LangChain)</td>
+                  <td class="py-2">OpenAI only</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium">Ideal para</td>
+                  <td class="py-2">Prototipos rapidos</td>
+                  <td class="py-2">Fluxos complexos/condicionais</td>
+                  <td class="py-2">Sistemas leves e diretos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Exemplo em Cada Framework</h3>
+          <div class="space-y-4">
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-amber-500">
+              <p class="text-xs text-amber-400 font-semibold mb-2">CrewAI (Python)</p>
+              <div class="text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>from crewai import Agent, Task, Crew
+
+researcher = Agent(
+    role="Pesquisador",
+    goal="Encontrar dados relevantes sobre o tema",
+    backstory="Voce e um pesquisador senior com 10 anos...",
+    tools=[search_tool, scrape_tool]
+)
+writer = Agent(role="Redator", goal="Escrever artigo...", ...)
+crew = Crew(agents=[researcher, writer], tasks=[...])
+result = crew.kickoff()</pre>
+              </div>
+            </div>
+
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-blue-500">
+              <p class="text-xs text-blue-400 font-semibold mb-2">LangGraph (Python)</p>
+              <div class="text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>from langgraph.graph import StateGraph
+
+graph = StateGraph(AgentState)
+graph.add_node("researcher", research_node)
+graph.add_node("writer", writer_node)
+graph.add_node("reviewer", reviewer_node)
+graph.add_edge("researcher", "writer")
+graph.add_conditional_edges("reviewer",
+    lambda s: "writer" if not s["approved"] else END)
+app = graph.compile()</pre>
+              </div>
+            </div>
+
+            <div class="bg-dark-700 rounded-lg p-4 border-l-4 border-emerald-500">
+              <p class="text-xs text-emerald-400 font-semibold mb-2">OpenAI Swarm (Python)</p>
+              <div class="text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>from swarm import Swarm, Agent
+
+def transfer_to_writer():
+    return writer_agent
+
+researcher = Agent(
+    name="Researcher",
+    instructions="Pesquise o tema e transfira para o Writer.",
+    functions=[search, transfer_to_writer]
+)
+writer = Agent(name="Writer", instructions="Escreva...", ...)
+client = Swarm()
+response = client.run(agent=researcher, messages=[...])</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Ecossistema de Frameworks (2026)
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">CrewAI</div>
+            <p class="text-neutral-400 text-sm">50k+ stars GitHub. Popular para prototipos. Role/goal/backstory abstraction.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">LangGraph</div>
+            <p class="text-neutral-400 text-sm">Parte do LangChain ecosystem. Controle total via graph. Producao-ready.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Swarm</div>
+            <p class="text-neutral-400 text-sm">OpenAI experimental. ~500 linhas de codigo. Educational, nao production.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Custom</div>
+            <p class="text-neutral-400 text-sm">100-300 linhas fazem um orchestrator funcional. Controle total, zero dependencia.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Antes de adotar um framework, construa um prototipo custom com 100 linhas. Isso forca voce a entender os padroes (routing, handoff, state) antes de delegar para abstraccoes. Depois, se a complexidade crescer, migre para um framework sabendo exatamente o que ele faz por baixo. Quem entende o padrao usa qualquer framework.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Entender o padrao antes de adotar o framework</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Avaliar se o framework suporta seu provider (Anthropic, OpenAI, local)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar performance e custo com seu caso de uso real</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Considerar a opcao "custom" para sistemas simples</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Escolher framework por hype sem avaliar fit</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Frameworks complexos para problemas simples (over-engineering)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Depender de abstraccoes sem entender o que acontece por baixo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Assumir que Swarm e production-ready (e experimental)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: Sistema de 3 Agentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">🛠️ Exercicio: Sistema de 3 Agentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Router + Specialist + Reviewer. Construa, teste, itere.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Neste exercicio voce vai construir um <strong class="text-amber-400">sistema multiagente funcional com 3 agentes</strong>: um Router que classifica a intencao da mensagem, um Specialist que executa a tarefa, e um Reviewer que valida o resultado. O sistema deve funcionar end-to-end: receber uma mensagem, rotear para o agente certo, executar, revisar e retornar.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Este exercicio combina tudo que voce aprendeu: <strong class="text-amber-400">roles especializados, padroes de orquestracao, comunicacao estruturada e handoff</strong>. O Router usa o padrao Router/Dispatcher. O Specialist + Reviewer usa o padrao Sequential Chain. E a comunicacao entre eles usa JSON messages com handoff protocol.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Arquitetura do Sistema</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto mb-4">
+<pre>Mensagem do usuario
+      |
+  [Router Agent]
+      |
+      +-- "codigo" --→ [Code Specialist] --→ [Code Reviewer] --→ Output
+      |
+      +-- "dados"  --→ [Data Specialist] --→ [Data Reviewer] --→ Output
+      |
+      +-- "texto"  --→ [Text Specialist] --→ [Text Reviewer] --→ Output
+      |
+      +-- "outro"  --→ Resposta direta (sem specialist)</pre>
+          </div>
+          <p class="text-neutral-400 text-sm">Para simplificar, implemente apenas 1 tipo de Specialist (ex: Code). O padrao e o mesmo para todos, muda apenas o system prompt e as tools.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Especificacao dos 3 Agentes</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">R</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Router Agent</p>
+                <p class="text-neutral-400 text-sm mb-2">Classifica a intencao da mensagem e roteia. Use modelo leve (Haiku, Llama 3.2) para baixo custo e alta velocidade.</p>
+                <div class="bg-dark-700 rounded-lg p-3 text-xs font-mono text-neutral-300 overflow-x-auto">
+<pre>// Router retorna classificacao estruturada
+{
+  "intent": "codigo" | "dados" | "texto" | "outro",
+  "confidence": 0.95,
+  "reasoning": "Usuario pediu para criar uma funcao JS"
+}</pre>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold flex-shrink-0">S</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Specialist Agent</p>
+                <p class="text-neutral-400 text-sm mb-2">Executa a tarefa com tools especificas. Use modelo forte (Sonnet, GPT-4o) para qualidade de output. ReAct loop interno.</p>
+                <div class="bg-dark-700 rounded-lg p-3 text-xs font-mono text-neutral-300 overflow-x-auto">
+<pre>// Specialist tem tools registradas
+tools: [
+  { name: "write_code", ... },
+  { name: "run_tests", ... },
+  { name: "read_file", ... }
+]</pre>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold flex-shrink-0">V</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Reviewer Agent</p>
+                <p class="text-neutral-400 text-sm mb-2">Valida output do Specialist. Retorna APROVADO ou REJEITADO com feedback estruturado. Se rejeitado, Specialist refaz.</p>
+                <div class="bg-dark-700 rounded-lg p-3 text-xs font-mono text-neutral-300 overflow-x-auto">
+<pre>// Reviewer retorna decisao estruturada
+{
+  "approved": false,
+  "issues": [
+    { "severity": "high", "description": "Sem error handling" },
+    { "severity": "medium", "description": "Variaveis nao tipadas" }
+  ],
+  "suggestions": ["Adicionar try/catch", "Usar TypeScript strict"]
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Scaffold do Orchestrator (TypeScript)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function orchestrate(userMessage: string) {
+  // 1. Router classifica a intencao
+  const classification = await router.classify(userMessage);
+  console.log(`[Router] Intent: ${classification.intent}
+    (${classification.confidence})`);
+
+  // 2. Se "outro", responde direto
+  if (classification.intent === "outro") {
+    return await directResponse(userMessage);
+  }
+
+  // 3. Specialist executa com retry loop
+  let result: string;
+  for (let attempt = 0; attempt &lt; 3; attempt++) {
+    result = await specialist.execute(userMessage);
+
+    // 4. Reviewer valida
+    const review = await reviewer.validate(result);
+    if (review.approved) {
+      console.log(`[Reviewer] Aprovado na tentativa ${attempt + 1}`);
+      return result;
+    }
+
+    // 5. Se rejeitado, specialist refaz com feedback
+    console.log(`[Reviewer] Rejeitado: ${
+      review.issues.map(i =&gt; i.description).join(', ')}`);
+    userMessage += `\n\nFEEDBACK: ${review.suggestions.join('\n')}`;
+  }
+
+  return `Resultado apos 3 tentativas:\n${result}`;
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Router classifica "crie uma funcao JS" como "codigo" com alta confianca</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Router classifica "ola, tudo bem?" como "outro"</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Specialist gera output usando tools (nao resposta generica)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Reviewer aprova output de qualidade e rejeita output com problemas</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Specialist refaz com feedback do Reviewer quando rejeitado</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Sistema para apos 3 tentativas (nao fica em loop infinito)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Logs mostram cada etapa: routing, execution, review, retry</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Construa e teste cada agente isoladamente antes de conecta-los. Primeiro o Router: teste com 10 mensagens diferentes e valide a acuracia. Depois o Specialist: teste com tarefas diretas. Por fim o Reviewer: teste com outputs bons e ruins. So integre quando cada peca funcionar sozinha.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar cada agente isolado antes de integrar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar modelo leve no Router, forte no Specialist</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar logging detalhado em cada etapa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir custo total por request (soma de todos os agentes)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Integrar tudo sem testar cada peca individualmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar o mesmo modelo caro em todos os 3 agentes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Reviewer que sempre aprova (validacao sem valor)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar o caso "outro" no Router (mensagens sem classificacao)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.3
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Multiplos agentes</strong> resolvem limitacoes de agente unico: context window, precisao de tool selection e impossibilidade de paralelismo.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">4 padroes de orquestracao</strong>: sequential chain, parallel fan-out, router/dispatcher, hierarchical. Escolha baseado na tarefa.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Roles especializados</strong> (Executor, Analista, Revisor) com system prompts exclusivos e modelos diferentes por funcao.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Comunicacao estruturada</strong>: message passing, shared state ou event bus. Handoff com JSON padronizado e conversation_summary.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Frameworks</strong>: CrewAI (role-based), LangGraph (graph), Swarm (lightweight). Ou construa custom para sistemas simples.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na pratica</strong>: sistema Router + Specialist + Reviewer funcional. Teste isolado, integre depois, metriques tudo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-2.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.2: O que sao Agentes de IA</span>
+      </a>
+      <a href="modulo-4-4.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <span class="text-sm font-medium">Modulo 4.4</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

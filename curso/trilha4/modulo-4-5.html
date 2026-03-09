@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.5 - MCP (Model Context Protocol) | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.5</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.5</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">MCP (Model Context Protocol)</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">O padrao aberto da Anthropic que conecta IA a qualquer fonte de dados e ferramentas externas.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~55</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Avanc</div>
+          <div class="text-xs text-neutral-400">Avancado</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">T+P</div>
+          <div class="text-xs text-neutral-400">Teoria+Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: O que e MCP e Por que Existe -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">O que e MCP e Por que Existe</h2>
+          <p class="text-neutral-400 text-sm mt-1">O padrao aberto da Anthropic para conectar IA a dados e ferramentas</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-amber-400">Model Context Protocol (MCP)</strong> e um padrao aberto criado pela Anthropic em novembro de 2024 para resolver um problema fundamental: cada aplicacao de IA precisava implementar integracoes customizadas com cada fonte de dados e ferramenta. Se voce queria conectar ao GitHub, ao Slack e ao PostgreSQL, precisava de 3 integradores diferentes, cada um com sua propria API, autenticacao e formato de dados.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          MCP e o <strong class="text-amber-400">"USB-C para integracao de IA"</strong>. Assim como USB-C padronizou a conexao entre dispositivos e perifericos, MCP padroniza como aplicacoes de IA se conectam a fontes de dados e ferramentas. Um MCP Server escrito uma vez funciona com qualquer host compativel: Claude Desktop, VS Code, Cursor, sua app customizada, qualquer um.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> O Ecossistema MCP em Numeros
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Nov 2024</div>
+            <p class="text-neutral-400 text-sm">Lancamento publico do MCP pela Anthropic como padrao open-source</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3000+</div>
+            <p class="text-neutral-400 text-sm">MCP Servers criados pela comunidade em menos de 6 meses</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Open Source</div>
+            <p class="text-neutral-400 text-sm">Especificacao aberta: qualquer empresa pode implementar, nao so Anthropic</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3 SDKs</div>
+            <p class="text-neutral-400 text-sm">SDKs oficiais em Python, TypeScript e Java. Comunidade criou Go, Rust e mais</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O Problema que MCP Resolve</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p class="text-red-400 text-xs font-semibold mb-2">Sem MCP: N x M integrações</p>
+              <div class="bg-dark-700 rounded-lg p-4">
+                <p class="text-neutral-300 text-sm mb-2">Cada app precisa de integrador customizado:</p>
+                <ul class="text-neutral-400 text-sm space-y-1">
+                  <li>Claude Desktop + GitHub = integrador 1</li>
+                  <li>Claude Desktop + Slack = integrador 2</li>
+                  <li>VS Code + GitHub = integrador 3</li>
+                  <li>VS Code + Slack = integrador 4</li>
+                  <li>Sua App + GitHub = integrador 5</li>
+                  <li>Sua App + Slack = integrador 6</li>
+                </ul>
+                <p class="text-red-400 text-xs mt-2 font-semibold">3 apps x 2 servicos = 6 integradores</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-emerald-400 text-xs font-semibold mb-2">Com MCP: N + M conectores</p>
+              <div class="bg-dark-700 rounded-lg p-4">
+                <p class="text-neutral-300 text-sm mb-2">Cada servico tem 1 server MCP:</p>
+                <ul class="text-neutral-400 text-sm space-y-1">
+                  <li>MCP Server GitHub (funciona em qualquer host)</li>
+                  <li>MCP Server Slack (funciona em qualquer host)</li>
+                  <li>Claude Desktop (conecta a qualquer server)</li>
+                  <li>VS Code (conecta a qualquer server)</li>
+                  <li>Sua App (conecta a qualquer server)</li>
+                </ul>
+                <p class="text-emerald-400 text-xs mt-2 font-semibold">3 apps + 2 servers = 5 componentes</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">A escala mostra o poder: com 10 apps e 20 servicos, sem MCP voce precisa de 200 integradores. Com MCP, 30 componentes. O ganho e exponencial.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Por que um Protocolo Padronizado?</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Interoperabilidade</p>
+                <p class="text-neutral-400 text-sm">Um MCP Server de PostgreSQL funciona com Claude Desktop, Cursor, Windsurf e qualquer app que implemente o protocolo. Escreve uma vez, conecta em qualquer lugar.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Ecossistema Compartilhado</p>
+                <p class="text-neutral-400 text-sm">Em vez de cada empresa recriar integradores, a comunidade compartilha MCP Servers. O server de GitHub que a Anthropic criou voce usa de graca. O que voce criar, outros usam.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Seguranca e Isolamento</p>
+                <p class="text-neutral-400 text-sm">Cada MCP Server roda como processo isolado com suas proprias permissoes. O server de filesystem so acessa os diretorios que voce autorizar. Principio de menor privilegio built-in.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Vendor-Agnostic</p>
+                <p class="text-neutral-400 text-sm">MCP nao e preso a Anthropic. OpenAI, Google e outros provedores podem (e estao comecando a) suportar. E um padrao aberto, nao um lock-in.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Pense em MCP como HTTP para IA. Assim como HTTP padronizou comunicacao web e permitiu que qualquer browser acesse qualquer site, MCP padroniza integracao de IA e permite que qualquer host conecte a qualquer ferramenta. Se voce sabe criar um API REST, sabe criar um MCP Server.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Verificar se ja existe um MCP Server para seu caso antes de criar um</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Entender a diferenca entre MCP e function calling direto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Acompanhar a especificacao oficial em modelcontextprotocol.io</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Considerar MCP para qualquer integracao que outros possam reutilizar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar integracoes customizadas quando um MCP Server ja resolve</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confundir MCP com API REST (sao coisas diferentes)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar MCP porque "so funciona com Claude" (e open standard)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Tentar entender MCP sem entender function calling primeiro</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: Arquitetura Host/Client/Server -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">Arquitetura Host/Client/Server</h2>
+          <p class="text-neutral-400 text-sm mt-1">Os tres componentes do MCP, como se comunicam e transportes disponiveis</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          A arquitetura do MCP segue um modelo de tres camadas: <strong class="text-amber-400">Host</strong>, <strong class="text-amber-400">Client</strong> e <strong class="text-amber-400">Server</strong>. O Host e a aplicacao principal (como Claude Desktop). O Client e o componente dentro do Host que gerencia conexoes MCP. O Server e o processo externo que expoe capacidades (tools, resources, prompts). A comunicacao entre Client e Server usa <strong class="text-amber-400">JSON-RPC 2.0</strong> como protocolo de mensagens.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Cada Client mantem uma conexao <strong class="text-amber-400">1:1</strong> com um Server especifico. Um Host pode ter multiplos Clients, cada um conectado a um Server diferente. Isso permite que Claude Desktop, por exemplo, esteja simultaneamente conectado ao filesystem, GitHub, PostgreSQL e Slack, cada um em seu proprio Server isolado.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Os 3 Componentes</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-amber-500/10 rounded-lg p-5 border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">Host</div>
+              <p class="text-neutral-300 text-sm mb-3">A aplicacao que o usuario interage diretamente.</p>
+              <ul class="text-neutral-400 text-xs space-y-1">
+                <li>Claude Desktop</li>
+                <li>VS Code / Cursor</li>
+                <li>Sua app SaaS</li>
+                <li>CLI tools</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Cria e gerencia Clients. Controla quais Servers podem conectar e quais capacidades expor ao LLM.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-5 border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">Client</div>
+              <p class="text-neutral-300 text-sm mb-3">Componente interno do Host que gerencia conexao.</p>
+              <ul class="text-neutral-400 text-xs space-y-1">
+                <li>Conexao 1:1 com Server</li>
+                <li>Negocia capacidades</li>
+                <li>Gerencia lifecycle</li>
+                <li>Roda dentro do Host</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Voce raramente implementa Clients: os SDKs ja fornecem. Seu trabalho e configurar quais Servers conectar.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-5 border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">Server</div>
+              <p class="text-neutral-300 text-sm mb-3">Processo externo que expoe capacidades.</p>
+              <ul class="text-neutral-400 text-xs space-y-1">
+                <li>Expoe tools, resources, prompts</li>
+                <li>Roda como subprocess ou remoto</li>
+                <li>Isolado com permissoes proprias</li>
+                <li>Voce vai criar esses!</li>
+              </ul>
+              <p class="text-neutral-500 text-xs mt-3">Onde voce passa a maior parte do tempo: criando Servers que expoe os dados e acoes do seu sistema.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Transportes de Comunicacao</h3>
+          <p class="text-neutral-300 text-sm mb-4">MCP suporta dois transportes principais. A escolha depende de onde o Server roda:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 font-semibold text-sm mb-2">stdio (Standard I/O)</p>
+              <p class="text-neutral-300 text-sm mb-2">O Host lanca o Server como subprocess e comunica via stdin/stdout. Ideal para Servers locais.</p>
+              <ul class="text-neutral-400 text-xs space-y-1">
+                <li>Sem rede, sem portas, sem CORS</li>
+                <li>Seguro por padrao (processo isolado)</li>
+                <li>Startup rapido</li>
+                <li>Usado por Claude Desktop e IDEs</li>
+              </ul>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 font-semibold text-sm mb-2">HTTP + SSE (Streamable HTTP)</p>
+              <p class="text-neutral-300 text-sm mb-2">O Server roda como servico HTTP. Client conecta via rede. Ideal para Servers remotos e cloud.</p>
+              <ul class="text-neutral-400 text-xs space-y-1">
+                <li>Funciona pela rede (remoto)</li>
+                <li>Suporta multiplos Clients simultaneos</li>
+                <li>Requer autenticacao e TLS</li>
+                <li>Ideal para deploy em producao</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Fluxo de Comunicacao (JSON-RPC)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// 1. Client descobre capacidades do Server
+→ { "jsonrpc": "2.0", "method": "initialize",
+    "params": { "capabilities": { "tools": {} } } }
+← { "result": { "capabilities": { "tools": {} },
+    "serverInfo": { "name": "postgres-server" } } }
+
+// 2. Client lista tools disponiveis
+→ { "jsonrpc": "2.0", "method": "tools/list" }
+← { "result": { "tools": [
+    { "name": "query", "description": "Execute SQL query",
+      "inputSchema": { "type": "object", ... } }
+   ] } }
+
+// 3. LLM decide chamar tool, Client executa via Server
+→ { "jsonrpc": "2.0", "method": "tools/call",
+    "params": { "name": "query",
+    "arguments": { "sql": "SELECT * FROM users LIMIT 5" } } }
+← { "result": { "content": [
+    { "type": "text", "text": "[{\"id\":1,...}]" }
+   ] } }</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O protocolo e stateful: primeiro inicializa, depois descobre capacidades, e entao executa chamadas. Todo o fluxo usa JSON-RPC 2.0 padrao.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Comece com stdio. E o transporte mais simples: sem configuracao de rede, sem autenticacao, sem deploy. So funciona. Quando precisar rodar o Server remotamente (ex: em producao na cloud), migre para HTTP+SSE. A logica do Server nao muda, so o transporte.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar stdio para desenvolvimento local e testes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar autenticacao ao usar HTTP transport</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Manter Servers isolados: um Server por responsabilidade</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Entender que Client e parte do SDK, nao algo que voce implementa</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor MCP Server via HTTP sem autenticacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar um mega-Server com tudo (violar separacao de responsabilidades)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Implementar Client/Host do zero (use os SDKs)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar o lifecycle initialize/shutdown do protocolo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: As 3 Capacidades: Resources, Tools, Prompts -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">As 3 Capacidades: Resources, Tools, Prompts</h2>
+          <p class="text-neutral-400 text-sm mt-1">Os tres tipos de capacidade que um MCP Server pode expor</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Um MCP Server pode expor tres tipos de capacidade: <strong class="text-amber-400">Resources</strong> (dados que o LLM pode ler), <strong class="text-amber-400">Tools</strong> (acoes que o LLM pode executar) e <strong class="text-amber-400">Prompts</strong> (templates reutilizaveis que o LLM pode invocar). Cada tipo tem um proposito distinto e regras de quando usar.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A distincao chave: resources sao <strong class="text-amber-400">passivas</strong> (dados para ler), tools sao <strong class="text-amber-400">ativas</strong> (acoes para executar), e prompts sao <strong class="text-amber-400">templates</strong> (fluxos pre-definidos para reutilizar). Um server de GitHub, por exemplo, pode expor repos como resources, "create_issue" como tool, e "summarize_pr" como prompt.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Comparacao das 3 Capacidades</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Aspecto</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Resources</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Tools</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Prompts</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Tipo</td>
+                  <td class="py-2">Dados (read)</td>
+                  <td class="py-2">Acoes (execute)</td>
+                  <td class="py-2">Templates (invoke)</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Controle</td>
+                  <td class="py-2">App ou usuario decide quando ler</td>
+                  <td class="py-2">LLM decide quando chamar</td>
+                  <td class="py-2">Usuario seleciona explicitamente</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Analogia</td>
+                  <td class="py-2">GET request (leitura)</td>
+                  <td class="py-2">POST request (acao)</td>
+                  <td class="py-2">Macro/shortcut</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium text-amber-400">Exemplo</td>
+                  <td class="py-2">Conteudo de um arquivo, registro do DB</td>
+                  <td class="py-2">Criar issue, enviar email</td>
+                  <td class="py-2">"Resuma este PR", "Analise este log"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Resources: Dados para Contexto</h3>
+          <p class="text-neutral-300 text-sm mb-3">Resources sao fontes de dados identificadas por URIs. O Host/LLM pode le-las para obter contexto:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Listar resources disponiveis
+server.listResources(() => ({
+  resources: [
+    {
+      uri: "file:///project/README.md",
+      name: "Project README",
+      mimeType: "text/markdown"
+    },
+    {
+      uri: "db://customers/recent",
+      name: "Recent Customers",
+      mimeType: "application/json"
+    }
+  ]
+}));
+
+// Ler conteudo de um resource
+server.readResource(({ uri }) => {
+  if (uri === "db://customers/recent") {
+    const data = db.customers.findMany({ take: 10 });
+    return {
+      contents: [{
+        uri, mimeType: "application/json",
+        text: JSON.stringify(data)
+      }]
+    };
+  }
+});</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Tools: Acoes Executaveis</h3>
+          <p class="text-neutral-300 text-sm mb-3">Tools sao acoes que o LLM pode chamar. Seguem o mesmo padrao de function calling, mas via protocolo MCP:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>server.tool(
+  "create_issue",
+  "Cria uma issue no repositorio GitHub",
+  {
+    repo: z.string().describe("Owner/repo (ex: 'user/project')"),
+    title: z.string().describe("Titulo da issue"),
+    body: z.string().optional().describe("Descricao detalhada"),
+    labels: z.array(z.string()).optional()
+      .describe("Labels para classificar")
+  },
+  async ({ repo, title, body, labels }) => {
+    const issue = await github.issues.create({
+      owner: repo.split("/")[0],
+      repo: repo.split("/")[1],
+      title, body, labels
+    });
+    return {
+      content: [{
+        type: "text",
+        text: `Issue #${issue.number} criada: ${issue.html_url}`
+      }]
+    };
+  }
+);</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Prompts: Templates Reutilizaveis</h3>
+          <p class="text-neutral-300 text-sm mb-3">Prompts sao templates parametrizados que o usuario pode invocar. Ideais para fluxos complexos e repetitivos:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>server.prompt(
+  "review_code",
+  "Revisa codigo e sugere melhorias de qualidade",
+  [
+    { name: "language", description: "Linguagem do codigo",
+      required: true },
+    { name: "focus", description: "Foco da revisao (security, perf, style)",
+      required: false }
+  ],
+  ({ language, focus = "general" }) => ({
+    messages: [{
+      role: "user",
+      content: {
+        type: "text",
+        text: `Revise este codigo ${language} com foco em ${focus}. ` +
+          `Aponte: bugs, vulnerabilidades de seguranca, ` +
+          `problemas de performance, e melhorias de legibilidade. ` +
+          `Formate como checklist com severidade (alta/media/baixa).`
+      }
+    }]
+  })
+);</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Prompts nao executam codigo. Geram uma sequencia de mensagens que o Host envia ao LLM. Sao como macros: encapsulam um fluxo complexo num unico comando.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Se esta na duvida entre resource e tool: <strong class="text-amber-400">resource = ler</strong>, <strong class="text-amber-400">tool = agir</strong>. Se o LLM so precisa ver o dado (ex: conteudo de arquivo), use resource. Se precisa mudar algo no mundo (ex: criar issue, enviar email), use tool. Prompts sao para quando voce tem um fluxo complexo que quer expor como atalho.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar resources para dados que o LLM precisa como contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar tools para acoes com side effects no mundo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Criar prompts para fluxos que usuarios repetem frequentemente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Dar nomes e descricoes claras em todas as capacidades</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor acoes destrutivas como resources (resources sao read-only)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar tools para leitura pura (use resources)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Prompts com logica de negocio complexa (prompts sao templates)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Misturar as 3 capacidades sem criterio</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Criando um MCP Server -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">Criando um MCP Server</h2>
+          <p class="text-neutral-400 text-sm mt-1">Passo a passo: init, tools, handlers, transport e configuracao</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Criar um MCP Server e mais simples do que parece. Os SDKs oficiais cuidam de todo o protocolo, JSON-RPC, negociacao de capacidades e transporte. Voce so precisa definir suas tools/resources e implementar os handlers. O resultado e um processo que qualquer host MCP compativel pode usar.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Vamos construir um server passo a passo em <strong class="text-amber-400">TypeScript</strong> e <strong class="text-amber-400">Python</strong>, cobrindo: setup do projeto, definicao de tools, implementacao de handlers, configuracao de transporte e teste local com Claude Desktop.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Passo 1: Setup do Projeto (TypeScript)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre># Criar projeto
+mkdir meu-mcp-server && cd meu-mcp-server
+npm init -y
+npm install @modelcontextprotocol/sdk zod
+npm install -D typescript @types/node
+
+# tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "outDir": "./dist",
+    "strict": true
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Passo 2: Definir Server + Tools (TypeScript)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// src/index.ts
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport }
+  from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+// 1. Criar instancia do server
+const server = new McpServer({
+  name: "saas-analytics",
+  version: "1.0.0"
+});
+
+// 2. Registrar tool: buscar metricas
+server.tool(
+  "get_metrics",
+  "Busca metricas de negocio do SaaS: MRR, churn, " +
+  "usuarios ativos. Use quando o usuario pedir dados " +
+  "de performance ou KPIs.",
+  {
+    metric: z.enum(["mrr", "churn", "active_users", "revenue"])
+      .describe("Tipo de metrica"),
+    period: z.enum(["today", "last_7_days", "last_30_days", "last_90_days"])
+      .default("last_30_days")
+      .describe("Periodo de analise")
+  },
+  async ({ metric, period }) => {
+    // Sua logica de negocio aqui
+    const data = await fetchMetrics(metric, period);
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify(data, null, 2)
+      }]
+    };
+  }
+);
+
+// 3. Registrar tool: executar acao
+server.tool(
+  "send_report",
+  "Envia relatorio por email para stakeholders. " +
+  "Use quando o usuario pedir para compartilhar dados.",
+  {
+    to: z.string().email().describe("Email do destinatario"),
+    subject: z.string().describe("Assunto do email"),
+    metrics: z.array(z.string()).describe("Metricas para incluir")
+  },
+  async ({ to, subject, metrics }) => {
+    await sendEmail(to, subject, metrics);
+    return {
+      content: [{
+        type: "text",
+        text: `Relatorio enviado para ${to} com sucesso.`
+      }]
+    };
+  }
+);
+
+// 4. Conectar transporte e iniciar
+const transport = new StdioServerTransport();
+await server.connect(transport);</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Passo 2b: Versao Python</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre># pip install mcp[cli]
+
+from mcp.server.fastmcp import FastMCP
+
+# 1. Criar instancia
+mcp = FastMCP("saas-analytics")
+
+# 2. Registrar tool com decorator
+@mcp.tool()
+def get_metrics(
+    metric: str,   # mrr, churn, active_users, revenue
+    period: str = "last_30_days"
+) -> dict:
+    """Busca metricas de negocio do SaaS.
+    Use quando o usuario pedir KPIs ou dados de performance."""
+    data = fetch_metrics(metric, period)
+    return data
+
+@mcp.tool()
+def send_report(
+    to: str,       # Email do destinatario
+    subject: str,  # Assunto
+    metrics: list[str]  # Metricas para incluir
+) -> str:
+    """Envia relatorio por email para stakeholders."""
+    send_email(to, subject, metrics)
+    return f"Relatorio enviado para {to}"
+
+# 3. Registrar resource
+@mcp.resource("db://dashboard/summary")
+def dashboard_summary() -> str:
+    """Resumo atual do dashboard com KPIs principais."""
+    return json.dumps(get_dashboard_data())
+
+# 4. Iniciar com stdio
+if __name__ == "__main__":
+    mcp.run(transport="stdio")</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">A versao Python com FastMCP e ainda mais concisa: decorators <code class="text-amber-400 bg-dark-700 px-1 rounded">@mcp.tool()</code> e <code class="text-amber-400 bg-dark-700 px-1 rounded">@mcp.resource()</code> registram automaticamente com base nos type hints e docstrings.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Passo 3: Configurar no Claude Desktop</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// ~/Library/Application Support/Claude/claude_desktop_config.json
+// ou ~/.config/claude/claude_desktop_config.json (Linux)
+{
+  "mcpServers": {
+    "saas-analytics": {
+      "command": "node",
+      "args": ["/path/to/meu-mcp-server/dist/index.js"],
+      "env": {
+        "DATABASE_URL": "postgresql://localhost:5432/mydb",
+        "SMTP_HOST": "smtp.sendgrid.net"
+      }
+    }
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Reinicie o Claude Desktop. As tools <code class="text-amber-400 bg-dark-700 px-1 rounded">get_metrics</code> e <code class="text-amber-400 bg-dark-700 px-1 rounded">send_report</code> aparecem automaticamente. O Claude decide quando chama-las com base na conversa.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Para debug: use <code class="text-amber-400 bg-dark-700 px-1 rounded">npx @modelcontextprotocol/inspector</code> para testar seu server interativamente sem precisar do Claude Desktop. O Inspector mostra todas as tools/resources, permite chamar manualmente e inspecionar responses. Essencial para desenvolvimento.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com MCP Inspector antes de conectar ao Claude</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar variaveis de ambiente para credenciais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar requests e responses para debug</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Versionar o server e manter changelog</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Hardcodar credenciais no codigo do server</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar error handling nos handlers</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular testes e ir direto para Claude Desktop (dificil debugar)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor dados sensiveis sem controle de acesso</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Conectores Existentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">Conectores Existentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Milhares de MCP Servers prontos: databases, APIs, file systems e mais</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Uma das maiores vantagens do MCP e o <strong class="text-amber-400">ecossistema de Servers prontos</strong>. Em vez de criar um conector do zero para cada servico, voce instala um MCP Server existente e conecta. A Anthropic mantém servers oficiais para os servicos mais comuns, e a comunidade criou milhares de outros.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O <strong class="text-amber-400">MCP Registry</strong> (em modelcontextprotocol.io) e repositorios como <strong class="text-amber-400">awesome-mcp-servers</strong> no GitHub catalogam os servers disponiveis. Antes de criar um server customizado, sempre verifique se ja existe um pronto.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Categorias Principais
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Databases</div>
+            <p class="text-neutral-400 text-sm">PostgreSQL, MySQL, SQLite, MongoDB, Supabase, Redis, Neon, PlanetScale</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Dev Tools</div>
+            <p class="text-neutral-400 text-sm">GitHub, GitLab, Linear, Jira, Sentry, Docker, Kubernetes</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Data & Files</div>
+            <p class="text-neutral-400 text-sm">Filesystem, Google Drive, S3, Notion, Obsidian, Confluence</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Communication</div>
+            <p class="text-neutral-400 text-sm">Slack, Discord, Gmail, Google Calendar, Telegram, WhatsApp</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Servers Oficiais da Anthropic</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Server</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Pacote</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Capacidades</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Filesystem</td>
+                  <td class="py-2 font-mono text-xs">@modelcontextprotocol/server-filesystem</td>
+                  <td class="py-2 text-sm">Ler/escrever/buscar arquivos em diretorios autorizados</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">GitHub</td>
+                  <td class="py-2 font-mono text-xs">@modelcontextprotocol/server-github</td>
+                  <td class="py-2 text-sm">Repos, issues, PRs, branches, code search</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">PostgreSQL</td>
+                  <td class="py-2 font-mono text-xs">@modelcontextprotocol/server-postgres</td>
+                  <td class="py-2 text-sm">Queries SQL, schema inspection, read-only por padrao</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium">Brave Search</td>
+                  <td class="py-2 font-mono text-xs">@modelcontextprotocol/server-brave-search</td>
+                  <td class="py-2 text-sm">Web search e local search via Brave API</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium">Puppeteer</td>
+                  <td class="py-2 font-mono text-xs">@modelcontextprotocol/server-puppeteer</td>
+                  <td class="py-2 text-sm">Browser automation: navegar, screenshot, preencher forms</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Instalacao Rapida</h3>
+          <p class="text-neutral-300 text-sm mb-3">A maioria dos servers funciona com npx sem instalacao previa:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre># Filesystem - acesso a arquivos locais
+npx -y @modelcontextprotocol/server-filesystem /home/user/projetos
+
+# GitHub - acesso a repositorios
+GITHUB_TOKEN=ghp_xxx npx -y @modelcontextprotocol/server-github
+
+# PostgreSQL - acesso a banco de dados
+npx -y @modelcontextprotocol/server-postgres \
+  postgresql://user:pass@localhost:5432/mydb
+
+# Testar qualquer server com o Inspector
+npx @modelcontextprotocol/inspector \
+  npx -y @modelcontextprotocol/server-filesystem /tmp</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Onde Encontrar MCP Servers</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">modelcontextprotocol.io</p>
+                <p class="text-neutral-400 text-sm">Site oficial com documentacao, especificacao e lista de servers mantidos pela Anthropic e parceiros.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">github.com/punkpeye/awesome-mcp-servers</p>
+                <p class="text-neutral-400 text-sm">Lista curada pela comunidade com centenas de servers categorizados. Atualizada frequentemente.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">npm / PyPI</p>
+                <p class="text-neutral-400 text-sm">Busque por "mcp-server" no npm ou "mcp" no PyPI. Muitos servers sao publicados como pacotes.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Smithery.ai</p>
+                <p class="text-neutral-400 text-sm">Marketplace de MCP Servers com instalacao one-click e reviews da comunidade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Antes de instalar um MCP Server da comunidade, verifique: (1) o codigo-fonte no GitHub, (2) numero de stars e ultima atualizacao, (3) quais permissoes ele pede. Um server malicioso com acesso ao filesystem pode ler seus arquivos. Use somente servers de fontes confiaveis ou revise o codigo.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Verificar se existe server pronto antes de criar um</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com Inspector antes de conectar ao Claude</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Ler o README e verificar quais capacidades expoe</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Limitar permissoes (ex: diretorio especifico, read-only)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Instalar servers sem verificar o codigo-fonte</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Dar permissoes amplas demais (ex: filesystem no /)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Conectar muitos servers sem necessidade (overhead + confusao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar servers abandonados (sem updates ha meses)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: MCP Server Custom -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">Exercicio: MCP Server Custom</h2>
+          <p class="text-neutral-400 text-sm mt-1">Construir um server que expoe dados e acoes do seu SaaS</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Neste exercicio voce vai construir um <strong class="text-amber-400">MCP Server completo</strong> que expoe os dados e acoes do seu SaaS. O server vai ter resources (dados para contexto), tools (acoes executaveis) e ser configuravel para conectar com Claude Desktop ou qualquer outro host compativel.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O resultado e um <strong class="text-amber-400">conector padronizado</strong> que qualquer pessoa pode usar para conectar IA ao seu sistema. Voce vai sair com um MCP Server funcional, testado e pronto para deploy.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Entregas do Exercicio</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Resources: Dados do SaaS</p>
+                <p class="text-neutral-400 text-sm">Expor pelo menos 2 resources: um de metricas do dashboard e um de dados de clientes. O LLM pode ler esses dados como contexto antes de responder.</p>
+                <div class="bg-dark-700 rounded-lg p-3 mt-2 text-xs font-mono text-neutral-400">
+                  <code class="text-blue-400">db://dashboard/summary</code> - KPIs atuais<br>
+                  <code class="text-blue-400">db://customers/recent</code> - Ultimos 10 clientes
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Tools: Acoes do SaaS</p>
+                <p class="text-neutral-400 text-sm">Registrar pelo menos 3 tools: buscar dados com filtros, calcular metricas e executar uma acao (enviar notificacao, criar registro). Cada tool com JSON Schema completo.</p>
+                <div class="bg-dark-700 rounded-lg p-3 mt-2 text-xs font-mono text-neutral-400">
+                  <code class="text-amber-400">search_customers</code> | <code class="text-amber-400">get_metrics</code> | <code class="text-amber-400">send_notification</code>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Transporte + Configuracao</p>
+                <p class="text-neutral-400 text-sm">Server funcional com stdio transport. Arquivo de configuracao pronto para Claude Desktop. Credenciais via variaveis de ambiente.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm font-bold flex-shrink-0">4</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Teste + Validacao</p>
+                <p class="text-neutral-400 text-sm">Testar com MCP Inspector: verificar que tools listam corretamente, chamadas retornam dados esperados e erros sao tratados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Estrutura do Projeto</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>meu-saas-mcp-server/
+  src/
+    index.ts             # Entry point + server setup
+    tools/
+      search-customers.ts  # Tool: busca de clientes
+      get-metrics.ts       # Tool: calcular metricas
+      send-notification.ts # Tool: enviar notificacao
+    resources/
+      dashboard.ts         # Resource: dados do dashboard
+      customers.ts         # Resource: dados de clientes
+    db.ts                  # Conexao com banco de dados
+  package.json
+  tsconfig.json
+  claude_desktop_config.json  # Exemplo de config
+  .env.example                # Template de variaveis
+  README.md</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Server inicia sem erros com <code class="text-amber-400 bg-dark-700 px-1 rounded text-xs">node dist/index.js</code></span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>MCP Inspector lista todas as tools e resources</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Tools retornam dados corretos quando chamadas com argumentos validos</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Tools retornam erros estruturados quando chamadas com argumentos invalidos</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Resources retornam dados atualizados do banco</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Credenciais passadas via env vars (nao hardcoded)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Conectado ao Claude Desktop e o Claude usa as tools corretamente</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Bonus: Deploy Remoto</h3>
+          <p class="text-neutral-300 text-sm mb-3">Apos validar localmente, considere deploy do server para acesso remoto:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Docker</div>
+              <p class="text-neutral-400 text-xs">Containerize o server. Dockerfile simples com Node.js. Deploy em qualquer cloud.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Cloudflare Workers</div>
+              <p class="text-neutral-400 text-xs">Deploy serverless com HTTP+SSE transport. Edge locations globais. Free tier generoso.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Railway / Fly.io</div>
+              <p class="text-neutral-400 text-xs">Deploy com um push. Suporte nativo a Node.js e Python. Persistent volumes para SQLite.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use Vibe Coding para criar o server: descreva as tools e resources que quer, os dados que seu SaaS tem, e deixe o LLM gerar a estrutura. Depois itere: ajuste descricoes, melhore error handling, adicione validacoes. Um MCP Server bem feito e uma vantagem competitiva real: seus usuarios podem conectar IA ao seu produto sem sair do workflow deles.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com 1 tool, testar, expandir gradualmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar MCP Inspector como ferramenta principal de dev</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Documentar cada tool/resource com descricoes claras</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Pensar no MCP Server como produto: outros vao usar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar tudo de uma vez sem testar incrementalmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar a documentacao do SDK (muitos gotchas)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor operacoes destrutivas sem rate limiting</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Deployar em producao sem autenticacao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.5
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">MCP</strong> e o "USB-C da IA": padrao aberto que padroniza como apps de IA conectam a dados e ferramentas. Resolve o problema N x M de integracoes.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Host/Client/Server</strong>: Host e sua app, Client gerencia conexao (SDK), Server expoe capacidades. Transportes: stdio (local) ou HTTP+SSE (remoto).</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">3 Capacidades</strong>: Resources (dados para ler), Tools (acoes para executar), Prompts (templates reutilizaveis). Cada uma com proposito distinto.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Criar um Server</strong> e simples: SDK cuida do protocolo. Voce define tools/resources e implementa handlers. Python ou TypeScript.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Ecossistema</strong>: 3000+ servers prontos para databases, APIs, dev tools, comunicacao. Verifique antes de criar do zero.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na pratica</strong>: MCP Server do seu SaaS com resources, tools, teste via Inspector e conexao ao Claude Desktop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-4.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.4: Skills e Tools</span>
+      </a>
+      <a href="modulo-4-6.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <span class="text-sm font-medium">Modulo 4.6</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

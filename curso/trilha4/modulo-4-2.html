@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.2 - O que sao Agentes de IA | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.2</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.2</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">O que sao Agentes de IA</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">De scripts que seguem regras a agentes que tomam decisoes, planejam e usam ferramentas de forma autonoma.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~50</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Inter</div>
+          <div class="text-xs text-neutral-400">Intermediario</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Formato</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: Automacao vs Agentes Inteligentes -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">🤖 Automacao vs Agentes Inteligentes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Scripts seguem regras, agentes tomam decisoes. O espectro da autonomia.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Existe uma diferenca fundamental entre <strong class="text-amber-400">automacao</strong> e <strong class="text-amber-400">agentes de IA</strong>. Um script de automacao e como uma receita de bolo: faca isso, depois aquilo, se der erro pare. Ele nao pensa, nao adapta, nao improvisa. Um agente de IA, por outro lado, e como um estagiario inteligente: voce da o objetivo, e ele decide como chegar la.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O que transforma um chatbot em agente e a <strong class="text-amber-400">autonomia de decisao</strong>. Um chatbot responde perguntas. Um agente percebe que precisa de informacao adicional, busca essa informacao, processa, e so entao responde. A diferenca esta no loop: o agente decide o que fazer a cada passo, nao segue um roteiro pre-definido.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Pense no espectro da autonomia: de um lado, um cron job que roda todo dia as 9h. Do outro, um sistema que monitora metricas, detecta anomalias, investiga a causa raiz, propoe uma correcao e, se autorizado, aplica. A maioria dos agentes uteis esta em algum ponto intermediario desse espectro.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O Espectro da Autonomia</h3>
+          <p class="text-neutral-300 text-sm mb-4">Nem tudo precisa ser um agente. Entender onde cada solucao se encaixa e essencial para nao over-engineer:</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Nivel</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">O que faz</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Exemplo</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Script</td>
+                  <td class="py-2">Executa passos fixos em ordem</td>
+                  <td class="py-2">Cron job que faz backup diario</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Chatbot</td>
+                  <td class="py-2">Responde perguntas com contexto</td>
+                  <td class="py-2">FAQ bot no site da empresa</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Assistente</td>
+                  <td class="py-2">Usa tools quando solicitado</td>
+                  <td class="py-2">ChatGPT com plugins ativados</td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Agente</td>
+                  <td class="py-2">Decide e age autonomamente</td>
+                  <td class="py-2">Claude Code, Devin, Cursor Agent</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium text-amber-400">Multi-agente</td>
+                  <td class="py-2">Agentes coordenados em equipe</td>
+                  <td class="py-2">Sistema com router + executor + reviewer</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Quando um Chatbot vira Agente</h3>
+          <p class="text-neutral-300 text-sm mb-4">A transicao acontece quando o sistema ganha tres capacidades fundamentais:</p>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Raciocinio sobre acoes</p>
+                <p class="text-neutral-400 text-sm">O sistema nao apenas gera texto. Ele avalia qual ferramenta usar, se precisa buscar mais informacao, ou se ja tem o suficiente para responder. Cada passo e uma decisao ativa, nao uma resposta reflexa.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Uso de ferramentas externas</p>
+                <p class="text-neutral-400 text-sm">O agente interage com o mundo real: le arquivos, faz requests HTTP, executa codigo, consulta bancos de dados. Sem tools, e apenas um gerador de texto sofisticado.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Loop de feedback</p>
+                <p class="text-neutral-400 text-sm">O agente observa o resultado de cada acao e ajusta o proximo passo. Se a busca retornou dados insuficientes, busca de novo com termos diferentes. Se o codigo gerado tem erro, corrige e tenta novamente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Nao transforme tudo em agente. Se o problema tem fluxo previsivel e regras claras, um script ou workflow e mais confiavel, mais barato e mais rapido. Agentes brilham quando o problema e ambiguo, o caminho nao e obvio, ou a tarefa requer adaptacao em tempo real. Use a ferramenta certa para o problema certo.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Avaliar se o problema realmente precisa de autonomia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar como assistente e evoluir para agente gradualmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir limites claros do que o agente pode e nao pode fazer</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Manter human-in-the-loop para acoes irreversiveis</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar agente para tarefas que um cron job resolve</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Dar autonomia total sem guardrails de seguranca</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confundir "agente" com "chatbot que usa tools"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar custo: cada decisao autonoma consome tokens</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: O Loop ReAct: Reason + Act -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">🔄 O Loop ReAct: Reason + Act</h2>
+          <p class="text-neutral-400 text-sm mt-1">Think, Plan, Act, Observe, Repeat. Como agentes decidem o que fazer.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O padrao <strong class="text-amber-400">ReAct</strong> (Reasoning + Acting) e o coracao de praticamente todo agente de IA moderno. Publicado em 2022 por pesquisadores de Princeton e Google, ele combina raciocinio em linguagem natural com execucao de acoes em um unico loop. O agente pensa em voz alta, age, observa o resultado, e repete ate resolver o problema.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A inovacao do ReAct nao e complexa: e a ideia de que o LLM pode <strong class="text-amber-400">intercalar pensamento com acao</strong>. Antes do ReAct, ou voce tinha chain-of-thought (pensar sem agir) ou action-only (agir sem pensar). O ReAct unifica os dois, e isso muda tudo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Na pratica, o loop e simples: o agente recebe uma tarefa, raciocina sobre o proximo passo ("Preciso buscar o preco atual do produto"), executa a acao (chama a tool de busca), observa o resultado ("Preco: R$49,90"), raciocina novamente ("Agora preciso comparar com o concorrente"), e continua ate concluir. Cada iteracao e uma chamada ao LLM.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O Ciclo ReAct em 4 Passos</h3>
+          <p class="text-neutral-300 text-sm mb-4">Cada iteracao do loop segue essa sequencia. O agente pode executar quantas iteracoes forem necessarias:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">1. Think</div>
+              <p class="text-neutral-400 text-xs">O LLM raciocina sobre a situacao atual. Avalia o que sabe, o que falta, e qual o proximo passo logico.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">2. Act</div>
+              <p class="text-neutral-400 text-xs">Executa uma acao concreta: chama uma tool, faz uma busca, executa codigo, ou gera output parcial.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">3. Observe</div>
+              <p class="text-neutral-400 text-xs">Recebe o resultado da acao e incorpora ao contexto. Avalia se o resultado e suficiente ou se precisa de mais.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-lg mb-2">4. Repeat</div>
+              <p class="text-neutral-400 text-xs">Decide se o objetivo foi atingido. Se sim, gera resposta final. Se nao, volta ao passo 1 com novo contexto.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">ReAct em Codigo (Pseudocodigo)</h3>
+          <p class="text-neutral-300 text-sm mb-3">A implementacao real e surpreendentemente simples. O core de qualquer agente cabe em ~30 linhas:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>function agentLoop(task, tools, maxIterations = 10) {
+  let context = [{ role: "user", content: task }]
+
+  for (let i = 0; i &lt; maxIterations; i++) {
+    // 1. THINK + ACT: LLM raciocina e decide acao
+    const response = await llm.chat(context, { tools })
+
+    // 2. Se nao chamou tool, e a resposta final
+    if (!response.tool_calls) {
+      return response.content  // Done!
+    }
+
+    // 3. OBSERVE: Executa cada tool e coleta resultado
+    for (const call of response.tool_calls) {
+      const result = await executeTool(call.name, call.args)
+      context.push({ role: "tool", content: result })
+    }
+
+    // 4. REPEAT: Loop continua com novo contexto
+  }
+
+  return "Max iterations reached"
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Esse e o esqueleto. Producao requer error handling, logging, timeout por tool call, e limites de custo. Mas a logica central e essa: loop ate resolver ou atingir o limite.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo Real: Agente de Pesquisa</h3>
+          <p class="text-neutral-300 text-sm mb-3">Veja como um agente de pesquisa resolve "Qual o market cap da Apple hoje?":</p>
+          <div class="space-y-3">
+            <div class="bg-dark-700 rounded-lg p-3 border-l-4 border-amber-500">
+              <p class="text-xs text-amber-400 font-semibold mb-1">Iteracao 1 - Think</p>
+              <p class="text-neutral-300 text-sm">"Preciso do market cap atual da Apple. Vou buscar na web."</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3 border-l-4 border-blue-500">
+              <p class="text-xs text-blue-400 font-semibold mb-1">Iteracao 1 - Act</p>
+              <p class="text-neutral-300 text-sm font-mono text-xs">web_search("Apple market cap 2026")</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3 border-l-4 border-emerald-500">
+              <p class="text-xs text-emerald-400 font-semibold mb-1">Iteracao 1 - Observe</p>
+              <p class="text-neutral-300 text-sm">"Resultado: Apple market cap $3.8T (Marco 2026, fonte: Yahoo Finance)"</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3 border-l-4 border-purple-500">
+              <p class="text-xs text-purple-400 font-semibold mb-1">Iteracao 2 - Think + Respond</p>
+              <p class="text-neutral-300 text-sm">"Tenho a informacao. Market cap da Apple: $3.8 trilhoes (Marco 2026)."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Dados sobre ReAct
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2022</div>
+            <p class="text-neutral-400 text-sm">Paper original ReAct (Yao et al., Princeton + Google Brain)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">94%</div>
+            <p class="text-neutral-400 text-sm">dos frameworks de agentes usam variacao do ReAct como loop principal</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3-15</div>
+            <p class="text-neutral-400 text-sm">iteracoes tipicas para resolver uma tarefa (mediana: 5 iteracoes)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">+34%</div>
+            <p class="text-neutral-400 text-sm">ganho de precisao vs chain-of-thought puro em tarefas com tools</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Sempre defina um <code class="text-amber-400 bg-dark-700 px-1 rounded">maxIterations</code> no loop. Sem limite, um agente confuso pode ficar chamando tools em loop infinito, queimando tokens e dinheiro. Um limite de 10-15 iteracoes cobre 99% dos casos. Se o agente precisa de mais que isso, o problema provavelmente precisa ser decomposto.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar cada passo do loop (thought, action, observation)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir timeout por tool call e por iteracao total</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir o "pensamento" do agente no log para debug</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com tarefas simples antes de escalar complexidade</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Loop sem limite de iteracoes (risco de custo infinito)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar erros de tool call (propagar o erro ao LLM)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Acumular contexto sem limite (estoura a context window)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Assumir que o LLM sempre segue o padrao ReAct corretamente</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Tool Use: Agentes que Usam Ferramentas -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">🔧 Tool Use: Agentes que Usam Ferramentas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Function calling, registro de tools, sandbox de execucao.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          <strong class="text-amber-400">Function calling</strong> (ou tool use) e o mecanismo que permite ao LLM interagir com o mundo externo. Em vez de gerar texto, o modelo retorna uma chamada estruturada a uma funcao previamente registrada, com parametros preenchidos. O sistema host executa a funcao e devolve o resultado ao modelo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O conceito e simples: voce registra tools com nome, descricao e schema de parametros. O LLM le essas descricoes e decide, baseado na conversa, qual tool chamar e com quais argumentos. E como dar a um trabalhador uma caixa de ferramentas e dizer "use o que precisar para resolver o problema".
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          A qualidade da <strong class="text-amber-400">descricao da tool</strong> e o fator mais importante. O LLM decide qual tool usar baseado na descricao, nao no nome. Uma descricao vaga como "busca dados" vai gerar confusao. Uma descricao precisa como "busca registros de clientes por nome, email ou CPF no banco PostgreSQL" guia o modelo corretamente.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Registro de Tool: JSON Schema</h3>
+          <p class="text-neutral-300 text-sm mb-3">Toda tool precisa de um schema que define seus parametros. O LLM usa isso para gerar chamadas validas:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "name": "web_search",
+  "description": "Busca informacoes na web usando Google Search.
+    Retorna titulo, snippet e URL dos 5 primeiros resultados.
+    Use para informacoes atuais que nao estao no seu treinamento.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Termo de busca em linguagem natural"
+      },
+      "num_results": {
+        "type": "number",
+        "description": "Numero de resultados (1-10)",
+        "default": 5
+      },
+      "language": {
+        "type": "string",
+        "enum": ["pt", "en", "es"],
+        "default": "pt"
+      }
+    },
+    "required": ["query"]
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Note como a descricao e especifica: diz o que faz, o que retorna e quando usar. Isso e mais importante que o nome da funcao.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Como o LLM Escolhe a Tool</h3>
+          <p class="text-neutral-300 text-sm mb-4">O processo de selecao de tools pelo modelo segue uma logica interna:</p>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Analise de intencao</p>
+                <p class="text-neutral-400 text-sm">O modelo avalia a mensagem do usuario e identifica que precisa de dados ou acoes externas. Ex: "qual a temperatura agora?" indica necessidade de dados em tempo real.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Match por descricao</p>
+                <p class="text-neutral-400 text-sm">Compara a necessidade com as descricoes das tools disponiveis. Se ha uma tool "busca previsao do tempo por cidade", ela e selecionada. Se nenhuma tool serve, responde com o que sabe.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Preenchimento de parametros</p>
+                <p class="text-neutral-400 text-sm">Extrai os parametros da conversa e preenche o schema. Se falta um parametro obrigatorio, o modelo pode perguntar ao usuario ou inferir do contexto.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Sandbox de Execucao</h3>
+          <p class="text-neutral-300 text-sm mb-3">Tools que executam codigo ou acessam sistema de arquivos precisam rodar em ambiente isolado:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Docker Container</div>
+              <p class="text-neutral-400 text-xs">Executa codigo em container isolado com limites de CPU, memoria e rede. Padrao da industria para code execution.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Permissoes Granulares</div>
+              <p class="text-neutral-400 text-xs">Cada tool tem scope definido: read-only, write limitado a diretorio, sem acesso a rede. Principio do menor privilegio.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Timeout + Kill</div>
+              <p class="text-neutral-400 text-xs">Cada tool call tem limite de tempo. Se exceder, SIGTERM + SIGKILL. Previne loops infinitos e travamentos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Limite o numero de tools a 5-10 por agente. Pesquisas mostram que LLMs perdem precisao na selecao de tools quando ha muitas opcoes. Se precisar de mais, use um router que filtra as tools relevantes antes de passar ao LLM, ou divida em agentes especializados.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Escrever descricoes de tool detalhadas e especificas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Validar parametros de entrada antes de executar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retornar erros estruturados (nao stack traces crus)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar function calling isolado antes de integrar ao loop</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Registrar 20+ tools no mesmo agente (confusao garantida)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Tools sem timeout (podem travar o loop inteiro)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor acesso a banco de dados com permissao de DELETE</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confiar que o LLM sempre gera parametros validos</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Planning e Decomposicao de Tarefas -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">📋 Planning e Decomposicao de Tarefas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Quebrando objetivos complexos em sub-tarefas. Grafos de dependencia.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Tarefas complexas nao sao resolvidas em um unico passo. <strong class="text-amber-400">Planning</strong> e a capacidade do agente de decompor um objetivo grande em sub-tarefas menores, ordenar por dependencia, e executar na sequencia correta. E o que separa um agente que "tenta e erra" de um que "planeja e executa".
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Quando voce pede "crie um landing page com formulario de contato", um agente bom nao sai gerando HTML imediatamente. Ele primeiro decompoe: 1) definir estrutura da pagina, 2) criar HTML/CSS base, 3) implementar formulario, 4) adicionar validacao, 5) testar. Cada passo tem dependencias claras e pode usar tools diferentes.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem duas abordagens: <strong class="text-amber-400">planning upfront</strong> (planeja tudo antes de comecar) e <strong class="text-amber-400">planning incremental</strong> (planeja o proximo passo baseado no resultado do anterior). A maioria dos agentes modernos usa uma combinacao: planeja os passos principais upfront, mas ajusta o plano conforme executa.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Grafo de Dependencia de Tarefas</h3>
+          <p class="text-neutral-300 text-sm mb-4">Em tarefas complexas, nem tudo e sequencial. Algumas sub-tarefas podem rodar em paralelo:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>Tarefa: "Crie um relatorio de mercado sobre IA"
+
+  [1. Definir estrutura]
+        |
+   +---------+---------+
+   |         |         |
+[2a. Pesquisa  [2b. Dados   [2c. Coleta de
+ tendencias]    de mercado]   exemplos]
+   |         |         |
+   +---------+---------+
+        |
+  [3. Compilar relatorio]
+        |
+  [4. Revisar e formatar]
+        |
+  [5. Gerar PDF final]</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Os passos 2a, 2b e 2c sao independentes e podem rodar em paralelo (3 agentes simultaneos). O passo 3 depende dos tres anteriores. Isso e um grafo de dependencia, ou DAG (Directed Acyclic Graph).</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Execucao Sequencial vs Paralela</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-neutral-100 font-medium text-sm mb-3">Sequencial</h4>
+              <div class="space-y-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Cada tarefa espera a anterior terminar</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Simples de implementar e debugar</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Ideal quando cada passo depende do anterior</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Mais lento, mas mais previsivel</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 class="text-neutral-100 font-medium text-sm mb-3">Paralelo</h4>
+              <div class="space-y-3">
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Tarefas independentes rodam ao mesmo tempo</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Requer deteccao de dependencias (DAG)</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Ideal para pesquisa, coleta de dados, batch</p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                  <div>
+                    <p class="text-neutral-400 text-sm">Mais rapido, mas mais complexo de orquestrar</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Prompt de Planning</h3>
+          <p class="text-neutral-300 text-sm mb-3">Um bom prompt de decomposicao de tarefas para o agente inclui instrucoes explicitas:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>Voce e um agente de planejamento. Dada a tarefa abaixo:
+1. Decomponha em sub-tarefas atomicas (cada uma resolvel em 1 acao)
+2. Identifique dependencias entre sub-tarefas
+3. Marque quais podem rodar em paralelo
+4. Estime complexidade de cada uma (baixa/media/alta)
+5. Retorne como JSON com formato:
+
+{
+  "tasks": [
+    {
+      "id": "t1",
+      "description": "...",
+      "depends_on": [],
+      "parallel_group": "A",
+      "complexity": "low",
+      "tools_needed": ["web_search"]
+    }
+  ]
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">O plano nao precisa ser perfeito. Agentes que re-planejam a cada passo (replanning) funcionam melhor do que agentes que seguem um plano rigido do inicio ao fim. Planeje 2-3 passos a frente, execute, avalie, e re-planeje. Isso e mais resiliente a surpresas.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Decompor tarefas em acoes atomicas e verificaveis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Identificar dependencias antes de executar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Paralelizar tarefas independentes quando possivel</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Permitir que o agente ajuste o plano mid-execution</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Planos com 50+ sub-tarefas (perde contexto e foco)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Seguir plano rigido sem avaliar resultados intermediarios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Decompor demais: sub-tarefas triviais geram overhead</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar custos de planning (cada plan e uma chamada LLM)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Agentes em Producao: 42% das Empresas -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">📊 Agentes em Producao: 42% das Empresas</h2>
+          <p class="text-neutral-400 text-sm mt-1">Dados McKinsey sobre adocao. Casos de uso reais em escala.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Agentes de IA nao sao mais conceito de paper academico. Segundo dados da McKinsey (2025/2026), <strong class="text-amber-400">42% das empresas ja tem agentes de IA em producao</strong>, nao apenas em PoC ou piloto. A transicao de "experimentacao" para "operacao" aconteceu mais rapido do que qualquer analista previu.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Os casos de uso que mais crescem sao os que combinam <strong class="text-amber-400">alto volume + decisao repetitiva + necessidade de personalizacao</strong>. Atendimento ao cliente, revisao de codigo, analise de dados, geracao de conteudo. Em todos esses cenarios, o custo de um agente de IA e uma fracao do custo humano equivalente, com disponibilidade 24/7.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O dado mais relevante para quem esta construindo SaaS: empresas estao <strong class="text-amber-400">dispostas a pagar por agentes que funcionam</strong>. A willingness-to-pay por automacao inteligente e alta quando o agente demonstra ROI claro em reducao de tempo, custo ou erro.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Dados de Mercado (2025/2026)
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">42%</div>
+            <p class="text-neutral-400 text-sm">das empresas tem agentes em producao (McKinsey Global Survey)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$4.8B</div>
+            <p class="text-neutral-400 text-sm">mercado global de agentes de IA (2026, estimativa Gartner)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">92%</div>
+            <p class="text-neutral-400 text-sm">dos devs nos EUA usam IA no workflow diario (GitHub Survey)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3.2x</div>
+            <p class="text-neutral-400 text-sm">ROI medio reportado em customer service com agentes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Casos de Uso em Producao</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Customer Service (Tier 1)</p>
+                <p class="text-neutral-400 text-sm">Agentes resolvem 60-80% dos tickets sem escalar para humano. Integram com CRM, base de conhecimento e sistemas de pagamento. Klarna reportou economia de $40M/ano com agentes de atendimento.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Code Review e Code Generation</p>
+                <p class="text-neutral-400 text-sm">Agentes como GitHub Copilot, Cursor Agent e Devin automatizam escrita de codigo, revisao de PRs e refatoracao. 92% dos devs usam alguma forma de IA no desenvolvimento diario.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Data Analysis e Reporting</p>
+                <p class="text-neutral-400 text-sm">Agentes que conectam a bancos de dados, geram queries SQL a partir de perguntas em linguagem natural, criam visualizacoes e compilam relatorios. Reduz tempo de analise de horas para minutos.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-2 h-2 rounded-full bg-amber-400 mt-2 flex-shrink-0"></div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Content Generation</p>
+                <p class="text-neutral-400 text-sm">Agentes que pesquisam, redigem, revisam e publicam conteudo. Integram com CMS, SEO tools e social media. Geracao de artigos, emails de marketing, descricoes de produto em escala.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Desafios em Producao</h3>
+          <p class="text-neutral-300 text-sm mb-4">Rodar agentes em producao e diferente de rodar em demo. Os principais desafios:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Confiabilidade</div>
+              <p class="text-neutral-400 text-xs">LLMs sao probabilisticos. A mesma tarefa pode ter resultados diferentes. Precisa de validacao, retry e fallback para garantir consistencia.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Custo</div>
+              <p class="text-neutral-400 text-xs">Cada iteracao do loop consome tokens. Um agente complexo pode gastar $0.50-$5.00 por tarefa. Precisa de metricas de custo por tarefa e limites.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Latencia</div>
+              <p class="text-neutral-400 text-xs">Cada hop (LLM call + tool execution) adiciona 2-10 segundos. Um agente com 5 iteracoes pode levar 30-60 segundos. UX precisa de streaming e feedback.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2 text-sm">Observabilidade</div>
+              <p class="text-neutral-400 text-xs">Debugar um agente e mais complexo que debugar codigo linear. Precisa de trace logging de cada decisao, tool call e resultado para entender falhas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Comece com o caso de uso mais simples e de maior volume. Customer service tier 1 e o sweet spot: alto volume, respostas padronizadas, ROI facil de medir. Depois de provar valor, expanda para casos mais complexos. Nao comece pelo caso mais dificil.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir ROI concreto: tempo economizado, tickets resolvidos, custo por tarefa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar fallback para humano quando o agente nao resolve</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Monitorar custo por tarefa e definir alertas de budget</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>A/B testar agente vs fluxo anterior para validar ganho</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Lancar agente em producao sem metricas de qualidade</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar edge cases (o que acontece quando o agente "alucina"?)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Substituir humanos completamente sem periodo de shadow mode</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Assumir que o que funciona em demo funciona em producao</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: Seu Primeiro Agente -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">🛠️ Exercicio: Seu Primeiro Agente</h2>
+          <p class="text-neutral-400 text-sm mt-1">Agente ReAct com web search, calculadora e planning.</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Hora de construir. Neste exercicio voce vai criar um <strong class="text-amber-400">agente funcional com loop ReAct</strong>, duas ferramentas (web search e calculadora) e capacidade de planning. O objetivo e ter um agente que recebe uma pergunta complexa, decompoe em passos, usa tools para coletar dados, e entrega uma resposta final estruturada.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Nao e sobre perfeicao. E sobre ter um <strong class="text-amber-400">agente que funciona end-to-end</strong>: recebe input, raciocina, age, observa, e responde. Se funcionar com 2 tools e um loop simples, voce ja entende o padrao o suficiente para construir agentes mais sofisticados.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Especificacao do Agente</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Loop ReAct com maxIterations</p>
+                <p class="text-neutral-400 text-sm">Implemente o loop Think > Act > Observe > Repeat com limite de 10 iteracoes. Log cada passo (thought, action, observation) para debug.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Tool 1: Web Search</p>
+                <p class="text-neutral-400 text-sm">Registre uma tool que busca na web (pode usar SerpAPI, Tavily, ou simular com dados mockados). Retorna titulo, snippet e URL dos resultados.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Tool 2: Calculator</p>
+                <p class="text-neutral-400 text-sm">Registre uma tool que avalia expressoes matematicas. Recebe string como "1500 * 1.15" e retorna o resultado. Use eval seguro ou mathjs.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Planning: Decomposicao de Tarefas</p>
+                <p class="text-neutral-400 text-sm">O agente deve ser capaz de receber uma pergunta complexa (ex: "Quanto custa viajar de SP para Tokyo por 7 dias?") e decompor em sub-tarefas antes de executar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Scaffold do Agente (TypeScript)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const tools = [
+  {
+    name: "web_search",
+    description: "Busca informacoes atuais na web. Use para
+      dados que nao estao no seu treinamento.",
+    input_schema: {
+      type: "object",
+      properties: {
+        query: { type: "string", description: "Termo de busca" }
+      },
+      required: ["query"]
+    }
+  },
+  {
+    name: "calculator",
+    description: "Calcula expressoes matematicas. Recebe
+      expressao como string, retorna resultado numerico.",
+    input_schema: {
+      type: "object",
+      properties: {
+        expression: { type: "string", description: "Ex: 1500 * 1.15" }
+      },
+      required: ["expression"]
+    }
+  }
+];
+
+async function agent(task: string) {
+  const messages = [{ role: "user", content: task }];
+
+  for (let i = 0; i &lt; 10; i++) {
+    const res = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 4096,
+      tools,
+      messages
+    });
+
+    // Check for tool use
+    const toolUse = res.content.find(b =&gt; b.type === "tool_use");
+    if (!toolUse) {
+      return res.content[0].text; // Final answer
+    }
+
+    // Execute tool and continue loop
+    const result = await executeTool(toolUse.name, toolUse.input);
+    messages.push({ role: "assistant", content: res.content });
+    messages.push({
+      role: "user",
+      content: [{ type: "tool_result",
+                   tool_use_id: toolUse.id,
+                   content: result }]
+    });
+
+    console.log(`[Iteration ${i+1}] ${toolUse.name}(${
+      JSON.stringify(toolUse.input)})`);
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Teste seu Agente</h3>
+          <p class="text-neutral-300 text-sm mb-3">Use essas perguntas para validar que o agente funciona corretamente:</p>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>"Qual a populacao do Brasil?" (requer web_search)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>"Quanto e 15% de R$3.200?" (requer calculator)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>"Se o PIB do Brasil e X trilhoes e a populacao e Y milhoes, qual o PIB per capita?" (requer search + calculator)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>"Compare o preco de um iPhone 16 no Brasil vs EUA" (requer multiple searches + calculator)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>O agente para apos maxIterations se nao resolver</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Logs mostram cada iteracao com thought, action e observation</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Se nao tem API key para web search, use dados mockados. O importante e o agente decidir corretamente QUANDO chamar a tool, nao se os dados sao reais. Voce pode substituir a implementacao real depois. O padrao ReAct e o mesmo com dados reais ou mockados.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Comecar com o loop basico e testar com 1 tool</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Adicionar a segunda tool so depois que a primeira funcionar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar cada iteracao para entender o raciocinio do agente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar com perguntas que requerem ambas as tools</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Construir tudo de uma vez (loop + tools + planning)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar eval() diretamente no calculator (XSS risk)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular o logging (impossivel debugar sem logs)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Copiar o scaffold sem entender cada parte</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.2
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Automacao vs Agentes</strong>: scripts seguem regras fixas, agentes tomam decisoes dinamicas usando LLMs como cerebro. O espectro vai de cron job a multiagentes.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">ReAct Loop</strong>: Think > Act > Observe > Repeat e o padrao dominante. 94% dos frameworks usam variacao dele. Simples de implementar, poderoso em pratica.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Tool Use</strong>: function calling permite ao LLM interagir com o mundo. Descricoes detalhadas, schemas tipados e sandbox de execucao sao essenciais.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Planning</strong>: decomposicao de tarefas complexas em sub-tarefas com grafos de dependencia. Execucao sequencial e paralela conforme necessidade.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Em Producao</strong>: 42% das empresas ja usam agentes. Desafios reais: confiabilidade, custo, latencia e observabilidade.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na Pratica</strong>: construa um agente ReAct com 2 tools e loop limitado. Funcional primeiro, sofisticado depois.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-1.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.1: Agentes, MCP e Skills</span>
+      </a>
+      <a href="modulo-4-3.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <span class="text-sm font-medium">Modulo 4.3: Multiagentes e Orquestracao</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

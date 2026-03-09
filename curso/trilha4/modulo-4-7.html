@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.7 - Integrar Agentes (Exercicio Final) | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.7</span>
+      </div>
+      <div class="flex items-center space-x-3 mb-4">
+        <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full">MODULO 4.7</span>
+        <span class="inline-block px-3 py-1 bg-red-500/20 text-red-400 text-xs font-semibold rounded-full">EXERCICIO FINAL</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">Integrar Agentes (Exercicio Final)</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">Exercicio pratico final da Trilha 4: construir um sistema multiagente completo com skills, MCP e memoria funcionando juntos.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Avanc</div>
+          <div class="text-xs text-neutral-400">Avancado</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Prat</div>
+          <div class="text-xs text-neutral-400">Pratica</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Intro banner -->
+    <div class="bg-gradient-to-r from-amber-600/20 via-amber-500/10 to-dark-800 rounded-xl border border-amber-500/40 p-6 mb-12">
+      <p class="text-neutral-300 leading-relaxed text-sm">
+        Este e o <strong class="text-amber-400">exercicio final da Trilha 4</strong>. Tudo que voce aprendeu nos modulos anteriores (agentes, skills, MCP, memoria, orquestracao) converge aqui. O objetivo: construir um sistema multiagente funcional, integrado e demonstravel. Ao completar este exercicio, voce tera um artefato concreto para incluir no seu portfolio e uma base solida para os agentes do seu SaaS.
+      </p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: Revisao: Agentes + Skills + MCP + Memoria -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">Revisao: Agentes + Skills + MCP + Memoria</h2>
+          <p class="text-neutral-400 text-sm mt-1">Recap dos conceitos, diagrama de arquitetura, como as pecas se conectam</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Antes de construir, vamos rever como todos os componentes se encaixam num sistema coerente. Cada peca que voce aprendeu nos modulos 4.1 a 4.6 tem um papel especifico na arquitetura final. O diagrama abaixo mostra o <strong class="text-amber-400">fluxo completo de uma mensagem do usuario</strong> passando por todas as camadas.
+        </p>
+      </div>
+
+      <!-- Architecture diagram -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-amber-400 font-semibold mb-4">Arquitetura Completa do Sistema</h3>
+        <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>                    ┌─────────────────────────┐
+                    │     Usuario (Telegram,   │
+                    │     Web, API)            │
+                    └───────────┬─────────────┘
+                                │
+                                ▼
+                    ┌─────────────────────────┐
+                    │   Router / Dispatcher    │  ← Classifica intencao
+                    │   (LLM leve ou regras)   │    e roteia pro agente certo
+                    └───────────┬─────────────┘
+                                │
+                 ┌──────────────┼──────────────┐
+                 ▼              ▼              ▼
+          ┌────────────┐ ┌────────────┐ ┌────────────┐
+          │  Agent A   │ │  Agent B   │ │  Agent C   │
+          │ (Research) │ │ (Writer)   │ │ (Code)     │
+          │            │ │            │ │            │
+          │ Tools:     │ │ Tools:     │ │ Tools:     │
+          │ - search   │ │ - write    │ │ - exec     │
+          │ - scrape   │ │ - format   │ │ - test     │
+          └──────┬─────┘ └──────┬─────┘ └──────┬─────┘
+                 │              │              │
+                 └──────────────┼──────────────┘
+                                │
+                 ┌──────────────┼──────────────┐
+                 ▼              ▼              ▼
+          ┌────────────┐ ┌────────────┐ ┌────────────┐
+          │ MCP Server │ │  Memory    │ │  Skills    │
+          │ (GitHub,   │ │ (SQLite,   │ │ (JSON      │
+          │  FS, DB)   │ │  Vector)   │ │  Schema)   │
+          └────────────┘ └────────────┘ └────────────┘</pre>
+        </div>
+      </div>
+
+      <!-- Recap cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="text-amber-400 font-semibold mb-2 text-sm">Agentes (4.1 - 4.2)</h4>
+          <p class="text-neutral-400 text-sm">LLM + system prompt + loop ReAct. Cada agente tem um papel, um set de tools e um escopo de atuacao. O orquestrador coordena multiplos agentes.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="text-amber-400 font-semibold mb-2 text-sm">Skills e Tools (4.3 - 4.4)</h4>
+          <p class="text-neutral-400 text-sm">Funcoes com JSON Schema que o LLM pode chamar. Skills sao pacotes de tools + logica. Function calling e o mecanismo de execucao.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="text-amber-400 font-semibold mb-2 text-sm">MCP (4.5)</h4>
+          <p class="text-neutral-400 text-sm">Protocolo padrao para conectar agentes a dados e ferramentas externas. Host/Client/Server. Resources, tools e prompts expostos de forma uniforme.</p>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="text-amber-400 font-semibold mb-2 text-sm">Memoria (4.6)</h4>
+          <p class="text-neutral-400 text-sm">Short/long-term, episodica, semantica. SQLite ou vector store. Compactacao de conversas longas. Isolamento por tenant. Handoff estruturado.</p>
+        </div>
+      </div>
+
+      <!-- Dica box -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Se algum conceito nao esta claro, volte ao modulo correspondente antes de prosseguir. Este exercicio integra tudo. Tentar implementar sem entender os fundamentos vai gerar frustacao. Dedicar 10 minutos revisando agora economiza 1 hora debugando depois.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: Definir Agentes do seu SaaS -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">Definir Agentes do seu SaaS</h2>
+          <p class="text-neutral-400 text-sm mt-1">Escolha 2-3 agentes, defina roles, tools, memoria e protocolo de comunicacao</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O primeiro passo e decidir <strong class="text-amber-400">quais agentes seu SaaS precisa</strong>. Nao tente fazer tudo de uma vez. Escolha 2-3 agentes que cobrem as funcoes mais criticas do seu produto. Cada agente precisa de um papel claro, um set de tools definido, estrategia de memoria e um protocolo de comunicacao com os outros agentes.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Template de Definicao de Agente</h3>
+          <p class="text-neutral-300 text-sm mb-4">Preencha este template para cada agente do seu sistema. Seja especifico: quanto mais claro o papel, melhor o agente funciona.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Definicao de um agente
+interface AgentDefinition {
+  id: string              // Ex: 'research-agent'
+  name: string            // Ex: 'Agente de Pesquisa'
+  role: string            // 1 frase descrevendo o que ele faz
+  model: string           // Ex: 'claude-sonnet-4-20250514', 'gpt-4o', 'qwen2.5:14b'
+
+  systemPrompt: string    // Prompt que define personalidade e restricoes
+
+  tools: ToolDefinition[] // Quais tools esse agente pode usar
+  mcpServers: string[]    // Quais MCP servers tem acesso
+
+  memory: {
+    shortTerm: boolean    // Mantem historico da conversa atual?
+    longTerm: boolean     // Persiste preferencias entre sessoes?
+    knowledge: boolean    // Acessa knowledge base?
+  }
+
+  communication: {
+    canReceiveFrom: string[]  // Quais agentes podem delegar pra ele
+    canDelegateTo: string[]   // Pra quais agentes ele pode delegar
+    handoffFormat: 'structured' | 'summary' | 'full'
+  }
+
+  constraints: {
+    maxIterations: number   // Limite do loop ReAct
+    timeout: number         // Timeout em ms
+    requiresApproval: boolean // Precisa de confirmacao humana?
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo: 3 Agentes para SaaS de Content</h3>
+          <div class="space-y-4">
+            <div class="bg-gradient-to-r from-amber-900/20 to-dark-700 rounded-lg p-4 border border-amber-500/20">
+              <div class="flex items-center space-x-2 mb-2">
+                <span class="text-amber-400 font-bold text-sm">Agent 1:</span>
+                <span class="text-neutral-100 font-semibold text-sm">Research Agent</span>
+              </div>
+              <p class="text-neutral-400 text-sm mb-2">Pesquisa informacoes na web, coleta dados, analisa concorrentes. Usa tools de web search e scraping.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">web_search</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">scrape_url</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">analyze_data</span>
+                <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded">Modelo: GPT-4o-mini (rapido, barato)</span>
+              </div>
+            </div>
+            <div class="bg-gradient-to-r from-amber-900/20 to-dark-700 rounded-lg p-4 border border-amber-500/20">
+              <div class="flex items-center space-x-2 mb-2">
+                <span class="text-amber-400 font-bold text-sm">Agent 2:</span>
+                <span class="text-neutral-100 font-semibold text-sm">Writer Agent</span>
+              </div>
+              <p class="text-neutral-400 text-sm mb-2">Gera conteudo baseado nos dados da pesquisa. Escreve artigos, posts, emails. Acessa memoria de preferencias de tom e estilo.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">write_file</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">format_markdown</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">check_grammar</span>
+                <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded">Modelo: Claude Sonnet (criativo, preciso)</span>
+              </div>
+            </div>
+            <div class="bg-gradient-to-r from-amber-900/20 to-dark-700 rounded-lg p-4 border border-amber-500/20">
+              <div class="flex items-center space-x-2 mb-2">
+                <span class="text-amber-400 font-bold text-sm">Agent 3:</span>
+                <span class="text-neutral-100 font-semibold text-sm">Review Agent</span>
+              </div>
+              <p class="text-neutral-400 text-sm mb-2">Revisa output do Writer. Checa fatos, consistencia, tom. Aprova ou devolve com feedback especifico.</p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">fact_check</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">score_quality</span>
+                <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded">suggest_edits</span>
+                <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded">Modelo: GPT-4o (bom em avaliacao)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir cada agente com uma responsabilidade unica e clara</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Escolher modelos diferentes por custo e capacidade de cada role</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Documentar o fluxo de comunicacao entre agentes antes de codar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar mais de 3 agentes no primeiro prototipo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Agentes com responsabilidades sobrepostas (ambiguidade no routing)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar o mesmo modelo caro para todos os agentes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Implementar Router/Dispatcher -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">Implementar Router/Dispatcher</h2>
+          <p class="text-neutral-400 text-sm mt-1">Receber input, classificar intencao, despachar para o agente correto</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          O Router e o <strong class="text-amber-400">cerebro do sistema</strong>: recebe a mensagem do usuario, decide qual agente deve processar e despacha com o contexto correto. Pode ser tao simples quanto keywords (se contem "pesquisa" vai pro Research Agent) ou tao sofisticado quanto um LLM classifier. A abordagem certa depende da variedade de inputs que seu SaaS recebe.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 1: Router por Regras (Simples)</h3>
+          <p class="text-neutral-300 text-sm mb-4">Rapido, previsivel, sem custo de tokens. Ideal para comeco e quando as categorias sao bem definidas.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>function routeMessage(message: string): string {
+  const lower = message.toLowerCase()
+
+  // Comandos explicitos (maior prioridade)
+  if (lower.startsWith('/research')) return 'research-agent'
+  if (lower.startsWith('/write'))    return 'writer-agent'
+  if (lower.startsWith('/review'))   return 'review-agent'
+
+  // Keywords
+  const researchKeywords = ['pesquise', 'busque', 'encontre', 'dados sobre']
+  const writeKeywords = ['escreva', 'crie', 'gere', 'redija', 'artigo']
+  const reviewKeywords = ['revise', 'avalie', 'corrija', 'feedback']
+
+  if (researchKeywords.some(k => lower.includes(k))) return 'research-agent'
+  if (writeKeywords.some(k => lower.includes(k)))    return 'writer-agent'
+  if (reviewKeywords.some(k => lower.includes(k)))   return 'review-agent'
+
+  // Fallback: agente padrao
+  return 'writer-agent'
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 2: Router com LLM Classifier</h3>
+          <p class="text-neutral-300 text-sm mb-4">Mais flexivel, entende nuances, nao depende de keywords exatas. Custa tokens mas classifica melhor. Use um modelo leve e rapido.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function routeWithLLM(message: string): Promise&lt;string&gt; {
+  const classification = await llm.chat({
+    model: 'qwen2.5:14b',  // Modelo local, rapido, gratis
+    messages: [{
+      role: 'system',
+      content: `Classifique a mensagem do usuario em UMA das categorias:
+- research: usuario quer encontrar informacoes, dados, analises
+- write: usuario quer criar conteudo, texto, documentacao
+- review: usuario quer avaliar, corrigir ou melhorar algo existente
+
+Responda APENAS com o nome da categoria, nada mais.`
+    }, {
+      role: 'user',
+      content: message
+    }],
+    temperature: 0  // Deterministico
+  })
+
+  const agentMap: Record&lt;string, string&gt; = {
+    'research': 'research-agent',
+    'write': 'writer-agent',
+    'review': 'review-agent'
+  }
+
+  const category = classification.trim().toLowerCase()
+  return agentMap[category] || 'writer-agent'  // Fallback
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 3: Hibrida (Recomendada)</h3>
+          <p class="text-neutral-300 text-sm mb-4">Comandos explicitos primeiro (sem custo), LLM classifier para mensagens ambiguas. O melhor dos dois mundos.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function routeHybrid(message: string): Promise&lt;string&gt; {
+  // 1. Comandos explicitos (zero custo, alta confianca)
+  if (message.startsWith('/')) {
+    const command = message.split(' ')[0].toLowerCase()
+    const commandMap: Record&lt;string, string&gt; = {
+      '/research': 'research-agent',
+      '/write': 'writer-agent',
+      '/review': 'review-agent'
+    }
+    if (commandMap[command]) return commandMap[command]
+  }
+
+  // 2. Keywords de alta confianca
+  const rulesResult = routeByKeywords(message)
+  if (rulesResult.confidence > 0.8) return rulesResult.agent
+
+  // 3. LLM classifier para casos ambiguos
+  return routeWithLLM(message)
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Logue cada decisao de routing: qual mensagem, qual agente foi escolhido, qual metodo decidiu (regra, keyword ou LLM). Isso permite analisar depois onde o router erra e melhorar. Um CSV simples com timestamp, mensagem, agente_escolhido, metodo ja e suficiente.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Sempre ter um fallback agent para mensagens nao classificaveis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar o router com 20+ mensagens variadas antes de integrar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar temperature 0 no LLM classifier para respostas deterministicas</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar Claude Opus para classificacao (caro e lento para isso)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Router que retorna erro em vez de fallback</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Classificacao com multiplas categorias possiveis (sem desempate)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Conectar Skills e MCP Servers -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">Conectar Skills e MCP Servers</h2>
+          <p class="text-neutral-400 text-sm mt-1">Wirar skills dos modulos anteriores, conectar MCP, testar tool calling end-to-end</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Com agentes definidos e router funcionando, agora voce precisa <strong class="text-amber-400">conectar as ferramentas reais</strong>. As skills que voce criou no modulo 4.4 e o MCP Server do modulo 4.5 precisam ser registrados nos agentes corretos. O objetivo: quando o LLM decide chamar uma tool, a execucao acontece de verdade e o resultado volta pro agente.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Registrar Tools nos Agentes</h3>
+          <p class="text-neutral-300 text-sm mb-4">Cada agente recebe apenas as tools que faz sentido para seu papel. Nao registre todas as tools em todos os agentes.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Registro de tools por agente
+const agents = {
+  'research-agent': {
+    model: 'gpt-4o-mini',
+    systemPrompt: researchPrompt,
+    tools: [
+      webSearchTool,      // Busca na web
+      scrapeUrlTool,      // Extrai conteudo de URL
+      analyzeDataTool     // Analisa dados coletados
+    ]
+  },
+  'writer-agent': {
+    model: 'claude-sonnet-4-20250514',
+    systemPrompt: writerPrompt,
+    tools: [
+      writeFileTool,      // Escreve arquivo no filesystem
+      formatMarkdownTool, // Formata em markdown
+      readFileTool        // Le arquivo existente (via MCP)
+    ]
+  },
+  'review-agent': {
+    model: 'gpt-4o',
+    systemPrompt: reviewPrompt,
+    tools: [
+      factCheckTool,      // Verifica fatos online
+      scoreQualityTool,   // Da nota de qualidade
+      suggestEditsTool    // Sugere edicoes especificas
+    ]
+  }
+}
+
+// Executar agente com suas tools
+async function runAgent(agentId: string, input: string) {
+  const agent = agents[agentId]
+  const response = await llm.chat({
+    model: agent.model,
+    messages: [
+      { role: 'system', content: agent.systemPrompt },
+      { role: 'user', content: input }
+    ],
+    tools: agent.tools.map(t => t.schema)  // JSON Schemas
+  })
+
+  // Se o LLM pediu tool call, executar
+  if (response.tool_calls) {
+    for (const call of response.tool_calls) {
+      const tool = agent.tools.find(t => t.name === call.function.name)
+      const result = await tool.execute(call.function.arguments)
+      // Retornar resultado ao LLM para continuar
+    }
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Conectar MCP Servers</h3>
+          <p class="text-neutral-300 text-sm mb-4">Os MCP Servers rodam como processos separados. Seu agente se conecta via Client e usa as tools/resources expostas pelo Server.</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>import { Client } from '@modelcontextprotocol/sdk/client/index.js'
+import { StdioClientTransport } from
+  '@modelcontextprotocol/sdk/client/stdio.js'
+
+// Conectar ao MCP Server de filesystem
+const transport = new StdioClientTransport({
+  command: 'npx',
+  args: ['-y', '@modelcontextprotocol/server-filesystem',
+         '/home/user/projetos']
+})
+
+const mcpClient = new Client({ name: 'my-saas', version: '1.0' })
+await mcpClient.connect(transport)
+
+// Listar tools disponiveis
+const { tools } = await mcpClient.listTools()
+console.log('MCP tools:', tools.map(t => t.name))
+// ['read_file', 'write_file', 'list_directory', ...]
+
+// Usar uma tool do MCP
+const result = await mcpClient.callTool({
+  name: 'read_file',
+  arguments: { path: '/home/user/projetos/meu-saas/README.md' }
+})
+
+// Combinar tools locais + MCP tools no agente
+const allTools = [...localTools, ...mcpTools]</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Teste Isolado de Tool Calling</h3>
+          <p class="text-neutral-300 text-sm mb-3">Antes de integrar tudo, teste cada tool individualmente. Crie um script de teste simples:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// test-tools.ts - Teste individual de cada tool
+async function testTools() {
+  console.log('=== Testando web_search ===')
+  const searchResult = await webSearchTool.execute({
+    query: 'MCP Model Context Protocol'
+  })
+  console.log('Resultado:', searchResult.slice(0, 200))
+  assert(searchResult.length > 0, 'web_search deve retornar resultados')
+
+  console.log('=== Testando write_file (MCP) ===')
+  const writeResult = await mcpClient.callTool({
+    name: 'write_file',
+    arguments: {
+      path: '/tmp/test-output.md',
+      content: '# Teste\nConteudo de teste.'
+    }
+  })
+  assert(writeResult.content, 'write_file deve confirmar escrita')
+
+  console.log('=== Testando score_quality ===')
+  const scoreResult = await scoreQualityTool.execute({
+    text: 'Este e um artigo de teste sobre inteligencia artificial.'
+  })
+  assert(scoreResult.score >= 0 && scoreResult.score <= 10)
+
+  console.log('Todos os testes passaram!')
+}
+
+testTools().catch(console.error)</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Se uma tool falha no teste isolado, nao integre no agente. Debugar uma tool dentro de um loop ReAct multiagente e 10x mais dificil do que debugar isolada. Cada tool deve ter um teste unitario que rode em menos de 5 segundos.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar cada tool isolada antes de registrar no agente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Registrar apenas tools relevantes em cada agente (principio do minimo privilegio)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Tratar erros de tool execution gracefully (nao crashar o agente)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Registrar 10+ tools num unico agente (LLM confunde)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Tools que modificam dados sem confirmacao em producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular teste do MCP Server (problemas de conexao sao comuns)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Testar Fluxo Completo -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">Testar Fluxo Completo</h2>
+          <p class="text-neutral-400 text-sm mt-1">End-to-end: mensagem entra, router classifica, agente executa, memoria atualiza, resposta sai</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Agora que cada peca funciona isolada, e hora de testar o <strong class="text-amber-400">fluxo completo end-to-end</strong>. Uma mensagem do usuario entra, passa pelo router, chega no agente correto, o agente usa tools, a memoria e atualizada, e a resposta volta. Este e o momento da verdade: tudo precisa funcionar junto, na ordem certa, sem perder dados no caminho.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">O Fluxo Completo</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-6 gap-2 mb-4">
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">1. Input</div>
+              <p class="text-neutral-400 text-xs">Usuario envia mensagem</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">2. Route</div>
+              <p class="text-neutral-400 text-xs">Router classifica e despacha</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">3. Execute</div>
+              <p class="text-neutral-400 text-xs">Agente processa com tools</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">4. Memory</div>
+              <p class="text-neutral-400 text-xs">Atualiza memoria</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">5. Handoff</div>
+              <p class="text-neutral-400 text-xs">Se multi-step, passa pro proximo agente</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-xs mb-1">6. Response</div>
+              <p class="text-neutral-400 text-xs">Resposta final ao usuario</p>
+            </div>
+          </div>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>async function processMessage(userId: string, message: string) {
+  const startTime = Date.now()
+  const memory = new MemoryManager(db, userId)
+
+  // 1. Carregar contexto do usuario
+  const context = await memory.loadForPrompt()
+
+  // 2. Classificar e rotear
+  const agentId = await routeHybrid(message)
+  console.log(`[ROUTE] "${message}" -> ${agentId}`)
+
+  // 3. Executar agente com tools + contexto
+  const agent = agents[agentId]
+  const response = await runAgentLoop(agent, message, context)
+  console.log(`[EXECUTE] ${agentId} completed in ${Date.now()-startTime}ms`)
+
+  // 4. Atualizar memoria
+  await memory.saveMessages([
+    { role: 'user', content: message },
+    { role: 'assistant', content: response.text }
+  ])
+
+  // 5. Extrair fatos para long-term memory
+  const facts = await memory.extractFacts([
+    { role: 'user', content: message },
+    { role: 'assistant', content: response.text }
+  ])
+  if (facts.length > 0) {
+    for (const fact of facts) {
+      await memory.addKnowledge(fact.content, fact.type)
+    }
+  }
+
+  // 6. Compactar se necessario
+  await memory.compactIfNeeded()
+
+  // 7. Retornar resposta
+  console.log(`[DONE] Total: ${Date.now()-startTime}ms, ` +
+    `tokens: ${response.tokensUsed}`)
+  return response.text
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Cenarios de Teste</h3>
+          <p class="text-neutral-300 text-sm mb-4">Teste estes cenarios sistematicamente. Cada um valida uma parte diferente do sistema.</p>
+          <div class="space-y-3">
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 text-sm font-semibold mb-1">Cenario 1: Routing correto</p>
+              <p class="text-neutral-400 text-sm">Envie 10 mensagens diferentes e verifique que cada uma foi pro agente correto. Inclua casos ambiguos.</p>
+              <p class="text-neutral-500 text-xs mt-1 italic">"Pesquise tendencias de SaaS em 2026" -> research-agent? "Me ajude a escrever um post" -> writer-agent?</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 text-sm font-semibold mb-1">Cenario 2: Tool execution</p>
+              <p class="text-neutral-400 text-sm">Envie mensagem que force o agente a usar uma tool. Verifique que a tool foi chamada e o resultado integrado na resposta.</p>
+              <p class="text-neutral-500 text-xs mt-1 italic">"Pesquise e salve os resultados em /tmp/pesquisa.md" -> web_search + write_file</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 text-sm font-semibold mb-1">Cenario 3: Memoria persiste</p>
+              <p class="text-neutral-400 text-sm">Diga sua preferencia na sessao 1, feche, abra sessao 2 e verifique que o agente lembra.</p>
+              <p class="text-neutral-500 text-xs mt-1 italic">Sessao 1: "Prefiro respostas curtas" | Sessao 2: "Me explique MCP" -> resposta deve ser curta</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 text-sm font-semibold mb-1">Cenario 4: Handoff entre agentes</p>
+              <p class="text-neutral-400 text-sm">Envie tarefa que requer 2 agentes em sequencia. Verifique que o contexto foi passado corretamente.</p>
+              <p class="text-neutral-500 text-xs mt-1 italic">"Pesquise sobre MCP e escreva um artigo" -> research-agent passa resultados pro writer-agent</p>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-4">
+              <p class="text-amber-400 text-sm font-semibold mb-1">Cenario 5: Isolamento multi-tenant</p>
+              <p class="text-neutral-400 text-sm">Envie mensagens como 2 usuarios diferentes. Verifique que memorias nao vazam entre eles.</p>
+              <p class="text-neutral-500 text-xs mt-1 italic">User A: "Sou dev Python" | User B: "Quais sao minhas preferencias?" -> nao deve mencionar Python</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning box -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-red-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">⚠️</span> Debugging Multiagentes
+        </h3>
+        <p class="text-neutral-300 text-sm">Quando algo falha num sistema multiagente, o bug pode estar em qualquer camada: router, agente, tool, memoria ou handoff. <strong class="text-red-400">Logue tudo</strong>: cada decisao do router, cada tool call, cada handoff, cada escrita de memoria. Sem logs, voce vai passar horas tentando reproduzir problemas intermitentes.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar cada cenario individualmente antes de combiná-los</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Logar tempo de execucao de cada etapa (router, agent, tools)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir cenario de erro (tool falha, agente timeout)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Medir custo total por request (tokens de todas as chamadas)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Testar so o "happy path" (cenarios de erro sao onde bugs vivem)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar latencia acumulada (5 chamadas de LLM = 10-30 segundos)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Declarar "funciona" apos 1 teste (teste com pelo menos 10 inputs variados)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Esquecer de testar isolamento entre usuarios</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: Demo de Agentes Integrados -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">Exercicio: Demo de Agentes Integrados</h2>
+          <p class="text-neutral-400 text-sm mt-1">Full working demo: 2+ agentes, 3+ skills, MCP conectado, memoria persistindo</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Este e o <strong class="text-amber-400">entregavel final da Trilha 4</strong>. Construa um sistema multiagente funcional e grave um walkthrough demonstrando que tudo funciona. Nao precisa ser perfeito. Precisa funcionar end-to-end: usuario envia mensagem, sistema processa com agentes, tools e memoria, e retorna uma resposta util.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O walkthrough e importante porque te forca a explicar o que construiu. Se voce nao consegue explicar como funciona, provavelmente nao entendeu o suficiente. A gravacao pode ser um Loom de 5 minutos ou ate um video de terminal com <code class="text-amber-400 bg-dark-700 px-1 rounded">asciinema</code>.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">Requisitos Minimos da Demo</h3>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">2+ Agentes com roles distintos</p>
+                <p class="text-neutral-400 text-sm">Cada agente com system prompt especifico, model definido e set de tools proprio. Demonstre que cada um faz algo diferente e complementar.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">3+ Skills funcionais</p>
+                <p class="text-neutral-400 text-sm">Pelo menos 3 tools com JSON Schema registradas e funcionando via function calling. Mostre o LLM decidindo chamar a tool e o resultado sendo usado.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">MCP Server conectado</p>
+                <p class="text-neutral-400 text-sm">Pelo menos 1 MCP Server rodando e sendo usado por um agente. Mostre o agente lendo ou escrevendo via MCP (filesystem, GitHub ou outro).</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Memoria persistindo entre sessoes</p>
+                <p class="text-neutral-400 text-sm">Demonstre: diga uma preferencia na sessao 1, feche, abra sessao 2, e o agente lembra. Pode ser SQLite, markdown ou qualquer storage.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">5</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Router funcional</p>
+                <p class="text-neutral-400 text-sm">Mostre mensagens diferentes sendo roteadas para agentes diferentes. Demonstre que o router classifica corretamente pelo menos 3 tipos de input.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">6</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Walkthrough gravado</p>
+                <p class="text-neutral-400 text-sm">Video de 3-5 minutos mostrando o sistema em acao. Explique a arquitetura brevemente e demonstre cada feature. Loom, asciinema ou screen recording.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Estrutura do Projeto Final</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>meu-saas-agentes/
+  src/
+    agents/
+      research.ts        // Agente de pesquisa + tools
+      writer.ts          // Agente de escrita + tools
+      review.ts          // Agente de revisao + tools (opcional)
+    skills/
+      web-search.ts      // Tool: busca web
+      file-ops.ts        // Tool: operacoes de arquivo
+      data-analysis.ts   // Tool: analise de dados
+    memory/
+      manager.ts         // MemoryManager unificado
+      conversation.ts    // Historico de conversas
+      preferences.ts     // Preferencias do usuario
+      knowledge.ts       // Knowledge base
+    router.ts            // Classificacao e dispatch
+    orchestrator.ts      // Coordenacao entre agentes
+    main.ts              // Entry point
+  mcp-config.json        // Config dos MCP Servers
+  schema.sql             // DDL das tabelas
+  test-scenarios.ts      // Testes end-to-end
+  .env                   // API keys
+  README.md              // Como rodar o projeto</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist Final de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Router classifica 3+ tipos de mensagem corretamente</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Agente A processa tarefa e retorna resultado com tool use</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Agente B processa tarefa diferente com tools diferentes</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>MCP Server conectado: agente le/escreve via protocolo</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Memoria persiste entre sessoes (fechar e reabrir)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Handoff entre agentes funciona (contexto nao se perde)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Logs mostram cada etapa: route, execute, tool_call, memory, response</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Sistema nao crasha com input inesperado (error handling)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Walkthrough gravado cobrindo todas as features</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use Vibe Coding para acelerar: descreva cada modulo com um prompt detalhado, gere o codigo, revise e itere. O Claude Code ou Copilot podem gerar 80% do scaffold em minutos. Seu trabalho e validar, conectar as pecas e garantir que funciona end-to-end. Este exercicio e sobre entender a arquitetura, nao sobre digitar mais rapido.</p>
+      </div>
+
+      <!-- Bonus section -->
+      <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+        <h3 class="text-purple-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">🏆</span> Bonus (Para ir Alem)
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+            <p class="text-neutral-300 text-sm"><strong class="text-purple-400">Dashboard de monitoramento:</strong> Pagina web mostrando status dos agentes, ultimas requests, custo por agente e latencia media.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+            <p class="text-neutral-300 text-sm"><strong class="text-purple-400">Processamento paralelo:</strong> Dois agentes executando ao mesmo tempo (Research busca enquanto Writer prepara template).</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+            <p class="text-neutral-300 text-sm"><strong class="text-purple-400">Human-in-the-loop:</strong> Agente para e pede confirmacao antes de acoes criticas (publicar, deletar, enviar email).</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <div class="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+            <p class="text-neutral-300 text-sm"><strong class="text-purple-400">Multi-model routing:</strong> Cada agente usa modelo diferente otimizado pro seu role. Mostre comparacao de custo.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Construir incremental: router primeiro, depois 1 agente, depois o segundo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Gravar o walkthrough mostrando o terminal/logs (transparencia)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir README explicando como rodar o projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Celebrar o resultado: voce construiu um sistema multiagente funcional</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Tentar fazer tudo de uma vez (construa peca por peca)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular o walkthrough (a explicacao consolida o aprendizado)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Copiar codigo sem entender o que faz (o objetivo e aprender o padrao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Desistir no primeiro erro: debug e parte do processo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.7
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Revisao completa</strong>: agentes, skills, MCP e memoria se conectam num sistema coerente com fluxo definido.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Definicao de agentes</strong>: 2-3 agentes com roles claros, models otimizados por custo e tools especificas por funcao.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Router hibrido</strong>: comandos + keywords + LLM classifier. Fallback sempre. Logs de toda decisao.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Skills + MCP</strong>: tools registradas por agente, MCP Server conectado, teste isolado antes de integrar.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Teste end-to-end</strong>: 5 cenarios sistematicos cobrindo routing, tools, memoria, handoff e isolamento.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Demo final</strong>: sistema funcional com 2+ agentes, 3+ skills, MCP, memoria e walkthrough gravado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trilha 4 Completion banner -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-600/20 via-amber-500/15 to-amber-600/20 rounded-xl border border-amber-500/40 p-8 text-center">
+        <div class="text-4xl mb-3">🎯</div>
+        <h2 class="text-2xl font-bold text-amber-400 mb-3">Trilha 4 Completa!</h2>
+        <p class="text-neutral-300 max-w-xl mx-auto mb-4">Voce dominou agentes de IA, multiagentes, skills, MCP, memoria e orquestracao. Na proxima trilha, vamos criar assistentes pessoais e sistemas multi-bot em producao.</p>
+        <a href="../trilha5/index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-teal-500/20 text-teal-400 rounded-lg font-semibold hover:bg-teal-500/30 transition-colors border border-teal-500/30">
+          <span>Seguir para Trilha 5: Assistentes e Multibots</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-6.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.6: Memoria</span>
+      </a>
+      <a href="../trilha5/index.html" class="flex items-center space-x-2 text-neutral-400 hover:text-teal-400 transition-colors">
+        <span class="text-sm font-medium">Trilha 5: Assistentes e Multibots</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

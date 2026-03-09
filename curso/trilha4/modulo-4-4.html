@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 4.4 - Skills e Tools | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-amber-400 bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <div class="flex items-center space-x-3 mb-4 text-sm">
+        <a href="../../index.html" class="text-neutral-400 hover:text-neutral-300">Inicio</a>
+        <span class="text-neutral-600">/</span>
+        <a href="index.html" class="text-neutral-400 hover:text-neutral-300">Trilha 4</a>
+        <span class="text-neutral-600">/</span>
+        <span class="text-amber-400 font-medium">Modulo 4.4</span>
+      </div>
+      <span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-semibold rounded-full mb-4">MODULO 4.4</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-3">Skills e Tools</h1>
+      <p class="text-neutral-400 max-w-2xl mb-2">Capacidades reutilizaveis, JSON Schema, function calling e structured outputs para agentes inteligentes.</p>
+
+      <div class="grid grid-cols-4 gap-4 max-w-lg mt-6">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">~50</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Inter</div>
+          <div class="text-xs text-neutral-400">Intermediario</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-amber-500/30 text-center">
+          <div class="text-lg font-bold text-amber-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Formato</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 1: O que sao Skills -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-1">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">1</div>
+        <div>
+          <h2 class="text-2xl font-bold">O que sao Skills</h2>
+          <p class="text-neutral-400 text-sm mt-1">Capacidades especializadas empacotadas como modulos reutilizaveis</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Uma <strong class="text-amber-400">skill</strong> e uma capacidade especializada empacotada como um modulo reutilizavel que um agente pode invocar. Diferente de uma funcao avulsa, uma skill encapsula tudo que e necessario para executar uma tarefa completa: descricao semantica para o LLM entender quando usa-la, schema de entrada/saida, logica de execucao e tratamento de erros.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Pense em skills como <strong class="text-amber-400">plugins inteligentes</strong>. Um agente sem skills e um cerebro sem bracos. As skills dao ao agente a capacidade de agir no mundo: enviar emails, consultar bancos de dados, gerar imagens, executar codigo, chamar APIs. O LLM decide qual skill usar com base no contexto da conversa, nao com base em regras hardcoded.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Skills vs Tools vs Plugins</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-dark-600">
+                  <th class="text-left py-2 text-neutral-400 font-medium">Conceito</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Definicao</th>
+                  <th class="text-left py-2 text-neutral-400 font-medium">Exemplo</th>
+                </tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Tool</td>
+                  <td class="py-2">Uma funcao atomica com interface JSON Schema. Faz uma coisa so.</td>
+                  <td class="py-2"><code class="text-sm bg-dark-700 px-1 rounded">search_database(query)</code></td>
+                </tr>
+                <tr class="border-b border-dark-700">
+                  <td class="py-2 font-medium text-amber-400">Skill</td>
+                  <td class="py-2">Pacote de tools + logica + prompts que implementam uma capacidade completa.</td>
+                  <td class="py-2">Skill "Gmail": list_emails + send_email + search_inbox + compose_draft</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-medium text-amber-400">Plugin</td>
+                  <td class="py-2">Extensao instalavel com UI, configuracao e lifecycle hooks. Mais amplo que skill.</td>
+                  <td class="py-2">Plugin Shopify: catalog + checkout + analytics + admin panel</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Anatomia de uma Skill</h3>
+          <p class="text-neutral-300 text-sm mb-4">Toda skill tem quatro componentes fundamentais que o agente precisa para usa-la corretamente:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Description</div>
+              <p class="text-neutral-400 text-xs">Texto semantico que explica ao LLM quando e por que usar a skill. E o componente mais importante: se a descricao for vaga, o LLM nao vai saber quando invocar.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Input Schema</div>
+              <p class="text-neutral-400 text-xs">JSON Schema que define exatamente quais parametros a skill aceita: tipos, formatos, quais sao obrigatorios, valores default. O LLM gera os argumentos com base nisso.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Execution Logic</div>
+              <p class="text-neutral-400 text-xs">O codigo que roda quando a skill e invocada. Pode chamar APIs, executar queries, processar arquivos. Recebe os parametros validados e retorna o resultado.</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+              <div class="text-amber-400 font-bold mb-2">Output Format</div>
+              <p class="text-neutral-400 text-xs">Estrutura do retorno: string, JSON, array. O LLM recebe esse output como contexto para formular a resposta ao usuario. Outputs estruturados facilitam encadeamento.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo: Skill Completa</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// skills/weather.ts
+export const weatherSkill = {
+  name: "get_weather",
+  description: "Consulta previsao do tempo para uma cidade. " +
+    "Use quando o usuario perguntar sobre clima, " +
+    "temperatura ou previsao meteorologica.",
+  parameters: {
+    type: "object",
+    properties: {
+      city: {
+        type: "string",
+        description: "Nome da cidade (ex: 'Sao Paulo')"
+      },
+      days: {
+        type: "number",
+        description: "Dias de previsao (1-7)",
+        default: 1
+      }
+    },
+    required: ["city"]
+  },
+  execute: async ({ city, days = 1 }) => {
+    const res = await fetch(
+      `https://api.weather.com/forecast?city=${city}&days=${days}`
+    );
+    const data = await res.json();
+    return {
+      city: data.city,
+      temperature: data.temp,
+      condition: data.condition,
+      forecast: data.daily.slice(0, days)
+    };
+  }
+};</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Essa skill tem os 4 componentes: descricao clara, schema tipado com parametros obrigatorios e opcionais, logica de execucao com chamada de API, e retorno estruturado em JSON.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">A descricao da skill e o componente mais critico. Gaste tempo refinando ela. Inclua quando usar, quando nao usar, e exemplos de inputs. Um LLM com uma descricao ruim vai chamar a skill errada ou nos momentos errados, por melhor que seja a implementacao.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Descrever com clareza quando a skill deve ser usada</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Manter skills focadas: uma capacidade por skill</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retornar dados estruturados (JSON) em vez de texto livre</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir exemplos de uso na descricao para guiar o LLM</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Skills genericas demais: "faz coisas no sistema"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Misturar responsabilidades em uma unica skill</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Ignorar tratamento de erros na execution logic</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Descricoes ambiguas que confundem o LLM sobre quando usar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 2: JSON Schema para Tool Definitions -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-2">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">2</div>
+        <div>
+          <h2 class="text-2xl font-bold">JSON Schema para Tool Definitions</h2>
+          <p class="text-neutral-400 text-sm mt-1">Definindo interfaces de tools com tipos, validacoes e descricoes semanticas</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          <strong class="text-amber-400">JSON Schema</strong> e o padrao usado por todos os grandes provedores de LLM (OpenAI, Anthropic, Google) para definir a interface de tools. E uma especificacao que descreve a estrutura de um objeto JSON: quais campos existem, seus tipos, quais sao obrigatorios, valores permitidos e descricoes de cada campo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O LLM le o schema e usa essa informacao para decidir: (1) se deve chamar a tool, (2) quais argumentos gerar, e (3) como formatar a chamada. Um schema bem escrito e a diferenca entre um agente que funciona e um que alucina parametros.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Estrutura Basica de um JSON Schema</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Termo de busca para filtrar clientes"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "trial"],
+      "description": "Filtrar por status da conta"
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10,
+      "description": "Numero maximo de resultados"
+    },
+    "include_deleted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Incluir clientes deletados"
+    }
+  },
+  "required": ["query"]
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O campo <code class="text-amber-400 bg-dark-700 px-1 rounded">required</code> diz ao LLM quais parametros sao obrigatorios. Parametros opcionais com <code class="text-amber-400 bg-dark-700 px-1 rounded">default</code> sao preenchidos automaticamente se omitidos.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Tipos Suportados</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-dark-700 rounded-lg p-3">
+              <p class="text-amber-400 text-xs font-semibold mb-2">Primitivos</p>
+              <ul class="text-neutral-400 text-sm space-y-1">
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">string</code> - texto</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">number</code> - decimal</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">integer</code> - inteiro</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">boolean</code> - true/false</li>
+              </ul>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3">
+              <p class="text-amber-400 text-xs font-semibold mb-2">Compostos</p>
+              <ul class="text-neutral-400 text-sm space-y-1">
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">object</code> - chave:valor</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">array</code> - lista de items</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">null</code> - valor nulo</li>
+              </ul>
+            </div>
+            <div class="bg-dark-700 rounded-lg p-3">
+              <p class="text-amber-400 text-xs font-semibold mb-2">Restricoes</p>
+              <ul class="text-neutral-400 text-sm space-y-1">
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">enum</code> - valores fixos</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">minimum/maximum</code> - range</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">pattern</code> - regex</li>
+                <li><code class="text-neutral-300 bg-dark-600 px-1 rounded text-xs">format</code> - email, uri, date</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Como o LLM Le o Schema</h3>
+          <p class="text-neutral-300 text-sm mb-4">O processo que o LLM segue internamente quando recebe tools com JSON Schema:</p>
+          <div class="space-y-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Le a descricao da tool</p>
+                <p class="text-neutral-400 text-sm">Avalia se a descricao corresponde a intencao do usuario. "Buscar clientes" match com "quero ver meus clientes ativos".</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Le as descricoes dos parametros</p>
+                <p class="text-neutral-400 text-sm">Entende o que cada parametro faz e extrai valores do contexto da conversa para preenche-los.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Respeita restricoes</p>
+                <p class="text-neutral-400 text-sm">Usa <code class="text-amber-400 bg-dark-700 px-1 rounded">enum</code> para limitar valores, <code class="text-amber-400 bg-dark-700 px-1 rounded">required</code> para garantir campos obrigatorios, <code class="text-amber-400 bg-dark-700 px-1 rounded">default</code> para omitir opcionais.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Gera a chamada estruturada</p>
+                <p class="text-neutral-400 text-sm">Emite um JSON com name da tool e arguments preenchidos, pronto para execucao pelo runtime.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use <code class="text-amber-400 bg-dark-700 px-1 rounded">enum</code> sempre que possivel. Em vez de aceitar qualquer string para "status", defina <code class="text-amber-400 bg-dark-700 px-1 rounded">["active", "inactive", "trial"]</code>. Isso reduz drasticamente as chances de o LLM inventar valores invalidos. Quanto mais restritivo o schema, menos o LLM erra.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Descricao detalhada em cada campo do schema</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar enum para valores predefinidos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir defaults para parametros opcionais</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Validar inputs no servidor antes de executar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Schemas sem description nos campos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Aceitar <code class="bg-dark-700 px-1 rounded text-xs">any</code> como tipo de parametro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Schemas profundamente aninhados (confundem LLMs)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confiar que o LLM vai respeitar o schema 100% das vezes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 3: Function Calling: Como Funciona -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-3">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">3</div>
+        <div>
+          <h2 class="text-2xl font-bold">Function Calling: Como Funciona</h2>
+          <p class="text-neutral-400 text-sm mt-1">O fluxo completo de 5 etapas, do pedido do usuario ao resultado final</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          <strong class="text-amber-400">Function calling</strong> e o mecanismo que permite a um LLM decidir, durante a geracao de resposta, que precisa executar uma funcao externa. Em vez de gerar texto, o modelo gera uma chamada estruturada com nome da funcao e argumentos. O runtime executa a funcao, retorna o resultado ao modelo, e o modelo usa esse resultado para compor a resposta final.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Esse mecanismo e o que transforma um chatbot em um <strong class="text-amber-400">agente funcional</strong>. Sem function calling, o LLM so pode gerar texto. Com function calling, pode enviar emails, consultar bancos, executar codigo, chamar APIs e qualquer outra acao que voce expor como tool.
+        </p>
+      </div>
+
+      <!-- Dados box (blue) -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-blue-400 font-semibold mb-3 flex items-center">
+          <span class="mr-2">📊</span> Adocao de Function Calling
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">OpenAI</div>
+            <p class="text-neutral-400 text-sm">Lancou function calling em jun/2023. Hoje e o padrao de facto para todos os provedores.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Anthropic</div>
+            <p class="text-neutral-400 text-sm">Tool use nativo no Claude. Mesmo conceito, API ligeiramente diferente.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Parallel</div>
+            <p class="text-neutral-400 text-sm">Modelos modernos podem chamar multiplas tools em paralelo numa unica resposta.</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Local</div>
+            <p class="text-neutral-400 text-sm">Ollama, LM Studio e vLLM suportam function calling com modelos open-source.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">O Fluxo de 5 Etapas</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">1. Request</div>
+              <p class="text-neutral-400 text-xs">Usuario faz um pedido que requer acao externa</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">2. Decide</div>
+              <p class="text-neutral-400 text-xs">LLM analisa tools disponiveis e escolhe qual chamar</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">3. Generate</div>
+              <p class="text-neutral-400 text-xs">LLM gera argumentos conforme JSON Schema da tool</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">4. Execute</div>
+              <p class="text-neutral-400 text-xs">Runtime executa funcao e coleta resultado</p>
+            </div>
+            <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+              <div class="text-amber-400 font-bold text-sm mb-1">5. Respond</div>
+              <p class="text-neutral-400 text-xs">LLM recebe resultado e gera resposta final ao usuario</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Exemplo Completo: OpenAI API</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// 1. Definir tools no request
+const response = await openai.chat.completions.create({
+  model: "gpt-4o",
+  messages: [
+    { role: "user", content: "Qual o clima em SP hoje?" }
+  ],
+  tools: [{
+    type: "function",
+    function: {
+      name: "get_weather",
+      description: "Consulta clima atual de uma cidade",
+      parameters: {
+        type: "object",
+        properties: {
+          city: { type: "string" }
+        },
+        required: ["city"]
+      }
+    }
+  }]
+});
+
+// 2. LLM retorna tool_call (nao texto!)
+// response.choices[0].message.tool_calls = [{
+//   id: "call_abc123",
+//   function: { name: "get_weather", arguments: '{"city":"Sao Paulo"}' }
+// }]
+
+// 3. Executar funcao e retornar resultado
+const weatherData = await getWeather("Sao Paulo");
+
+// 4. Enviar resultado de volta ao LLM
+const finalResponse = await openai.chat.completions.create({
+  model: "gpt-4o",
+  messages: [
+    { role: "user", content: "Qual o clima em SP hoje?" },
+    response.choices[0].message, // inclui tool_calls
+    { role: "tool", tool_call_id: "call_abc123",
+      content: JSON.stringify(weatherData) }
+  ]
+});
+// 5. LLM gera: "Em Sao Paulo esta 24°C com ceu parcialmente nublado."</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Parallel Tool Calls</h3>
+          <p class="text-neutral-300 text-sm mb-3">Modelos modernos podem chamar multiplas tools simultaneamente quando faz sentido:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// Usuario: "Qual o clima em SP e no Rio?"
+// LLM retorna 2 tool_calls em paralelo:
+tool_calls: [
+  { id: "call_1", function: { name: "get_weather",
+    arguments: '{"city":"Sao Paulo"}' }},
+  { id: "call_2", function: { name: "get_weather",
+    arguments: '{"city":"Rio de Janeiro"}' }}
+]
+// Ambas executam ao mesmo tempo, resultados voltam juntos</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Isso reduz latencia drasticamente em cenarios onde o agente precisa coletar dados de multiplas fontes antes de responder.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Sempre valide os argumentos gerados pelo LLM antes de executar a funcao. O modelo pode gerar tipos errados, valores fora do range ou campos inesperados. Use uma biblioteca de validacao como Zod (TypeScript) ou Pydantic (Python) para garantir type safety na fronteira LLM-codigo.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Validar argumentos do LLM antes de executar a funcao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retornar erros estruturados quando a tool falha</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Implementar timeout para cada tool call</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Aproveitar parallel tool calls quando possivel</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Executar tool calls sem validacao de input</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Silenciar erros de execucao (o LLM precisa saber que falhou)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Loops infinitos de tool calls sem limite de iteracoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Expor funcoes destrutivas (delete, drop) sem confirmacao humana</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 4: Structured Outputs -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-4">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">4</div>
+        <div>
+          <h2 class="text-2xl font-bold">Structured Outputs</h2>
+          <p class="text-neutral-400 text-sm mt-1">Forcando o LLM a retornar JSON tipado, validavel e consistente</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Por padrao, LLMs retornam texto livre. Isso e otimo para conversas, mas pessimo para integracoes programaticas. <strong class="text-amber-400">Structured outputs</strong> forcam o modelo a retornar dados em um formato JSON especifico, definido por um schema. O resultado e tipado, validavel e pode ser consumido diretamente por codigo sem parsing fragil de texto.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          Existem tres abordagens principais: <strong class="text-amber-400">JSON mode</strong> (garante que a saida e JSON valido), <strong class="text-amber-400">response_format com schema</strong> (garante que segue uma estrutura especifica), e <strong class="text-amber-400">Zod/Pydantic schemas</strong> (validacao no lado do cliente com tipos nativos da linguagem).
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Sem vs Com Structured Output</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p class="text-red-400 text-xs font-semibold mb-2">Sem structured output:</p>
+              <div class="bg-dark-700 rounded-lg p-3 text-sm text-neutral-300">
+                <p>"O produto 'Plano Pro' custa R$99,90/mes, esta disponivel, e tem 14 dias de trial gratuito. E o mais popular entre startups."</p>
+              </div>
+              <p class="text-neutral-500 text-xs mt-2">Precisa de regex ou outro LLM call para extrair dados. Fragil, quebra com variacoes.</p>
+            </div>
+            <div>
+              <p class="text-emerald-400 text-xs font-semibold mb-2">Com structured output:</p>
+              <div class="bg-dark-700 rounded-lg p-3 text-sm font-mono text-neutral-300">
+<pre>{
+  "name": "Plano Pro",
+  "price": 99.90,
+  "currency": "BRL",
+  "billing": "monthly",
+  "available": true,
+  "trial_days": 14
+}</pre>
+              </div>
+              <p class="text-neutral-500 text-xs mt-2">Pronto para usar. Tipado. Validavel. Sem ambiguidade.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 1: JSON Mode (OpenAI)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>const response = await openai.chat.completions.create({
+  model: "gpt-4o",
+  response_format: { type: "json_object" },
+  messages: [{
+    role: "system",
+    content: "Retorne sempre um JSON com campos: name, price, available"
+  }, {
+    role: "user",
+    content: "Quero info sobre o Plano Pro"
+  }]
+});
+
+const data = JSON.parse(response.choices[0].message.content);
+// Garante JSON valido, mas nao garante o schema exato</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 2: Schema Estrito (OpenAI Structured Outputs)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>const response = await openai.chat.completions.create({
+  model: "gpt-4o",
+  response_format: {
+    type: "json_schema",
+    json_schema: {
+      name: "product_info",
+      strict: true,
+      schema: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          price: { type: "number" },
+          available: { type: "boolean" },
+          trial_days: { type: "integer" }
+        },
+        required: ["name", "price", "available", "trial_days"],
+        additionalProperties: false
+      }
+    }
+  },
+  messages: [{ role: "user", content: "Info do Plano Pro" }]
+});
+// Garante que o JSON segue EXATAMENTE o schema definido</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Abordagem 3: Validacao com Zod (TypeScript)</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>import { z } from "zod";
+
+// Definir schema com Zod
+const ProductSchema = z.object({
+  name: z.string(),
+  price: z.number().positive(),
+  available: z.boolean(),
+  trial_days: z.number().int().min(0).max(90)
+});
+
+type Product = z.infer&lt;typeof ProductSchema&gt;;
+
+// Validar resposta do LLM
+const raw = JSON.parse(llmResponse);
+const product = ProductSchema.parse(raw);
+// Se invalido, Zod lanca erro com detalhes do que falhou
+// Se valido, 'product' tem type safety completa</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Zod funciona como uma segunda camada de validacao: mesmo que o LLM retorne um JSON, voce valida os tipos e restricoes antes de usar no seu codigo. Isso protege contra edge cases que nem o schema estrito pega.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use a abordagem em camadas: <code class="text-amber-400 bg-dark-700 px-1 rounded">response_format</code> no request para garantir JSON do LLM + Zod/Pydantic no codigo para validar tipos. Se o LLM retornar algo inesperado, voce captura antes de quebrar a aplicacao. Em producao, nunca confie apenas no LLM para garantir o formato.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Usar response_format + validacao no cliente (dupla camada)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Definir additionalProperties: false para evitar campos extras</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Incluir exemplos no system prompt para guiar o formato</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Tratar erro de validacao com fallback (retry ou default)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Parsear JSON do LLM com JSON.parse() sem try/catch</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Confiar apenas no prompt para garantir formato ("retorne JSON")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Schemas complexos demais (10+ campos aninhados confundem LLMs)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Usar regex para extrair dados de texto livre do LLM</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 5: Criando Skills Reutilizaveis -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-5">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">5</div>
+        <div>
+          <h2 class="text-2xl font-bold">Criando Skills Reutilizaveis</h2>
+          <p class="text-neutral-400 text-sm mt-1">Estrutura de arquivos, registro, error handling e testes independentes</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Skills bem construidas seguem um padrao consistente que facilita reutilizacao, teste e manutencao. Uma skill reutilizavel pode ser <strong class="text-amber-400">plugada em qualquer agente</strong> sem modificacao, testada isoladamente sem depender do LLM, e versionada como qualquer outro modulo de codigo.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O conceito de <strong class="text-amber-400">skill marketplace</strong> ja e realidade: Claude Code tem skills em <code class="text-amber-400 bg-dark-700 px-1 rounded">~/.claude/skills/</code>, GPTs tem Actions, e o ecossistema MCP tem milhares de servers reutilizaveis. Aprender a criar skills e como aprender a criar componentes React: uma vez que domina o padrao, escala infinitamente.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Estrutura de Arquivos Recomendada</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>skills/
+  weather/
+    index.ts          # Exporta a skill registrada
+    schema.ts         # JSON Schema dos parametros
+    handler.ts        # Logica de execucao
+    handler.test.ts   # Testes unitarios do handler
+    types.ts          # TypeScript types (input/output)
+    README.md         # Documentacao da skill
+  database/
+    index.ts
+    schema.ts
+    handler.ts
+    handler.test.ts
+    types.ts
+  index.ts            # Registry: exporta todas as skills
+  register.ts         # Funcao de registro de skills no agente</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Cada skill vive em seu proprio diretorio com schema, handler e testes separados. O arquivo <code class="text-amber-400 bg-dark-700 px-1 rounded">index.ts</code> raiz funciona como registry central.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Padrao de Registro</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// skills/register.ts
+import { Tool } from "./types";
+
+class SkillRegistry {
+  private skills: Map&lt;string, Tool&gt; = new Map();
+
+  register(skill: Tool) {
+    if (this.skills.has(skill.name)) {
+      throw new Error(`Skill "${skill.name}" ja registrada`);
+    }
+    this.skills.set(skill.name, skill);
+  }
+
+  get(name: string): Tool | undefined {
+    return this.skills.get(name);
+  }
+
+  // Retorna schemas para enviar ao LLM
+  getSchemas() {
+    return Array.from(this.skills.values()).map(s => ({
+      type: "function",
+      function: {
+        name: s.name,
+        description: s.description,
+        parameters: s.parameters
+      }
+    }));
+  }
+
+  // Executa uma skill por nome
+  async execute(name: string, args: unknown) {
+    const skill = this.skills.get(name);
+    if (!skill) throw new Error(`Skill "${name}" nao encontrada`);
+    try {
+      return await skill.execute(args);
+    } catch (error) {
+      return { error: true, message: error.message };
+    }
+  }
+}
+
+export const registry = new SkillRegistry();</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Error Handling Robusto</h3>
+          <p class="text-neutral-300 text-sm mb-3">Skills que falham silenciosamente sao piores que skills que nao existem. O LLM precisa receber o erro para decidir o que fazer a seguir:</p>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// skills/database/handler.ts
+export async function queryDatabase(args: QueryInput) {
+  try {
+    const results = await db.query(args.sql, args.params);
+    return {
+      success: true,
+      rows: results.rows,
+      count: results.rowCount
+    };
+  } catch (error) {
+    // Retornar erro estruturado, nao lancar excecao
+    return {
+      success: false,
+      error: error.message,
+      code: error.code,
+      hint: error.code === "42P01"
+        ? "Tabela nao existe. Verifique o nome."
+        : "Erro na query SQL. Verifique a sintaxe."
+    };
+  }
+}</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">O campo <code class="text-amber-400 bg-dark-700 px-1 rounded">hint</code> ajuda o LLM a se corrigir. Se a tabela nao existe, o LLM pode listar as tabelas disponiveis e tentar de novo.</p>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Testando Skills Independentemente</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// skills/weather/handler.test.ts
+import { describe, it, expect } from "vitest";
+import { getWeather } from "./handler";
+
+describe("Weather Skill", () => {
+  it("retorna dados para cidade valida", async () => {
+    const result = await getWeather({ city: "Sao Paulo" });
+    expect(result.success).toBe(true);
+    expect(result.temperature).toBeDefined();
+    expect(typeof result.temperature).toBe("number");
+  });
+
+  it("retorna erro para cidade invalida", async () => {
+    const result = await getWeather({ city: "XYZ123" });
+    expect(result.success).toBe(false);
+    expect(result.error).toBeDefined();
+  });
+
+  it("respeita limite de dias", async () => {
+    const result = await getWeather({ city: "SP", days: 3 });
+    expect(result.forecast.length).toBeLessThanOrEqual(3);
+  });
+});</pre>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Teste o handler diretamente, sem passar pelo LLM. Isso garante que a logica funciona antes de conectar ao agente. Se o handler funciona isolado e o LLM chama com os parametros certos, o sistema inteiro funciona.</p>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Pense em skills como microsservicos: interface clara, responsabilidade unica, testavel isoladamente. Um skill marketplace interno (mesmo que seja um diretorio compartilhado) evita retrabalho entre projetos. Se voce criou uma skill de envio de email, ela deve funcionar em qualquer agente sem modificacao.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Separar schema, handler e testes em arquivos distintos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Retornar erros estruturados com hints para o LLM</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar handlers isoladamente sem o LLM</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Versionaria skills e manter backward compatibility</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Handlers com side effects nao-obvios (enviar email silenciosamente)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Hardcodar credenciais dentro da skill</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Skills que dependem de estado global compartilhado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular testes "porque a skill e simples"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TOPIC 6: Exercicio: 3 Skills para seu SaaS -->
+    <!-- ============================================================ -->
+    <section class="mb-16" id="topico-6">
+      <div class="flex items-start space-x-4 mb-6">
+        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0">6</div>
+        <div>
+          <h2 class="text-2xl font-bold">Exercicio: 3 Skills para seu SaaS</h2>
+          <p class="text-neutral-400 text-sm mt-1">Data retrieval, computation e external API call registradas e testadas</p>
+        </div>
+      </div>
+
+      <!-- Gradient intro box -->
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-6 mb-6">
+        <p class="text-neutral-300 leading-relaxed">
+          Hora de construir. Neste exercicio voce vai criar <strong class="text-amber-400">3 skills funcionais</strong> para o seu SaaS, cada uma cobrindo um tipo diferente de capacidade: busca de dados, computacao e chamada de API externa. As 3 skills devem ser registradas no agente, ter JSON Schema completo e funcionar via function calling.
+        </p>
+        <p class="text-neutral-300 leading-relaxed mt-3">
+          O objetivo e sair com <strong class="text-amber-400">skills prontas para producao</strong>: com error handling, testes unitarios e descricoes claras para o LLM. Se funcionar isoladamente e o LLM souber quando chamar, voce dominou o padrao.
+        </p>
+      </div>
+
+      <!-- Content cards -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-4">As 3 Skills</h3>
+          <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm font-bold flex-shrink-0">1</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Data Retrieval: Buscar Dados</p>
+                <p class="text-neutral-400 text-sm">Busca registros no seu banco de dados (clientes, pedidos, metricas). Aceita filtros como query, status, date range. Retorna resultados paginados em JSON.</p>
+                <div class="bg-dark-700 rounded-lg p-3 mt-2 text-xs font-mono text-neutral-400">
+                  Exemplo: <code class="text-amber-400">search_customers({ query: "premium", status: "active", limit: 10 })</code>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm font-bold flex-shrink-0">2</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">Computation: Calcular Metricas</p>
+                <p class="text-neutral-400 text-sm">Calcula metricas de negocio: MRR, churn rate, LTV, growth rate. Recebe periodo e tipo de metrica. Retorna valor calculado com breakdown.</p>
+                <div class="bg-dark-700 rounded-lg p-3 mt-2 text-xs font-mono text-neutral-400">
+                  Exemplo: <code class="text-emerald-400">calculate_metrics({ metric: "mrr", period: "last_30_days" })</code>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-start space-x-3">
+              <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm font-bold flex-shrink-0">3</div>
+              <div>
+                <p class="text-neutral-100 font-medium text-sm">External API: Notificar/Integrar</p>
+                <p class="text-neutral-400 text-sm">Chama uma API externa: enviar notificacao (Slack/email), criar registro em CRM, ou consultar servico terceiro. Autentica, chama e parseia resposta.</p>
+                <div class="bg-dark-700 rounded-lg p-3 mt-2 text-xs font-mono text-neutral-400">
+                  Exemplo: <code class="text-purple-400">send_notification({ channel: "slack", message: "Novo cliente premium!" })</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Template de Skill Completa</h3>
+          <div class="bg-dark-700 rounded-lg p-4 text-sm font-mono text-neutral-300 overflow-x-auto">
+<pre>// skills/search-customers/index.ts
+import { z } from "zod";
+
+// 1. Schema de Input
+const InputSchema = z.object({
+  query: z.string().describe("Termo de busca por nome ou email"),
+  status: z.enum(["active", "inactive", "trial"])
+    .optional()
+    .describe("Filtrar por status"),
+  limit: z.number().min(1).max(100).default(10)
+    .describe("Maximo de resultados")
+});
+
+// 2. Schema de Output
+const OutputSchema = z.object({
+  success: z.boolean(),
+  customers: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string(),
+    plan: z.string(),
+    status: z.string()
+  })),
+  total: z.number()
+});
+
+// 3. Tool Definition (para enviar ao LLM)
+export const searchCustomersTool = {
+  type: "function" as const,
+  function: {
+    name: "search_customers",
+    description: "Busca clientes no banco de dados por nome, " +
+      "email ou ID. Use quando o usuario perguntar sobre " +
+      "um cliente especifico ou pedir uma lista filtrada.",
+    parameters: {
+      type: "object",
+      properties: {
+        query: { type: "string",
+          description: "Termo de busca" },
+        status: { type: "string",
+          enum: ["active", "inactive", "trial"] },
+        limit: { type: "integer", default: 10,
+          minimum: 1, maximum: 100 }
+      },
+      required: ["query"]
+    }
+  }
+};
+
+// 4. Handler
+export async function searchCustomers(raw: unknown) {
+  const args = InputSchema.parse(raw);
+  try {
+    const results = await db.customers.findMany({
+      where: {
+        OR: [
+          { name: { contains: args.query } },
+          { email: { contains: args.query } }
+        ],
+        ...(args.status && { status: args.status })
+      },
+      take: args.limit
+    });
+    return OutputSchema.parse({
+      success: true,
+      customers: results,
+      total: results.length
+    });
+  } catch (error) {
+    return { success: false, error: error.message,
+      customers: [], total: 0 };
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h3 class="text-amber-400 font-semibold mb-3">Checklist de Validacao</h3>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>3 skills criadas: data retrieval, computation, external API</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>JSON Schema completo com descricoes em cada parametro</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Handlers retornam dados estruturados (nao texto livre)</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Error handling com mensagens claras e hints</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Testes unitarios passando para cada handler</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>Skills registradas no agente e function calling funcionando</span>
+            </label>
+            <label class="flex items-center space-x-3 text-neutral-300 text-sm">
+              <input type="checkbox" class="w-4 h-4 rounded border-dark-600 text-amber-500 focus:ring-amber-500/50">
+              <span>LLM escolhe a skill correta com base no pedido do usuario</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica box (yellow) -->
+      <div class="bg-yellow-900/20 rounded-xl border border-yellow-500/30 p-6 mb-6">
+        <h3 class="text-yellow-400 font-semibold mb-2 flex items-center">
+          <span class="mr-2">💡</span> Dica
+        </h3>
+        <p class="text-neutral-300 text-sm">Use Vibe Coding para criar as skills: descreva o que cada uma faz, o schema desejado e os edge cases, e deixe o LLM gerar a implementacao. Depois revise, teste e ajuste. Esse fluxo e exatamente como voce vai criar skills em producao: especificacao humana + implementacao assistida por IA.</p>
+      </div>
+
+      <!-- Fazer/Evitar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="text-emerald-400 font-semibold mb-3">Fazer</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Criar uma skill por vez, testar, depois criar a proxima</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar o handler isolado antes de conectar ao LLM</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Testar function calling com prompts reais de usuario</span></li>
+            <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span>Adaptar os exemplos para o dominio do seu SaaS</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="text-red-400 font-semibold mb-3">Evitar</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Criar as 3 skills de uma vez sem testar individualmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Copiar os templates sem adaptar para seu caso de uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Pular error handling "para depois"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#9679;</span><span>Skills que fazem coisas demais (mantenha responsabilidade unica)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO DO MODULO -->
+    <!-- ============================================================ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-r from-amber-900/30 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo 4.4
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">1.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Skills</strong> sao capacidades completas empacotadas como modulos: descricao, schema, logica e output. Diferente de tools atomicas ou plugins com UI.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">2.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">JSON Schema</strong> define a interface de cada tool: tipos, restricoes, descricoes. O LLM le o schema para decidir quando e como chamar.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">3.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Function calling</strong> segue 5 etapas: request, decide, generate args, execute, respond. Suporta chamadas paralelas.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">4.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Structured outputs</strong> forcam JSON tipado: JSON mode, schema estrito ou Zod/Pydantic. Sempre valide em duas camadas.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">5.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Skills reutilizaveis</strong> seguem padrao consistente: schema/handler/test separados, registry central, error handling com hints.</p>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 font-bold">6.</span>
+            <p class="text-neutral-300 text-sm"><strong class="text-amber-400">Na pratica</strong>: 3 skills (data, compute, API) registradas, testadas e funcionando via function calling no seu agente.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVIGATION PREV/NEXT -->
+    <div class="flex items-center justify-between">
+      <a href="modulo-4-3.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        <span class="text-sm font-medium">Modulo 4.3</span>
+      </a>
+      <a href="modulo-4-5.html" class="flex items-center space-x-2 text-neutral-400 hover:text-amber-400 transition-colors">
+        <span class="text-sm font-medium">Modulo 4.5: MCP</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Do Zero ao SaaS com IA - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Smooth scroll to topic sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
