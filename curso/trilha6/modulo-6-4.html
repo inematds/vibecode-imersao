@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.4 - Logs, Observabilidade e Monitoramento | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1 Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2 Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4 Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5 Multibots</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6 Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-rose-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 6.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">📊 Logs, Observabilidade e Monitoramento</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Em producao, voce nao pode abrir o terminal e dar console.log. Logs estruturados, metricas de tokens e latencia, e alertas automaticos sao o que separa um app que funciona de um app que voce sabe que funciona.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">~50min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: O que Logar em Sistemas com IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📝 O que Logar em Sistemas com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Sistemas com IA geram um volume de dados que apps tradicionais nunca geraram. Cada chamada a um LLM envolve request, response, tokens consumidos, latencia, custo e possiveis erros. <strong class="text-rose-400">Saber o que logar e tao importante quanto saber o que NAO logar.</strong> Logar demais queima storage e expoe dados sensiveis. Logar de menos te deixa cego quando algo quebra.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Em apps com LLM, voce precisa logar <strong class="text-white">metadata da interacao</strong>, nao o conteudo bruto. A metadata te diz tudo que voce precisa para debugging, billing e performance: quantos tokens, quanto custou, quanto tempo levou, qual modelo respondeu, se deu erro ou sucesso.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          <strong class="text-white">O que logar:</strong>
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Request/response pairs:</strong> Timestamp, user ID, model usado, status code (200, 429, 500). Nao o conteudo do prompt, so os metadados</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Token usage:</strong> input_tokens, output_tokens, total. Essencial para billing e para detectar prompts que estao consumindo demais</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Latencia:</strong> Tempo total do request (ms). Quanto o usuario esperou. Identifica degradacao de performance antes do usuario reclamar</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Erros e retries:</strong> Tipo do erro (rate limit, timeout, invalid request), numero de retries, provider que falhou</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tool calls:</strong> Se o agente usou tools (browser, search, database), logar qual tool, se teve sucesso, e quanto tempo levou</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- O que NAO logar -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-4 flex items-center">
+          <span class="mr-2">🚨</span> O que NAO Logar
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Logar conteudo de prompts em producao e um risco de seguranca e compliance. Prompts podem conter dados pessoais, informacoes medicas, financeiras ou confidenciais que os usuarios compartilham com a IA.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#10007;</span>
+            <span><strong class="text-white">Conteudo completo de prompts</strong> - Podem conter PII (nome, CPF, email, endereco)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#10007;</span>
+            <span><strong class="text-white">API keys em logs</strong> - Parece obvio, mas acontece quando voce loga o objeto de configuracao inteiro</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#10007;</span>
+            <span><strong class="text-white">System prompts</strong> - Contem logica de negocio proprietaria. Se vazar, concorrentes copiam</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#10007;</span>
+            <span><strong class="text-white">Respostas completas da IA</strong> - Podem conter dados sensíveis refletidos do input do usuario</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Se voce precisa debugar prompts em producao, use um <strong class="text-white">sistema separado de debug logging</strong> com acesso restrito, retencao de 24-48h, e criptografia em repouso. Nunca no mesmo pipeline dos logs operacionais. Ferramentas como <strong class="text-white">LangSmith</strong>, <strong class="text-white">Helicone</strong> e <strong class="text-white">Braintrust</strong> foram criadas exatamente para isso: observabilidade de LLM com controle de acesso.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Structured Logging -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🗂️ Structured Logging</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        <code class="text-rose-400 bg-dark-700 px-1.5 py-0.5 rounded">console.log("deu erro aqui")</code> nao escala. Quando voce tem centenas de requests por minuto, precisa de logs que sejam <strong class="text-rose-400">filtráveis, pesquisaveis e parseáveis por máquina</strong>. Structured logging significa que cada log entry e um objeto JSON com campos padronizados, nao uma string solta.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong class="text-white">JSON e o formato padrao</strong> para logs em 2026. Cada entry tem campos fixos: timestamp, level, service, message, e campos extras especificos do evento. Ferramentas de log aggregation (Datadog, Grafana Loki, CloudWatch) parseiam JSON nativamente.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <p class="text-neutral-400 text-sm font-semibold mb-2">Log Levels (do menos ao mais grave):</p>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2">
+                <span class="text-neutral-500 font-mono text-sm w-14 flex-shrink-0">debug</span>
+                <span class="text-sm">Detalhes para desenvolvimento. Desligado em producao</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-blue-400 font-mono text-sm w-14 flex-shrink-0">info</span>
+                <span class="text-sm">Operacoes normais. Request processado, user logou, pagamento confirmado</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-yellow-400 font-mono text-sm w-14 flex-shrink-0">warn</span>
+                <span class="text-sm">Algo estranho mas nao fatal. Rate limit chegando, retry necessario, resposta lenta</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-red-400 font-mono text-sm w-14 flex-shrink-0">error</span>
+                <span class="text-sm">Falha que impacta o usuario. API timeout, payment failed, agent crash</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-neutral-400 text-sm font-semibold mb-2">Campos obrigatorios:</p>
+            <ul class="space-y-2 text-neutral-300">
+              <li class="flex items-start space-x-2">
+                <span class="text-rose-400 mt-1">&#8226;</span>
+                <span class="text-sm"><strong class="text-white">timestamp:</strong> ISO 8601 com timezone</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-rose-400 mt-1">&#8226;</span>
+                <span class="text-sm"><strong class="text-white">level:</strong> debug, info, warn, error</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-rose-400 mt-1">&#8226;</span>
+                <span class="text-sm"><strong class="text-white">service:</strong> Qual microsservico gerou</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-rose-400 mt-1">&#8226;</span>
+                <span class="text-sm"><strong class="text-white">correlation_id:</strong> UUID que conecta todos os logs de um request</span>
+              </li>
+              <li class="flex items-start space-x-2">
+                <span class="text-rose-400 mt-1">&#8226;</span>
+                <span class="text-sm"><strong class="text-white">message:</strong> Descricao curta do evento</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block: Winston/Pino -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Setup com Pino (Recomendado para Node.js)
+        </h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-rose-400 text-sm font-semibold mb-2">Instalacao e configuracao:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+              <pre class="text-neutral-300">npm install pino pino-pretty
+
+// logger.ts
+import pino from 'pino';
+
+const logger = pino({
+  level: process.env.LOG_LEVEL || 'info',
+  transport: process.env.NODE_ENV === 'development'
+    ? { target: 'pino-pretty', options: { colorize: true } }
+    : undefined, // JSON puro em producao
+  base: { service: 'ai-gateway', env: process.env.NODE_ENV },
+});
+
+export default logger;</pre>
+            </div>
+          </div>
+          <div>
+            <p class="text-rose-400 text-sm font-semibold mb-2">Uso com correlation ID e request tracing:</p>
+            <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+              <pre class="text-neutral-300">import { randomUUID } from 'crypto';
+
+// Middleware: atribui correlation ID a cada request
+app.use((req, res, next) => {
+  req.correlationId = req.headers['x-correlation-id'] || randomUUID();
+  res.setHeader('x-correlation-id', req.correlationId);
+  next();
+});
+
+// Em qualquer lugar do codigo:
+logger.info({
+  correlationId: req.correlationId,
+  userId: req.user?.id,
+  action: 'llm_request',
+  model: 'claude-sonnet-4',
+  inputTokens: 1200,
+  outputTokens: 450,
+  latencyMs: 2340,
+  status: 'success'
+}, 'LLM request completed');
+
+// Output em producao (JSON puro):
+// {"level":30,"time":1710000000,"service":"ai-gateway",
+//  "correlationId":"abc-123","userId":"usr_42",
+//  "action":"llm_request","model":"claude-sonnet-4",
+//  "inputTokens":1200,"outputTokens":450,
+//  "latencyMs":2340,"status":"success",
+//  "msg":"LLM request completed"}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Winston vs Pino -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">⚖️</span> Winston vs Pino
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-bold text-white mb-2">Pino</h4>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>5x mais rapido que Winston</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>JSON nativo, zero overhead de formatacao</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>Async por padrao, nao bloqueia event loop</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500">-</span><span>Menos transports built-in</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-white mb-2">Winston</h4>
+            <ul class="space-y-1 text-neutral-300 text-sm">
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>Ecossistema maior, mais transports</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>Formatacao customizavel</span></li>
+              <li class="flex items-start space-x-2"><span class="text-emerald-400">&#10003;</span><span>Community support mais amplo</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500">-</span><span>Mais lento em alta carga</span></li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-neutral-400 text-sm mt-4">Recomendacao: <strong class="text-white">Pino para producao</strong> (performance), Winston se voce precisa de transports especificos (email, Slack, database).</p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use <strong class="text-white">correlation IDs</strong> desde o primeiro dia. Quando um usuario reporta um problema, voce pede o correlation ID (ou pega pelo user ID) e ve toda a jornada do request no Grafana ou Datadog. Sem correlation ID, voce fica procurando agulha em palheiro de logs.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Metricas de IA: Tokens, Latencia, Custo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📈 Metricas de IA: Tokens, Latencia, Custo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Em SaaS tradicional, voce monitora CPU, memoria e throughput. Em SaaS com IA, <strong class="text-rose-400">tokens sao a sua nova unidade de custo</strong>. Cada request custa dinheiro real. Se voce nao mede tokens por request, tokens por usuario e custo por dia, vai ter surpresas desagradaveis na fatura.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          As tres metricas fundamentais de IA operations sao:
+        </p>
+        <div class="space-y-4">
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+            <h4 class="font-bold text-white mb-1">Tokens por Request</h4>
+            <p class="text-neutral-300 text-sm">Quantos tokens de input e output cada chamada consome. Varia drasticamente: um chat simples pode usar 500 tokens, um agente com RAG pode usar 50.000. Tracking granular permite identificar quais features ou usuarios estao queimando mais.</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+            <h4 class="font-bold text-white mb-1">Latencia P50 / P95</h4>
+            <p class="text-neutral-300 text-sm">P50 e a mediana: metade dos requests sao mais rapidos. P95 e o pior caso tipico: 95% dos requests sao mais rapidos que esse valor. Se seu P50 e 2s mas o P95 e 15s, tem algo errado com 5% dos requests. Investigue: modelo lento? Prompt muito grande? Retry?</p>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-dark-600">
+            <h4 class="font-bold text-white mb-1">Custo por Usuario / Agente / Dia</h4>
+            <p class="text-neutral-300 text-sm">Multiplique tokens pelo preco do modelo. Agrupe por dimensao relevante: custo por usuario (billing), custo por agente (otimizacao), custo por dia (budget). Se um usuario free esta gastando mais que um pro, algo esta errado.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Precos por Modelo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💰</span> Referencia de Custo por Modelo (Marco 2026)
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-neutral-400 font-medium">Modelo</th>
+                <th class="text-right py-2 text-neutral-400 font-medium">Input (1M tok)</th>
+                <th class="text-right py-2 text-neutral-400 font-medium">Output (1M tok)</th>
+                <th class="text-right py-2 text-neutral-400 font-medium">Custo/1k requests*</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-700">
+                <td class="py-2 text-white">GPT-4o</td>
+                <td class="text-right py-2">$2.50</td>
+                <td class="text-right py-2">$10.00</td>
+                <td class="text-right py-2">~$6.25</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 text-white">Claude Sonnet 4</td>
+                <td class="text-right py-2">$3.00</td>
+                <td class="text-right py-2">$15.00</td>
+                <td class="text-right py-2">~$9.00</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 text-white">GPT-4o-mini</td>
+                <td class="text-right py-2">$0.15</td>
+                <td class="text-right py-2">$0.60</td>
+                <td class="text-right py-2">~$0.37</td>
+              </tr>
+              <tr class="border-b border-dark-700">
+                <td class="py-2 text-white">Claude Haiku 3.5</td>
+                <td class="text-right py-2">$0.80</td>
+                <td class="text-right py-2">$4.00</td>
+                <td class="text-right py-2">~$2.40</td>
+              </tr>
+              <tr>
+                <td class="py-2 text-white">DeepSeek R1</td>
+                <td class="text-right py-2">$0.55</td>
+                <td class="text-right py-2">$2.19</td>
+                <td class="text-right py-2">~$1.37</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="text-neutral-500 text-xs mt-2">*Estimativa baseada em ~500 tokens input + 500 tokens output por request. Precos podem variar.</p>
+        </div>
+      </div>
+
+      <!-- Code Block: Cost Dashboard -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Construindo um Cost Dashboard
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">// Tabela de precos por modelo (por token)
+const PRICING = {
+  'gpt-4o':          { input: 2.50 / 1e6, output: 10.00 / 1e6 },
+  'claude-sonnet-4': { input: 3.00 / 1e6, output: 15.00 / 1e6 },
+  'gpt-4o-mini':     { input: 0.15 / 1e6, output: 0.60 / 1e6 },
+};
+
+function calculateCost(model, tokens) {
+  const prices = PRICING[model];
+  if (!prices) return 0;
+  return (tokens.input * prices.input) + (tokens.output * prices.output);
+}
+
+// Gravar custo a cada request
+async function trackUsage(userId, agentId, model, tokens, latencyMs) {
+  const cost = calculateCost(model, tokens);
+  await db.insert('usage_log', {
+    user_id: userId,
+    agent_id: agentId,
+    model,
+    input_tokens: tokens.input,
+    output_tokens: tokens.output,
+    cost_usd: cost,
+    latency_ms: latencyMs,
+    created_at: new Date()
+  });
+}
+
+// Query: custo por usuario nos ultimos 30 dias
+const costByUser = await db.query(`
+  SELECT user_id, SUM(cost_usd) as total_cost,
+         SUM(input_tokens + output_tokens) as total_tokens,
+         COUNT(*) as total_requests
+  FROM usage_log
+  WHERE created_at > NOW() - INTERVAL '30 days'
+  GROUP BY user_id
+  ORDER BY total_cost DESC
+  LIMIT 20
+`);</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Crie um <strong class="text-white">daily cost report</strong> que roda automaticamente. Mesmo que simples (um script que roda no cron e envia para Telegram/Slack), voce vai pegar anomalias cedo. Um usuario que de repente gasta 10x mais que o normal pode indicar um loop infinito, um bot abusando, ou uma feature que precisa de rate limiting.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Alertas e Incidentes -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">🚨 Alertas e Incidentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Monitoramento sem alertas e um dashboard que ninguem olha. <strong class="text-rose-400">Alertas automaticos sao o sistema nervoso do seu SaaS.</strong> Quando algo sai do normal, voce precisa saber em minutos, nao em horas. O usuario nao deve ser o primeiro a te avisar que o app esta fora do ar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Alertas bons tem tres propriedades: sao <strong class="text-white">acionaveis</strong> (voce sabe o que fazer quando recebe), <strong class="text-white">relevantes</strong> (nao disparam por qualquer coisa), e <strong class="text-white">urgentes</strong> (chegam no canal certo na hora certa). Alerta que dispara toda hora e ignorado. Alerta que nao dispara quando devia e inutil.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          <strong class="text-white">O que deve disparar alertas em SaaS com IA:</strong>
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Error spikes:</strong> Taxa de erro > 5% nos ultimos 5 minutos. Pode indicar que o provider de IA esta fora, API key expirou, ou um deploy quebrou algo</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Cost anomalies:</strong> Custo diario > 2x a media dos ultimos 7 dias. Um loop infinito de agente pode queimar $100 em minutos</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Latency degradation:</strong> P95 > 15 segundos. Experiencia do usuario degradou ao ponto de abandono</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Rate limit exhaustion:</strong> Voce esta batendo no rate limit do provider. Requests estao falhando ou ficando na fila</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Canais de Alerta -->
+      <div class="bg-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📡</span> Canais de Notificacao por Severidade
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="text-center p-4 bg-dark-700/50 rounded-xl border border-yellow-500/30">
+            <div class="w-14 h-14 mx-auto rounded-full bg-yellow-500/20 border-2 border-yellow-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⚠️</span>
+            </div>
+            <h4 class="font-bold text-yellow-400 mb-1">Warning</h4>
+            <p class="text-neutral-400 text-xs mb-2">Latencia alta, custo subindo</p>
+            <p class="text-neutral-300 text-sm">Slack / Discord channel</p>
+          </div>
+          <div class="text-center p-4 bg-dark-700/50 rounded-xl border border-orange-500/30">
+            <div class="w-14 h-14 mx-auto rounded-full bg-orange-500/20 border-2 border-orange-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">🔔</span>
+            </div>
+            <h4 class="font-bold text-orange-400 mb-1">High</h4>
+            <p class="text-neutral-400 text-xs mb-2">Error rate > 5%, cost spike</p>
+            <p class="text-neutral-300 text-sm">Telegram / SMS</p>
+          </div>
+          <div class="text-center p-4 bg-dark-700/50 rounded-xl border border-red-500/30">
+            <div class="w-14 h-14 mx-auto rounded-full bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">🚨</span>
+            </div>
+            <h4 class="font-bold text-red-400 mb-1">Critical</h4>
+            <p class="text-neutral-400 text-xs mb-2">App down, data breach</p>
+            <p class="text-neutral-300 text-sm">PagerDuty / Phone call</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Alerta via Telegram Bot
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">// Funcao de alerta via Telegram
+async function sendAlert(severity, message) {
+  const emoji = { warning: '⚠️', high: '🔔', critical: '🚨' };
+  const text = `${emoji[severity]} [${severity.toUpperCase()}]\n\n${message}`;
+
+  await fetch(`https://api.telegram.org/bot${process.env.ALERT_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: process.env.ALERT_CHAT_ID,
+      text,
+      parse_mode: 'HTML'
+    })
+  });
+}
+
+// Checagem periodica (roda a cada 5 min via cron ou setInterval)
+async function checkAlerts() {
+  const last5min = await db.query(`
+    SELECT COUNT(*) as total,
+           SUM(CASE WHEN status = 'error' THEN 1 ELSE 0 END) as errors,
+           AVG(latency_ms) as avg_latency,
+           SUM(cost_usd) as cost
+    FROM usage_log
+    WHERE created_at > NOW() - INTERVAL '5 minutes'
+  `);
+
+  const errorRate = last5min.errors / last5min.total;
+  if (errorRate > 0.05) {
+    await sendAlert('high',
+      `Error rate em ${(errorRate * 100).toFixed(1)}%\n` +
+      `${last5min.errors}/${last5min.total} requests falharam nos ultimos 5min`
+    );
+  }
+
+  if (last5min.avg_latency > 15000) {
+    await sendAlert('warning',
+      `Latencia media em ${(last5min.avg_latency/1000).toFixed(1)}s\n` +
+      `Threshold: 15s. Investigar provider de IA.`
+    );
+  }
+}</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Configure um <strong class="text-white">"dead man's switch"</strong>: um alerta que dispara quando o sistema para de enviar heartbeats. Se o seu servico de monitoramento cair junto com o app, ninguem te avisa. Use um servico externo (UptimeRobot, Better Uptime) que pinga seu endpoint de health check a cada minuto. Se nao responder em 3 tentativas, dispara o alerta.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Debugging Sistemas de IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔍 Debugging Sistemas de IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Debugar sistemas com IA e fundamentalmente diferente de debugar codigo tradicional. O mesmo input pode gerar outputs diferentes. O comportamento muda com a versao do modelo, com a temperatura, com o tamanho do contexto. <strong class="text-rose-400">Voce nao pode simplesmente colocar um breakpoint e inspecionar.</strong> Precisa de estrategias especificas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong class="text-white">Reproduzir problemas com LLMs</strong> exige que voce salve o estado completo da interacao: o prompt exato (system + user), o modelo e versao, a temperatura, o contexto/historico, e quaisquer tool calls. Sem isso, voce nao consegue reproduzir o bug.
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 font-bold w-6 flex-shrink-0">1.</span>
+            <div>
+              <strong class="text-white">Prompt Versioning</strong>
+              <p class="text-neutral-400 text-sm">Trate prompts como codigo. Versione no Git. Cada mudanca tem um hash. Quando o comportamento da IA muda, voce sabe qual versao do prompt estava ativa.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 font-bold w-6 flex-shrink-0">2.</span>
+            <div>
+              <strong class="text-white">A/B Testing de Prompts</strong>
+              <p class="text-neutral-400 text-sm">Rodar duas versoes do prompt simultaneamente (50/50) e medir qual performa melhor. Metricas: taxa de erro, satisfacao do usuario, tokens consumidos, custo.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 font-bold w-6 flex-shrink-0">3.</span>
+            <div>
+              <strong class="text-white">Conversation Replay</strong>
+              <p class="text-neutral-400 text-sm">Salvar a sequencia completa de messages (sem PII) para poder "replay" uma conversa problematica em ambiente de teste. Essencial para agentes multi-turn.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tecnicas de Debug -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🛠️</span> Tecnicas de Debug para LLMs
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">1</span>
+            <div>
+              <span class="text-white font-medium">Isolar o prompt</span>
+              <span class="text-neutral-400 text-sm block">Copie o prompt exato para o playground do provider (Anthropic Console, OpenAI Playground). Funciona la? Se sim, o problema e no codigo. Se nao, e no prompt.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">2</span>
+            <div>
+              <span class="text-white font-medium">Reducao do contexto</span>
+              <span class="text-neutral-400 text-sm block">Remova partes do contexto ate encontrar o que causa o comportamento indesejado. Prompt longo demais frequentemente degrada a qualidade da resposta.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">3</span>
+            <div>
+              <span class="text-white font-medium">Temperature sweep</span>
+              <span class="text-neutral-400 text-sm block">Teste o mesmo prompt com temperature 0 (deterministico) vs 0.7 (criativo). Comportamento inconsistente com temperature alta pode ser normal, nao um bug.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">4</span>
+            <div>
+              <span class="text-white font-medium">Eval sets</span>
+              <span class="text-neutral-400 text-sm block">Mantenha um conjunto de inputs com outputs esperados. Rode automaticamente apos cada mudanca de prompt. Se a acuracia cai, voce sabe que a mudanca causou regressao.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Prompt Versioning + A/B Test
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">// Prompts versionados como objetos
+const PROMPTS = {
+  'agent-v1': {
+    version: '1.0.0',
+    system: 'You are a helpful assistant. Be concise.',
+    temperature: 0.3,
+  },
+  'agent-v2': {
+    version: '2.0.0',
+    system: 'You are an expert assistant. Think step by step. Be precise.',
+    temperature: 0.2,
+  },
+};
+
+// A/B test: 50/50 split
+function getActivePrompt(userId) {
+  const hash = hashString(userId); // Deterministic per user
+  const variant = hash % 2 === 0 ? 'agent-v1' : 'agent-v2';
+  return { ...PROMPTS[variant], variant };
+}
+
+// Log qual variante foi usada
+logger.info({
+  userId,
+  promptVariant: prompt.variant,
+  promptVersion: prompt.version,
+  tokens: result.usage,
+  latencyMs: elapsed,
+}, 'AB test request completed');
+
+// Depois: query para comparar performance
+// SELECT prompt_variant, AVG(latency_ms), AVG(cost_usd),
+//   SUM(CASE WHEN status='error' THEN 1 ELSE 0 END) / COUNT(*) as error_rate
+// FROM usage_log WHERE created_at > NOW() - INTERVAL '7 days'
+// GROUP BY prompt_variant</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Ferramentas como <strong class="text-white">LangSmith</strong> (LangChain), <strong class="text-white">Braintrust</strong>, e <strong class="text-white">Helicone</strong> automatizam prompt versioning, A/B testing e eval sets. Nao reinvente a roda. Se voce tem mais de 3 prompts em producao, adote uma dessas ferramentas. O custo e minimo comparado ao custo de um prompt mal otimizado rodando milhares de vezes.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Observabilidade Basica -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🛠️ Exercicio: Observabilidade Basica</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de implementar. Neste exercicio voce vai adicionar <strong class="text-rose-400">structured logging, token tracking e alertas de erro</strong> ao seu SaaS. Quando terminar, voce vai saber exatamente quanto cada request custa, quanto tempo leva, e ser notificado quando algo quebrar.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border-2 border-rose-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🛠️</span>
+          <div>
+            <h3 class="text-xl font-bold text-rose-400">Exercicio: Observabilidade Basica</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 35-45 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Adicionar Structured Logging</h4>
+              <p class="text-neutral-300 text-sm mb-3">Configure Pino (ou Winston) no seu projeto:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Instalar pino e pino-pretty como dependencias</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Criar logger.ts com configuracao base (service name, env, level)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Adicionar middleware de correlation ID em todas as rotas</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Substituir todos os console.log por chamadas ao logger</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implementar Token Tracking</h4>
+              <p class="text-neutral-300 text-sm mb-3">Registre o custo de cada chamada ao LLM:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Criar tabela usage_log no banco (user_id, model, tokens, cost, latency, timestamp)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Criar funcao calculateCost com tabela de precos por modelo</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Gravar usage apos cada chamada de IA (input_tokens, output_tokens, cost_usd)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Criar endpoint /api/admin/usage com custo por usuario e por dia</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Construir Dashboard de Custo</h4>
+              <p class="text-neutral-300 text-sm mb-3">Uma pagina simples que mostra os numeros:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Custo total hoje, esta semana, este mes</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Top 10 usuarios por consumo de tokens</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Grafico de custo por dia (ultimos 30 dias)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>P50 e P95 de latencia por modelo</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Configurar Alertas</h4>
+              <p class="text-neutral-300 text-sm mb-3">Alertas automaticos para os cenarios criticos:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Alerta quando error rate > 5% em 5 min (via Telegram ou Discord)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Alerta quando custo diario > budget definido no .env</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Health check endpoint que retorna status do app e dos providers</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Testar disparando um erro artificial e verificando que o alerta chega</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">&#10003;</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Logs em JSON com correlation ID no stdout</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Cada request de IA registra tokens e custo no DB</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Dashboard mostra custo por usuario e por dia</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Alerta dispara quando error rate passa de 5%</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Health check endpoint responde com status 200</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Nenhum dado sensivel (prompts, PII) nos logs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-rose-900/40 via-dark-800 to-dark-800 rounded-xl border border-rose-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Logue metadata, nao conteudo</strong>
+              <span class="text-neutral-400"> - Tokens, latencia, custo, modelo, status. Nunca prompts completos ou PII em logs operacionais.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Structured logging e inegociavel</strong>
+              <span class="text-neutral-400"> - JSON, log levels, correlation IDs. Pino para performance, Winston para flexibilidade. Nada de console.log em producao.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Tokens sao a nova unidade de custo</strong>
+              <span class="text-neutral-400"> - Track por request, por usuario, por dia. P50/P95 de latencia revelam problemas antes do usuario reclamar.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Alertas acionaveis, nao ruidosos</strong>
+              <span class="text-neutral-400"> - Error spikes, cost anomalies, latency degradation. Canais certos para severidades certas.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Debugging de IA exige novas tecnicas</strong>
+              <span class="text-neutral-400"> - Prompt versioning, A/B testing, conversation replay, eval sets. Ferramentas como LangSmith e Helicone ajudam.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Observabilidade transforma operacao cega em operacao informada</strong>
+              <span class="text-neutral-400"> - Com logs, metricas e alertas, voce sabe o que esta acontecendo no seu SaaS 24/7.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-6-3.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            &#8592; Modulo Anterior
+          </a>
+          <a href="modulo-6-5.html" class="text-center px-6 py-3 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-500 transition-colors">
+            Proximo Modulo &#8594;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

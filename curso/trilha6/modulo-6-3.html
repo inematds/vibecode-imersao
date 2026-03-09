@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.3: Autenticacao e Autorizacao | Imersao Vibe Coding</title>
+  <meta name="description" content="RBAC, JWT, rotas protegidas, middleware de seguranca e implementacao completa de autenticacao e autorizacao para seu SaaS.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-rose-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400 transition-colors">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.3</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-rose-500/20 text-rose-400 text-sm font-semibold rounded-full mb-4">MODULO 6.3</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F512; Autenticacao e Autorizacao</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">RBAC, JWT, rotas protegidas, middleware de seguranca e como implementar um sistema completo de autenticacao e autorizacao para seu SaaS.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Pratico</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Auth vs AuthZ -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F510; Auth vs AuthZ - Diferenca Fundamental</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Autenticacao e autorizacao sao dois conceitos que muitos desenvolvedores confundem, mas que resolvem problemas completamente diferentes. Autenticacao (AuthN) responde a pergunta "quem e voce?". Autorizacao (AuthZ) responde "o que voce pode fazer?". Toda aplicacao SaaS precisa dos dois, e confundir um com o outro e uma das fontes mais comuns de vulnerabilidades de seguranca.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Pense assim: quando voce mostra seu RG na portaria de um predio, isso e autenticacao. O seguranca confirma que voce e quem diz ser. Quando voce tenta entrar em um andar especifico e o elevador exige um cartao de acesso, isso e autorizacao. Voce ja provou quem e, mas agora o sistema precisa verificar se voce tem permissao para aquele recurso. Um SaaS funciona da mesma forma: primeiro autentica o usuario, depois verifica se ele tem permissao para a acao que esta tentando executar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>Autenticacao (AuthN)</strong> e o processo de verificar a identidade de um usuario. Os metodos mais comuns sao: email + senha, OAuth (Google, GitHub), magic links, passkeys, e autenticacao biometrica. Quando um usuario faz login, ele esta se autenticando. O resultado da autenticacao e geralmente um token (JWT) ou uma sessao que identifica aquele usuario.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          <strong>Autorizacao (AuthZ)</strong> e o processo de verificar se um usuario autenticado tem permissao para acessar um recurso ou executar uma acao. O metodo mais comum e RBAC (Role-Based Access Control), onde usuarios sao atribuidos a roles (admin, user, viewer) e cada role tem um conjunto de permissoes. Outros modelos incluem ABAC (Attribute-Based) e ReBAC (Relationship-Based).
+        </p>
+        <p class="text-neutral-300">
+          Na pratica, autenticacao acontece uma vez (no login) e autorizacao acontece em cada request. Um usuario pode estar autenticado (logado) mas nao autorizado para uma acao especifica (ex: tentar acessar o painel de admin sendo um usuario comum). Seu sistema precisa tratar ambos os cenarios de forma independente e robusta.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Vulnerabilidades Mais Comuns</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">34%</div>
+            <p class="text-neutral-400 text-sm">das brechas de seguranca em apps web sao por falhas de autorizacao (OWASP 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">BOLA</div>
+            <p class="text-neutral-400 text-sm">Broken Object Level Authorization: vulnerabilidade #1 em APIs (OWASP API Top 10)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">82%</div>
+            <p class="text-neutral-400 text-sm">dos SaaS que sofreram data breach tinham falhas de AuthZ, nao AuthN</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">IDOR</div>
+            <p class="text-neutral-400 text-sm">Insecure Direct Object Reference: acessar dados de outro usuario mudando um ID na URL</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Use servicos especializados para autenticacao (Clerk, Auth.js, Supabase Auth, Firebase Auth) em vez de construir do zero. O login e a parte mais sensivel do sistema e servicos dedicados ja lidam com hashing de senhas, rate limiting, 2FA, e sessoes de forma segura. Construir isso do zero e uma receita para vulnerabilidades.
+        </p>
+        <p class="text-neutral-300">
+          Ja a autorizacao geralmente precisa ser custom, porque depende da logica de negocio do seu SaaS. Defina suas roles e permissoes cedo no projeto, documente a permission matrix, e implemente checks de autorizacao em TODAS as rotas e endpoints, nao apenas no frontend.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Separar claramente AuthN e AuthZ na sua arquitetura</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar servicos especializados para autenticacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Verificar autorizacao no backend, nunca confiar apenas no frontend</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Documentar a permission matrix antes de implementar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Implementar hash de senhas manualmente (use bcrypt ou argon2)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar que esconder um botao no frontend e "autorizacao"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Armazenar senhas em texto puro ou com MD5/SHA1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Tratar autenticacao e autorizacao como a mesma coisa</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: JWT e Tokens -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F3AB; JWT e Tokens</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        JSON Web Tokens (JWT) sao o padrao dominante para autenticacao em APIs modernas. Um JWT e basicamente um pacote de informacoes assinado digitalmente que o servidor emite quando o usuario faz login. Esse token viaja em cada request subsequente, permitindo que o servidor identifique o usuario sem precisar consultar o banco de dados a cada chamada.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A beleza do JWT e que ele e stateless: o servidor nao precisa manter uma sessao em memoria. Toda a informacao necessaria esta dentro do proprio token. Isso facilita a escalabilidade horizontal, ja que qualquer instancia do servidor pode validar o token independentemente. Mas essa mesma caracteristica traz desafios serios de seguranca que voce precisa entender antes de implementar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Anatomia de um JWT</h3>
+        <p class="text-neutral-300 mb-4">
+          Um JWT e composto por tres partes separadas por pontos: <strong>Header.Payload.Signature</strong>. Cada parte e um JSON codificado em Base64URL.
+        </p>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">H</span>
+              <h4 class="font-semibold text-rose-400">Header</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Contem o tipo do token (JWT) e o algoritmo de assinatura (HS256, RS256). Exemplo: <code class="bg-dark-800 px-1 rounded text-xs">{"alg": "HS256", "typ": "JWT"}</code>. O algoritmo define como a signature e calculada. HS256 usa uma chave secreta compartilhada; RS256 usa um par de chaves publica/privada.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">P</span>
+              <h4 class="font-semibold text-rose-400">Payload</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Contem os "claims" (afirmacoes sobre o usuario). Claims padrao incluem: <code class="bg-dark-800 px-1 rounded text-xs">sub</code> (subject/user ID), <code class="bg-dark-800 px-1 rounded text-xs">iat</code> (issued at), <code class="bg-dark-800 px-1 rounded text-xs">exp</code> (expiration), <code class="bg-dark-800 px-1 rounded text-xs">iss</code> (issuer). Voce pode adicionar claims customizados como <code class="bg-dark-800 px-1 rounded text-xs">role</code>, <code class="bg-dark-800 px-1 rounded text-xs">org_id</code>, <code class="bg-dark-800 px-1 rounded text-xs">plan</code>.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">S</span>
+              <h4 class="font-semibold text-rose-400">Signature</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">E o HMAC ou RSA do header + payload usando a chave secreta. Garante que o token nao foi adulterado. Se alguem mudar qualquer byte do header ou payload, a signature nao bate e o token e rejeitado. Nunca exponha sua chave secreta no frontend ou em repositorios publicos.</p>
+          </div>
+        </div>
+        <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-4">
+          <p class="text-rose-400 mb-1">// Exemplo de payload decodificado:</p>
+          <p>{</p>
+          <p>&nbsp;&nbsp;"sub": "user_abc123",</p>
+          <p>&nbsp;&nbsp;"email": "joao@example.com",</p>
+          <p>&nbsp;&nbsp;"role": "admin",</p>
+          <p>&nbsp;&nbsp;"org_id": "org_xyz",</p>
+          <p>&nbsp;&nbsp;"iat": 1710000000,</p>
+          <p>&nbsp;&nbsp;"exp": 1710003600</p>
+          <p>}</p>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Estrategia de Tokens: Access + Refresh</h3>
+        <p class="text-neutral-300 mb-3">
+          A pratica padrao em SaaS modernos e usar dois tokens: um <strong>Access Token</strong> de vida curta (15-60 minutos) e um <strong>Refresh Token</strong> de vida longa (7-30 dias). O access token e enviado em cada request. Quando expira, o frontend usa o refresh token para obter um novo access token sem forcar o usuario a fazer login novamente.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">15 min</div>
+            <p class="text-neutral-400 text-sm">expiracao recomendada para access tokens em aplicacoes sensiveis</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">7 dias</div>
+            <p class="text-neutral-400 text-sm">expiracao tipica de refresh tokens com rotacao automatica</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">httpOnly</div>
+            <p class="text-neutral-400 text-sm">cookies httpOnly + Secure + SameSite=Strict para armazenar tokens</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Rotacao</div>
+            <p class="text-neutral-400 text-sm">cada uso do refresh token gera um novo, invalidando o anterior</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Armazenamento Seguro</h3>
+        <p class="text-neutral-300 mb-3">
+          NUNCA armazene JWTs em localStorage. Qualquer script XSS pode ler localStorage e roubar o token. A abordagem mais segura e armazenar tokens em cookies httpOnly, que nao sao acessiveis via JavaScript. Combine com os flags Secure (HTTPS only) e SameSite=Strict (previne CSRF).
+        </p>
+        <p class="text-neutral-300">
+          Se voce usa um servico como Clerk ou Supabase Auth, eles ja gerenciam isso corretamente. Se esta implementando manualmente, use a library jose (JavaScript) ou PyJWT (Python) para criar e validar tokens. Sempre valide a signature, o issuer, e a expiracao em cada request.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar access tokens curtos (15-60 min) + refresh tokens longos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Armazenar tokens em cookies httpOnly Secure SameSite</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Implementar rotacao de refresh tokens</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Incluir apenas claims essenciais no payload do JWT</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Guardar JWT em localStorage (vulneravel a XSS)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar tokens sem expiracao ou com expiracao muito longa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Colocar dados sensiveis no payload (senhas, dados pessoais)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar o algoritmo "none" ou HS256 com chave fraca</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: RBAC (Role-Based Access Control) -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F465; RBAC - Role-Based Access Control</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        RBAC e o modelo de autorizacao mais usado em SaaS porque equilibra simplicidade com flexibilidade. Em vez de definir permissoes para cada usuario individualmente (o que nao escala), voce define roles (papeis) e atribui permissoes a esses roles. Cada usuario recebe uma ou mais roles, herdando automaticamente todas as permissoes associadas.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A maioria dos SaaS usa entre 3 e 5 roles. O modelo mais comum e: Admin (acesso total), Member/User (acesso padrao), Viewer (somente leitura). Conforme o SaaS cresce, voce pode adicionar roles como Billing Admin, Team Lead, ou roles customizaveis. O importante e comecar simples e expandir conforme a necessidade real.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Permission Matrix: Como Estruturar</h3>
+        <p class="text-neutral-300 mb-4">
+          Uma permission matrix mapeia roles contra recursos e acoes. Cada celula indica se aquela role pode executar aquela acao naquele recurso. Essa matrix e o documento-fonte de toda a logica de autorizacao do seu SaaS.
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-300 mt-2">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-rose-400">Recurso / Acao</th>
+                <th class="text-center py-2 text-rose-400">Admin</th>
+                <th class="text-center py-2 text-rose-400">User</th>
+                <th class="text-center py-2 text-rose-400">Viewer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-dark-700"><td class="py-2">Projetos: criar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Projetos: editar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Projetos: deletar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td><td class="text-center text-red-400">&#10007;</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Projetos: visualizar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-green-400">&#10003;</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Usuarios: gerenciar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td><td class="text-center text-red-400">&#10007;</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Billing: acessar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td><td class="text-center text-red-400">&#10007;</td></tr>
+              <tr><td class="py-2">Settings: editar</td><td class="text-center text-green-400">&#10003;</td><td class="text-center text-red-400">&#10007;</td><td class="text-center text-red-400">&#10007;</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-neutral-300 mt-4 text-sm">
+          <strong>Heranca de roles:</strong> Viewer herda permissoes basicas. User herda tudo de Viewer + permissoes de edicao/criacao. Admin herda tudo de User + permissoes administrativas. Esse modelo hierarquico simplifica a manutencao.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Implementacao em Codigo</h3>
+        <p class="text-neutral-300 mb-3">
+          A forma mais limpa de implementar RBAC e definir as permissoes como constantes e criar funcoes de verificacao reutilizaveis. Veja um exemplo pratico da estrutura:
+        </p>
+        <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+          <p class="text-blue-400">// permissions.ts</p>
+          <p>const ROLES = {</p>
+          <p>&nbsp;&nbsp;ADMIN: 'admin',</p>
+          <p>&nbsp;&nbsp;USER: 'user',</p>
+          <p>&nbsp;&nbsp;VIEWER: 'viewer'</p>
+          <p>};</p>
+          <p class="mt-2">const PERMISSIONS = {</p>
+          <p>&nbsp;&nbsp;[ROLES.VIEWER]: ['project:read'],</p>
+          <p>&nbsp;&nbsp;[ROLES.USER]: ['project:read', 'project:create', 'project:update'],</p>
+          <p>&nbsp;&nbsp;[ROLES.ADMIN]: ['project:read', 'project:create', 'project:update',</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;'project:delete', 'user:manage', 'billing:access', 'settings:edit']</p>
+          <p>};</p>
+          <p class="mt-2">function hasPermission(role: string, permission: string): boolean {</p>
+          <p>&nbsp;&nbsp;return PERMISSIONS[role]?.includes(permission) ?? false;</p>
+          <p>}</p>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Comece com 3 Roles</h3>
+        <p class="text-neutral-300 mb-3">
+          Nao crie 15 roles antes de ter usuarios. Comece com Admin, User, e Viewer. A maioria dos SaaS em estagio inicial funciona perfeitamente com essas tres roles. Adicione mais roles quando a demanda real surgir, nao quando voce imaginar que talvez um dia precisara.
+        </p>
+        <p class="text-neutral-300">
+          Armazene a role do usuario tanto no JWT (para verificacao rapida no frontend) quanto no banco de dados (como fonte de verdade para o backend). Se a role mudar, o JWT antigo continua valido ate expirar, entao use access tokens curtos (15 min) para que mudancas de role se propaguem rapidamente.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Criar uma permission matrix antes de escrever qualquer codigo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar constantes tipadas para roles e permissoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Implementar heranca de roles para simplificar a gestao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar cada combinacao role + acao com testes automatizados</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Hardcodar permissoes em cada rota individualmente (use middleware)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar roles demais antes de ter demanda real</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Misturar logica de negocio com logica de autorizacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar apenas no JWT para autorizacao (sempre checar no DB para acoes criticas)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Rotas Protegidas -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F6E1;&#xFE0F; Rotas Protegidas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Rotas protegidas sao endpoints (no backend) ou paginas (no frontend) que so podem ser acessados por usuarios autenticados e/ou autorizados. Proteger rotas e a implementacao pratica de tudo que discutimos sobre AuthN e AuthZ. E onde a teoria vira codigo real.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A protecao de rotas acontece em duas camadas: no backend (API middleware) e no frontend (page guards / route protection). As duas sao necessarias. O backend e a camada de seguranca real: sem ele, qualquer pessoa com um curl ou Postman acessa seus endpoints. O frontend e a camada de experiencia: ele evita que o usuario veja paginas que ele nao deveria ver, melhorando a UX e reduzindo requests desnecessarios.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Protecao em Camadas</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">API Middleware Guard (Backend)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Um middleware que intercepta cada request antes de chegar ao handler da rota. Extrai o JWT do header Authorization ou cookie, valida a signature e expiracao, decodifica o payload, e injeta o usuario no contexto do request. Se o token for invalido ou ausente, retorna 401 Unauthorized.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// middleware/auth.ts (Express)</p>
+              <p>export function requireAuth(req, res, next) {</p>
+              <p>&nbsp;&nbsp;const token = req.cookies.access_token;</p>
+              <p>&nbsp;&nbsp;if (!token) return res.status(401).json({error: 'Not authenticated'});</p>
+              <p>&nbsp;&nbsp;try {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;const decoded = jwt.verify(token, process.env.JWT_SECRET);</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;req.user = decoded;</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;next();</p>
+              <p>&nbsp;&nbsp;} catch (err) {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;return res.status(401).json({error: 'Invalid token'});</p>
+              <p>&nbsp;&nbsp;}</p>
+              <p>}</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Role-Based Middleware (Backend)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Apos autenticar, um segundo middleware verifica se o usuario tem a role necessaria para a rota. Isso separa AuthN de AuthZ em middleware independentes e reutilizaveis.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// middleware/authorize.ts</p>
+              <p>export function requireRole(...roles: string[]) {</p>
+              <p>&nbsp;&nbsp;return (req, res, next) => {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;if (!roles.includes(req.user.role)) {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return res.status(403).json({error: 'Forbidden'});</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;next();</p>
+              <p>&nbsp;&nbsp;};</p>
+              <p>}</p>
+              <p class="mt-2 text-rose-400">// Uso:</p>
+              <p>app.delete('/api/projects/:id', requireAuth, requireRole('admin'), deleteProject);</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Page-Level Protection (Frontend)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">No frontend (React/Next.js), use Higher-Order Components, route guards, ou middleware de pagina para verificar autenticacao antes de renderizar. Se o usuario nao esta logado, redirecione para /login. Se nao tem permissao, redirecione para /403 ou mostre uma mensagem de acesso negado. No Next.js App Router, use middleware.ts para protecao server-side.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Conditional Rendering (Frontend)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Alem de proteger rotas inteiras, esconda elementos UI baseado na role do usuario. Botoes de delete so aparecem para admins. Links para billing so aparecem para roles com permissao. Isso melhora a UX, mas nao e seguranca: a protecao real esta no backend.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Fluxo Completo de uma Request Protegida</h3>
+        <div class="space-y-3 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">1. Cliente</strong> envia request com cookie/header contendo o access token</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">2. Auth Middleware</strong> extrai e valida o token. Se invalido: 401. Se valido: injeta user no request.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">3. Role Middleware</strong> verifica se user.role tem permissao para a acao. Se nao: 403.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">4. Route Handler</strong> executa a logica de negocio com a garantia de que o usuario esta autenticado e autorizado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">5. Resource Check</strong> (opcional mas recomendado) verifica se o usuario tem acesso ao recurso especifico (ex: e dono do projeto que esta tentando editar).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Redirect Logic</h3>
+        <p class="text-neutral-300 mb-3">
+          Quando um usuario nao autenticado tenta acessar uma rota protegida, salve a URL original antes de redirecionar para /login. Apos o login, redirecione de volta para a URL original. Isso melhora dramaticamente a UX. No Next.js: <code class="bg-dark-800 px-1 rounded text-xs">redirect(`/login?callbackUrl=${encodeURIComponent(request.url)}`)</code>.
+        </p>
+        <p class="text-neutral-300">
+          Diferencie 401 (nao autenticado) de 403 (autenticado mas nao autorizado) tanto na API quanto na UI. Para 401, redirecione para login. Para 403, mostre uma pagina de "Acesso Negado" que explique por que e sugira contatar o admin. Tratar ambos como um redirect generico confunde o usuario.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Proteger TODAS as rotas de API que acessam dados privados</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Separar middleware de AuthN e AuthZ em funcoes reutilizaveis</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Implementar redirect com callbackUrl apos login</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Verificar ownership de recursos alem de roles (BOLA prevention)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Proteger rotas apenas no frontend (backend e obrigatorio)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esquecer de proteger rotas de API usadas por AJAX/fetch</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Retornar 200 com body vazio em vez de 401/403 correto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Duplicar logica de autorizacao em cada handler (use middleware)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Middleware de Seguranca -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x2699;&#xFE0F; Middleware de Seguranca</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Alem de autenticacao e autorizacao, seu SaaS precisa de uma camada de middleware de seguranca que protege contra ataques comuns na web. CORS, CSP, HTTPS enforcement, e security headers sao os pilares dessa protecao. Negligenciar qualquer um deles deixa brechas que atacantes exploram rotineiramente.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A boa noticia e que a maioria dessas protecoes pode ser implementada com configuracao, nao com codigo complexo. Bibliotecas como helmet (Node.js) configuram a maioria dos security headers com uma linha de codigo. O importante e entender o que cada header faz para configurar corretamente em vez de aceitar defaults cegamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Os 4 Pilares da Seguranca Web</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">CORS (Cross-Origin Resource Sharing)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">CORS controla quais dominios podem fazer requests para sua API. Sem CORS configurado, qualquer site pode chamar sua API. Com CORS, voce define uma whitelist de origens permitidas. Para SaaS, permita apenas seu dominio frontend (ex: app.seusite.com) e bloqueie todo o resto.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// CORS config (Express)</p>
+              <p>app.use(cors({</p>
+              <p>&nbsp;&nbsp;origin: ['https://app.seusite.com'],</p>
+              <p>&nbsp;&nbsp;credentials: true,</p>
+              <p>&nbsp;&nbsp;methods: ['GET', 'POST', 'PUT', 'DELETE'],</p>
+              <p>&nbsp;&nbsp;allowedHeaders: ['Content-Type', 'Authorization']</p>
+              <p>}));</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">CSP (Content Security Policy)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">CSP define quais recursos (scripts, estilos, imagens, fontes) o browser pode carregar na sua pagina. E a defesa primaria contra XSS (Cross-Site Scripting). Uma CSP bem configurada impede que scripts injetados por atacantes sejam executados, mesmo que consigam inserir HTML malicioso na pagina.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">HTTPS Enforcement</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">HTTPS encripta toda a comunicacao entre cliente e servidor. Em 2026, nao existe desculpa para nao usar HTTPS. Use o header HSTS (Strict-Transport-Security) para forcar o browser a sempre usar HTTPS, mesmo que o usuario digite http://. Servicos como Vercel, Railway e Cloudflare oferecem HTTPS automatico.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Security Headers</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Headers HTTP que instruem o browser a se comportar de forma mais segura:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><strong class="text-rose-400">X-Frame-Options: DENY</strong> - impede que sua pagina seja carregada em um iframe (previne clickjacking)</li>
+              <li><strong class="text-rose-400">X-Content-Type-Options: nosniff</strong> - impede o browser de "adivinhar" o tipo MIME de arquivos</li>
+              <li><strong class="text-rose-400">X-XSS-Protection: 1; mode=block</strong> - ativa o filtro XSS do browser (legacy, mas nao custa nada)</li>
+              <li><strong class="text-rose-400">Referrer-Policy: strict-origin-when-cross-origin</strong> - controla quanta informacao de referrer e enviada</li>
+              <li><strong class="text-rose-400">Permissions-Policy</strong> - desabilita APIs desnecessarias (camera, microfone, geolocation)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Setup Rapido com Helmet</h3>
+        <p class="text-neutral-300 mb-3">
+          A biblioteca helmet para Node.js/Express configura 11 security headers com uma unica linha de codigo. E o caminho mais rapido para uma configuracao de seguranca robusta.
+        </p>
+        <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+          <p class="text-blue-400">// Instalacao: npm install helmet</p>
+          <p class="mt-2">import helmet from 'helmet';</p>
+          <p class="mt-2">app.use(helmet()); <span class="text-blue-400">// Configura 11 headers de seguranca</span></p>
+          <p class="mt-2 text-blue-400">// Customizar CSP:</p>
+          <p>app.use(helmet.contentSecurityPolicy({</p>
+          <p>&nbsp;&nbsp;directives: {</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;defaultSrc: ["'self'"],</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;scriptSrc: ["'self'", "https://cdn.stripe.com"],</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;styleSrc: ["'self'", "'unsafe-inline'"],</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;imgSrc: ["'self'", "data:", "https:"],</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;connectSrc: ["'self'", "https://api.stripe.com"]</p>
+          <p>&nbsp;&nbsp;}</p>
+          <p>}));</p>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Teste seus Headers</h3>
+        <p class="text-neutral-300 mb-3">
+          Use o site securityheaders.com para analisar os headers de seguranca do seu SaaS apos deploy. Ele da uma nota (A+ a F) e explica exatamente o que falta. Objetivo: A+ antes de lancar para o publico. Demora 5 minutos para configurar e faz uma diferenca enorme.
+        </p>
+        <p class="text-neutral-300">
+          Outra ferramenta util e o Mozilla Observatory (observatory.mozilla.org). Ele analisa nao so headers mas tambem configuracao de TLS, cookies, e outras praticas de seguranca. E gratuito e devolve um relatorio detalhado com recomendacoes especificas.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar helmet ou equivalente desde o dia 1 do projeto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar CORS com whitelist restrita (nunca origin: '*' em producao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Forcar HTTPS via HSTS com max-age longo</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar com securityheaders.com apos cada deploy</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar CORS com origin: '*' em producao (permite qualquer site)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deixar CSP desabilitado "porque da conflito com scripts"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Aceitar HTTP em producao, mesmo como fallback</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar security headers por "nao ser prioridade agora"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: RBAC Funcional -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Exercicio: RBAC Funcional</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Hora de colocar tudo em pratica. Neste exercicio voce vai implementar um sistema completo de autenticacao e autorizacao com 3 roles, permission matrix, middleware de protecao, e rotas protegidas. Ao final, voce tera um backend funcional que autentica usuarios, emite JWTs, e controla acesso por roles.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O exercicio e desenhado para ser implementado com IA (Cursor, Claude Code, ou a ferramenta de sua escolha). Use o Vibe Coding: descreva a arquitetura, deixe a IA gerar o codigo, revise, ajuste, e itere. Foque em entender a logica, nao em decorar a sintaxe.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Passo a Passo do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Setup do Projeto</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie um projeto Node.js/Express (ou Next.js API Routes) com as seguintes dependencias:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-rose-400">express</strong> - servidor HTTP</li>
+              <li><strong class="text-rose-400">jsonwebtoken</strong> - criacao e validacao de JWT</li>
+              <li><strong class="text-rose-400">bcrypt</strong> - hashing de senhas</li>
+              <li><strong class="text-rose-400">helmet</strong> - security headers</li>
+              <li><strong class="text-rose-400">cors</strong> - configuracao de CORS</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Definir 3 Roles + Permission Matrix</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie o arquivo permissions.ts com:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li>Roles: <strong class="text-rose-400">admin</strong>, <strong class="text-rose-400">user</strong>, <strong class="text-rose-400">viewer</strong></li>
+              <li>Recursos: projects, users, billing, settings</li>
+              <li>Acoes por recurso: read, create, update, delete</li>
+              <li>Funcao hasPermission(role, permission) que retorna boolean</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Implementar Auth Endpoints</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie as rotas de autenticacao:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-rose-400">POST /auth/register</strong> - cria usuario com senha hasheada (bcrypt)</li>
+              <li><strong class="text-rose-400">POST /auth/login</strong> - valida credenciais, retorna JWT (access + refresh)</li>
+              <li><strong class="text-rose-400">POST /auth/refresh</strong> - troca refresh token por novo access token</li>
+              <li><strong class="text-rose-400">POST /auth/logout</strong> - invalida o refresh token</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Criar Middleware de AuthN + AuthZ</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Implemente dois middleware separados: requireAuth (valida JWT, injeta user no request) e requireRole (verifica se user.role esta na lista de roles permitidos). Aplique-os nas rotas de forma composavel.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-primary">Rotas Protegidas por Role</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie endpoints protegidos para testar cada role:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-primary">GET /api/projects</strong> - viewer, user, admin (todos podem ler)</li>
+              <li><strong class="text-primary">POST /api/projects</strong> - user, admin (criar projeto)</li>
+              <li><strong class="text-primary">DELETE /api/projects/:id</strong> - admin only</li>
+              <li><strong class="text-primary">GET /api/admin/users</strong> - admin only</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-primary">Testar com curl ou Postman</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Registre 3 usuarios (um de cada role). Faca login com cada um. Teste acessar rotas que nao deveria (viewer tentando criar projeto, user tentando acessar admin). Verifique que os status codes sao corretos: 401 para nao autenticado, 403 para nao autorizado, 200 para sucesso.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Arquivo permissions.ts com 3 roles e permission matrix</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Endpoints de auth: register, login, refresh, logout</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Middleware requireAuth que valida JWT</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Middleware requireRole que verifica permissoes</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Rotas protegidas diferenciadas por role</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Helmet + CORS configurados</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Testes manuais: 401 e 403 retornados corretamente</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Prompt para a IA</h3>
+        <p class="text-neutral-300 mb-3">
+          Use este prompt como ponto de partida com Claude Code ou Cursor: "Crie um servidor Express com autenticacao JWT (access + refresh tokens), 3 roles (admin, user, viewer), permission matrix, middleware de auth e autorizacao, e 4 rotas protegidas por role. Use bcrypt para senhas, helmet para security headers, e armazene usuarios em um array em memoria (nao precisa de banco de dados). Inclua endpoints de register, login, refresh, e logout."
+        </p>
+        <p class="text-neutral-300">
+          Depois de gerar o codigo base, itere: "Adicione rate limiting no login (maximo 5 tentativas por minuto por IP)." Em seguida: "Adicione validacao de input com zod nos endpoints de register e login." A cada iteracao, voce reforca a seguranca sem complicar o exercicio inicial.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar IA para gerar o boilerplate e focar na revisao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar cada cenario de permissao individualmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Verificar que status codes estao corretos (401 vs 403)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Documentar a permission matrix como referencia</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Copiar o codigo sem entender o fluxo de autenticacao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular os testes manuais ("parece que funciona")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar banco de dados neste exercicio (mantenha simples)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar tempo demais no frontend (o exercicio e backend-focused)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-rose-500/30">
+      <h2 class="text-2xl font-bold text-rose-400 mb-6 text-center">Resumo do Modulo 6.3</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora entende os fundamentos de seguranca que todo SaaS precisa: autenticacao, autorizacao, JWT, RBAC, e middleware de protecao.
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">AuthN (quem e voce) e AuthZ (o que voce pode fazer) sao conceitos distintos e complementares</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">JWT composto de Header + Payload + Signature com estrategia access/refresh tokens</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">RBAC com 3 roles (admin, user, viewer), permission matrix e heranca hierarquica</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Rotas protegidas em camadas: API middleware (backend) + page guards (frontend)</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Security headers (CORS, CSP, HSTS, X-Frame-Options) com helmet</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Exercicio pratico: sistema RBAC funcional com JWT, 3 roles, e rotas protegidas</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-rose-500/20">
+        <a href="modulo-6-2.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 6.2</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 6</span>
+        </a>
+        <a href="modulo-6-4.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 rounded-lg transition-colors">
+          <span>Proximo Modulo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 6.3: Autenticacao e Autorizacao - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

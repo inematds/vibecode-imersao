@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.5: Pagamentos e Planos SaaS | Imersao Vibe Coding</title>
+  <meta name="description" content="Stripe integration, modelos de monetizacao, planos SaaS, trial, freemium e usage-based billing para seu produto.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-rose-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400 transition-colors">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.5</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-rose-500/20 text-rose-400 text-sm font-semibold rounded-full mb-4">MODULO 6.5</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F4B3; Pagamentos e Planos SaaS</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Stripe integration, modelos de monetizacao, pricing strategies, trial, freemium e usage-based billing para transformar seu produto em receita recorrente.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">75</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Pratico</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Modelos de Monetizacao -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F4B0; Modelos de Monetizacao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Antes de integrar qualquer sistema de pagamento, voce precisa definir como vai cobrar. O modelo de monetizacao e uma das decisoes mais importantes do seu SaaS porque afeta tudo: aquisicao de clientes, churn, cash flow, valuation, e ate a arquitetura do produto. Mudar o modelo depois de lancar e possivel, mas doloroso.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Nao existe um modelo "melhor". O modelo ideal depende do seu produto, do seu mercado, e do comportamento dos seus usuarios. Um SaaS de analytics pode funcionar bem com subscription mensal. Um SaaS de IA pode precisar de usage-based billing porque os custos variam drasticamente entre usuarios. A chave e alinhar como voce cobra com como seus usuarios percebem valor.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Os 6 Modelos Principais</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Freemium</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Tier gratuito com funcionalidades limitadas + tiers pagos com mais recursos. O free tier serve como funnel de aquisicao. Exemplos: Slack (limite de historico), Notion (limite de blocos), Canva (templates premium). Funciona quando o produto tem viral loop natural e o custo marginal por usuario gratuito e baixo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Subscription (Flat-rate)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Preco fixo mensal ou anual por tier. O modelo mais simples e previsivel. Exemplos: Netflix, Basecamp, Linear. Funciona quando o valor entregue e relativamente uniforme entre usuarios e voce quer receita previsivel (MRR).</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Pay-per-use (Usage-based)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Cobra pelo consumo real: tokens de IA, requests de API, emails enviados, GB armazenados. Exemplos: OpenAI API, AWS, Twilio. Funciona quando o custo de servir varia muito entre usuarios e quando voce quer alinhar receita com valor entregue.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Per-seat (Por usuario)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Cobra por numero de usuarios ativos. Exemplos: Figma, GitHub, Jira. Funciona para B2B SaaS onde o valor escala com o tamanho da equipe. Problema: incentiva usuarios a compartilhar logins.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-rose-400">Outcome-based</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Cobra pelo resultado entregue, nao pelo uso. Exemplos: plataformas de ads (cobra por conversao), SaaS de vendas (cobra por deal fechado). E o modelo mais alinhado com valor, mas mais dificil de implementar e medir.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-rose-400">Hybrid</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Combina dois ou mais modelos. Exemplo: subscription base + usage overage (o modelo mais popular em SaaS de IA em 2026). O usuario paga um plano fixo que inclui X creditos/mes, e paga extra se ultrapassar. Combina previsibilidade com flexibilidade.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Tendencias de Pricing em 2026</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">61%</div>
+            <p class="text-neutral-400 text-sm">dos SaaS de IA usam modelo hybrid (subscription + usage) em 2026</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3x</div>
+            <p class="text-neutral-400 text-sm">SaaS com annual plans tem 3x menor churn que monthly-only</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2-5%</div>
+            <p class="text-neutral-400 text-sm">taxa de conversao tipica de free para paid em modelos freemium</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">20%</div>
+            <p class="text-neutral-400 text-sm">desconto padrao para annual billing (equivale a 2 meses gratis)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Como Escolher</h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce esta lancando seu primeiro SaaS, comece com subscription flat-rate com 2-3 tiers. E o modelo mais simples de implementar, mais facil de comunicar, e mais previsivel em termos de receita. Voce pode migrar para hybrid ou usage-based depois quando entender melhor o padrao de uso dos seus clientes.
+        </p>
+        <p class="text-neutral-300">
+          Uma regra de ouro: se seus custos de infraestrutura variam significativamente entre usuarios (ex: SaaS de IA, video processing, data analytics), voce PRECISA de um componente de usage-based pricing. Caso contrario, um power user pode custar mais do que paga, e isso nao escala.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Alinhar o modelo de pricing com como o usuario percebe valor</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Oferecer annual billing com desconto (20% e o padrao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Comecar simples e iterar baseado em dados reais de uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Pesquisar concorrentes para calibrar expectativas de preco</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Cobrar flat-rate quando seus custos sao proporcionais ao uso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar 7+ tiers de pricing (confunde o usuario)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Copiar o pricing de um concorrente sem entender o contexto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Mudar o pricing radicalmente sem avisar usuarios existentes</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: Stripe Integration -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F4B3; Stripe Integration</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Stripe e a plataforma de pagamentos dominante para SaaS em 2026. Nao porque e a unica opcao, mas porque a developer experience e incomparavel: docs excelentes, SDK em todas as linguagens, dashboard poderoso, e uma API que cobre 99% dos cenarios de cobranca. Se voce esta construindo um SaaS, Stripe e a resposta padrao para pagamentos.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A integracao com Stripe envolve tres conceitos fundamentais: Products (o que voce vende), Prices (quanto custa), e Checkout Sessions (a experiencia de pagamento). Alem disso, Webhooks sao a cola que mantem seu banco de dados sincronizado com o estado dos pagamentos no Stripe. Vamos decompor cada um.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Os Blocos da Integracao Stripe</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Account Setup</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Crie uma conta no Stripe, ative o modo de teste, e obtenha suas API keys (publishable key para o frontend, secret key para o backend). O modo de teste permite simular pagamentos completos sem dinheiro real. Use as test cards do Stripe (4242 4242 4242 4242) para testar cenarios de sucesso, falha, e 3D Secure.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Products & Prices</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">No Stripe, voce cria Products (representam seus planos) e Prices (representam opcoes de preco para cada product). Um product pode ter multiplos prices: mensal, anual, com desconto, etc. Voce pode criar via Dashboard ou via API.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// Criar um price via API</p>
+              <p>const price = await stripe.prices.create({</p>
+              <p>&nbsp;&nbsp;product: 'prod_xxx',</p>
+              <p>&nbsp;&nbsp;unit_amount: 2900, <span class="text-rose-400">// R$29.00 em centavos</span></p>
+              <p>&nbsp;&nbsp;currency: 'brl',</p>
+              <p>&nbsp;&nbsp;recurring: { interval: 'month' }</p>
+              <p>});</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Checkout Sessions</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Stripe Checkout e uma pagina de pagamento hosted pelo Stripe. Voce cria uma session no backend e redireciona o usuario. O Stripe cuida de tudo: form de cartao, validacao, 3D Secure, processamento. Apos o pagamento, redireciona de volta para sua app.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// Criar checkout session</p>
+              <p>const session = await stripe.checkout.sessions.create({</p>
+              <p>&nbsp;&nbsp;mode: 'subscription',</p>
+              <p>&nbsp;&nbsp;customer: customerId,</p>
+              <p>&nbsp;&nbsp;line_items: [{ price: 'price_xxx', quantity: 1 }],</p>
+              <p>&nbsp;&nbsp;success_url: 'https://app.com/success?session_id={CHECKOUT_SESSION_ID}',</p>
+              <p>&nbsp;&nbsp;cancel_url: 'https://app.com/pricing'</p>
+              <p>});</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Webhooks</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Webhooks sao o mecanismo pelo qual o Stripe notifica seu servidor sobre eventos: pagamento confirmado, subscription cancelada, invoice failed, etc. Seu endpoint de webhook recebe o evento, verifica a signature, e atualiza o estado no seu banco de dados. SEM webhooks, seu app nao sabe se o pagamento foi processado.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Webhooks Essenciais para SaaS</h3>
+        <p class="text-neutral-300 mb-3">
+          Estes sao os eventos de webhook que todo SaaS precisa processar. Sem eles, seu sistema fica dessincronizado com a realidade dos pagamentos.
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-300 mt-2">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-blue-400">Evento</th>
+                <th class="text-left py-2 text-blue-400">O que fazer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-dark-700"><td class="py-2">checkout.session.completed</td><td class="py-2">Ativar a subscription do usuario no seu DB</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">invoice.payment_succeeded</td><td class="py-2">Renovar acesso, resetar creditos mensais</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">invoice.payment_failed</td><td class="py-2">Notificar usuario, iniciar grace period</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">customer.subscription.updated</td><td class="py-2">Atualizar plano (upgrade/downgrade)</td></tr>
+              <tr><td class="py-2">customer.subscription.deleted</td><td class="py-2">Revogar acesso premium, downgrade para free</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Stripe CLI para Testes</h3>
+        <p class="text-neutral-300 mb-3">
+          Instale o Stripe CLI para testar webhooks localmente. Com <code class="bg-dark-800 px-1 rounded text-xs">stripe listen --forward-to localhost:3000/api/webhooks/stripe</code>, voce recebe eventos de teste diretamente no seu servidor local. Use <code class="bg-dark-800 px-1 rounded text-xs">stripe trigger checkout.session.completed</code> para simular eventos especificos sem precisar completar um checkout real.
+        </p>
+        <p class="text-neutral-300">
+          Sempre valide a signature do webhook antes de processar. Sem essa validacao, qualquer pessoa pode enviar requests para seu endpoint de webhook e manipular o estado das subscriptions. Use <code class="bg-dark-800 px-1 rounded text-xs">stripe.webhooks.constructEvent(body, sig, webhookSecret)</code> para verificar.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar Stripe Checkout (hosted) em vez de Elements (embedded) no inicio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Implementar TODOS os webhooks essenciais desde o dia 1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar exaustivamente com Stripe CLI antes de ir para producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Validar signature em cada webhook recebido</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar na success_url do checkout para ativar a subscription</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar webhooks de falha de pagamento (invoice.payment_failed)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Expor a secret key do Stripe no frontend</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Processar webhooks sem verificar a signature</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Planos e Pricing -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F4CB; Planos e Pricing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Definir planos de pricing e tanto arte quanto ciencia. Voce precisa equilibrar valor percebido pelo usuario, custos de infraestrutura, margens de lucro, e competitividade de mercado. A pagina de pricing e frequentemente a segunda pagina mais visitada de um SaaS (depois da homepage), entao ela precisa ser clara, convincente, e facil de entender em 10 segundos.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O modelo mais eficaz e o "Good-Better-Best" (3 tiers). Pesquisas de psicologia de pricing mostram que quando apresentados com 3 opcoes, a maioria das pessoas escolhe a do meio. Esse e o efeito de ancoragem: o tier mais caro faz o do meio parecer razoavel, e o tier mais barato serve como referencia.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Estrutura de 3 Tiers</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-dark-700/50 rounded-lg p-5 border border-dark-600">
+            <h4 class="font-bold text-neutral-300 text-lg mb-1">Free</h4>
+            <p class="text-2xl font-bold text-rose-400 mb-3">R$0<span class="text-sm text-neutral-400 font-normal">/mes</span></p>
+            <ul class="text-sm text-neutral-300 space-y-2">
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>1 projeto</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>100 requests/dia</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Community support</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500 mt-0.5">&#10007;</span><span class="text-neutral-500">Custom domain</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500 mt-0.5">&#10007;</span><span class="text-neutral-500">API access</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500 mt-0.5">&#10007;</span><span class="text-neutral-500">Analytics avancado</span></li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5 border-2 border-rose-500/50 relative">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-xs px-3 py-1 rounded-full font-semibold">POPULAR</span>
+            <h4 class="font-bold text-neutral-300 text-lg mb-1">Pro</h4>
+            <p class="text-2xl font-bold text-rose-400 mb-3">R$49<span class="text-sm text-neutral-400 font-normal">/mes</span></p>
+            <ul class="text-sm text-neutral-300 space-y-2">
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Projetos ilimitados</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>10.000 requests/dia</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Email support prioritario</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Custom domain</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>API access</span></li>
+              <li class="flex items-start space-x-2"><span class="text-neutral-500 mt-0.5">&#10007;</span><span class="text-neutral-500">White-label</span></li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-5 border border-dark-600">
+            <h4 class="font-bold text-neutral-300 text-lg mb-1">Enterprise</h4>
+            <p class="text-2xl font-bold text-rose-400 mb-3">R$199<span class="text-sm text-neutral-400 font-normal">/mes</span></p>
+            <ul class="text-sm text-neutral-300 space-y-2">
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Tudo do Pro</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Requests ilimitados</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Suporte dedicado + SLA</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>White-label</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>SSO / SAML</span></li>
+              <li class="flex items-start space-x-2"><span class="text-green-400 mt-0.5">&#10003;</span><span>Analytics avancado + export</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Estrategias de Pricing Comprovadas</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>Price Anchoring:</strong> O tier Enterprise (mais caro) existe primariamente para fazer o Pro parecer bom custo-beneficio. Mesmo que poucos comprem Enterprise, a existencia dele aumenta a conversao do Pro em ate 40%.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          <strong>Annual Discount:</strong> Oferecer 20% de desconto no plano anual (equivalente a 2 meses gratis) reduz churn em 3x porque o usuario fez um compromisso financeiro de longo prazo. Alem disso, voce recebe o dinheiro antecipado, melhorando seu cash flow.
+        </p>
+        <p class="text-neutral-300">
+          <strong>Feature Gating:</strong> Limite features por tier, nao quantidade. Em vez de "5 projetos no Free, 50 no Pro", use "projetos ilimitados em ambos, mas custom domain so no Pro". Isso evita frustrar usuarios que crescem e precisam de mais volume.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Pricing Page que Converte</h3>
+        <p class="text-neutral-300 mb-3">
+          Sua pricing page precisa de: toggle mensal/anual mostrando a economia, badge "POPULAR" no tier do meio, CTA claro em cada tier ("Comece Gratis", "Assinar Pro", "Falar com Vendas"), e uma FAQ abaixo dos planos respondendo objecoes comuns ("Posso cancelar a qualquer momento?", "Aceita PIX?", "Tem garantia?").
+        </p>
+        <p class="text-neutral-300">
+          Use a IA para gerar a pricing page: "Crie uma pricing page com 3 tiers (Free/Pro/Enterprise), toggle mensal/anual, badge no tier do meio, FAQ com 5 perguntas. Design escuro com Tailwind, responsivo." Itere: "Adicione um calculo de economia no toggle anual" e "Adicione social proof (X usuarios ja usam)".
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar 3 tiers com price anchoring no mais caro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Oferecer annual billing com 20% de desconto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Destacar visualmente o tier recomendado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Incluir FAQ na pricing page para reduzir objecoes</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esconder precos ("Fale com vendas" em todos os tiers)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar features artificiais so para diferenciar tiers</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Precificar muito abaixo do valor entregue (race to bottom)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Mudar pricing de usuarios existentes sem aviso previo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Trial e Freemium -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F381; Trial e Freemium</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Trial e freemium sao estrategias de aquisicao, nao de monetizacao. O objetivo e reduzir a friccao para o primeiro uso e dar ao usuario a chance de experimentar o valor do produto antes de pagar. A diferenca entre os dois e sutil mas importante: trial da acesso completo por tempo limitado; freemium da acesso limitado por tempo ilimitado.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A escolha entre trial e freemium depende da natureza do seu produto. Se o valor e obvio apos poucos dias de uso (ex: ferramenta de produtividade), trial funciona bem. Se o valor cresce com o tempo e uso (ex: CRM com dados acumulados), freemium funciona melhor porque o usuario constroi investimento no produto antes de pagar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-3">Conceito Principal: O Funil de Conversao</h3>
+        <p class="text-neutral-300 mb-4">
+          O funil de conversao de free para paid e o coracao da sua estrategia de crescimento. Cada etapa do funil precisa ser otimizada:
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+            <div>
+              <h4 class="font-semibold text-rose-400">Signup (Visitor > User)</h4>
+              <p class="text-neutral-300 text-sm">Minimize friccao: signup com Google/GitHub OAuth, sem exigir cartao de credito, onboarding em menos de 60 segundos. Meta: 10-15% dos visitantes da pricing page fazem signup.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+            <div>
+              <h4 class="font-semibold text-rose-400">Activation (User > Active User)</h4>
+              <p class="text-neutral-300 text-sm">O usuario precisa experimentar o "aha moment" do produto rapidamente. Defina qual acao representa ativacao (ex: criou primeiro projeto, enviou primeira request) e guie o usuario ate la com onboarding. Meta: 60%+ dos signups atingem ativacao.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+            <div>
+              <h4 class="font-semibold text-rose-400">Conversion (Active User > Paying User)</h4>
+              <p class="text-neutral-300 text-sm">O usuario precisa sentir a necessidade de pagar: atingiu o limite do free tier, precisa de uma feature premium, ou o trial esta acabando. Envie emails de nudge claros e uteis, nao spam. Meta: 2-5% para freemium, 15-25% para trial.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">4</span>
+            <div>
+              <h4 class="font-semibold text-primary">Retention (Paying User > Retained User)</h4>
+              <p class="text-neutral-300 text-sm">Apos a conversao, mantenha o usuario engajado: novas features, suporte responsivo, conteudo educacional. Churn mensal saudavel para SaaS: menos de 5% para B2C, menos de 2% para B2B. Cada ponto de churn reduzido vale exponencialmente no longo prazo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Metricas de Conversao Benchmark</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2-5%</div>
+            <p class="text-neutral-400 text-sm">conversao free > paid em modelos freemium (Slack: 3%, Spotify: 4.5%)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">15-25%</div>
+            <p class="text-neutral-400 text-sm">conversao trial > paid quando trial exige cartao de credito upfront</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">8-12%</div>
+            <p class="text-neutral-400 text-sm">conversao trial > paid sem exigir cartao (opt-in trial)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">14 dias</div>
+            <p class="text-neutral-400 text-sm">duracao otima de trial para SaaS B2B (7 dias para produtos simples)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Trial com Cartao vs Sem Cartao</h3>
+        <p class="text-neutral-300 mb-3">
+          Exigir cartao de credito no trial aumenta a taxa de conversao (mais gente que inicia o trial converte), mas reduz dramaticamente o numero de signups. Sem cartao, voce tem mais signups mas menor conversao. Para SaaS em estagio inicial, comece sem exigir cartao para maximizar signups e coletar dados. Depois, teste exigir cartao quando ja tiver product-market fit.
+        </p>
+        <p class="text-neutral-300">
+          Independente da estrategia, envie emails durante o trial: welcome (dia 0), activation reminder (dia 3), value showcase (dia 7), trial ending soon (dia 12 de 14), trial expired (dia 15). Automatize com ferramentas como Resend, Loops, ou Customer.io.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Definir e medir o "aha moment" do seu produto</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Enviar email sequence automatizada durante o trial</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Mostrar claramente o que o usuario PERDE quando o trial acaba</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Oferecer extensao de trial para usuarios engajados mas indecisos</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Dar trial de 30 dias (muito longo, o usuario esquece)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao enviar nenhum email durante o trial</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Cortar acesso abruptamente sem aviso quando o trial expira</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Oferecer free tier tao generoso que ninguem precisa pagar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Usage-based Billing -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F4CA; Usage-based Billing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Usage-based billing cobra pelo consumo real: tokens de IA processados, requests de API, emails enviados, minutos de video, GB armazenados. Em 2026, esse modelo e especialmente relevante para SaaS que usam IA, porque o custo de servir varia dramaticamente entre usuarios. Um usuario pode consumir $0.01 por mes enquanto outro consome $500.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O desafio do usage-based billing e a imprevisibilidade. Usuarios querem saber quanto vao gastar antes de usar. A solucao mais popular e o modelo hybrid: um plano base com creditos incluidos + overage charges. Isso combina a previsibilidade de um subscription com a flexibilidade de usage-based.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-3">Conceito Principal: Sistema de Creditos</h3>
+        <p class="text-neutral-300 mb-4">
+          O sistema de creditos e a implementacao mais comum de usage-based billing em SaaS. Funciona assim:
+        </p>
+        <div class="space-y-3">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Como funciona</h4>
+            <p class="text-neutral-300 text-sm mb-2">Cada plano inclui X creditos por mes. Cada acao do usuario consome Y creditos. Quando os creditos acabam, o usuario pode: comprar creditos extras (overage), fazer upgrade de plano, ou esperar o reset mensal. Exemplos:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><strong class="text-rose-400">Free:</strong> 100 creditos/mes, 1 credito = 1 request de IA</li>
+              <li><strong class="text-rose-400">Pro:</strong> 5.000 creditos/mes, overage: R$0.01/credito</li>
+              <li><strong class="text-rose-400">Enterprise:</strong> 50.000 creditos/mes, overage: R$0.005/credito (desconto por volume)</li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Implementacao tecnica</h4>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// Tabela de credits no DB</p>
+              <p>credits: {</p>
+              <p>&nbsp;&nbsp;user_id: string,</p>
+              <p>&nbsp;&nbsp;balance: number,     <span class="text-rose-400">// creditos restantes</span></p>
+              <p>&nbsp;&nbsp;monthly_limit: number, <span class="text-rose-400">// limite do plano</span></p>
+              <p>&nbsp;&nbsp;overage_used: number,  <span class="text-rose-400">// creditos extras consumidos</span></p>
+              <p>&nbsp;&nbsp;reset_at: Date         <span class="text-rose-400">// proximo reset mensal</span></p>
+              <p>}</p>
+              <p class="mt-2 text-rose-400">// Middleware de consumo</p>
+              <p>async function consumeCredits(userId, amount) {</p>
+              <p>&nbsp;&nbsp;const credits = await db.credits.findOne({user_id: userId});</p>
+              <p>&nbsp;&nbsp;if (credits.balance >= amount) {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;credits.balance -= amount;</p>
+              <p>&nbsp;&nbsp;} else if (credits.plan !== 'free') {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;credits.overage_used += amount;</p>
+              <p>&nbsp;&nbsp;} else {</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;throw new Error('Credit limit reached');</p>
+              <p>&nbsp;&nbsp;}</p>
+              <p>&nbsp;&nbsp;await credits.save();</p>
+              <p>}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Metering e Billing Cycle</h3>
+        <p class="text-neutral-300 mb-3">
+          Para cobrar por uso, voce precisa medir (meter) o consumo com precisao e reportar ao Stripe no momento certo. O Stripe tem uma API de metering nativa: <code class="bg-dark-800 px-1 rounded text-xs">stripe.billing.meterEvents.create()</code> que aceita eventos de uso e calcula o total no final do periodo.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Real-time</div>
+            <p class="text-neutral-400 text-sm">metering: registre cada evento no momento que acontece para precisao maxima</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Mensal</div>
+            <p class="text-neutral-400 text-sm">billing cycle: Stripe calcula e cobra o overage no final de cada periodo</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Dashboard</div>
+            <p class="text-neutral-400 text-sm">de uso: mostre ao usuario seu consumo em tempo real para evitar surpresas na fatura</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Alertas</div>
+            <p class="text-neutral-400 text-sm">automaticos: notifique quando o usuario atingir 80% e 100% do limite</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Transparencia Total</h3>
+        <p class="text-neutral-300 mb-3">
+          A regra de ouro do usage-based billing e: nunca surpreenda o usuario com a fatura. Mostre um dashboard de uso em tempo real, envie alertas quando atingir 80% do limite, e oferecer a opcao de definir um spending cap (limite maximo de gasto). Servicos como AWS e Vercel sao odiados quando a fatura vem 10x maior que o esperado.
+        </p>
+        <p class="text-neutral-300">
+          Implemente um "billing dashboard" simples no seu SaaS: creditos usados / creditos totais, projecao de uso ate o final do periodo, historico de consumo por dia/semana. Isso constroi confianca e reduz churn causado por bill shock.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Mostrar consumo em tempo real no dashboard do usuario</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Enviar alertas em 80% e 100% do limite de creditos</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Oferecer spending cap para usuarios que querem controle</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar creditos como unidade comum para simplificar pricing</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Cobrar overage sem aviso previo (gera churn e chargebacks)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar metricas de uso confusas que o usuario nao entende</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Permitir uso ilimitado sem cap para planos free (abuse risk)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Resetar creditos no meio do billing cycle (confuso)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Checkout Funcional -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Exercicio: Checkout Funcional</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Neste exercicio voce vai implementar um fluxo de pagamento completo usando Stripe: 3 planos de subscription, Checkout Session, webhook para ativar a subscription, e Customer Portal para o usuario gerenciar seu plano. Ao final, voce tera um sistema de billing funcional que pode ser plugado em qualquer SaaS.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Tudo sera feito no modo de teste do Stripe, entao nao envolve dinheiro real. Use a IA para gerar o boilerplate e foque em entender o fluxo: como o Stripe se comunica com seu servidor, como webhooks atualizam o estado, e como o usuario experimenta o processo de pagamento.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Passo a Passo do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Configurar Stripe</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Setup inicial:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-rose-400">Criar conta</strong> no Stripe (stripe.com)</li>
+              <li><strong class="text-rose-400">Obter API keys</strong> (Dashboard > Developers > API keys)</li>
+              <li><strong class="text-rose-400">Instalar Stripe CLI</strong> para testes de webhook locais</li>
+              <li><strong class="text-rose-400">npm install stripe</strong> no seu projeto</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Criar 3 Products + Prices no Stripe</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Via Dashboard ou API, crie:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-rose-400">Free:</strong> R$0/mes (nao precisa de Price no Stripe, controle no app)</li>
+              <li><strong class="text-rose-400">Pro:</strong> R$49/mes (monthly) + R$470/ano (annual, ~20% off)</li>
+              <li><strong class="text-rose-400">Enterprise:</strong> R$199/mes (monthly) + R$1.910/ano (annual)</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Implementar Checkout Endpoint</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Crie um endpoint <code class="bg-dark-800 px-1 rounded text-xs">POST /api/checkout</code> que recebe o price_id, cria ou recupera o Stripe Customer, cria uma Checkout Session, e retorna a URL para redirect. O frontend redireciona o usuario para essa URL.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Implementar Webhook Handler</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Crie <code class="bg-dark-800 px-1 rounded text-xs">POST /api/webhooks/stripe</code> que processa: checkout.session.completed (ativa subscription), invoice.payment_succeeded (renova), customer.subscription.deleted (cancela). Valide a signature do webhook.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-primary">Customer Portal</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Crie endpoint <code class="bg-dark-800 px-1 rounded text-xs">POST /api/billing/portal</code> que gera uma Billing Portal Session do Stripe. O portal permite que o usuario atualize cartao, mude de plano, e cancele a subscription. Zero UI custom necessaria.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-primary">Testar o Fluxo Completo</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Com Stripe CLI rodando, teste: signup > escolher plano Pro > checkout > webhook ativa subscription > dashboard mostra "Pro" > portal > cancelar > webhook desativa. Use card 4242 4242 4242 4242 para sucesso e 4000 0000 0000 0002 para teste de falha.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Conta Stripe configurada com modo de teste</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>3 Products com Prices (mensal + anual) criados</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Endpoint de Checkout Session funcional</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Webhook handler com signature validation</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Customer Portal integrado</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Fluxo testado end-to-end com Stripe CLI</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>DB atualizado corretamente via webhooks (subscription status)</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Prompt para a IA</h3>
+        <p class="text-neutral-300 mb-3">
+          Use este prompt: "Crie um servidor Express com integracao Stripe completa: endpoint de checkout session para 3 planos (Free/Pro/Enterprise), webhook handler que processa checkout.session.completed, invoice.payment_succeeded, e customer.subscription.deleted. Inclua endpoint de Customer Portal. Use array em memoria para usuarios. Valide webhook signatures. Retorne o plano atual do usuario em GET /api/me."
+        </p>
+        <p class="text-neutral-300">
+          Depois: "Adicione uma pricing page HTML com toggle mensal/anual que chama o endpoint de checkout ao clicar em cada plano." Isso cria o frontend minimo para testar o fluxo completo visualmente.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar com Stripe CLI antes de qualquer outra coisa</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Validar webhook signatures em cada request</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Testar cenarios de falha (cartao recusado, webhook falhando)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar Customer Portal em vez de construir UI de billing custom</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar modo live do Stripe para testes (use test mode)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar na success_url para ativar subscriptions (use webhooks)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Commitar API keys do Stripe no repositorio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Construir formulario de cartao custom (compliance PCI)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-rose-500/30">
+      <h2 class="text-2xl font-bold text-rose-400 mb-6 text-center">Resumo do Modulo 6.5</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora sabe como monetizar seu SaaS: desde a escolha do modelo ate a implementacao tecnica com Stripe.
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">6 modelos de monetizacao: freemium, subscription, pay-per-use, per-seat, outcome-based, hybrid</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Stripe: Products, Prices, Checkout Sessions, Webhooks como blocos fundamentais</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Pricing com 3 tiers (Good-Better-Best), price anchoring, e annual discount</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Funil de conversao: signup > activation > conversion > retention</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Usage-based billing com sistema de creditos, metering, e alertas de consumo</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Exercicio: Stripe Checkout funcional com 3 planos, webhooks, e Customer Portal</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-rose-500/20">
+        <a href="modulo-6-4.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 6.4</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 6</span>
+        </a>
+        <a href="modulo-6-6.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 rounded-lg transition-colors">
+          <span>Proximo Modulo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 6.5: Pagamentos e Planos SaaS - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.7: Deploy Final | Imersao Vibe Coding</title>
+  <meta name="description" content="Deploy completo do seu SaaS: CI/CD, dominio, seguranca em producao, monitoramento e o exercicio final da Imersao Vibe Coding.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-rose-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400 transition-colors">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.7</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-rose-500/20 text-rose-400 text-sm font-semibold rounded-full mb-4">MODULO 6.7 - FINAL</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F3C1; Deploy Final</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">O ultimo modulo da Imersao Vibe Coding. App publicada com landing page, billing, logs e monitoramento. Seu SaaS vai ao ar.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">90</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-rose-400">Projeto</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Checklist de Deploy -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x2705; Checklist de Deploy</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Deployar sem um checklist e pedir para algo dar errado. A diferenca entre um deploy tranquilo e um deploy catastrofico geralmente se resume a uma variavel de ambiente esquecida, uma migracao de banco pendente, ou uma dependencia desatualizada. Um checklist de pre-deploy elimina 90% dos problemas antes que eles acontecam.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Esse checklist nao e burocracia. E a diferenca entre "deployei e esta funcionando" e "deployei e os usuarios estao vendo pagina em branco". Cada item existe porque alguem, em algum momento, esqueceu de verificar e pagou o preco. Trate o checklist como um piloto trata o pre-flight check: todo item, toda vez, sem excecao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Pre-Deploy Checklist Completo</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Environment Variables</h4>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><span class="text-rose-400">&#x25A2;</span> Todas as env vars de producao configuradas no provider (Vercel, Railway, etc.)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Nenhuma env var apontando para servicos de teste/staging</li>
+              <li><span class="text-rose-400">&#x25A2;</span> API keys do Stripe em modo LIVE (nao test)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> DATABASE_URL apontando para o banco de producao</li>
+              <li><span class="text-rose-400">&#x25A2;</span> JWT_SECRET e unico e forte (32+ caracteres aleatorios)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> NEXTAUTH_URL / APP_URL configurado com dominio de producao</li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Database</h4>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><span class="text-rose-400">&#x25A2;</span> Migracoes aplicadas no banco de producao</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Seed data necessario inserido (planos, roles, configs)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Backup do banco antes do deploy (se ja tem dados)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Indexes criados para queries frequentes</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Connection pooling configurado (PgBouncer, Prisma connection pool)</li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Build & Dependencies</h4>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><span class="text-rose-400">&#x25A2;</span> <code class="bg-dark-800 px-1 rounded text-xs">npm run build</code> passa sem erros localmente</li>
+              <li><span class="text-rose-400">&#x25A2;</span> <code class="bg-dark-800 px-1 rounded text-xs">npm audit</code> sem vulnerabilidades criticas</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Lock file (package-lock.json) commitado</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Node.js version especificada no package.json (engines field)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Nenhum <code class="bg-dark-800 px-1 rounded text-xs">console.log</code> de debug no codigo de producao</li>
+            </ul>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Security</h4>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-4">
+              <li><span class="text-rose-400">&#x25A2;</span> .env e .env.local no .gitignore</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Nenhum secret hardcoded no codigo</li>
+              <li><span class="text-rose-400">&#x25A2;</span> CORS configurado com whitelist restrita</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Security headers ativos (helmet ou equivalente)</li>
+              <li><span class="text-rose-400">&#x25A2;</span> Rate limiting configurado em endpoints sensiveis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Causas Mais Comuns de Deploy Falho</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">42%</div>
+            <p class="text-neutral-400 text-sm">env vars incorretas ou faltando (PlanetScale State of Deploy 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">23%</div>
+            <p class="text-neutral-400 text-sm">migracoes de banco nao aplicadas ou conflitantes</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">18%</div>
+            <p class="text-neutral-400 text-sm">dependencias com breaking changes nao detectadas</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">11%</div>
+            <p class="text-neutral-400 text-sm">build passa local mas falha no CI (versao de Node, OS differences)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Automatize o Checklist</h3>
+        <p class="text-neutral-300 mb-3">
+          Nao confie na memoria humana para checklists. Automatize o maximo possivel: scripts de pre-deploy que verificam env vars, CI pipelines que rodam build + testes + audit antes de permitir o deploy, e health checks que validam que a aplicacao esta respondendo apos o deploy.
+        </p>
+        <p class="text-neutral-300">
+          Crie um script <code class="bg-dark-800 px-1 rounded text-xs">scripts/pre-deploy.sh</code> que executa: <code class="bg-dark-800 px-1 rounded text-xs">npm run build && npm run test && npm audit --production</code>. Rode esse script antes de cada deploy. Se qualquer etapa falhar, o deploy nao acontece. Simples e eficaz.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar checklist escrito em CADA deploy, sem excecao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Automatizar verificacoes com scripts e CI</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Fazer backup do banco antes de deploys com migracoes</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Verificar build localmente antes de fazer push</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deployar na sexta-feira a noite (nunca, jamais)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Confiar que "funciona no meu computador" = funciona em producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular o checklist porque "e so uma mudanca pequena"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deployar sem ter rollback plan (como reverter se der errado)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: CI/CD Pipeline -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F504; CI/CD Pipeline</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        CI/CD (Continuous Integration / Continuous Deployment) e o sistema que automatiza o processo de build, teste, e deploy do seu codigo. Toda vez que voce faz push para o repositorio, o pipeline roda automaticamente: instala dependencias, executa testes, faz build, e (se tudo passar) deploya para producao. Zero intervencao manual.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Sem CI/CD, cada deploy e um evento manual cheio de risco. Com CI/CD, deploy vira algo que voce faz 10 vezes por dia sem pensar. GitHub Actions e a ferramenta padrao porque ja esta integrada no GitHub, tem milhares de actions prontas na marketplace, e o free tier e generoso (2.000 minutos/mes para repos privados).
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">GitHub Actions: Pipeline Completo</h3>
+        <p class="text-neutral-300 mb-4">
+          Um pipeline tipico para SaaS Next.js/Node.js com deploy na Vercel:
+        </p>
+        <div class="bg-dark-800 rounded-lg p-4 font-mono text-xs text-neutral-300">
+          <p class="text-rose-400"># .github/workflows/deploy.yml</p>
+          <p>name: CI/CD Pipeline</p>
+          <p>on:</p>
+          <p>&nbsp;&nbsp;push:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;branches: [main]</p>
+          <p>&nbsp;&nbsp;pull_request:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;branches: [main]</p>
+          <p class="mt-2">jobs:</p>
+          <p>&nbsp;&nbsp;test:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;runs-on: ubuntu-latest</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;steps:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: actions/checkout@v4</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- uses: actions/setup-node@v4</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with:</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node-version: 20</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache: 'npm'</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- run: npm ci</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- run: npm run lint</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- run: npm run test</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- run: npm run build</p>
+          <p class="mt-2 text-rose-400">&nbsp;&nbsp;# Vercel deploys automaticamente via git integration</p>
+          <p class="text-rose-400">&nbsp;&nbsp;# PRs criam preview deploys, merge to main = production</p>
+        </div>
+        <div class="mt-4 space-y-3">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-rose-400">Push to branch:</strong> Roda testes. Se passam, cria preview deploy (staging). O link de preview e postado automaticamente no PR.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-rose-400">Merge to main:</strong> Roda testes novamente. Se passam, deploy automatico para producao. Se falham, o deploy e bloqueado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-rose-400">Rollback:</strong> Se algo da errado em producao, reverta o commit no GitHub. O pipeline re-deploya a versao anterior automaticamente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Impacto de CI/CD na Produtividade</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">46x</div>
+            <p class="text-neutral-400 text-sm">mais frequencia de deploy em equipes com CI/CD vs sem (DORA Metrics 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">7x</div>
+            <p class="text-neutral-400 text-sm">menor tempo de recovery quando algo da errado em producao</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">5x</div>
+            <p class="text-neutral-400 text-sm">menor taxa de falha em deploys automatizados vs manuais</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">2K min</div>
+            <p class="text-neutral-400 text-sm">free tier do GitHub Actions para repositorios privados (suficiente para iniciar)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Comece Minimalista</h3>
+        <p class="text-neutral-300 mb-3">
+          Seu primeiro pipeline precisa de apenas 3 steps: install, test, build. Adicione lint, security audit, e E2E tests depois. Se voce usa Vercel ou Netlify, o deploy acontece automaticamente via git integration, entao voce nao precisa configurar o deploy step no GitHub Actions.
+        </p>
+        <p class="text-neutral-300">
+          Peca para a IA gerar o workflow: "Crie um GitHub Actions workflow para um projeto Next.js que roda npm ci, npm run lint, npm run test, e npm run build em cada push e PR para a branch main. Node 20, cache de npm habilitado." Feito. 30 segundos.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar CI/CD antes do primeiro deploy para producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Bloquear merge to main se testes falharem</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar preview deploys para testar PRs antes de mergear</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar notificacoes de falha (Slack, email, Telegram)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deployar manualmente via SSH ou FTP (e 2026, use CI/CD)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Mergear PRs com testes falhando "porque e urgente"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Colocar secrets no arquivo de workflow (use GitHub Secrets)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Criar pipeline tao complexo que leva 30 minutos para rodar</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Dominio e DNS -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F310; Dominio e DNS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Um dominio proprio (seuapp.com em vez de seuapp.vercel.app) e fundamental para credibilidade. Nenhum usuario paga por um SaaS que roda em um subdominio generico de plataforma de deploy. Alem da credibilidade, um dominio proprio permite configurar email profissional (contato@seuapp.com), subdomains (api.seuapp.com, docs.seuapp.com), e SEO consistente.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A configuracao de dominio envolve 3 partes: comprar o dominio (registrar), apontar o DNS para seu servidor/plataforma, e configurar SSL (HTTPS). Em 2026, todas as plataformas modernas de deploy (Vercel, Railway, Fly.io, Cloudflare Pages) automatizam o SSL, entao voce so precisa configurar os DNS records corretamente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Setup Completo: Dominio + DNS + SSL</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Comprar o Dominio</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Registradores recomendados: Cloudflare Registrar (mais barato, sem markup), Namecheap, Google Domains. Evite GoDaddy (overpriced, upsell agressivo). Preco tipico: $8-15/ano para .com. Escolha um nome curto, memoravel, e facil de soletrar. Verifique disponibilidade em whois antes.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Configurar DNS</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Transfira o DNS para o Cloudflare (gratuito) para ter CDN, proteção DDoS, e gerenciamento facil. DNS records necessarios:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400"># Para Vercel:</p>
+              <p>A     @     76.76.21.21</p>
+              <p>CNAME www   cname.vercel-dns.com</p>
+              <p class="mt-2 text-rose-400"># Para Railway:</p>
+              <p>CNAME @     your-app.up.railway.app</p>
+              <p class="mt-2 text-rose-400"># Para subdomains:</p>
+              <p>CNAME api   api-server.railway.app</p>
+              <p>CNAME docs  your-docs.vercel.app</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">SSL / HTTPS</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Com Vercel/Railway/Cloudflare, o SSL e automatico. Basta adicionar o dominio no dashboard da plataforma e configurar os DNS records. O certificado Let's Encrypt e provisionado automaticamente em minutos. Verifique com <code class="bg-dark-800 px-1 rounded text-xs">https://www.ssllabs.com/ssltest/</code> apos configurar.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Cloudflare (Recomendado)</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Cloudflare oferece gratuitamente: CDN global, protecao DDoS, Web Application Firewall (WAF), analytics, caching, e page rules. E a camada de protecao e performance entre o usuario e seu servidor. Setup: crie conta, adicione seu dominio, atualize os nameservers no registrador, configure DNS records.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Comparativo de Registradores</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-300 mt-2">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-blue-400">Registrador</th>
+                <th class="text-left py-2 text-blue-400">Preco .com/ano</th>
+                <th class="text-left py-2 text-blue-400">Pros</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-dark-700"><td class="py-2">Cloudflare Registrar</td><td class="py-2">~$9.77</td><td class="py-2">At-cost pricing, DNS+CDN inclusos</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Namecheap</td><td class="py-2">~$10.28</td><td class="py-2">Interface simples, WhoisGuard gratis</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Porkbun</td><td class="py-2">~$9.73</td><td class="py-2">Mais barato, SSL gratis, interface moderna</td></tr>
+              <tr><td class="py-2">Google Domains</td><td class="py-2">~$12.00</td><td class="py-2">Integracao Google, interface clean</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: DNS Propagation</h3>
+        <p class="text-neutral-300 mb-3">
+          Depois de mudar DNS records, pode levar ate 48 horas para propagar globalmente (embora geralmente leve 15-30 minutos). Use <code class="bg-dark-800 px-1 rounded text-xs">https://dnschecker.org</code> para verificar a propagacao em tempo real. Se voce usa Cloudflare como DNS, a propagacao e quase instantanea porque o Cloudflare e o proprio DNS server.
+        </p>
+        <p class="text-neutral-300">
+          Configure o dominio 24-48 horas ANTES do lancamento oficial para garantir que tudo esta propagado. Nada pior do que lancar seu SaaS e o dominio nao resolver para metade dos usuarios porque o DNS ainda nao propagou.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Usar Cloudflare para DNS + CDN + protecao (gratis)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar dominio dias antes do lancamento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Verificar SSL com SSLLabs apos configurar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar redirect de www para root (ou vice-versa)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Lancar com subdominio da plataforma (seuapp.vercel.app)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comprar dominios premium caros antes de validar a ideia</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Configurar DNS na hora do lancamento (propagacao demora)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar HTTPS (browsers modernos marcam HTTP como "Nao Seguro")</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Seguranca em Producao -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F512; Seguranca em Producao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Seguranca em producao vai alem de security headers e autenticacao. E sobre criar camadas de defesa que protegem seu SaaS, seus dados, e seus usuarios contra ameacas reais. Em 2026, ataques automatizados sao constantes: bots escaneiam a internet 24/7 procurando vulnerabilidades em apps recem-deployados. Seu SaaS sera alvo no momento que ficar online.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A abordagem correta e "defense in depth": multiplas camadas de seguranca, cada uma independente das outras. Se uma falhar, as outras continuam protegendo. Nenhuma camada sozinha e suficiente. HTTPS protege o transito, security headers protegem o browser, WAF protege contra ataques de rede, e vulnerability scanning protege contra falhas no seu codigo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Camadas de Seguranca para SaaS</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">HTTPS Everywhere</h4>
+            <p class="text-neutral-300 text-sm">Todas as comunicacoes via HTTPS. Sem excecao. Configure HSTS com max-age de 1 ano e includeSubDomains. Redirecione HTTP para HTTPS automaticamente. Certifique-se que cookies tem os flags Secure e SameSite. Teste com SSLLabs para garantir nota A+.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">WAF (Web Application Firewall)</h4>
+            <p class="text-neutral-300 text-sm">WAF filtra requests maliciosos antes que cheguem ao seu servidor. Cloudflare WAF (gratis no plano Free para regras basicas) bloqueia SQL injection, XSS, e outros ataques OWASP Top 10. Configure regras customizadas para seu caso: rate limit em endpoints de auth, block por country se seu SaaS e regional, challenge bots suspeitos.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">DDoS Protection</h4>
+            <p class="text-neutral-300 text-sm">Cloudflare oferece protecao DDoS gratuita e ilimitada em todos os planos. Eles absorvem o trafego malicioso antes de chegar ao seu servidor. Sem isso, um ataque DDoS pode derrubar seu SaaS por horas ou dias. Nao tente resolver DDoS no nivel do servidor. Use uma CDN com protecao integrada.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Vulnerability Scanning</h4>
+            <p class="text-neutral-300 text-sm">Rode <code class="bg-dark-800 px-1 rounded text-xs">npm audit</code> regularmente para detectar vulnerabilidades em dependencias. Use GitHub Dependabot para receber PRs automaticos quando uma dependencia tem CVE. Faca security audit do seu codigo com ferramentas como Snyk ou SonarQube. No minimo, rode audit no CI pipeline a cada build.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Realidade de Ataques em SaaS</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">39 seg</div>
+            <p class="text-neutral-400 text-sm">intervalo medio entre tentativas de ataque a qualquer servidor exposto na internet</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">43%</div>
+            <p class="text-neutral-400 text-sm">dos ataques ciberneticos visam pequenos negocios e startups (Verizon DBIR 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">$4.5M</div>
+            <p class="text-neutral-400 text-sm">custo medio de um data breach para empresas (IBM Security 2025)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">287 dias</div>
+            <p class="text-neutral-400 text-sm">tempo medio para identificar e conter um breach sem monitoramento</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Security Checklist Minimo</h3>
+        <p class="text-neutral-300 mb-3">
+          Para um SaaS em estagio inicial, essas 5 acoes cobrem 80% dos riscos: 1) Cloudflare na frente (CDN + WAF + DDoS), 2) Helmet no Express (security headers), 3) Rate limiting em /auth/* endpoints, 4) npm audit no CI, 5) Dependabot habilitado no GitHub. Tudo gratuito, tudo leva menos de 1 hora para configurar.
+        </p>
+        <p class="text-neutral-300">
+          Scan de seguranca mensal: rode <code class="bg-dark-800 px-1 rounded text-xs">npx is-website-vulnerable https://seuapp.com</code> para detectar bibliotecas JavaScript com vulnerabilidades conhecidas carregadas no seu frontend. E um teste rapido que revela problemas que npm audit nao pega.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Colocar Cloudflare na frente do app desde o dia 1</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Habilitar Dependabot e npm audit no CI</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Rate limit endpoints de autenticacao (5/min/IP)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Revisar logs de acesso semanalmente para atividade suspeita</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Achar que "meu SaaS e pequeno demais para ser alvo" (nao e)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Expor portas/servicos desnecessariamente (DB, admin panels)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deixar APIs sem autenticacao "temporariamente"</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar alertas de vulnerabilidade do Dependabot</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Monitoramento Pos-Deploy -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F4E1; Monitoramento Pos-Deploy</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Deploy sem monitoramento e como lancar um foguete sem telemetria. Voce nao sabe se esta funcionando ate alguem reclamar. Monitoramento e o que separa um SaaS profissional de um projeto de hobby: uptime monitoring garante que voce sabe antes do usuario quando o app cai, error tracking captura bugs em producao, e performance monitoring identifica lentidao.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A boa noticia e que todas as ferramentas essenciais de monitoramento tem tiers gratuitos suficientes para um SaaS em estagio inicial. Voce nao precisa gastar dinheiro para ter monitoramento profissional. Precisa investir 1-2 horas configurando.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Stack de Monitoramento</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-rose-400">Uptime Monitoring</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">UptimeRobot / BetterStack</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Pinga seu site a cada 5 minutos de multiplas locacoes globais. Se nao responder, voce recebe alerta imediato via email, Slack, SMS, ou webhook. UptimeRobot: gratuito para 50 monitors com check de 5 min. BetterStack (ex-Better Uptime): gratuito para 10 monitors com check de 3 min.</p>
+            <p class="text-neutral-300 text-sm"><strong>Meta:</strong> 99.9% uptime = maximo 8.7 horas de downtime por ano. Para SaaS B2B, 99.95%+ e esperado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-rose-400">Error Tracking</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Sentry</span>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Sentry captura erros em tempo real no frontend e backend, com stack trace completo, breadcrumbs (o que o usuario fez antes do erro), e contexto (browser, OS, user info). O free tier permite 5K eventos/mes, suficiente para SaaS inicial.</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p class="text-rose-400">// Setup Sentry (Next.js)</p>
+              <p>npm install @sentry/nextjs</p>
+              <p>npx @sentry/wizard@latest -i nextjs</p>
+              <p class="text-rose-400">// Automaticamente captura erros em client e server</p>
+            </div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-rose-400">Performance Monitoring</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Vercel Analytics / Sentry Performance</span>
+            </div>
+            <p class="text-neutral-300 text-sm">Mede tempo de carregamento de paginas, latencia de APIs, e Web Vitals (LCP, FID, CLS). Vercel Analytics e gratuito no hobby plan e mostra metricas de performance reais dos seus usuarios. Sentry Performance (incluso no free tier) mostra traces de transacoes e identifica bottlenecks.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-rose-400">Log Management</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Axiom / BetterStack Logs</span>
+            </div>
+            <p class="text-neutral-300 text-sm">Logs centralizados permitem investigar problemas apos o fato. Em vez de fazer SSH no servidor e rodar grep, voce pesquisa logs em um dashboard com filtros. Axiom: free tier com 500GB ingest/mes. BetterStack Logs: free tier com 1GB/mes. Ambos suportam Next.js, Vercel, e qualquer fonte de logs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Alertas: O que Configurar</h3>
+        <p class="text-neutral-300 mb-3">
+          Alertas sao uteis quando bem calibrados. Alertas demais = alert fatigue (voce ignora todos). Alertas de menos = voce descobre problemas pelo Twitter. Configure estes alertas essenciais:
+        </p>
+        <div class="space-y-2 mt-3">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">CRITICO:</strong> Site fora do ar (uptime check falhou 2x seguidas) - alerta via SMS + email imediato</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">ALTO:</strong> Spike de erros (10x mais erros que o normal em 5 min) - alerta via Slack/Telegram</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">MEDIO:</strong> Performance degradada (P95 latency > 2s por 10 min) - alerta via email</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">BAIXO:</strong> SSL expirando em 14 dias, dependency vulnerability nova - alerta via email digest</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Setup em 1 Hora</h3>
+        <p class="text-neutral-300 mb-3">
+          Siga esta ordem: 1) UptimeRobot: crie conta, adicione monitor HTTP para seuapp.com, configure alerta por email (5 min). 2) Sentry: instale o SDK, configure com DSN, faca um throw new Error de teste (15 min). 3) Vercel Analytics: ative no dashboard do projeto, zero config (2 min). 4) Configure um status page gratuito no UptimeRobot ou BetterStack para comunicar com usuarios (10 min).
+        </p>
+        <p class="text-neutral-300">
+          Status page e subestimado mas crucial. Quando seu app fica fora do ar, usuarios precisam de um lugar para verificar se "sou so eu ou o servico esta fora?". Um status page (ex: status.seuapp.com) responde essa pergunta e reduz tickets de suporte durante incidentes.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Configurar uptime + error tracking ANTES de lancar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Criar status page publico para transparencia com usuarios</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Calibrar alertas: poucos e significativos, nao muitos e ignorados</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Revisar Sentry semanalmente para corrigir erros recorrentes</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Descobrir que o app esta fora do ar pelo usuario reclamando</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Configurar 50 alertas e ignorar todos (alert fatigue)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar console.log como unico metodo de debugging em producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Negligenciar monitoramento "porque o Vercel cuida de tudo"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio Final: App Publicada -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Exercicio Final: App Publicada</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Este e o exercicio final da Imersao Vibe Coding. Voce vai pegar tudo o que construiu ao longo das 6 trilhas e colocar no ar como um SaaS funcional e completo. Landing page, autenticacao, funcionalidade principal, billing com Stripe, monitoramento, e dominio proprio. Um produto real, acessivel por qualquer pessoa com a URL.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Esse nao e um exercicio academico. E o lancamento real do seu produto. Mesmo que seja um MVP, mesmo que nao esteja perfeito, o objetivo e terminar o curso com algo publicado, funcional, e pronto para receber os primeiros usuarios. Isso e Vibe Shipping na sua forma mais pura.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-rose-900/30 to-dark-800 rounded-xl p-6 border border-rose-500/30 mb-6">
+        <h3 class="font-bold text-rose-400 mb-4">Passo a Passo do Deploy Final</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-rose-400">Landing Page</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Se voce nao tem uma landing page do Modulo 1.2, crie agora. Requisitos minimos:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-rose-400">Hero:</strong> titulo, subtitulo, CTA claro ("Comece Gratis")</li>
+              <li><strong class="text-rose-400">Features:</strong> 3-4 beneficios com icones</li>
+              <li><strong class="text-rose-400">Pricing:</strong> 3 tiers com CTA em cada um</li>
+              <li><strong class="text-rose-400">Social proof:</strong> mesmo que seja "Construido com Vibe Coding"</li>
+              <li><strong class="text-rose-400">Footer:</strong> links, legal, contato</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-rose-400">Auth + Core Functionality</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Integre auth (Clerk, Auth.js, ou o sistema que voce construiu no Modulo 6.3) com sua funcionalidade principal. O usuario deve conseguir: signup > login > usar a feature principal > logout. Se sua feature usa IA, implemente o sistema de creditos do Modulo 6.5.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-rose-400">Billing com Stripe</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Ative o Stripe em modo LIVE (nao test). Crie os Products e Prices reais. Configure os webhooks para o endpoint de producao. Teste o fluxo completo com uma compra real (voce pode reembolsar depois). Integre o Customer Portal para gestao de subscription.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-rose-500/30 flex items-center justify-center text-rose-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-rose-400">Deploy + Dominio</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Deploy na Vercel (ou plataforma de sua escolha). Configure dominio proprio com Cloudflare DNS. Verifique SSL. Configure redirects (www > root, HTTP > HTTPS). Teste todas as paginas no dominio final.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-primary">Monitoramento</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Configure: UptimeRobot (uptime), Sentry (errors), Vercel Analytics (performance). Crie status page. Teste cada alerta: force um downtime de teste, force um erro, verifique que os alertas chegam.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-primary">Launch Checklist Final</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Rode o pre-deploy checklist do Topico 1. Faca uma passada completa no app como usuario: signup > explore > upgrade > use > downgrade > logout. Peca para uma pessoa testar (amigo, familiar, colega). Corrija qualquer problema critico encontrado. Quando tudo passar: publique a URL.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis Finais</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Landing page com hero, features, pricing, e CTA</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Autenticacao funcional (signup, login, logout)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Feature principal do SaaS funcionando</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Stripe em modo LIVE com checkout + webhooks + portal</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Dominio proprio configurado com HTTPS</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Cloudflare na frente (DNS + CDN + protecao)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Monitoramento: uptime + errors + performance</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>CI/CD configurado (push = deploy automatico)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Status page publico</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>URL compartilhada na comunidade</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica: Ship It</h3>
+        <p class="text-neutral-300 mb-3">
+          Nao espere estar perfeito. Nao espere ter todas as features. Nao espere resolver aquele bug visual que so aparece no Safari em mobile. Ship. Agora. A diferenca entre quem completa um curso e quem realmente lanca algo e exatamente esta: a disposicao de publicar algo imperfeito.
+        </p>
+        <p class="text-neutral-300">
+          Voce tem 100% das habilidades necessarias. Ao longo de 6 trilhas voce aprendeu: mentalidade de Vibe Coding, arquitetura de SaaS, construcao com IA, agentes autonomos, multi-agent systems, e agora operacao e deploy. O unico passo que falta e apertar o botao. Faca isso agora.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-rose-900/20 rounded-xl p-6 border border-rose-500/30">
+          <h3 class="font-bold text-rose-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Deployar HOJE, mesmo que nao esteja perfeito</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Pedir para alguem testar antes de anunciar publicamente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Compartilhar a URL e coletar feedback real</span></li>
+            <li class="flex items-start space-x-2"><span class="text-rose-400 mt-0.5">&#10003;</span><span>Celebrar: voce construiu e lancou um SaaS completo</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Esperar "ficar pronto" (nunca vai ficar, e esse e o ponto)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar "so mais uma feature" antes de lancar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Comparar seu MVP com SaaS que tem anos de mercado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Desistir nesta etapa final (voce esta a um deploy de distancia)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL + CELEBRATION -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-rose-500/30">
+      <div class="text-center mb-8">
+        <span class="text-6xl mb-4 block">&#x1F389;</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-rose-400 mb-4">Parabens! Voce Completou a Imersao Vibe Coding!</h2>
+        <p class="text-neutral-300 max-w-2xl mx-auto mb-6">
+          De Mentalidade a Operacao. De zero a SaaS publicado. Voce percorreu 6 trilhas, dezenas de modulos, e agora tem um produto real no ar. Isso nao e o fim. E o comeco.
+        </p>
+      </div>
+
+      <div class="bg-dark-700/50 rounded-xl p-6 mb-8 max-w-2xl mx-auto">
+        <h3 class="font-bold text-primary text-center mb-4">O que Voce Conquistou</h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="text-emerald-400 mt-0.5 font-bold">T1</span>
+            <span class="text-neutral-300"><strong class="text-emerald-400">Mentalidade:</strong> Dominou o paradigma Vibe Coding e Agentic Engineering</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-blue-400 mt-0.5 font-bold">T2</span>
+            <span class="text-neutral-300"><strong class="text-blue-400">Arquitetura:</strong> Projetou stack, banco de dados, APIs, e infraestrutura</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-purple-400 mt-0.5 font-bold">T3</span>
+            <span class="text-neutral-300"><strong class="text-purple-400">Construcao:</strong> Construiu frontend, backend, e integracao com IA</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-amber-400 mt-0.5 font-bold">T4</span>
+            <span class="text-neutral-300"><strong class="text-amber-400">Agentes:</strong> Implementou agentes autonomos com tools e memoria</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-0.5 font-bold">T5</span>
+            <span class="text-neutral-300"><strong class="text-teal-400">Multibots:</strong> Orquestrou multi-agent systems com routing inteligente</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-0.5 font-bold">T6</span>
+            <span class="text-neutral-300"><strong class="text-rose-400">Operacao:</strong> Publicou com auth, billing, monitoring, e dominio proprio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-8">
+        <p class="text-neutral-300 max-w-2xl mx-auto mb-4">
+          Voce agora faz parte de uma nova geracao de builders que constroi software 10x mais rapido usando IA como ferramenta fundamental. O que voce faz com essa habilidade e com voce. Mas o mais importante: voce ja nao e alguem que "quer aprender". Voce e alguem que construiu e lancou. Isso muda tudo.
+        </p>
+        <p class="text-lg font-semibold text-primary">
+          Continue construindo. Continue lancando. O mundo precisa do que voce vai criar.
+        </p>
+      </div>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <h3 class="font-bold text-rose-400 text-center mb-4">Resumo do Modulo 6.7</h3>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Checklist de deploy: env vars, database, build, security verificados</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">CI/CD com GitHub Actions: push > test > build > deploy automatico</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Dominio proprio com Cloudflare DNS, SSL automatico, CDN global</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Seguranca: HTTPS, WAF, DDoS protection, vulnerability scanning</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Monitoramento: uptime, error tracking, performance, status page</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-rose-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">SaaS completo publicado: landing + auth + billing + monitoring + dominio</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-rose-500/20">
+        <a href="modulo-6-6.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 6.6</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 6</span>
+        </a>
+        <a href="../../index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-primary/20 text-primary hover:bg-primary/30 rounded-lg transition-colors">
+          <span>Pagina Inicial do Curso</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 6.7: Deploy Final - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

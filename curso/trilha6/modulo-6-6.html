@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 6.6 - Landing Page e Analytics | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">T1 Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">T2 Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">T3 Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">T4 Agentes</span>
+          </a>
+          <a href="../trilha5/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">T5 Multibots</span>
+          </a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 bg-rose-500/10">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">T6 Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-rose-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-rose-400">Trilha 6</a>
+      <span>/</span>
+      <span class="text-rose-400">Modulo 6.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-rose-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-rose-500/20 text-rose-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 6.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🌐 Landing Page e Analytics</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Seu SaaS pode ser tecnicamente impecavel, mas se ninguem sabe que ele existe, nao vai longe. Landing page e a vitrine, analytics e o espelho. Aqui voce aprende a converter visitantes em usuarios e medir tudo que importa.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">~50min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-rose-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Anatomia de uma Landing Page SaaS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📐 Anatomia de uma Landing Page SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O usuario decide se vai ficar ou fechar a aba <strong class="text-rose-400">em menos de 5 segundos</strong>. Sua landing page precisa comunicar valor instantaneamente. Nao e sobre ser bonita. E sobre ser clara, rapida e convincente. Existe uma formula com 5 secoes que funciona para 90% dos SaaS.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> A Formula de 5 Secoes
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Toda landing page SaaS que converte bem segue uma estrutura previsivel. Nao reinvente a roda. Os visitantes ja esperam essa estrutura porque viram em dezenas de outros SaaS. Desviar do padrao causa confusao e confusao mata conversao.
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-start space-x-3 p-3 bg-dark-900/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">1</span>
+            <div>
+              <span class="text-white font-medium">Hero Section</span>
+              <span class="text-neutral-400 text-sm block">Titulo com proposta de valor em uma frase, subtitulo de 1-2 linhas, CTA principal ("Comece gratis"), screenshot ou video do produto. Tudo acima do fold, sem precisar scrollar.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-900/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">2</span>
+            <div>
+              <span class="text-white font-medium">Social Proof</span>
+              <span class="text-neutral-400 text-sm block">Logos de empresas que usam, depoimentos curtos com foto e nome, numeros impactantes ("500+ empresas", "2M mensagens processadas"). Prova que outros confiam no produto.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-900/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">3</span>
+            <div>
+              <span class="text-white font-medium">Features / Beneficios</span>
+              <span class="text-neutral-400 text-sm block">3-4 cards com icone, titulo e descricao curta. Foque no beneficio, nao na funcionalidade. Nao diga "usa GPT-4". Diga "respostas inteligentes que economizam 3 horas por dia".</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-900/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">4</span>
+            <div>
+              <span class="text-white font-medium">Pricing Table</span>
+              <span class="text-neutral-400 text-sm block">2-3 planos lado a lado, destaque no plano recomendado (borda colorida, badge "POPULAR"), CTA em cada plano, comparacao clara do que cada plano inclui.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-900/50 rounded-lg">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 font-bold text-sm flex-shrink-0">5</span>
+            <div>
+              <span class="text-white font-medium">FAQ + CTA Final</span>
+              <span class="text-neutral-400 text-sm block">5-8 perguntas frequentes que eliminam objecoes ("Posso cancelar?", "Meus dados ficam seguros?"). CTA final para quem leu tudo e esta convencido. Footer com links legais.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados 2026 -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Benchmarks de Landing Pages SaaS
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tempo medio no site:</strong> 54 segundos para SaaS. Se sua pagina carrega em mais de 3s, voce perde 53% dos visitantes mobile (Google, 2025)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Conversion rate medio:</strong> 2.35% para SaaS B2B, 3.2% para B2C. Top 10% convertem acima de 11% (Unbounce, 2025)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Video no hero:</strong> Aumenta conversao em 80-86% quando mostra o produto funcionando (Wyzowl, 2026)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Social proof:</strong> Depoimentos com foto e nome real aumentam confianca em 34% comparado a depoimentos anonimos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Estrutura HTML de uma Hero Section
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">&lt;!-- Hero Section: proposta de valor acima do fold --&gt;
+&lt;section class="min-h-[80vh] flex items-center"&gt;
+  &lt;div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12"&gt;
+    &lt;div class="flex flex-col justify-center"&gt;
+      &lt;!-- Badge de social proof rapido --&gt;
+      &lt;span class="inline-block w-fit px-3 py-1 bg-emerald-100
+        text-emerald-700 rounded-full text-sm mb-4"&gt;
+        500+ empresas ja usam
+      &lt;/span&gt;
+
+      &lt;!-- Titulo: beneficio principal em 1 frase --&gt;
+      &lt;h1 class="text-5xl font-bold leading-tight mb-4"&gt;
+        Automatize seu atendimento com
+        &lt;span class="text-rose-500"&gt;agentes de IA&lt;/span&gt;
+      &lt;/h1&gt;
+
+      &lt;!-- Subtitulo: como funciona em 1-2 linhas --&gt;
+      &lt;p class="text-xl text-neutral-600 mb-8"&gt;
+        Crie chatbots inteligentes em minutos. Sem codigo.
+        Integre com WhatsApp, Slack e email.
+      &lt;/p&gt;
+
+      &lt;!-- CTAs: primario + secundario --&gt;
+      &lt;div class="flex gap-4"&gt;
+        &lt;a href="/signup" class="px-8 py-3 bg-rose-500
+          text-white rounded-lg font-semibold text-lg"&gt;
+          Comece gratis
+        &lt;/a&gt;
+        &lt;a href="#demo" class="px-8 py-3 border border-neutral-300
+          rounded-lg font-semibold text-lg"&gt;
+          Ver demo
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Screenshot do produto --&gt;
+    &lt;div class="rounded-xl shadow-2xl overflow-hidden"&gt;
+      &lt;img src="/screenshot.png" alt="Dashboard"
+        class="w-full" /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use <strong class="text-white">Claude + Tailwind + v0.dev</strong> para gerar a landing page inicial em 10 minutos. Descreva seu produto em 2-3 frases e peca a estrutura completa com hero, features, pricing e FAQ. Depois ajuste o copy manualmente. A IA faz o layout, voce faz a mensagem.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Copywriting para Produtos com IA -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">✍️ Copywriting para Produtos com IA</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Todo mundo diz que seu produto e "AI-powered". O mercado esta saturado de buzzwords. <strong class="text-rose-400">O copy que converte nao fala de tecnologia, fala de resultado.</strong> Ninguem compra "GPT-4 integration". As pessoas compram "3 horas do meu dia de volta". O framework Pain > Solution > Proof > CTA funciona porque espelha como o cerebro toma decisoes.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Framework: Pain > Solution > Proof > CTA
+        </h3>
+        <div class="space-y-4">
+          <div class="p-4 bg-dark-900/50 rounded-lg border-l-4 border-red-500">
+            <h4 class="font-bold text-red-400 mb-1">1. Pain (Dor)</h4>
+            <p class="text-neutral-300 text-sm">Descreva o problema que o usuario sente. Seja especifico. "Voce gasta 4 horas por dia respondendo as mesmas perguntas no suporte?" funciona melhor que "Automatize seu atendimento".</p>
+          </div>
+          <div class="p-4 bg-dark-900/50 rounded-lg border-l-4 border-emerald-500">
+            <h4 class="font-bold text-emerald-400 mb-1">2. Solution (Solucao)</h4>
+            <p class="text-neutral-300 text-sm">Mostre como seu produto resolve a dor. Sem jargao tecnico. "Crie um agente que responde 80% das perguntas automaticamente. Configure em 5 minutos." Clareza mata complexidade.</p>
+          </div>
+          <div class="p-4 bg-dark-900/50 rounded-lg border-l-4 border-blue-500">
+            <h4 class="font-bold text-blue-400 mb-1">3. Proof (Prova)</h4>
+            <p class="text-neutral-300 text-sm">Numeros, depoimentos, logos. "A empresa X reduziu tickets em 60% no primeiro mes." Prova social elimina o ceticismo. Sem prova, e so promessa.</p>
+          </div>
+          <div class="p-4 bg-dark-900/50 rounded-lg border-l-4 border-rose-500">
+            <h4 class="font-bold text-rose-400 mb-1">4. CTA (Chamada para Acao)</h4>
+            <p class="text-neutral-300 text-sm">Um botao claro com verbo de acao. "Comece gratis", "Teste por 14 dias", "Veja como funciona". Nao "Saiba mais". CTA fraco = conversao fraca.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">&#10003; Headlines que Convertem</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Reduza 80% dos tickets de suporte em 1 semana"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Seu assistente de vendas que nunca dorme"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"De planilha a dashboard em 30 segundos"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Pare de escrever SQL. Pergunte em portugues"</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">&#10007; Headlines que Nao Convertem</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Plataforma AI-powered para empresas"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Solucao de IA de ultima geracao"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Revolucione seus processos com IA"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"O futuro da automacao inteligente"</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Alerta -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> Fadiga de "AI-Powered"
+        </h3>
+        <p class="text-neutral-300">
+          Em 2026, <strong class="text-white">78% dos consumidores reportam fadiga de marketing de IA</strong> (Gartner). Quando todo mundo diz "AI-powered", ninguem se diferencia. O antidoto e focar no resultado, nao na tecnologia. Nao diga "usa GPT-4". Diga o que o GPT-4 faz pelo usuario. A tecnologia e o como. O usuario se importa com o que.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Teste de clareza: <strong class="text-white">mostre seu titulo para alguem por 5 segundos</strong> e pergunte o que o produto faz. Se a pessoa nao conseguir responder, reescreva. Bom copy nao precisa de explicacao. Use a formula "Verbo + Resultado + Timeframe": "Automatize [resultado] em [tempo]".
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: SEO Basico para SaaS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🔍 SEO Basico para SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        SEO e trafego gratis, recorrente e composto. Um artigo bem posicionado no Google traz visitantes todos os meses sem voce gastar 1 real em ads. <strong class="text-rose-400">Para SaaS com IA, as oportunidades de long-tail keywords sao enormes</strong> porque o mercado ainda e novo e muitas buscas nao tem concorrencia forte.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Os Fundamentos de SEO para Landing Pages
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          SEO tecnico nao e complicado. Sao ~10 coisas que voce configura uma vez e colhe os resultados por meses. O Google prioriza paginas rapidas, acessiveis, com conteudo relevante e estrutura semantica correta.
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Title tag:</strong> 50-60 caracteres. Inclua a keyword principal. Ex: "Agentes de IA para Suporte - [NomeSaaS]"</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Meta description:</strong> 150-160 caracteres. Resume o que o produto faz e inclui CTA. Aparece nos resultados do Google</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Semantic HTML:</strong> Use h1 para o titulo principal (1 por pagina), h2 para secoes, h3 para sub-secoes. O Google le a hierarquia</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Sitemap.xml:</strong> Lista todas as paginas do site para o Google indexar. Gere automaticamente no build</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-rose-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">robots.txt:</strong> Diz ao Google o que pode e o que nao pode indexar. Bloqueie /api/, /admin/, /dashboard/</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> SEO Meta Tags Essenciais
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">&lt;head&gt;
+  &lt;!-- SEO Basico --&gt;
+  &lt;title&gt;Agentes de IA para Suporte ao Cliente | MeuSaaS&lt;/title&gt;
+  &lt;meta name="description" content="Crie agentes de IA que respondem
+    80% dos tickets automaticamente. Setup em 5 min. Teste gratis." /&gt;
+  &lt;link rel="canonical" href="https://meusaas.com" /&gt;
+
+  &lt;!-- Open Graph (Facebook, LinkedIn, WhatsApp) --&gt;
+  &lt;meta property="og:title" content="Agentes de IA para Suporte" /&gt;
+  &lt;meta property="og:description" content="Automatize seu suporte
+    com IA. 500+ empresas ja usam." /&gt;
+  &lt;meta property="og:image" content="https://meusaas.com/og.png" /&gt;
+  &lt;meta property="og:url" content="https://meusaas.com" /&gt;
+  &lt;meta property="og:type" content="website" /&gt;
+
+  &lt;!-- Twitter Card --&gt;
+  &lt;meta name="twitter:card" content="summary_large_image" /&gt;
+  &lt;meta name="twitter:title" content="Agentes de IA para Suporte" /&gt;
+  &lt;meta name="twitter:image" content="https://meusaas.com/og.png" /&gt;
+
+  &lt;!-- Structured Data (Google Rich Results) --&gt;
+  &lt;script type="application/ld+json"&gt;
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MeuSaaS",
+    "applicationCategory": "BusinessApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" }
+  }
+  &lt;/script&gt;
+&lt;/head&gt;</pre>
+        </div>
+      </div>
+
+      <!-- Long-tail keywords -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">🔑</span> Long-Tail Keywords para IA
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Keywords genericas ("chatbot IA") tem concorrencia alta. Long-tail keywords sao mais especificas, tem menos concorrencia e convertem melhor porque o usuario sabe exatamente o que quer:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-dark-800/50 rounded-lg p-3 text-sm">
+            <span class="text-blue-400 font-mono">"chatbot ia para imobiliaria"</span>
+            <span class="text-neutral-500 block text-xs mt-1">Nicho + tecnologia + setor</span>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-3 text-sm">
+            <span class="text-blue-400 font-mono">"como automatizar suporte whatsapp com ia"</span>
+            <span class="text-neutral-500 block text-xs mt-1">How-to + canal + tecnologia</span>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-3 text-sm">
+            <span class="text-blue-400 font-mono">"alternativa ao intercom com ia"</span>
+            <span class="text-neutral-500 block text-xs mt-1">Comparacao com concorrente</span>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-3 text-sm">
+            <span class="text-blue-400 font-mono">"agente ia atendimento em portugues"</span>
+            <span class="text-neutral-500 block text-xs mt-1">Feature + idioma especifico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Use <strong class="text-white">Google Search Console</strong> (gratis) para ver quais buscas trazem trafego. <strong class="text-white">robots.txt</strong> e <strong class="text-white">sitemap.xml</strong> sao arquivos de 5 linhas que levam 2 minutos para criar. E gere uma <strong class="text-white">imagem OG de 1200x630px</strong> com o nome do produto e uma frase curta. Quando alguem compartilha seu link no WhatsApp ou LinkedIn, essa imagem aparece.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Analytics - O que Medir -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📊 Analytics: O que Medir</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        "O que nao se mede, nao se melhora." Essa frase e cliche, mas e verdade. <strong class="text-rose-400">Analytics transforma opiniao em dados.</strong> Sem metricas, voce acha que o titulo e bom. Com metricas, voce sabe que o titulo converte 2.3% e que mudar uma palavra subiu para 3.1%. Dados tiram o achismo da equacao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> O Funil de Conversao SaaS
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Todo SaaS tem um funil. Visitantes entram no topo, clientes pagantes saem embaixo. Cada etapa perde gente. O trabalho de analytics e <strong class="text-white">identificar onde o funil vaza</strong> e tapar os buracos.
+        </p>
+        <div class="space-y-3 mt-4">
+          <div class="flex items-center space-x-4">
+            <div class="w-full bg-rose-500/30 rounded-lg p-3 text-center">
+              <span class="text-white font-bold">Visitantes</span>
+              <span class="text-neutral-400 text-sm block">10.000/mes</span>
+            </div>
+          </div>
+          <div class="flex justify-center"><span class="text-rose-400 text-xl">↓ 5% signup rate</span></div>
+          <div class="flex items-center space-x-4">
+            <div class="w-4/5 mx-auto bg-rose-500/25 rounded-lg p-3 text-center">
+              <span class="text-white font-bold">Signups</span>
+              <span class="text-neutral-400 text-sm block">500/mes</span>
+            </div>
+          </div>
+          <div class="flex justify-center"><span class="text-rose-400 text-xl">↓ 40% activation</span></div>
+          <div class="flex items-center space-x-4">
+            <div class="w-3/5 mx-auto bg-rose-500/20 rounded-lg p-3 text-center">
+              <span class="text-white font-bold">Ativados</span>
+              <span class="text-neutral-400 text-sm block">200/mes</span>
+            </div>
+          </div>
+          <div class="flex justify-center"><span class="text-rose-400 text-xl">↓ 10% conversion</span></div>
+          <div class="flex items-center space-x-4">
+            <div class="w-2/5 mx-auto bg-rose-500/15 rounded-lg p-3 text-center">
+              <span class="text-white font-bold">Pagantes</span>
+              <span class="text-neutral-400 text-sm block">20/mes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metricas Essenciais -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📈</span> Metricas que Todo SaaS Precisa Medir
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600">
+            <h4 class="font-bold text-rose-400 mb-1">Traffic Sources</h4>
+            <p class="text-neutral-400 text-sm">De onde vem seus visitantes? Organic search, social media, direct, referral, paid ads. Saber a fonte ajuda a investir no canal certo.</p>
+          </div>
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600">
+            <h4 class="font-bold text-rose-400 mb-1">Bounce Rate</h4>
+            <p class="text-neutral-400 text-sm">% de visitantes que saem sem interagir. Bounce alto = a pagina nao comunica valor rapido o suficiente. Meta: abaixo de 50%.</p>
+          </div>
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600">
+            <h4 class="font-bold text-rose-400 mb-1">Time on Page</h4>
+            <p class="text-neutral-400 text-sm">Quanto tempo o visitante fica. Pouco tempo = conteudo fraco ou pagina confusa. Muito tempo em pricing = interesse real.</p>
+          </div>
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600">
+            <h4 class="font-bold text-rose-400 mb-1">Conversion Rate</h4>
+            <p class="text-neutral-400 text-sm">% que completa o objetivo (signup, trial, pagamento). A metrica mais importante. Melhore 0.5% e dobre seu revenue.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Google Analytics 4: Setup Minimo
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">&lt;!-- GA4: cole no &lt;head&gt; de todas as paginas --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js
+  ?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+&lt;/script&gt;
+
+&lt;!-- Eventos customizados: rastreie acoes especificas --&gt;
+&lt;script&gt;
+  // Quando o usuario clica no CTA
+  document.querySelector('#cta-signup').addEventListener('click', () =&gt; {
+    gtag('event', 'cta_click', {
+      event_category: 'conversion',
+      event_label: 'hero_signup_button'
+    });
+  });
+
+  // Quando o usuario chega na secao de pricing (scroll tracking)
+  const observer = new IntersectionObserver((entries) =&gt; {
+    entries.forEach(entry =&gt; {
+      if (entry.isIntersecting) {
+        gtag('event', 'section_view', {
+          event_category: 'engagement',
+          event_label: 'pricing_section'
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  observer.observe(document.querySelector('#pricing'));
+&lt;/script&gt;</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Comece com o minimo: <strong class="text-white">GA4 + 3 eventos customizados</strong> (cta_click, signup_start, signup_complete). Nao tente medir tudo no dia 1. Meça o funil basico, identifique o maior vazamento, conserte, repita. <strong class="text-white">Vercel Analytics</strong> e uma alternativa mais simples que da trafego e Core Web Vitals sem configuracao.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: A/B Testing e Otimizacao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🧪 A/B Testing e Otimizacao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Voce acha que o botao verde converte mais que o azul? Nao adianta achar. <strong class="text-rose-400">A/B testing remove o achismo.</strong> Voce mostra a versao A para metade dos visitantes e a versao B para a outra metade. Depois de dados suficientes, o numero diz qual venceu. Sem debate, sem opiniao. Dados.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border border-rose-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-rose-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> O que Testar (e o que nao testar)
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Teste <strong class="text-white">uma variavel por vez</strong>. Se voce muda o titulo e a cor do botao ao mesmo tempo, nao sabe qual causou a mudanca. Priorize testes pelo impacto potencial:
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
+            <span class="px-2 py-0.5 bg-rose-500/20 text-rose-400 text-xs font-bold rounded flex-shrink-0">ALTO</span>
+            <span class="text-neutral-300"><strong class="text-white">Headlines:</strong> A primeira coisa que o visitante le. Uma headline melhor pode dobrar a conversao. Teste diferentes angulos de dor e beneficio.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="px-2 py-0.5 bg-rose-500/20 text-rose-400 text-xs font-bold rounded flex-shrink-0">ALTO</span>
+            <span class="text-neutral-300"><strong class="text-white">CTA (texto e posicao):</strong> "Comece gratis" vs "Teste por 14 dias" vs "Crie seu primeiro agente". A posicao do CTA tambem importa.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-bold rounded flex-shrink-0">MEDIO</span>
+            <span class="text-neutral-300"><strong class="text-white">Pricing display:</strong> Preco mensal vs anual, com ou sem plano free, destaque no plano Pro vs Enterprise.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-bold rounded flex-shrink-0">MEDIO</span>
+            <span class="text-neutral-300"><strong class="text-white">Social proof:</strong> Depoimentos vs numeros vs logos. Posicao acima ou abaixo do fold. Quantos depoimentos mostrar.</span>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-bold rounded flex-shrink-0">BAIXO</span>
+            <span class="text-neutral-300"><strong class="text-white">Cores e layout:</strong> Impacto real e menor do que parece. So teste depois de otimizar headlines, CTAs e pricing.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ferramentas -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🛠️</span> Ferramentas de A/B Testing
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600 text-center">
+            <h4 class="font-bold text-rose-400 mb-2">Vercel Flags</h4>
+            <p class="text-neutral-400 text-sm">Feature flags nativos no Vercel. A/B testing no edge, sem latencia. Integra com Next.js.</p>
+            <span class="text-neutral-500 text-xs block mt-2">Gratis no Hobby</span>
+          </div>
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600 text-center">
+            <h4 class="font-bold text-rose-400 mb-2">PostHog</h4>
+            <p class="text-neutral-400 text-sm">Analytics + feature flags + session replay + A/B testing. Open source. Self-hostable.</p>
+            <span class="text-neutral-500 text-xs block mt-2">Gratis ate 1M eventos/mes</span>
+          </div>
+          <div class="p-4 bg-dark-700/50 rounded-lg border border-dark-600 text-center">
+            <h4 class="font-bold text-rose-400 mb-2">URL Params</h4>
+            <p class="text-neutral-400 text-sm">O metodo mais simples: ?variant=b na URL. JavaScript le o param e renderiza a variante. Zero dependencias.</p>
+            <span class="text-neutral-500 text-xs block mt-2">Gratis, DIY</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> A/B Testing Simples com URL Params
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+          <pre class="text-neutral-300">// A/B testing sem dependencias externas
+const params = new URLSearchParams(window.location.search);
+const variant = params.get('v') || (Math.random() > 0.5 ? 'a' : 'b');
+
+// Persistir variante no localStorage para consistencia
+if (!localStorage.getItem('ab_variant')) {
+  localStorage.setItem('ab_variant', variant);
+}
+const userVariant = localStorage.getItem('ab_variant');
+
+// Aplicar variante
+const headlines = {
+  a: 'Automatize seu suporte com IA',
+  b: 'Reduza 80% dos tickets em 1 semana'
+};
+document.querySelector('#hero-title').textContent = headlines[userVariant];
+
+// Rastrear qual variante o usuario viu
+gtag('event', 'ab_test', {
+  test_name: 'hero_headline_v2',
+  variant: userVariant,
+  event_category: 'experiment'
+});
+
+// Rastrear conversao por variante
+document.querySelector('#cta-signup').addEventListener('click', () => {
+  gtag('event', 'ab_conversion', {
+    test_name: 'hero_headline_v2',
+    variant: userVariant,
+    event_category: 'experiment'
+  });
+});</pre>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Espere pelo menos 100 conversoes por variante</strong> antes de declarar um vencedor. Menos que isso e ruido estatistico, nao sinal. Rode o teste por no minimo 1-2 semanas para capturar variacoes de dia da semana. E nao pare um teste so porque uma variante esta ganhando nos primeiros dias.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio - Landing Page Publicada -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🚀 Exercicio: Landing Page Publicada</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Teoria sem pratica e entretenimento. Neste exercicio, voce vai <strong class="text-rose-400">construir e publicar uma landing page completa</strong> para o seu SaaS, com analytics integrado. No final, voce tera uma URL publica que pode compartilhar e comecar a medir resultados reais.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-rose-900/30 to-dark-800 rounded-xl border-2 border-rose-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🌐</span>
+          <div>
+            <h3 class="text-xl font-bold text-rose-400">Exercicio: Landing Page Publicada</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-40 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Hero Section com Proposta de Valor</h4>
+              <p class="text-neutral-300 text-sm mb-3">Crie a hero section do seu SaaS com:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Titulo claro com beneficio principal (nao "AI-powered", foque no resultado)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Subtitulo de 1-2 linhas explicando como funciona</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Botao CTA principal ("Comece gratis" ou similar)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Screenshot ou mockup do produto</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Features e Social Proof</h4>
+              <p class="text-neutral-300 text-sm mb-3">Adicione as secoes de convencimento:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>3-4 feature cards com icone + titulo + descricao focada em beneficio</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Secao de social proof (depoimentos ou numeros)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Badge de prova social no hero ("500+ usuarios" ou similar)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Pricing Table</h4>
+              <p class="text-neutral-300 text-sm mb-3">Implemente a tabela de precos:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>2-3 planos com nomes, precos e feature list</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Destaque no plano recomendado (borda colorida + badge)</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>CTA em cada plano conectado ao Stripe Checkout</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">SEO + Analytics</h4>
+              <p class="text-neutral-300 text-sm mb-3">Configure rastreamento e otimize para buscadores:</p>
+              <div class="bg-dark-900 rounded-lg p-4 text-sm space-y-2">
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Meta title, description e Open Graph tags</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Google Analytics 4 ou Vercel Analytics instalado</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>Evento de clique no CTA rastreado</span></div>
+                <div class="flex items-center space-x-2 text-neutral-300"><span class="text-rose-400">☐</span><span>sitemap.xml e robots.txt criados</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-500/30 flex items-center justify-center border border-rose-500/40">
+              <span class="text-rose-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Deploy e Primeiras Metricas</h4>
+              <p class="text-neutral-300 text-sm mb-3">Publique e comece a medir:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-rose-500/20 overflow-x-auto">
+                <pre class="text-neutral-300"># Deploy no Vercel
+npx vercel --prod
+
+# Ou GitHub Pages (gratis para sites estaticos)
+git push origin main
+# Settings > Pages > Deploy from branch
+
+# Verificar que analytics funciona
+# 1. Abra a URL publica
+# 2. Clique no CTA
+# 3. Confira no GA4 Realtime que o evento apareceu</pre>
+              </div>
+              <p class="text-neutral-400 text-xs mt-2">Compartilhe a URL em redes sociais e meça as metricas da primeira semana: visitantes, bounce rate, cliques no CTA.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterios de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">&#10003;</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Landing page acessivel via URL publica</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Hero section com CTA funcional</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Pricing table com 2-3 planos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Analytics rastreando eventos de conversao</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Meta tags SEO configuradas</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Carregamento abaixo de 3 segundos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          Nao espere a landing page ficar perfeita. <strong class="text-white">Publique a versao 1 e itere baseado nos dados.</strong> A primeira versao nunca e a melhor. O objetivo e ter algo no ar para coletar dados reais. Use o Lighthouse do Chrome para verificar performance e SEO antes de publicar (meta: score > 90 em todos os criterios).
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-rose-900/40 via-dark-800 to-dark-800 rounded-xl border border-rose-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Landing page segue a formula de 5 secoes</strong>
+              <span class="text-neutral-400"> - Hero, social proof, features, pricing, FAQ+CTA. Nao reinvente o padrao, os usuarios esperam essa estrutura.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Copy vende resultado, nao tecnologia</strong>
+              <span class="text-neutral-400"> - Pain > Solution > Proof > CTA. Evite "AI-powered" e foque no que muda na vida do usuario.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">SEO e trafego gratis e composto</strong>
+              <span class="text-neutral-400"> - Meta tags, semantic HTML, sitemap, robots.txt. 10 minutos de configuracao, meses de retorno.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">O funil de conversao e seu numero mais importante</strong>
+              <span class="text-neutral-400"> - Visitante > Signup > Ativacao > Pagamento. Identifique onde o funil vaza e conserte.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">A/B testing remove o achismo</strong>
+              <span class="text-neutral-400"> - Teste headlines, CTAs e pricing. Uma variavel por vez. 100+ conversoes por variante antes de declarar vencedor.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-rose-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Publique, meça e itere</strong>
+              <span class="text-neutral-400"> - A primeira versao nunca e a melhor. Dados reais valem mais que opinioes. Lance rapido e melhore continuamente.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-6-5.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo Anterior
+          </a>
+          <a href="modulo-6-7.html" class="text-center px-6 py-3 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-500 transition-colors">
+            Proximo Modulo →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
