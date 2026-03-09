@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.7: Implementar Multibot | Imersao Vibe Coding</title>
+  <meta name="description" content="Exercicio final - sistema multibot funcional completo. Router, especialistas, canais e testes end-to-end.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-teal-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400 transition-colors">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.7</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-teal-500/20 text-teal-400 text-sm font-semibold rounded-full mb-4">MODULO 5.7</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F3D7;&#xFE0F; Implementar Multibot</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Exercicio final: construa um sistema multibot funcional completo com router, especialistas, canais e testes.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">90</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">Exercicio</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Planejamento do Sistema -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F4CB; Planejamento do Sistema</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Antes de escrever uma linha de codigo, voce precisa de um plano claro. Sistemas multibot falham mais por falta de planejamento do que por problemas tecnicos. O planejamento comeca com uma pergunta simples: quais problemas este sistema vai resolver? Nao "quais tecnologias vou usar" ou "quantos bots vou ter". A resposta define tudo que vem depois: quantos bots, quais responsabilidades, como se comunicam, e onde rodam.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O mapeamento de bots segue o principio da separacao de responsabilidades. Cada bot deve ter um dominio claro e bem definido. Se voce nao consegue descrever o que um bot faz em uma frase, ele provavelmente esta fazendo coisas demais. Exemplos de dominios bem definidos: "responde perguntas sobre codigo e desenvolvimento", "gerencia emails e comunicacoes", "pesquisa e sintetiza informacoes da web", "monitora servicos e infraestrutura".
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O diagrama de arquitetura e o artefato mais importante do planejamento. Ele mostra: os bots (com seus nomes e responsabilidades), os canais de entrada (Telegram, Slack, webhook), o router (como mensagens sao classificadas e encaminhadas), as dependencias externas (APIs, bancos de dados, LLMs), e os fluxos de comunicacao entre componentes. Desenhando isso antes de codar, voce evita refatoracoes caras depois.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          O <strong>planejamento de sistema multibot</strong> deve responder cinco perguntas fundamentais. Primeira: <strong>quantos bots?</strong> Comece com o minimo viavel (router + 2 especialistas). Voce pode adicionar mais depois. Segunda: <strong>quais dominios?</strong> Defina responsabilidades claras e nao sobrepostas. Terceira: <strong>quais canais?</strong> Comece com um canal (Telegram) e expanda depois. Quarta: <strong>qual LLM por bot?</strong> Nem todo bot precisa do modelo mais caro. Perguntas simples vao para modelos locais baratos. Quinta: <strong>como se comunicam?</strong> Via router centralizado ou peer-to-peer.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A arquitetura mais comum e o padrao <strong>hub-and-spoke</strong>: um router central (hub) recebe todas as mensagens e encaminha para os bots especialistas (spokes). Os especialistas nunca se comunicam diretamente entre si. Toda comunicacao passa pelo router. Isso simplifica o debug, o monitoramento e a adocao incremental de novos bots.
+        </p>
+        <p class="text-neutral-300">
+          Para o exercicio deste modulo, voce vai implementar: 1 router (classificador de intencoes), 2 bots especialistas (um para codigo/dev e um para pesquisa/informacoes gerais), e 1 canal (Telegram). Esse e o sistema minimo viavel que demonstra todos os conceitos de multibot sem complexidade desnecessaria.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Planejamento</h3>
+        <div class="space-y-3 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Inventario de bots</strong> - Lista com nome, dominio, LLM backend, e estimativa de custo por mensagem</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Mapa de canais</strong> - Quais canais de entrada, como mensagens sao recebidas, formatos suportados</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Routing rules</strong> - Regras de classificacao: quais keywords/intencoes vao para qual bot</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Fallback strategy</strong> - O que acontece quando nenhum bot especialista e o match? Quem responde?</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Diagrama de arquitetura</strong> - Desenho visual mostrando componentes, fluxos e dependencias</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Use o Claude Code para gerar seu diagrama de arquitetura. Descreva os componentes em linguagem natural e peca para gerar um diagrama em Mermaid ou ASCII art. Voce pode tambem pedir para o Claude analisar seu plano e apontar falhas ou melhorias. Planejamento assistido por IA e tao valido quanto codigo assistido por IA.
+        </p>
+        <p class="text-neutral-300">
+          Resista a tentacao de planejar o "sistema perfeito" de 10 bots. Comece com 2 especialistas e o router. Valide que funciona. Depois adicione o terceiro bot. Sistemas que nascem grandes morrem grandes. Sistemas que nascem pequenos e crescem organicamente sobrevivem.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Definir dominios claros e nao sobrepostos para cada bot</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Desenhar o diagrama de arquitetura ANTES de codar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Planejar a estrategia de fallback desde o inicio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Comecar com o minimo viavel (router + 2 bots + 1 canal)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Planejar 10 bots antes de ter 2 funcionando</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Bots com responsabilidades sobrepostas (conflitos de routing)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar custos de API no planejamento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular o planejamento e ir direto pro codigo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: Criando o Router -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F9ED; Criando o Router</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        O router e o cerebro do sistema multibot. Ele recebe cada mensagem do usuario, classifica a intencao, e encaminha para o bot especialista correto. Um bom router e rapido, preciso, e tem fallbacks inteligentes. Um router ruim manda mensagens pro bot errado e frustra o usuario. A qualidade do router determina a qualidade de todo o sistema.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        Existem tres abordagens principais para classification. A mais simples e <strong>regex/keyword matching</strong>: se a mensagem contem "codigo", "debug", "deploy", vai para o bot de desenvolvimento. E rapido e gratuito, mas fragil com linguagem natural ambigua. A segunda e <strong>LLM classification</strong>: voce envia a mensagem para um modelo leve (como Llama 3.2 3B ou Qwen 2.5 7B) com um prompt que pede para classificar em categorias. E mais preciso mas adiciona latencia e custo. A terceira e <strong>hybrid</strong>: tenta regex primeiro, e se nao encontra match com confianca alta, usa LLM como fallback.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O conceito de confidence threshold e essencial. Quando o router classifica uma mensagem, ele deve retornar nao apenas a categoria mas tambem um nivel de confianca. Se a confianca esta acima do threshold (ex: 80%), encaminha diretamente. Se esta entre 50-80%, pode pedir confirmacao ao usuario. Se esta abaixo de 50%, vai para o bot default. Sem threshold, o router vai forcar classificacoes incorretas em mensagens ambiguas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-4">Conceito Principal: Arquitetura do Router</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-teal-400">Pre-processamento</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Normaliza a mensagem: lowercase, remove pontuacao excessiva, detecta idioma, identifica comandos explicitos (/claude, /research). Comandos explicitos bypassam a classificacao e vao direto pro bot indicado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-teal-400">Regex Layer</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Primeira camada de classificacao. Patterns definidos em config: /code|debug|deploy|git|npm/ -> dev-bot, /pesquisa|busca|search|quem|quando/ -> research-bot. Rapido, deterministico, zero custo. Cobre 60-70% dos casos claros.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-teal-400">LLM Classifier</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Quando regex nao encontra match, um modelo leve classifica. Prompt: "Classifique a mensagem em uma das categorias: development, research, general. Retorne JSON com category e confidence." Modelo recomendado: Llama 3.2 3B via Ollama (local, rapido, gratuito).</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-teal-400">Default Handler</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Quando a confianca e baixa ou a mensagem e ambigua, vai para o bot default. O default deve ser o bot mais generalista. Em muitos sistemas, e o Ollama local com um modelo conversacional. Custo zero e resposta rapida para o fallback.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Metricas de Router</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&lt;100ms</div>
+            <p class="text-neutral-400 text-sm">Latencia target para routing decision (regex: ~1ms, LLM: 50-200ms)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&gt;85%</div>
+            <p class="text-neutral-400 text-sm">Accuracy target para classificacao correta de intencoes</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">0.80</div>
+            <p class="text-neutral-400 text-sm">Confidence threshold recomendado para routing automatico</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Hybrid</div>
+            <p class="text-neutral-400 text-sm">Abordagem recomendada: regex first, LLM fallback</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Logue TODAS as decisoes de routing: mensagem recebida, metodo usado (regex/LLM), categoria classificada, confidence score, e bot destino. Esse log e ouro para debugging e melhoria continua. Depois de uma semana de uso, analise os logs para encontrar patterns de classificacao incorreta e ajuste as regras.
+        </p>
+        <p class="text-neutral-300">
+          Para o LLM classifier, use structured output (JSON mode) para garantir que a resposta sempre venha no formato esperado. Modelos pequenos as vezes retornam texto livre em vez de JSON. Force o formato via system prompt e parsing robusto com fallback para regex no output.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Implementar hybrid routing (regex + LLM fallback)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar confidence threshold para evitar misrouting</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Logar todas as decisoes de routing para analise</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Permitir override explicito via comandos (/claude, /research)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar apenas regex (fragil com linguagem natural)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar modelo pesado para routing (GPT-4 e overkill e lento)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Forcar classificacao sem fallback (mensagens ambiguas existem)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao logar decisoes de routing (impossivel debugar depois)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: Implementando Especialistas -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F916; Implementando Especialistas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Cada bot especialista e um agente autonomo com sua propria personalidade, conhecimento de dominio, conjunto de skills, e backend de LLM. A chave e que cada especialista seja realmente bom no seu dominio especifico, nao mediocre em tudo. Um bot de desenvolvimento que conhece seu stack tecnico, suas convencoes de codigo, e seus repositorios e infinitamente mais util que um chatbot generico que sabe um pouco de tudo.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O deploy de especialistas pode ser feito de duas formas. Na forma <strong>monolitica</strong>, todos os bots rodam no mesmo processo Node.js, como modulos diferentes. E mais simples de gerenciar mas tem o risco de um bot crashar todo o sistema. Na forma <strong>distribuida</strong>, cada bot e um processo separado, comunicando via HTTP/WebSocket ou fila de mensagens. E mais resiliente mas mais complexo de operar. Para comecar, monolitico e a escolha certa. Distribua quando tiver necessidade real.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A personalidade de cada bot e definida em seu proprio arquivo de configuracao (como um CLAUDE.md especifico). O bot de desenvolvimento deve ter tom tecnico, direto, e conhecer os frameworks que voce usa. O bot de pesquisa deve ser investigativo, citar fontes, e admitir quando nao tem certeza. Essas personalidades diferentes nao sao frescura estetica. Elas melhoram a qualidade das respostas porque o LLM se comporta diferente com system prompts diferentes.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          Um <strong>bot especialista</strong> tem quatro componentes essenciais. O <strong>system prompt</strong> define personalidade, tom de voz, e regras de comportamento especificas ao dominio. O <strong>domain knowledge</strong> e o contexto adicional que o bot recebe: lista de projetos, documentacao de APIs, convencoes do time. As <strong>skills</strong> sao as ferramentas que o bot pode usar: para o bot de dev, acesso ao filesystem e terminal; para o bot de pesquisa, web search e browser. E o <strong>LLM backend</strong> e o modelo que alimenta o bot, escolhido pelo balanco entre custo, velocidade e qualidade para aquele dominio.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A escolha de LLM por especialista e estrategica. O bot de desenvolvimento precisa de raciocinio forte e tool use, entao Claude Sonnet ou GPT-4o sao boas escolhas (mais caros, mas o dominio exige). O bot de pesquisa precisa de boa sintese e custo baixo, entao DeepSeek R1 via OpenRouter e ideal. O bot default/conversacional pode usar Ollama local com Qwen 2.5, custo zero. Essa diversificacao reduz custos dramaticamente.
+        </p>
+        <p class="text-neutral-300">
+          Cada especialista deve ter <strong>isolamento de contexto</strong>. O bot de dev nao precisa saber sobre as pesquisas que o bot de research fez. Contextos separados significam janelas de contexto menores, menos tokens consumidos, e respostas mais focadas. Se um bot precisa de informacao de outro, o router pode orquestrar isso explicitamente.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Exemplo: 2 Especialistas + Backend Recomendado</h3>
+        <div class="space-y-3 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-blue-400">DevBot - Especialista em Desenvolvimento</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Claude Sonnet</span>
+            </div>
+            <p class="text-neutral-300 text-sm">Personalidade: tecnico, direto, code-first. Skills: filesystem, terminal, git, npm. Domain: lista de projetos do usuario, stack preferido, convencoes de codigo. Custo: ~$0.01-0.05/mensagem.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-blue-400">ResearchBot - Especialista em Pesquisa</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">DeepSeek R1</span>
+            </div>
+            <p class="text-neutral-300 text-sm">Personalidade: investigativo, cita fontes, admite incerteza. Skills: web search, browser, link extraction. Domain: areas de interesse do usuario. Custo: ~$0.001-0.005/mensagem.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-semibold text-blue-400">DefaultBot - Conversacional</h4>
+              <span class="text-xs text-neutral-400 bg-dark-600 px-2 py-1 rounded">Ollama Local</span>
+            </div>
+            <p class="text-neutral-300 text-sm">Personalidade: amigavel, casual. Skills: memoria, tasks. Domain: preferencias pessoais, lembretes. Custo: $0 (modelo local). Modelo: Qwen 2.5 14B.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Crie um arquivo de personalidade separado para cada bot (ex: dev-bot.md, research-bot.md). Isso permite iterar na personalidade de cada um independentemente. Inclua exemplos de como o bot deve responder em situacoes comuns do dominio. Exemplos concretos no system prompt melhoram drasticamente a qualidade das respostas.
+        </p>
+        <p class="text-neutral-300">
+          Para o primeiro deploy, comece com dois bots usando o mesmo LLM (ex: ambos em Ollama) e personalidades diferentes. Valide que o routing funciona e que as respostas sao coerentes com o dominio. Depois otimize os backends por especialista. Separar a preocupacao "funciona?" de "qual modelo e melhor?" evita debugging impossivel.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Definir personalidade unica para cada especialista</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Escolher o LLM certo para cada dominio (custo vs qualidade)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Isolar contextos entre bots (nao compartilhar sessao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Dar skills relevantes ao dominio (nao todas para todos)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Todos os bots com a mesma personalidade generica</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Usar o modelo mais caro para todos os bots</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Compartilhar contexto entre bots (polui a janela)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Implementar 5+ bots de uma vez (comece com 2)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Conectando Canais -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F4E1; Conectando Canais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Multi-channel deployment significa que seu sistema multibot pode receber mensagens de diferentes plataformas: Telegram, Slack, Discord, WhatsApp, webhooks HTTP, ou ate email. O desafio nao e tecnico (APIs existem para todas essas plataformas). O desafio e normalizacao: cada plataforma envia mensagens em formatos diferentes, com capacidades diferentes, e limitacoes diferentes. O sistema precisa abstrair essas diferencas.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        A camada de normalizacao transforma mensagens de qualquer canal em um formato interno padrao. Esse formato deve conter: texto da mensagem, ID do usuario, canal de origem, timestamp, e metadados opcionais (se tem midia, se e reply, etc.). Quando o bot responde, uma camada de formatacao faz o caminho inverso: transforma a resposta interna no formato especifico do canal. Telegram suporta markdown, Slack usa blocks, Discord tem embeds. A mesma resposta e formatada diferente para cada destino.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Para webhooks, voce expoe um endpoint HTTP que recebe eventos de servicos externos. Isso permite integracoes como: GitHub envia um webhook quando um PR e aberto, o sistema processa e notifica via Telegram; um servico de monitoramento detecta downtime e dispara um webhook que aciona o bot de ops. Webhooks transformam o sistema de passivo (espera mensagens do usuario) em ativo (reage a eventos externos).
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          A <strong>arquitetura multi-channel</strong> segue o padrao adapter. Cada canal tem um adapter que implementa duas funcoes: <strong>receive()</strong> (converte mensagem do formato nativo para formato interno) e <strong>send()</strong> (converte resposta do formato interno para formato nativo). O core do sistema trabalha apenas com o formato interno, ignorando de qual canal a mensagem veio.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          O <strong>webhook setup</strong> requer um servidor HTTP acessivel publicamente. Para desenvolvimento local, use ngrok ou cloudflared para criar um tunnel. Para producao, configure um dominio com SSL. O endpoint do webhook deve validar a origem (secret/signature verification) para evitar que qualquer um envie eventos falsos ao sistema.
+        </p>
+        <p class="text-neutral-300">
+          <strong>Channel-specific formatting</strong> e onde a experiencia do usuario e definida. Telegram suporta HTML e Markdown, permite enviar arquivos e fotos inline, e tem botoes interativos. Slack tem Block Kit com layouts ricos. Discord tem embeds coloridos. Adaptar a resposta para cada canal nao e opcional; uma resposta em texto puro quando a plataforma suporta rich media e uma experiencia pobre.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Comparativo de Canais</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-300 mt-2">
+            <thead>
+              <tr class="border-b border-dark-600">
+                <th class="text-left py-2 text-blue-400">Canal</th>
+                <th class="text-left py-2 text-blue-400">Bot API</th>
+                <th class="text-left py-2 text-blue-400">Rich Media</th>
+                <th class="text-left py-2 text-blue-400">Custo</th>
+              </tr>
+            </thead>
+            <tbody class="space-y-1">
+              <tr class="border-b border-dark-700"><td class="py-2">Telegram</td><td class="py-2">Excelente</td><td class="py-2">Markdown, HTML, arquivos, botoes</td><td class="py-2">Gratuito</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Slack</td><td class="py-2">Boa</td><td class="py-2">Block Kit, threads, modals</td><td class="py-2">Free tier</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">Discord</td><td class="py-2">Boa</td><td class="py-2">Embeds, botoes, slash commands</td><td class="py-2">Gratuito</td></tr>
+              <tr class="border-b border-dark-700"><td class="py-2">WhatsApp</td><td class="py-2">Limitada</td><td class="py-2">Texto, imagens, templates</td><td class="py-2">Pago (Meta API)</td></tr>
+              <tr><td class="py-2">Webhook HTTP</td><td class="py-2">Custom</td><td class="py-2">Qualquer formato</td><td class="py-2">Gratuito</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Comece com Telegram. Domine esse canal completamente antes de adicionar outro. A tentacao de ser "multi-channel desde o dia um" resulta em experiencia mediocre em todos os canais. Uma experiencia excelente em um canal e melhor que uma experiencia ok em tres.
+        </p>
+        <p class="text-neutral-300">
+          Quando for adicionar um segundo canal, crie o adapter layer primeiro e teste com mensagens mockadas. So depois conecte a API real. Isso permite testar a normalizacao sem depender da disponibilidade do servico externo. Use o padrao de inversion of control: o core do bot nao sabe e nao se importa de onde a mensagem veio.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Implementar normalizacao de mensagens (formato interno unico)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Adaptar formatacao para as capacidades de cada canal</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Validar origem de webhooks (secret verification)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Dominar um canal antes de adicionar outros</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Enviar texto puro quando o canal suporta rich media</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Acoplar logica de negocio ao formato de um canal especifico</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Aceitar webhooks sem verificacao de origem</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Tentar suportar 5 canais simultaneamente no dia um</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Testes End-to-End -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F9EA; Testes End-to-End</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Testar um sistema multibot e diferente de testar software tradicional. Voce tem componentes nao-deterministicos (LLMs retornam respostas diferentes para o mesmo input), dependencias externas (APIs de terceiros), e fluxos complexos que atravessam multiplos servicos. Testes tradicionais de "input X = output Y" nao funcionam aqui. Voce precisa de estrategias adaptadas.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        Conversation tests sao testes que simulam conversas reais. Voce define um script com mensagens do usuario e verifica que: a mensagem foi roteada para o bot correto, a resposta contem os elementos esperados (nao a resposta exata, mas palavras-chave ou patterns), e o sistema nao crashou. Esses testes cobrem o fluxo principal: mensagem entra, router classifica, especialista responde, resposta volta ao canal.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Load tests verificam como o sistema se comporta sob pressao. O que acontece se 10 mensagens chegam ao mesmo tempo? E 100? O Ollama local aguenta? As filas de processamento funcionam? O timeout esta configurado corretamente? Load tests revelam gargalos que so aparecem em producao: memory leaks, connection pool exhaustion, rate limiting de APIs.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-4">Conceito Principal: Estrategias de Teste</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-teal-400">Unit Tests: Router</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Teste a classificacao de intencoes isoladamente. Input: lista de 50 mensagens com a classificacao esperada. Assertion: accuracy > 85%. Teste edge cases: mensagens vazias, so emojis, mistura de idiomas, comandos explicitos. Use mocks para o LLM classifier para testes deterministicos.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-teal-400">Integration Tests: Fluxo Completo</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Simule uma conversa end-to-end: envie mensagem mock, verifique que passou pelo router, chegou ao especialista correto, e gerou resposta. Nao valide o texto exato da resposta (nao-deterministico), mas valide que a resposta existe, tem tamanho razoavel, e veio do bot certo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-teal-400">Error Scenarios</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Teste o que acontece quando coisas dao errado: LLM timeout, API retorna 500, Ollama nao esta rodando, rate limit atingido. O sistema deve falhar gracefully: retornar uma mensagem amigavel ao usuario, logar o erro, e nao crashar o processo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-teal-400">Monitoring de Producao</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Apos deploy, monitore: latencia por mensagem, taxa de erro, accuracy do routing (via feedback), custo acumulado, e uptime. Um dashboard simples com essas metricas e suficiente. Alertas automaticos quando latencia > 30s ou taxa de erro > 5%.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Metricas de Saude do Sistema</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&lt;5s</div>
+            <p class="text-neutral-400 text-sm">Latencia maxima aceitavel (routing + LLM + formatacao)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&lt;2%</div>
+            <p class="text-neutral-400 text-sm">Taxa de erro target para mensagens em producao</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">&gt;99%</div>
+            <p class="text-neutral-400 text-sm">Uptime target (menos de 7 horas de downtime por mes)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Daily</div>
+            <p class="text-neutral-400 text-sm">Frequencia minima de review de logs e metricas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Crie um script de "smoke test" que voce roda antes de cada deploy. O script envia 5-10 mensagens de teste cobrindo diferentes intencoes, verifica que todas recebem resposta em tempo aceitavel, e confirma que o routing esta correto. Execute esse script automaticamente via CI ou manualmente. Leva 2 minutos e evita deploys quebrados.
+        </p>
+        <p class="text-neutral-300">
+          Para monitoramento em producao, comece simples. Um arquivo de log estruturado (JSON) com cada mensagem processada ja e suficiente. Voce pode analisar esses logs com jq no terminal, ou importar em um SQLite para queries mais complexas. Nao precisa de Grafana no dia um. Precisa de visibilidade.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Criar smoke tests automatizados para pre-deploy</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Testar error scenarios (timeout, API down, rate limit)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Monitorar latencia, erros e custo em producao</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar logs estruturados (JSON) para analise posterior</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Testar apenas o "happy path" (erros acontecem em producao)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Assertions exatas em respostas de LLM (nao-deterministico)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Deploy sem nenhum teste automatizado</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar monitoramento depois que "esta funcionando"</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Multibot Funcional -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Exercicio: Multibot Funcional</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Este e o exercicio final da Trilha 5. Voce vai construir um sistema multibot funcional completo: router inteligente + 2 bots especialistas + 1 canal, tudo funcionando e testado. Ao final, voce tera um sistema que recebe mensagens, classifica intencoes, roteia para o bot certo, e retorna respostas especializadas. Isso e o que empresas cobram milhares de dolares para implementar.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O exercicio consolida tudo que voce aprendeu na Trilha 5: arquitetura multibot (Modulo 5.1-5.2), patterns de comunicacao (Modulo 5.3), protocolos de coordenacao (Modulo 5.4), frameworks de bot pessoal (Modulo 5.5), e deployment (Modulo 5.6). Cada um desses modulos forneceu uma peca do quebra-cabeca. Agora voce vai montar todas juntas.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Tempo estimado: 2-4 horas para o setup completo, mais 1-2 horas para testes e refinamento. Se voce ja completou o exercicio do Modulo 5.5 (setup de framework), grande parte da infraestrutura ja esta pronta. O foco agora e adicionar o router e o segundo especialista.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-4">Passo a Passo do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-teal-400">Planejar a Arquitetura</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Desenhe o diagrama do sistema. Defina:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-teal-400">Router:</strong> hybrid (regex + LLM classification via Ollama)</li>
+              <li><strong class="text-teal-400">Bot 1 - DevBot:</strong> responde perguntas de codigo, roda comandos, acessa filesystem</li>
+              <li><strong class="text-teal-400">Bot 2 - ResearchBot:</strong> pesquisa na web, sintetiza informacoes, cita fontes</li>
+              <li><strong class="text-teal-400">Default:</strong> Ollama conversacional para tudo que nao e dev nem research</li>
+              <li><strong class="text-teal-400">Canal:</strong> Telegram</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-teal-400">Implementar o Router</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie o modulo de routing com tres camadas:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p>// 1. Comando explicito: /claude, /research → bypass direto</p>
+              <p>// 2. Regex: patterns de keywords → classificacao rapida</p>
+              <p>// 3. LLM fallback: Ollama classifica → retorna {category, confidence}</p>
+              <p>// 4. Default: confidence &lt; 0.8 → bot conversacional</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-teal-400">Implementar os Especialistas</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Crie o DevBot (Claude Sonnet ou Ollama com tools) e o ResearchBot (OpenRouter/DeepSeek ou Ollama com web search). Cada um com seu system prompt, skills, e LLM backend. Teste cada bot isoladamente antes de conectar ao router.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-teal-400">Integrar e Testar</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Conecte router + especialistas + Telegram. Envie mensagens de teste cobrindo todos os cenarios: mensagens de dev ("como faco git rebase?"), pesquisa ("quem ganhou a Copa de 2022?"), conversacional ("bom dia!"), e comandos explicitos (/claude, /research).</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-teal-400">Criar Smoke Tests</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Escreva um script que envia 10 mensagens de teste via API do Telegram (ou mock local), verifica que cada uma foi roteada corretamente, e reporta pass/fail. Esse script deve rodar em menos de 1 minuto e cobrir: routing correto, resposta recebida, latencia aceitavel.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-primary">Deploy e Monitoramento</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Coloque em producao e configure monitoramento basico:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-primary">pm2/systemd:</strong> para auto-restart e persistencia</li>
+              <li><strong class="text-primary">Dashboard:</strong> metricas de uso por bot, latencia, custo</li>
+              <li><strong class="text-primary">Logs:</strong> JSON estruturado com routing decisions</li>
+              <li><strong class="text-primary">Alertas:</strong> notificacao Telegram quando erro rate > threshold</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Diagrama de arquitetura desenhado (digital ou papel)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Router hybrid implementado (regex + LLM classification)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Bot especialista 1 (DevBot) funcionando isoladamente</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Bot especialista 2 (ResearchBot) funcionando isoladamente</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Sistema integrado: router + 2 especialistas + default</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Smoke tests passando (10 mensagens, routing correto)</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Deploy em producao com auto-restart</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Dashboard de monitoramento ativo</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Use Vibe Coding para construir o proprio sistema multibot. Abra o Claude Code, descreva a arquitetura que voce planejou, e peca para implementar. Itere com feedback: "o routing nao ta pegando mensagens de debug, ajusta os regex patterns". O proprio exercicio e uma demonstracao de tudo que voce aprendeu no curso.
+        </p>
+        <p class="text-neutral-300">
+          Se voce travou, nao gaste mais que 30 minutos em um unico problema. Mude de abordagem ou peca ajuda (no grupo da comunidade, no Stack Overflow, ou pro proprio Claude). O objetivo e ter o sistema rodando, nao resolver cada problema sozinho. Em producao real, voce tambem pede ajuda. Isso nao e fraqueza. E eficiencia.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Seguir a sequencia: planejar > router > especialistas > integrar > testar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Testar cada componente isoladamente antes de integrar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar Vibe Coding para construir o sistema (meta!)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Deployar mesmo imperfeito e iterar em producao</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Tentar construir o "sistema perfeito" de primeira</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Gastar mais de 30 min em um unico bug sem pedir ajuda</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular os testes ("esta funcionando no meu manual")</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Adicionar mais bots antes de 2 funcionarem bem</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-teal-500/30">
+      <h2 class="text-2xl font-bold text-teal-400 mb-6 text-center">Resumo do Modulo 5.7</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce completou o exercicio final da Trilha 5 e construiu um sistema multibot funcional. Vamos revisar o que voce conquistou:
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Planejamento estruturado: diagrama de arquitetura, inventario de bots, routing rules</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Router hybrid implementado: regex + LLM classification com confidence threshold</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">2+ especialistas com personalidade, skills e LLM backend proprios</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Canal conectado com normalizacao e formatacao especifica</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Testes end-to-end: smoke tests, error scenarios, monitoramento de producao</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Sistema multibot completo em producao: router + especialistas + canal + monitoramento</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-teal-500/20">
+        <a href="modulo-5-6.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 5.6</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 5</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 5.7: Implementar Multibot - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

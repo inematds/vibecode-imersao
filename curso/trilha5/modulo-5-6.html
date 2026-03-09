@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.6 - Integracao com Canais | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.6</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.6
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">&#x1F4E1; Integracao com Canais</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Conecte seus assistentes ao mundo real. Web chat embeddable, Telegram Bot API, WhatsApp Business, adapter pattern para multichannel e frameworks como LangBot e Botpress.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">~50min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 1: Web Chat: Widget Embeddable -->
+    <!-- ======================================================= -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">&#x1F310; Web Chat: Widget Embeddable</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O canal mais customizavel que existe. Um widget de chat no seu site ou SaaS da ao usuario <strong class="text-teal-400">acesso instantaneo ao assistente sem sair da pagina</strong>. Voce controla design, UX, dados coletados e integracao com seu backend.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F3AF;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem duas abordagens para embeddar chat no site: <strong class="text-white">iframe</strong> (simples, isolado, sem conflitos de CSS) e <strong class="text-white">JavaScript SDK</strong> (flexivel, acessa DOM do host, estilo nativo). A maioria dos SaaS usa SDK porque permite integracao profunda com o produto.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          A comunicacao em tempo real usa <strong class="text-white">WebSocket</strong> (bidirecional, baixa latencia, ideal para chat) ou <strong class="text-white">SSE (Server-Sent Events)</strong> (unidirecional servidor-para-cliente, mais simples, bom para streaming de respostas). WebSocket e o padrao para chat. SSE funciona bem quando voce so precisa enviar a resposta em chunks.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">Iframe:</strong> Zero conflito CSS, sandbox de seguranca, facil de integrar. Limitacao: nao acessa contexto da pagina host</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">JS SDK:</strong> Controle total, pode ler URL/contexto da pagina, estilo customizavel. Risco: conflitos de CSS com a pagina host</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">Shadow DOM:</strong> O melhor dos dois mundos. SDK com encapsulamento de estilo. Usado por Intercom, Crisp, Drift</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Code Block - Widget Minimo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F4BB;</span> Widget Minimo com WebSocket
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Embed script - cola no &lt;body&gt; do site</div>
+          <div class="text-teal-400">&lt;script&gt;</div>
+          <div class="text-neutral-300 pl-4">const chatWidget = document.createElement('div')</div>
+          <div class="text-neutral-300 pl-4">chatWidget.id = 'my-bot-widget'</div>
+          <div class="text-neutral-300 pl-4">document.body.appendChild(chatWidget)</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-500 pl-4">// Conexao WebSocket com o backend</div>
+          <div class="text-neutral-300 pl-4">const ws = new WebSocket(<span class="text-emerald-400">'wss://api.meubot.com/chat'</span>)</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-300 pl-4">ws.onmessage = (event) =&gt; {</div>
+          <div class="text-neutral-300 pl-8">const data = JSON.parse(event.data)</div>
+          <div class="text-neutral-300 pl-8">renderMessage(data.text, <span class="text-emerald-400">'bot'</span>)</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-300 pl-4">function sendMessage(text) {</div>
+          <div class="text-neutral-300 pl-8">ws.send(JSON.stringify({ text, page: window.location.href }))</div>
+          <div class="text-neutral-300 pl-8">renderMessage(text, <span class="text-emerald-400">'user'</span>)</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">&lt;/script&gt;</div>
+        </div>
+      </div>
+
+      <!-- Styling to match brand -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F3A8;</span> Customizacao de Brand
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-teal-400 mb-2">CSS Variables</h4>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-xs border border-dark-600 overflow-x-auto">
+              <div class="text-neutral-300">--chat-primary: #0F766E;</div>
+              <div class="text-neutral-300">--chat-bg: #ffffff;</div>
+              <div class="text-neutral-300">--chat-font: 'Inter', sans-serif;</div>
+              <div class="text-neutral-300">--chat-radius: 12px;</div>
+              <div class="text-neutral-300">--chat-position: bottom-right;</div>
+            </div>
+            <p class="text-neutral-400 text-sm mt-2">Exponha variaveis CSS para que o cliente personalize cores, fontes e posicao sem mexer no codigo.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <h4 class="font-semibold text-teal-400 mb-2">Config Object</h4>
+            <div class="bg-dark-900 rounded-lg p-3 font-mono text-xs border border-dark-600 overflow-x-auto">
+              <div class="text-neutral-300">MeuBot.init({</div>
+              <div class="text-neutral-300 pl-2">apiKey: 'pk_...',</div>
+              <div class="text-neutral-300 pl-2">theme: 'light',</div>
+              <div class="text-neutral-300 pl-2">position: 'bottom-right',</div>
+              <div class="text-neutral-300 pl-2">greeting: 'Oi! Como ajudo?'</div>
+              <div class="text-neutral-300">})</div>
+            </div>
+            <p class="text-neutral-400 text-sm mt-2">Objeto de configuracao para inicializacao. Inclua API key, tema, mensagem de boas-vindas e posicao.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#x1F4A1;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Use Shadow DOM para evitar conflitos de CSS.</strong> Quando voce injeta um widget numa pagina desconhecida, os estilos dela podem quebrar o seu chat e vice-versa. Shadow DOM cria um escopo isolado. E assim que Intercom, Crisp e todo widget de chat profissional funciona.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 2: Telegram Bot API -->
+    <!-- ======================================================= -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">&#x1F916; Telegram Bot API</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A melhor plataforma para bots pessoais e MVPs. <strong class="text-teal-400">API gratuita, sem limites de mensagens, suporte a arquivos, audio, inline keyboards e webhooks</strong>. Se voce esta comecando, comece aqui.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F3AF;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Tudo comeca no <strong class="text-white">@BotFather</strong>. Voce cria o bot, recebe um token, e a partir dai tem acesso a toda a Telegram Bot API. Duas formas de receber mensagens: <strong class="text-white">polling</strong> (seu servidor pergunta ao Telegram periodicamente) ou <strong class="text-white">webhook</strong> (Telegram envia para seu endpoint quando chega mensagem).
+        </p>
+        <p class="text-neutral-300">
+          Polling e mais simples (sem SSL, sem dominio). Webhook e mais eficiente (sem delay, sem requests desnecessarios). Para producao, use webhook. Para desenvolvimento, polling resolve.
+        </p>
+      </div>
+
+      <!-- Steps: Criar Bot -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F527;</span> Setup Completo do Bot
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold text-sm">1</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white">Criar no BotFather</h4>
+              <p class="text-neutral-400 text-sm">Abra @BotFather no Telegram, /newbot, defina nome e username. Guarde o token.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold text-sm">2</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white">Configurar Webhook</h4>
+              <div class="bg-dark-900 rounded-lg p-3 font-mono text-xs border border-teal-500/20 mt-2 overflow-x-auto">
+                <div class="text-neutral-300">POST https://api.telegram.org/bot<span class="text-teal-400">{TOKEN}</span>/setWebhook</div>
+                <div class="text-neutral-300">{ "url": "https://meubot.com/webhook" }</div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold text-sm">3</span>
+            </div>
+            <div>
+              <h4 class="font-semibold text-white">Receber e Responder</h4>
+              <div class="bg-dark-900 rounded-lg p-3 font-mono text-xs border border-teal-500/20 mt-2 overflow-x-auto">
+                <div class="text-neutral-500">// Handler do webhook</div>
+                <div class="text-teal-400">app.post('/webhook', async (req, res) =&gt; {</div>
+                <div class="text-neutral-300 pl-4">const { message } = req.body</div>
+                <div class="text-neutral-300 pl-4">const chatId = message.chat.id</div>
+                <div class="text-neutral-300 pl-4">const text = message.text</div>
+                <div class="text-neutral-300 pl-4"></div>
+                <div class="text-neutral-300 pl-4">const response = await processMessage(text)</div>
+                <div class="text-neutral-300 pl-4">await bot.sendMessage(chatId, response)</div>
+                <div class="text-neutral-300 pl-4">res.sendStatus(200)</div>
+                <div class="text-teal-400">})</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Types Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-white mb-3">Tipos de Mensagem</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span><strong class="text-white">Texto:</strong> message.text - o mais comum</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span><strong class="text-white">Voz:</strong> message.voice - file_id para download + transcricao</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span><strong class="text-white">Foto:</strong> message.photo - array de tamanhos, pegue o ultimo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span><strong class="text-white">Documento:</strong> message.document - qualquer arquivo ate 50MB</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span><strong class="text-white">Callback:</strong> callback_query - clique em inline keyboard</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <h4 class="font-bold text-white mb-3">Inline Keyboards</h4>
+          <div class="bg-dark-900 rounded-lg p-3 font-mono text-xs border border-teal-500/20 overflow-x-auto">
+            <div class="text-neutral-300">bot.sendMessage(chatId, 'Escolha:', {</div>
+            <div class="text-neutral-300 pl-2">reply_markup: {</div>
+            <div class="text-neutral-300 pl-4">inline_keyboard: [[</div>
+            <div class="text-neutral-300 pl-6">{ text: 'Suporte', callback_data: 'support' },</div>
+            <div class="text-neutral-300 pl-6">{ text: 'Vendas', callback_data: 'sales' }</div>
+            <div class="text-neutral-300 pl-4">]]</div>
+            <div class="text-neutral-300 pl-2">}</div>
+            <div class="text-neutral-300">})</div>
+          </div>
+          <p class="text-neutral-400 text-sm mt-3">Botoes interativos que enviam callback_query quando clicados. Use para menus, confirmacoes e navegacao.</p>
+        </div>
+      </div>
+
+      <!-- Group Chat -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F465;</span> Group Chat Support
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">Privacy mode (padrao):</strong> Bot so recebe mensagens que comecam com / ou mencionam o bot. Bom para grupos.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">Sem privacy mode:</strong> Bot recebe TODAS as mensagens do grupo. Necessario para bots de moderacao ou contexto completo.</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#x2022;</span>
+            <span><strong class="text-white">Dica:</strong> Filtre por chat.type ('private' vs 'group' vs 'supergroup') para comportamento diferente por contexto.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#x1F4A1;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Sempre filtre por ALLOWED_CHAT_ID em bots pessoais.</strong> Sem isso, qualquer pessoa que encontrar seu bot pode usa-lo (e gastar seus tokens de API). Um simples if (chatId !== ALLOWED_CHAT_ID) return; no inicio do handler resolve. Para bots publicos, implemente rate limiting por usuario.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 3: WhatsApp Business API -->
+    <!-- ======================================================= -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">&#x1F4AC; WhatsApp Business API</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O canal onde seus clientes ja estao. <strong class="text-teal-400">2 bilhoes de usuarios ativos</strong>. Mas a API oficial tem regras rigidas: janela de 24h, templates pre-aprovados, verificacao Meta Business. Vale o trabalho quando o publico e comercial.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F3AF;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">WhatsApp Cloud API</strong> (hospedado pela Meta) e a forma oficial de integrar. Voce registra no Meta Business, cria um app no developers.facebook.com, configura o webhook e comeca a receber mensagens. A alternativa on-premise (hospedada por voce) foi descontinuada em favor do Cloud API.
+        </p>
+        <p class="text-neutral-300">
+          A regra mais importante: a <strong class="text-white">janela de 24 horas</strong>. Quando o usuario manda mensagem, voce tem 24h para responder livremente. Depois disso, so pode enviar <strong class="text-white">message templates</strong> pre-aprovados pela Meta. Isso inclui notificacoes, lembretes e follow-ups.
+        </p>
+      </div>
+
+      <!-- Setup Steps -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x2699;&#xFE0F;</span> Setup do WhatsApp Cloud API
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">1</span>
+            <div>
+              <h4 class="font-semibold text-white">Meta Business Verification</h4>
+              <p class="text-neutral-400 text-sm">Crie conta no business.facebook.com, verifique o negocio (documentos, dominio). Pode levar 1-5 dias uteis.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">2</span>
+            <div>
+              <h4 class="font-semibold text-white">Criar App e Configurar API</h4>
+              <p class="text-neutral-400 text-sm">developers.facebook.com > Create App > Business > WhatsApp. Gere o access token permanente.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">3</span>
+            <div>
+              <h4 class="font-semibold text-white">Registrar Webhook</h4>
+              <p class="text-neutral-400 text-sm">Configure o endpoint que recebe mensagens. Webhook verification com token de verificacao + challenge.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">4</span>
+            <div>
+              <h4 class="font-semibold text-white">Aprovar Message Templates</h4>
+              <p class="text-neutral-400 text-sm">Crie templates para mensagens fora da janela de 24h. Categorias: marketing, utility, authentication. Aprovacao em ate 24h.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code: Enviar Mensagem -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F4BB;</span> Enviar Mensagem via Cloud API
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Enviar texto dentro da janela de 24h</div>
+          <div class="text-teal-400">const response = await fetch(</div>
+          <div class="text-neutral-300 pl-4">`https://graph.facebook.com/v19.0/<span class="text-emerald-400">${PHONE_ID}</span>/messages`,</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-6">method: 'POST',</div>
+          <div class="text-neutral-300 pl-6">headers: {</div>
+          <div class="text-neutral-300 pl-8">'Authorization': `Bearer <span class="text-emerald-400">${ACCESS_TOKEN}</span>`,</div>
+          <div class="text-neutral-300 pl-8">'Content-Type': 'application/json'</div>
+          <div class="text-neutral-300 pl-6">},</div>
+          <div class="text-neutral-300 pl-6">body: JSON.stringify({</div>
+          <div class="text-neutral-300 pl-8">messaging_product: <span class="text-emerald-400">'whatsapp'</span>,</div>
+          <div class="text-neutral-300 pl-8">to: <span class="text-emerald-400">'5511999999999'</span>,</div>
+          <div class="text-neutral-300 pl-8">type: <span class="text-emerald-400">'text'</span>,</div>
+          <div class="text-neutral-300 pl-8">text: { body: <span class="text-emerald-400">'Oi! Como posso ajudar?'</span> }</div>
+          <div class="text-neutral-300 pl-6">})</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">)</div>
+        </div>
+      </div>
+
+      <!-- Alerta 24h -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">&#x1F6A8;</span> Regra das 24 Horas
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Quando o usuario manda mensagem, <strong class="text-white">voce tem 24h para responder livremente</strong>. Depois:
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#x2717;</span>
+            <span>Nao pode enviar mensagens de texto livre</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-red-400">&#x2717;</span>
+            <span>Nao pode enviar midia sem template</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">&#x2713;</span>
+            <span>Pode enviar message templates pre-aprovados (pagos)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-emerald-400">&#x2713;</span>
+            <span>Templates de utilidade sao mais baratos que marketing</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Media Messages -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F4CE;</span> Tipos de Media Suportados
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">&#x1F5BC;&#xFE0F;</div>
+            <div class="text-sm font-semibold text-white">Imagem</div>
+            <div class="text-xs text-neutral-400">JPEG, PNG ate 5MB</div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">&#x1F3A5;</div>
+            <div class="text-sm font-semibold text-white">Video</div>
+            <div class="text-xs text-neutral-400">MP4 ate 16MB</div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">&#x1F4C4;</div>
+            <div class="text-sm font-semibold text-white">Documento</div>
+            <div class="text-xs text-neutral-400">PDF, DOC ate 100MB</div>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+            <div class="text-2xl mb-1">&#x1F3B5;</div>
+            <div class="text-sm font-semibold text-white">Audio</div>
+            <div class="text-xs text-neutral-400">OGG, MP3 ate 16MB</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#x1F4A1;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Teste com o numero de teste do Meta antes de usar numero real.</strong> O Cloud API fornece um numero de sandbox para desenvolvimento. Nao gaste dinheiro com templates ate validar o fluxo completo. E sempre salve o timestamp da ultima mensagem do usuario para controlar a janela de 24h no seu backend.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 4: Adapter Pattern -->
+    <!-- ======================================================= -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">&#x1F504; Adapter Pattern: Uma API, Multiplos Canais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Sem adapter pattern, cada canal novo significa reescrever a logica do bot. Com adapter, voce <strong class="text-teal-400">escreve a logica uma vez e conecta em qualquer canal</strong>. E o padrao que separa projetos amadores de plataformas reais.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F3AF;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">Adapter Pattern</strong> cria uma camada de normalizacao entre canais e logica de negocio. Cada canal tem um <strong class="text-white">inbound adapter</strong> (normaliza a mensagem recebida para formato interno) e um <strong class="text-white">outbound adapter</strong> (formata a resposta para o canal de saida).
+        </p>
+        <p class="text-neutral-300">
+          O formato interno (normalized message) e o contrato entre adapters e logica. Contem: <strong class="text-white">from</strong> (quem mandou), <strong class="text-white">text</strong> (conteudo), <strong class="text-white">channel</strong> (de onde veio), <strong class="text-white">metadata</strong> (extras do canal original). O router e os bots especialistas nunca sabem de qual canal a mensagem veio.
+        </p>
+      </div>
+
+      <!-- Arquitetura Visual -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">&#x1F504;</span> Fluxo do Adapter Pattern
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-teal-500/20 border-2 border-teal-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">&#x1F4F1;</span>
+            </div>
+            <h4 class="font-bold text-teal-400 mb-1">Canal</h4>
+            <p class="text-neutral-400 text-xs">Telegram, WhatsApp, Web</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-teal-500/20 border-2 border-teal-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">&#x1F4E5;</span>
+            </div>
+            <h4 class="font-bold text-teal-400 mb-1">Inbound</h4>
+            <p class="text-neutral-400 text-xs">Normaliza mensagem</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-teal-500/20 border-2 border-teal-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">&#x1F9E0;</span>
+            </div>
+            <h4 class="font-bold text-teal-400 mb-1">Router + Bot</h4>
+            <p class="text-neutral-400 text-xs">Processa logica</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-teal-500/20 border-2 border-teal-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">&#x1F4E4;</span>
+            </div>
+            <h4 class="font-bold text-teal-400 mb-1">Outbound</h4>
+            <p class="text-neutral-400 text-xs">Formata resposta</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-teal-500/20 border-2 border-teal-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">&#x1F4AC;</span>
+            </div>
+            <h4 class="font-bold text-teal-400 mb-1">Resposta</h4>
+            <p class="text-neutral-400 text-xs">Volta pro canal</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block - Adapter Interface -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F4BB;</span> Interface do Adapter
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Formato normalizado interno</div>
+          <div class="text-teal-400">interface NormalizedMessage {</div>
+          <div class="text-neutral-300 pl-4">id: string</div>
+          <div class="text-neutral-300 pl-4">from: { id: string, name?: string }</div>
+          <div class="text-neutral-300 pl-4">text: string</div>
+          <div class="text-neutral-300 pl-4">channel: <span class="text-emerald-400">'telegram'</span> | <span class="text-emerald-400">'whatsapp'</span> | <span class="text-emerald-400">'webchat'</span></div>
+          <div class="text-neutral-300 pl-4">timestamp: number</div>
+          <div class="text-neutral-300 pl-4">attachments?: Attachment[]</div>
+          <div class="text-neutral-300 pl-4">metadata: Record&lt;string, any&gt;</div>
+          <div class="text-teal-400">}</div>
+          <div class="text-neutral-300 mt-3"></div>
+          <div class="text-neutral-500">// Cada canal implementa este contrato</div>
+          <div class="text-teal-400">interface ChannelAdapter {</div>
+          <div class="text-neutral-300 pl-4">normalize(raw: any): NormalizedMessage</div>
+          <div class="text-neutral-300 pl-4">send(to: string, response: BotResponse): Promise&lt;void&gt;</div>
+          <div class="text-teal-400">}</div>
+          <div class="text-neutral-300 mt-3"></div>
+          <div class="text-neutral-500">// Adapter Telegram</div>
+          <div class="text-teal-400">class TelegramAdapter implements ChannelAdapter {</div>
+          <div class="text-neutral-300 pl-4">normalize(update) {</div>
+          <div class="text-neutral-300 pl-8">return {</div>
+          <div class="text-neutral-300 pl-12">id: update.message.message_id,</div>
+          <div class="text-neutral-300 pl-12">from: { id: update.message.chat.id },</div>
+          <div class="text-neutral-300 pl-12">text: update.message.text,</div>
+          <div class="text-neutral-300 pl-12">channel: <span class="text-emerald-400">'telegram'</span>,</div>
+          <div class="text-neutral-300 pl-12">timestamp: update.message.date,</div>
+          <div class="text-neutral-300 pl-12">metadata: { chatType: update.message.chat.type }</div>
+          <div class="text-neutral-300 pl-8">}</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">}</div>
+        </div>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">&#x2713; Boas Praticas</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#x2713;</span>
+              <span>Manter a logica de negocio 100% agnostica ao canal</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#x2713;</span>
+              <span>Normalizar attachments para formato unico</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#x2713;</span>
+              <span>Testes unitarios por adapter isoladamente</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#x2713;</span>
+              <span>Registrar canal de origem no log para debug</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">&#x2717; Erros Comuns</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#x2717;</span>
+              <span>if/else para cada canal dentro da logica do bot</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#x2717;</span>
+              <span>Hardcodar formatacao Telegram no core</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#x2717;</span>
+              <span>Enviar markdown sem checar suporte do canal</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#x2717;</span>
+              <span>Ignorar limites de tamanho por canal</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#x1F4A1;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Comece com 2 adapters: Telegram + Web Chat.</strong> Isso forca voce a criar a camada de normalizacao desde o inicio. Se funciona com 2, funciona com 10. Adicionar WhatsApp, Slack ou Discord depois e so criar um novo adapter que implementa a mesma interface.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 5: LangBot e Botpress -->
+    <!-- ======================================================= -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">&#x1F9E9; LangBot e Botpress</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nao precisa reinventar a roda. Frameworks multichannel ja resolveram os problemas de adapter, NLU e deployment. A questao e: <strong class="text-teal-400">quando usar framework vs quando construir custom</strong>.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">&#x1F3AF;</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          <strong class="text-white">LangBot</strong> e open-source, suporta 10+ plataformas (Telegram, WhatsApp, Discord, Slack, WeChat, Line, etc.) com uma API unificada. Self-hosted, integra com qualquer LLM. Ideal para quem quer controle total e nao quer ficar preso a vendor.
+        </p>
+        <p class="text-neutral-300">
+          <strong class="text-white">Botpress</strong> e um visual builder com 10 canais nativos. NLU integrado, analytics, versioning, collaboration. Free tier generoso. Bom para times com membros nao-tecnicos que precisam editar fluxos sem tocar codigo.
+        </p>
+      </div>
+
+      <!-- Comparativo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">&#x1F4CA;</span> Comparativo Detalhado
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-teal-500/20">
+                <th class="text-left py-3 text-neutral-400">Criterio</th>
+                <th class="text-center py-3 text-white">LangBot</th>
+                <th class="text-center py-3 text-white">Botpress</th>
+                <th class="text-center py-3 text-white">Custom</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-600">
+                <td class="py-3">Canais</td>
+                <td class="text-center">10+</td>
+                <td class="text-center">10</td>
+                <td class="text-center">Quanto voce implementar</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3">Hosting</td>
+                <td class="text-center">Self-hosted</td>
+                <td class="text-center">Cloud + self-hosted</td>
+                <td class="text-center">Seu servidor</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3">LLM Integration</td>
+                <td class="text-center">Qualquer (API)</td>
+                <td class="text-center">OpenAI + custom</td>
+                <td class="text-center">Total controle</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3">Visual Builder</td>
+                <td class="text-center">Nao</td>
+                <td class="text-center">Sim (principal feature)</td>
+                <td class="text-center">Nao</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3">Custo</td>
+                <td class="text-center">Gratis (OSS)</td>
+                <td class="text-center">Free tier + planos pagos</td>
+                <td class="text-center">Tempo de dev</td>
+              </tr>
+              <tr>
+                <td class="py-3">Curva de Aprendizado</td>
+                <td class="text-center">Media</td>
+                <td class="text-center">Baixa</td>
+                <td class="text-center">Alta</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- When to use what -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-gradient-to-br from-teal-900/20 to-dark-800 rounded-xl border border-teal-500/20 p-5">
+          <h4 class="font-bold text-teal-400 mb-3">Use LangBot quando</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Quer open-source e self-hosted</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Precisa de canais exoticos (WeChat, Line)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Time tecnico que prefere codigo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Privacidade e controle total dos dados</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-teal-900/20 to-dark-800 rounded-xl border border-teal-500/20 p-5">
+          <h4 class="font-bold text-teal-400 mb-3">Use Botpress quando</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Time misto (tecnico + nao-tecnico)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Precisa de visual builder para fluxos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Quer analytics e NLU prontos</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Prefere nao gerenciar infra</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-teal-900/20 to-dark-800 rounded-xl border border-teal-500/20 p-5">
+          <h4 class="font-bold text-teal-400 mb-3">Build Custom quando</h4>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Requisitos que nenhum framework atende</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Precisa de performance extrema</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Bot e o core do produto (nao ferramenta auxiliar)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#x2022;</span>
+              <span>Quer zero dependencia externa</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">&#x1F4A1;</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Prototipe com Botpress, produza com custom ou LangBot.</strong> Botpress e rapido para validar fluxos e canais. Mas quando voce precisa de logica sofisticada (router multibot, memoria personalizada, modelos mixtos), frameworks genericos limitam. O ideal e usar framework pra validar e migrar pro custom quando o produto amadurece.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TOPICO 6: Exercicio: Conectar 2 Canais -->
+    <!-- ======================================================= -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">&#x1F3D7;&#xFE0F; Exercicio: Conectar 2 Canais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de colocar a teoria em pratica. Voce vai <strong class="text-teal-400">deployar o mesmo bot em 2 canais: web chat + Telegram</strong>. Mesma logica, mesmos especialistas, adapters diferentes. Quando funcionar nos dois, voce tem uma plataforma multichannel real.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">&#x1F3D7;&#xFE0F;</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Bot Multichannel</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 25-35 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Crie o formato normalizado</h4>
+              <p class="text-neutral-300 text-sm mb-3">Defina a interface NormalizedMessage que sera o contrato entre adapters e logica:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-300">{ id, from, text, channel, timestamp, metadata }</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implemente TelegramAdapter</h4>
+              <p class="text-neutral-300 text-sm mb-3">normalize() converte Update do Telegram para NormalizedMessage. send() usa bot.sendMessage():</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-teal-400">class TelegramAdapter {</div>
+                <div class="text-neutral-300 pl-4">normalize(update) { ... }</div>
+                <div class="text-neutral-300 pl-4">async send(chatId, response) { await bot.sendMessage(chatId, response.text) }</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implemente WebChatAdapter</h4>
+              <p class="text-neutral-300 text-sm mb-3">normalize() converte payload WebSocket para NormalizedMessage. send() emite pelo socket:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-teal-400">class WebChatAdapter {</div>
+                <div class="text-neutral-300 pl-4">normalize(payload) { ... }</div>
+                <div class="text-neutral-300 pl-4">async send(socketId, response) { io.to(socketId).emit('message', response) }</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Conecte ambos ao mesmo router</h4>
+              <p class="text-neutral-300 text-sm mb-3">O router recebe NormalizedMessage e nao sabe de qual canal veio:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-300">const msg = adapter.normalize(raw)</div>
+                <div class="text-neutral-300">const response = await router.process(msg)</div>
+                <div class="text-neutral-300">await adapter.send(msg.from.id, response)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Teste em ambos os canais</h4>
+              <p class="text-neutral-300 text-sm mb-3">Envie a mesma pergunta no Telegram e no web chat. A resposta deve ser identica:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1 border border-teal-500/20">
+                <div><span class="text-blue-400">Telegram:</span> <span class="text-neutral-300">"qual o preco do plano pro?" &#x2192; Bot Vendas responde</span></div>
+                <div><span class="text-emerald-400">Web Chat:</span> <span class="text-neutral-300">"qual o preco do plano pro?" &#x2192; Bot Vendas responde (identico)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">&#x2705;</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#x2610;</span>
+            <span class="text-neutral-300">NormalizedMessage interface definida</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#x2610;</span>
+            <span class="text-neutral-300">TelegramAdapter normalize + send funcionando</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#x2610;</span>
+            <span class="text-neutral-300">WebChatAdapter normalize + send funcionando</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#x2610;</span>
+            <span class="text-neutral-300">Mesma resposta em ambos os canais</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-teal-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-teal-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-3 flex items-center">
+          <span class="mr-2">&#x1F31F;</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Adicione um <strong class="text-white">terceiro canal: Discord</strong>. Se sua arquitetura de adapters esta certa, voce so precisa criar DiscordAdapter com normalize() e send(). A logica, o router e os especialistas nao mudam nada. Esse e o poder do adapter pattern.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- RESUMO FINAL -->
+    <!-- ======================================================= -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">&#x1F4CB;</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">Web chat com Shadow DOM e WebSocket para tempo real</strong>
+              <span class="text-neutral-400"> - Widget embeddable com isolamento de estilo e comunicacao bidirecional.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">Telegram: BotFather, webhook, inline keyboards, file handling</strong>
+              <span class="text-neutral-400"> - A melhor plataforma para bots pessoais e MVPs. Gratuita, sem limites.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">WhatsApp Cloud API com janela de 24h e message templates</strong>
+              <span class="text-neutral-400"> - Para atendimento comercial. Requer verificacao Meta Business.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">Adapter Pattern: escreva logica uma vez, conecte em qualquer canal</strong>
+              <span class="text-neutral-400"> - NormalizedMessage como contrato entre adapters e router.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">LangBot (open-source, 10+ canais) e Botpress (visual builder)</strong>
+              <span class="text-neutral-400"> - Frameworks para quem nao quer reinventar adapters.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#x2713;</span>
+            <div>
+              <strong class="text-white">Bot funcionando em Telegram + Web Chat com mesma logica</strong>
+              <span class="text-neutral-400"> - Exercicio pratico validando a arquitetura multichannel.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+          <h3 class="font-semibold text-teal-400 mb-2">Proximo Modulo:</h3>
+          <p class="text-neutral-300">Modulo 5.7 - Implementar Multibot (Exercicio Final): construa o sistema completo com router + especialistas + canais + fallback.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-5-5.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            &#x2190; Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 5
+          </a>
+          <a href="modulo-5-7.html" class="text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">
+            Modulo 5.7: Exercicio Final &#x2192;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

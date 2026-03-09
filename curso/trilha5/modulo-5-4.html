@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.4 - Bots Especialistas | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.4</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.4
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🎯 Bots Especialistas</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Construa bots com proposito unico e execucao impecavel. Marketing, vendas, atendimento, conteudo e operacoes: cada bot e uma maquina de resolver problemas do seu dominio.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">~50min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Bot de Marketing -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">📣 Bot de Marketing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O bot de marketing e o <strong class="text-teal-400">criador de conteudo incansavel</strong> do seu time. Ele gera copy pra redes sociais, monta campanhas de email, analisa metricas e adapta o tom pra cada canal. O segredo esta no system prompt que define a voz da marca e nas tools que conectam com suas plataformas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um bot de marketing eficaz precisa de tres pilares: <strong class="text-white">system prompt com identidade de marca</strong> (tom de voz, valores, publico-alvo), <strong class="text-white">tools de execucao</strong> (analytics, scheduling, gerador de imagens) e <strong class="text-white">formatos de output pre-definidos</strong> (post Instagram, thread Twitter, email campaign).
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O prompt nao e so "voce e um bot de marketing". E um documento que define: qual a personalidade da marca? Formal ou casual? Usa emoji? Qual o CTA padrao? Qual o tom pra cada canal? Sem essa definicao, o bot gera conteudo generico que nao converte.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">System prompt:</strong> Inclua brand guidelines, exemplos de copy aprovada, lista de palavras proibidas, tom por canal (LinkedIn = profissional, Instagram = casual, Email = direto)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tools essenciais:</strong> analytics_reader (le metricas do GA4/Plausible), post_scheduler (agenda posts), image_generator (cria visuais com DALL-E/Midjourney API), email_sender (integra com Resend/Mailgun)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Output formats:</strong> Templates estruturados por canal. Exemplo: post Instagram = hook (1 linha) + corpo (3-5 linhas) + CTA + hashtags. Thread Twitter = hook + 5-7 tweets encadeados + CTA final</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- System Prompt Exemplo -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> System Prompt: Bot de Marketing
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// system-prompt-marketing.md</div>
+          <div class="text-teal-400 mt-2">Voce e o Marketing Bot da [SaaS].</div>
+          <div class="text-neutral-300 mt-2">## Identidade</div>
+          <div class="text-neutral-300">- Tom: profissional mas acessivel</div>
+          <div class="text-neutral-300">- Publico: founders e devs de startups</div>
+          <div class="text-neutral-300">- Valor central: simplicidade e resultado</div>
+          <div class="text-neutral-300 mt-2">## Regras</div>
+          <div class="text-neutral-300">- Nunca use "revolucionario", "game-changer", "synergy"</div>
+          <div class="text-neutral-300">- Sempre inclua dados ou exemplos concretos</div>
+          <div class="text-neutral-300">- CTA deve ser especifico (nao "saiba mais")</div>
+          <div class="text-neutral-300 mt-2">## Formatos</div>
+          <div class="text-neutral-300">- Instagram: hook + 3 linhas + CTA + 5 hashtags</div>
+          <div class="text-neutral-300">- Email: subject (max 50 chars) + preview + body + CTA</div>
+          <div class="text-neutral-300">- LinkedIn: 1 paragrafo + lista + insight + CTA</div>
+          <div class="text-neutral-300 mt-2">## Tools disponiveis</div>
+          <div class="text-emerald-400">- analytics_read(metric, period)</div>
+          <div class="text-emerald-400">- schedule_post(platform, content, datetime)</div>
+          <div class="text-emerald-400">- generate_image(prompt, style, size)</div>
+          <div class="text-emerald-400">- send_email(to, subject, body)</div>
+          <div class="text-emerald-400">- ab_test_create(variant_a, variant_b, metric)</div>
+        </div>
+      </div>
+
+      <!-- Metricas -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Metricas de Referencia
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tempo de geracao de post:</strong> 5-15s com Claude Sonnet, 2-5s com GPT-4o-mini. Incluindo revisao e formatacao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Qualidade vs humano:</strong> Bots geram 80% da qualidade de um copywriter senior em 1% do tempo. O 20% restante e o toque humano na revisao</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">ROI tipico:</strong> Times que usam bots de marketing produzem 5-10x mais conteudo com o mesmo headcount</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Alimente o bot com exemplos de copy que ja converteu.</strong> Coloque no system prompt 3-5 posts que tiveram melhor performance. O bot aprende o padrao e replica. Isso e mais eficaz que 500 palavras de instrucao generica.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Bot de Vendas -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">💰 Bot de Vendas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O bot de vendas nao e um chatbot que responde "nosso plano custa R$99". E um <strong class="text-teal-400">qualificador de leads, gerador de propostas e handler de objecoes</strong>. Ele segue um framework de vendas (BANT, SPIN, MEDDIC) e sabe quando escalar pra um humano. A integracao com CRM e o que transforma ele de brinquedo em ferramenta.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um bot de vendas eficaz opera em <strong class="text-white">fases</strong>: qualificacao (entender se o lead tem Budget, Authority, Need, Timeline), apresentacao (mostrar o plano certo pro perfil), tratamento de objecoes (responder duvidas sobre preco, features, concorrentes) e conversao (agendar demo, enviar proposta, fechar).
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O system prompt define a <strong class="text-white">personalidade do vendedor</strong> e as <strong class="text-white">regras de engajamento</strong>. Quando escalar pro humano? Quando o deal e acima de X? Quando o lead pede desconto pela terceira vez? Quando detecta frustacao?
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Lead scoring automatico:</strong> O bot atribui score baseado nas respostas. "Tenho equipe de 50 pessoas" = +30pts. "Estou pesquisando" = +5pts. "Preciso resolver isso essa semana" = +50pts</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Proposta dinamica:</strong> Baseado no perfil qualificado, o bot gera proposta personalizada com plano recomendado, desconto se aplicavel, e prazo de validade</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Follow-up inteligente:</strong> Se o lead nao respondeu em 24h, bot envia mensagem de follow-up. Se nao respondeu em 72h, envia conteudo de valor. Se nao respondeu em 7 dias, marca como cold</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Objecoes Framework -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🔄</span> Framework de Tratamento de Objecoes
+        </h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-4 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-red-400 font-bold text-sm">$</span>
+            </span>
+            <div>
+              <h4 class="font-semibold text-white">"Esta caro"</h4>
+              <p class="text-neutral-400 text-sm mt-1">Bot responde com: ROI calculado (quanto economiza por mes), comparativo com concorrente, opcao de plano menor. Nunca da desconto na primeira objecao.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+              <span class="text-amber-400 font-bold text-sm">?</span>
+            </span>
+            <div>
+              <h4 class="font-semibold text-white">"Preciso pensar"</h4>
+              <p class="text-neutral-400 text-sm mt-1">Bot pergunta: "Qual o principal ponto que voce quer avaliar?" Identifica a objecao real escondida. Oferece material de apoio (case study, demo gravada).</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <span class="text-blue-400 font-bold text-sm">VS</span>
+            </span>
+            <div>
+              <h4 class="font-semibold text-white">"Ja uso o concorrente X"</h4>
+              <p class="text-neutral-400 text-sm mt-1">Bot apresenta diferenciais especificos vs X. Nunca fala mal do concorrente. Foca no que seu produto faz que X nao faz. Oferece trial side-by-side.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">!</span>
+            </span>
+            <div>
+              <h4 class="font-semibold text-white">"Quero falar com uma pessoa"</h4>
+              <p class="text-neutral-400 text-sm mt-1">Bot escala imediatamente. Nunca insiste em continuar. Coleta info pro humano: nome, empresa, necessidade principal, melhor horario. Humano recebe briefing completo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRM Integration Code -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Integracao com CRM (pseudocodigo)
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Tools do bot de vendas</div>
+          <div class="text-teal-400 mt-2">const salesTools = [</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-8">name: <span class="text-emerald-400">'qualify_lead'</span>,</div>
+          <div class="text-neutral-300 pl-8">desc: <span class="text-emerald-400">'Avaliar lead com framework BANT'</span>,</div>
+          <div class="text-neutral-300 pl-8">params: { budget: <span class="text-amber-400">'string'</span>, authority: <span class="text-amber-400">'bool'</span>,</div>
+          <div class="text-neutral-300 pl-16">need: <span class="text-amber-400">'string'</span>, timeline: <span class="text-amber-400">'string'</span> }</div>
+          <div class="text-neutral-300 pl-4">},</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-8">name: <span class="text-emerald-400">'create_proposal'</span>,</div>
+          <div class="text-neutral-300 pl-8">desc: <span class="text-emerald-400">'Gerar proposta personalizada'</span>,</div>
+          <div class="text-neutral-300 pl-8">params: { plan: <span class="text-amber-400">'string'</span>, discount: <span class="text-amber-400">'number'</span>,</div>
+          <div class="text-neutral-300 pl-16">valid_until: <span class="text-amber-400">'date'</span> }</div>
+          <div class="text-neutral-300 pl-4">},</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-8">name: <span class="text-emerald-400">'update_crm'</span>,</div>
+          <div class="text-neutral-300 pl-8">desc: <span class="text-emerald-400">'Atualizar lead no CRM (HubSpot/Pipedrive)'</span>,</div>
+          <div class="text-neutral-300 pl-8">params: { lead_id: <span class="text-amber-400">'string'</span>, stage: <span class="text-amber-400">'string'</span>,</div>
+          <div class="text-neutral-300 pl-16">notes: <span class="text-amber-400">'string'</span>, score: <span class="text-amber-400">'number'</span> }</div>
+          <div class="text-neutral-300 pl-4">},</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-8">name: <span class="text-emerald-400">'schedule_demo'</span>,</div>
+          <div class="text-neutral-300 pl-8">desc: <span class="text-emerald-400">'Agendar demo com calendario do vendedor'</span>,</div>
+          <div class="text-neutral-300 pl-8">params: { datetime: <span class="text-amber-400">'string'</span>, attendees: <span class="text-amber-400">'array'</span> }</div>
+          <div class="text-neutral-300 pl-4">},</div>
+          <div class="text-neutral-300 pl-4">{</div>
+          <div class="text-neutral-300 pl-8">name: <span class="text-emerald-400">'escalate_to_human'</span>,</div>
+          <div class="text-neutral-300 pl-8">desc: <span class="text-emerald-400">'Transferir para vendedor humano com briefing'</span>,</div>
+          <div class="text-neutral-300 pl-8">params: { reason: <span class="text-amber-400">'string'</span>, summary: <span class="text-amber-400">'string'</span> }</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">]</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">O bot de vendas nunca mente e nunca promete o que o produto nao faz.</strong> Coloque no system prompt: "Se o lead perguntar sobre uma feature que nao existe, diga honestamente que nao temos e pergunte por que e importante pra ele." Honestidade constroi confianca e gera insights de produto.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Bot de Atendimento ao Cliente -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🎧 Bot de Atendimento ao Cliente</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Atendimento e onde bots mais brilham e mais erram. Brilham porque <strong class="text-teal-400">resolvem 60-80% dos tickets sem humano</strong>. Erram porque sem guardrails viram maquinas de frustrar clientes. O segredo: FAQ automatizada perfeita, triagem inteligente e escalacao sem fricao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um bot de atendimento opera em tres camadas: <strong class="text-white">Camada 1 (FAQ automatica)</strong> resolve perguntas frequentes com respostas pre-validadas e knowledge base. <strong class="text-white">Camada 2 (Triagem)</strong> classifica a severidade do problema e direciona pro time certo. <strong class="text-white">Camada 3 (Escalacao)</strong> transfere para humano com todo o contexto coletado.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          A chave e <strong class="text-white">deteccao de sentimento</strong>. Se o cliente esta frustrado (palavras como "absurdo", "ridiculo", "cancelar"), o bot nao tenta resolver sozinho. Escala imediatamente com prioridade alta. Clientes frustrados falando com bots que tentam ser uteis ficam mais frustrados.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">SLA management:</strong> O bot monitora o tempo de resposta. Se esta perto de estourar o SLA, escala automaticamente e notifica o supervisor</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Knowledge base injection:</strong> O bot faz RAG sobre sua documentacao. Quando o cliente pergunta algo, ele busca a resposta na base de conhecimento, nao inventa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Human handoff:</strong> A transferencia deve ser invisivel. O humano recebe: historico completo, sentimento detectado, tentativas anteriores do bot, e acao sugerida</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Fluxo de Triagem -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔄</span> Fluxo de Triagem e Escalacao
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">📨</span>
+            </div>
+            <h4 class="font-bold text-emerald-400 mb-1">Recebe</h4>
+            <p class="text-neutral-400 text-xs">Mensagem do cliente chega. Bot analisa sentimento e intencao.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">🔍</span>
+            </div>
+            <h4 class="font-bold text-blue-400 mb-1">Classifica</h4>
+            <p class="text-neutral-400 text-xs">Severidade: baixa (FAQ), media (ticket), alta (escala), critica (urgente).</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-amber-500/20 border-2 border-amber-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">⚡</span>
+            </div>
+            <h4 class="font-bold text-amber-400 mb-1">Resolve ou Escala</h4>
+            <p class="text-neutral-400 text-xs">FAQ: responde direto. Ticket: cria e acompanha. Alta: humano com contexto.</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center mb-3">
+              <span class="text-2xl">📊</span>
+            </div>
+            <h4 class="font-bold text-purple-400 mb-1">Monitora</h4>
+            <p class="text-neutral-400 text-xs">Tempo de resolucao, CSAT, taxa de escalacao, SLA compliance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sentiment Detection -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+          <h4 class="font-bold text-emerald-400 mb-4">Bot pode resolver</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Como reseto minha senha?"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Qual o horario de funcionamento?"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Nao consigo fazer login" (guia passo a passo)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#10003;</span>
+              <span>"Qual meu plano atual?" (consulta DB)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+          <h4 class="font-bold text-red-400 mb-4">Escalar imediatamente</h4>
+          <ul class="space-y-3 text-neutral-300">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Isso e ridiculo, quero cancelar AGORA"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Voces cobraram errado no meu cartao"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Ja tentei 3 vezes e nada funciona"</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#10007;</span>
+              <span>"Quero falar com um supervisor"</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dados -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Benchmarks de Atendimento com IA
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Resolucao automatica:</strong> 60-80% dos tickets L1 podem ser resolvidos sem humano (Zendesk AI Report 2026)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">CSAT com bot:</strong> 4.1/5 quando bem implementado (vs 4.3/5 com humano). A diferenca diminui a cada ano</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tempo medio de resposta:</strong> 3s com bot vs 2-5min com humano. Resolucao de FAQ: instantanea vs 15min</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Reducao de custo:</strong> 40-60% em operacao de suporte quando L1 e automatizado</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">A regra de ouro do bot de atendimento: nunca force o cliente a ficar com o bot.</strong> Se ele pediu humano, transfira. Sem "antes deixa eu tentar mais uma coisa". Sem "posso ajudar com outra questao?". Transferiu, com briefing completo pro humano. Ponto.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Bot de Conteudo -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">✍️ Bot de Conteudo</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O bot de conteudo e o <strong class="text-teal-400">escritor, documentador e criador de cursos</strong> do seu sistema. Blog posts, documentacao tecnica, material educacional, newsletters. O diferencial de um bom bot de conteudo nao e gerar texto. E gerar texto que parece ter sido escrito por alguem da sua equipe.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Tres componentes definem a qualidade do output: <strong class="text-white">style guide no system prompt</strong> (como escrever), <strong class="text-white">reference material injection</strong> (sobre o que escrever) e <strong class="text-white">tone control</strong> (pra quem escrever).
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O <strong class="text-white">style guide</strong> nao e "escreva bem". E: "Use frases curtas. Maximo 20 palavras. Paragrafos de 3 linhas. Sem jargao. Sem voz passiva. Exemplos concretos em vez de abstracoes. Tom: conversa entre colegas, nao palestra."
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Reference material:</strong> Injete no contexto: documentacao existente, posts anteriores, transcricoes de calls, dados de produto. O bot escreve SOBRE algo, nao inventa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Tone control:</strong> O mesmo bot escreve diferente pra dev (tecnico, direto) vs marketing (empolgante, beneficios) vs docs (preciso, passo-a-passo). O tom e um parametro, nao uma personalidade fixa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Workflow tipico:</strong> Outline primeiro (aprovacao humana) -> Draft (bot escreve) -> Review (humano ajusta) -> Publish (bot agenda). Nunca publique sem review humano</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Style Guide Example -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Style Guide no System Prompt
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Trecho do system prompt para bot de conteudo</div>
+          <div class="text-teal-400 mt-2">## Estilo de Escrita</div>
+          <div class="text-neutral-300 mt-1">- Frases de ate 20 palavras. Paragrafos de 2-3 frases.</div>
+          <div class="text-neutral-300">- Voz ativa sempre. "O usuario clica" nao "o botao e clicado".</div>
+          <div class="text-neutral-300">- Zero jargao sem explicacao. Se usar "RAG", explique na primeira vez.</div>
+          <div class="text-neutral-300">- Comece artigos com o problema, nao com a solucao.</div>
+          <div class="text-neutral-300">- Use "voce" nao "o usuario" ou "nos".</div>
+          <div class="text-neutral-300 mt-2">## Palavras Proibidas</div>
+          <div class="text-red-400">- revolucionario, inovador, cutting-edge, game-changer</div>
+          <div class="text-red-400">- simplesmente, facilmente, basta (minimiza dificuldade)</div>
+          <div class="text-red-400">- neste artigo vamos (meta-narration desnecessaria)</div>
+          <div class="text-neutral-300 mt-2">## Estrutura de Blog Post</div>
+          <div class="text-emerald-400">1. Hook (1 frase que descreve o problema)</div>
+          <div class="text-emerald-400">2. Contexto (por que isso importa, 2-3 frases)</div>
+          <div class="text-emerald-400">3. Solucao (passo a passo com code blocks)</div>
+          <div class="text-emerald-400">4. Resultado (o que o leitor ganha)</div>
+          <div class="text-emerald-400">5. Proximo passo (CTA ou link relacionado)</div>
+        </div>
+      </div>
+
+      <!-- Tipos de Conteudo Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="text-2xl">📝</span>
+            <h4 class="font-bold text-white">Blog / Artigos</h4>
+          </div>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>SEO-optimized headers e meta descriptions</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Internal linking automatico</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Modelo: Claude Sonnet ou GPT-4o</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="text-2xl">📚</span>
+            <h4 class="font-bold text-white">Documentacao</h4>
+          </div>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Code examples testados e validados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Versionamento por feature</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Modelo: Claude Opus (precisao tecnica)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="text-2xl">🎓</span>
+            <h4 class="font-bold text-white">Cursos / Tutoriais</h4>
+          </div>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Progressao pedagogica (facil -> dificil)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Exercicios praticos por modulo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-teal-400">&#8226;</span>
+              <span>Modelo: Claude Sonnet (didatica + tools)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Injete 3 exemplos de conteudo aprovado no system prompt.</strong> O bot aprende mais com exemplos concretos do que com regras abstratas. Coloque um post que performou bem, um trecho de docs elogiado, um email que converteu. O bot vai replicar o padrao sem voce precisar explicar cada regra.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Bot de Operacoes -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">⚙️ Bot de Operacoes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O bot de operacoes e o <strong class="text-teal-400">SRE que nunca dorme</strong>. Monitora infraestrutura, automatiza deploys, responde a incidentes e executa runbooks. E o bot que precisa do maior cuidado com guardrails porque um comando errado em producao pode derrubar tudo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O bot de ops precisa de <strong class="text-white">privilegios escalonados</strong>. Leitura de metricas e logs: sempre permitido. Restart de servicos: com confirmacao. Deploy em producao: apenas com aprovacao dupla (bot sugere, humano aprova). Nunca dê ao bot acesso irrestrito de escrita em producao.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O system prompt do bot de ops e diferente dos outros porque <strong class="text-white">precisa de runbooks explicitados</strong>. Nao e "resolva o problema". E: "Se CPU > 90% por 5min, escale verticalmente. Se erros 5xx > 10/min, verifique logs do ultimo deploy. Se disco > 85%, limpe logs antigos e alerte."
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Monitoring tools:</strong> health_check (pinga endpoints), read_metrics (Prometheus/Grafana API), read_logs (busca em CloudWatch/Loki), check_alerts (Pagerduty/OpsGenie)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Action tools:</strong> restart_service (com confirmacao), scale_up (horizontal/vertical), rollback_deploy (reverte ultimo deploy), run_migration (com dry-run primeiro)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">&#8226;</span>
+            <span><strong class="text-white">Alerting:</strong> O bot recebe alertas de monitoring, faz triagem automatica, tenta resolver com runbook e notifica o time com diagnostico se nao conseguir</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Incident Response -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🚨</span> Fluxo de Incident Response
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Bot de Ops: resposta a incidentes</div>
+          <div class="text-teal-400 mt-2">async function handleIncident(alert) {</div>
+          <div class="text-neutral-300 pl-4"><span class="text-neutral-500">// 1. Diagnostico automatico</span></div>
+          <div class="text-neutral-300 pl-4">const diagnosis = await diagnose(alert)</div>
+          <div class="text-neutral-300 pl-4"><span class="text-neutral-500">// - Verifica metricas dos ultimos 15min</span></div>
+          <div class="text-neutral-300 pl-4"><span class="text-neutral-500">// - Correlaciona com deploys recentes</span></div>
+          <div class="text-neutral-300 pl-4"><span class="text-neutral-500">// - Busca erros nos logs</span></div>
+          <div class="text-neutral-300 pl-4 mt-2"><span class="text-neutral-500">// 2. Busca runbook</span></div>
+          <div class="text-neutral-300 pl-4">const runbook = findRunbook(diagnosis.type)</div>
+          <div class="text-neutral-300 pl-4 mt-2"><span class="text-neutral-500">// 3. Executa se tem runbook e permissao</span></div>
+          <div class="text-neutral-300 pl-4">if (runbook && runbook.auto_execute) {</div>
+          <div class="text-neutral-300 pl-8">await execute(runbook.steps)</div>
+          <div class="text-emerald-400 pl-8">notify(<span class="text-neutral-300">'Incidente resolvido automaticamente'</span>)</div>
+          <div class="text-neutral-300 pl-4">} else {</div>
+          <div class="text-amber-400 pl-8">notify(<span class="text-neutral-300">'Incidente detectado. Diagnostico: ...'</span>)</div>
+          <div class="text-amber-400 pl-8">notify(<span class="text-neutral-300">'Acao sugerida: ... Preciso de aprovacao.'</span>)</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">}</div>
+        </div>
+      </div>
+
+      <!-- Alertas Niveis -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-5">
+          <h4 class="font-bold text-emerald-400 mb-3">Auto-resolve</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#8226;</span>
+              <span>Limpar cache quando cheio</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#8226;</span>
+              <span>Restart de worker travado</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#8226;</span>
+              <span>Rotacao de logs</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">&#8226;</span>
+              <span>SSL cert renewal</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-5">
+          <h4 class="font-bold text-amber-400 mb-3">Precisa aprovacao</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-amber-400">&#8226;</span>
+              <span>Scale up (custo envolvido)</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-amber-400">&#8226;</span>
+              <span>Rollback de deploy</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-amber-400">&#8226;</span>
+              <span>Alterar DNS/routing</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-amber-400">&#8226;</span>
+              <span>Database migrations</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-5">
+          <h4 class="font-bold text-red-400 mb-3">Humano obrigatorio</h4>
+          <ul class="text-neutral-300 text-sm space-y-2">
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#8226;</span>
+              <span>Data breach / seguranca</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#8226;</span>
+              <span>Perda de dados</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#8226;</span>
+              <span>Downtime total do produto</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">&#8226;</span>
+              <span>Problemas de billing/cobranca</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Alerta -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> Cuidado Critico
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Nunca dê ao bot de ops acesso irrestrito de producao.</strong> Use principio de menor privilegio. O bot lê tudo, mas so escreve o que esta no runbook. Acoes destrutivas (drop table, delete deployment, scale to zero) devem ser fisicamente impossibilitadas, nao apenas "proibidas no prompt". O LLM pode ignorar instrucoes. A infra nao pode ignorar IAM policies.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Comece com monitoring read-only.</strong> O bot primeiro aprende a diagnosticar. Depois de 2 semanas lendo logs e sugerindo acoes (que humanos validam), voce calibra a confianca e libera auto-execucao pra runbooks especificos. Trust is earned, not granted.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Criar 2 Bots Especialistas -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🏗️ Exercicio: Criar 2 Bots Especialistas</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Chega de teoria. Voce vai <strong class="text-teal-400">construir 2 bots especialistas completos</strong> para o seu SaaS, cada um com system prompt unico, tools especificas e capacidades bem definidas. No final, teste os dois e compare a qualidade das respostas.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏗️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: 2 Bots do Zero</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-40 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escolha 2 dominios do seu SaaS</h4>
+              <p class="text-neutral-300 text-sm mb-3">Selecione 2 areas que se beneficiariam de automacao. Exemplo para um SaaS de gestao:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20">
+                <div><span class="text-teal-400">Bot A:</span> <span class="text-neutral-400">Onboarding (guiar novos usuarios, configurar conta)</span></div>
+                <div><span class="text-teal-400">Bot B:</span> <span class="text-neutral-400">Analytics (gerar relatorios, interpretar metricas)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escreva o System Prompt de cada bot</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cada prompt deve conter no minimo: identidade, tom, regras, limites e exemplos. Use este template:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-teal-400">## Identidade</div>
+                <div class="text-neutral-300">Voce e o Bot de [Dominio] da [SaaS].</div>
+                <div class="text-neutral-300 mt-1">Seu unico objetivo: [objetivo especifico].</div>
+                <div class="text-teal-400 mt-2">## Tom</div>
+                <div class="text-neutral-300">[Profissional/casual/tecnico/empatico]</div>
+                <div class="text-teal-400 mt-2">## Regras</div>
+                <div class="text-neutral-300">- [O que NUNCA fazer]</div>
+                <div class="text-neutral-300">- [O que SEMPRE fazer]</div>
+                <div class="text-neutral-300">- [Quando escalar pra humano]</div>
+                <div class="text-teal-400 mt-2">## Tools</div>
+                <div class="text-emerald-400">- tool_1(params): descricao</div>
+                <div class="text-emerald-400">- tool_2(params): descricao</div>
+                <div class="text-teal-400 mt-2">## Exemplos</div>
+                <div class="text-neutral-300">User: [pergunta tipica]</div>
+                <div class="text-neutral-300">Bot: [resposta ideal]</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Defina pelo menos 3 tools por bot</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cada tool com nome, descricao e parametros claros:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// Exemplo: Bot de Onboarding</div>
+                <div class="text-emerald-400">check_setup_progress(user_id)</div>
+                <div class="text-neutral-400 pl-4">Retorna etapas concluidas e pendentes</div>
+                <div class="text-emerald-400 mt-1">send_tutorial(user_id, topic)</div>
+                <div class="text-neutral-400 pl-4">Envia tutorial interativo por email</div>
+                <div class="text-emerald-400 mt-1">schedule_onboarding_call(user_id, datetime)</div>
+                <div class="text-neutral-400 pl-4">Agenda call com CS se usuario travou</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Teste com 5 mensagens cada</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cubra cenarios diferentes: pergunta simples, pergunta complexa, edge case, fora do escopo, e sentimento negativo:</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 space-y-1">
+                <div><span class="text-emerald-400">1.</span> <span class="text-neutral-300">"Como configuro minha primeira integracao?"</span> <span class="text-neutral-500">// simples</span></div>
+                <div><span class="text-blue-400">2.</span> <span class="text-neutral-300">"Quero migrar dados do meu sistema antigo"</span> <span class="text-neutral-500">// complexo</span></div>
+                <div><span class="text-amber-400">3.</span> <span class="text-neutral-300">"E se eu tiver 10.000 usuarios?"</span> <span class="text-neutral-500">// edge case</span></div>
+                <div><span class="text-purple-400">4.</span> <span class="text-neutral-300">"Qual o preco do plano?"</span> <span class="text-neutral-500">// fora do escopo (vendas)</span></div>
+                <div><span class="text-red-400">5.</span> <span class="text-neutral-300">"Isso nao funciona, estou perdendo tempo"</span> <span class="text-neutral-500">// frustrado</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Compare e refine</h4>
+              <p class="text-neutral-300 text-sm">Analise as respostas. Onde o bot falhou? Prompt vago? Tool faltando? Tom errado? Refine o system prompt e teste de novo. O ciclo e: test -> analyze -> refine -> test.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">&#9989;</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">2 bots com system prompts completos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">3+ tools por bot com parametros definidos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">5 testes por bot com cenarios variados</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">Bots reconhecem mensagens fora do escopo</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">Escalacao funciona corretamente</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">&#9744;</span>
+            <span class="text-neutral-300">Pelo menos 1 refinamento feito apos teste</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-teal-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-teal-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Conecte seus 2 bots com um <strong class="text-white">router simples</strong>. Quando uma mensagem chega, classifique a intencao e envie pro bot certo. Teste 10 mensagens aleatorias e meça a acuracia do routing. Voce acabou de construir um sistema multibot funcional.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Bot de Marketing: criacao de conteudo com identidade de marca</strong>
+              <span class="text-neutral-400"> - System prompt com brand guidelines, tools de analytics e scheduling, output formats por canal.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Bot de Vendas: qualificacao, propostas e tratamento de objecoes</strong>
+              <span class="text-neutral-400"> - Framework BANT, integracao CRM, follow-up automatico e escalacao inteligente.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Bot de Atendimento: 3 camadas (FAQ, triagem, escalacao)</strong>
+              <span class="text-neutral-400"> - Deteccao de sentimento, SLA management, human handoff com briefing completo.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Bot de Conteudo: escrita com style guide e tone control</strong>
+              <span class="text-neutral-400"> - Reference material injection, workflow outline-draft-review-publish, exemplos concretos no prompt.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">Bot de Operacoes: monitoring, automacao e incident response</strong>
+              <span class="text-neutral-400"> - Privilegios escalonados, runbooks explicitos, principio de menor privilegio.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">&#10003;</span>
+            <div>
+              <strong class="text-white">2 bots especialistas construidos e testados</strong>
+              <span class="text-neutral-400"> - System prompts completos, tools definidas, 5 cenarios testados por bot.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-5-3.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            &#8592; Modulo Anterior
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 5
+          </a>
+          <a href="modulo-5-5.html" class="text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">
+            Proximo Modulo &#8594;
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

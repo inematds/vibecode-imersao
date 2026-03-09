@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.2 - Assistente Unico vs Multiplos | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.2</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.2
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 Assistente Unico vs Multiplos</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        A decisao mais importante antes de escrever uma linha de codigo: um bot que faz tudo ou varios bots que fazem coisas especificas? Analise os trade-offs, entenda os limites e saiba quando migrar.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">~45min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Intermediario</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Monolito vs Microsservicos para Bots -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🏗️ Monolito vs Microsservicos para Bots</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O debate <strong class="text-teal-400">monolito vs microsservicos</strong> que existe no backend tradicional se aplica diretamente ao mundo dos bots. Um unico bot que faz tudo e o monolito. Varios bots especializados sao os microsservicos. E a mesma tensao, os mesmos trade-offs, as mesmas armadilhas.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um <strong class="text-white">bot monolito</strong> centraliza tudo num unico processo: system prompt, tools, memoria, contexto. Ele e simples de deployar, simples de debugar e simples de entender. Mas tem um teto. Quando voce adiciona a decima funcionalidade, o system prompt vira uma biblia e o modelo comeca a se confundir sobre qual personalidade usar.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          Um <strong class="text-white">sistema multibot (microsservicos)</strong> distribui responsabilidades. Cada bot tem escopo reduzido, prompt curto e tools limitadas. O custo e a complexidade de orquestracao: routing, comunicacao entre bots, estado compartilhado, deploy de multiplos servicos.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Monolito:</strong> 1 processo, 1 system prompt, N tools. Deploy simples. Complexidade interna cresce linearmente com features</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Microsservicos:</strong> N processos, N prompts, tools distribuidas. Deploy complexo. Complexidade interna de cada bot permanece baixa</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Trade-off real:</strong> simplicidade de operacao vs qualidade de resposta. Nao existe resposta certa universal</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Comparativo Visual -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6">
+          <h4 class="font-bold text-teal-400 mb-4 flex items-center">
+            <span class="mr-2">📦</span> Bot Monolito
+          </h4>
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-dark-600 mb-4">
+            <div class="text-teal-400">bot-unico/</div>
+            <div class="text-neutral-300 pl-4">├── system-prompt.md  <span class="text-neutral-500">(2000+ palavras)</span></div>
+            <div class="text-neutral-300 pl-4">├── tools/  <span class="text-neutral-500">(15+ tools)</span></div>
+            <div class="text-neutral-300 pl-4">├── memory/  <span class="text-neutral-500">(tudo junto)</span></div>
+            <div class="text-neutral-300 pl-4">└── index.ts  <span class="text-neutral-500">(1 processo)</span></div>
+          </div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span>1 deploy, 1 processo, 1 banco</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span>Contexto 100% compartilhado</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">-</span>
+              <span>Prompt enorme = confusao do modelo</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">-</span>
+              <span>Uma falha derruba tudo</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6">
+          <h4 class="font-bold text-teal-400 mb-4 flex items-center">
+            <span class="mr-2">🔀</span> Sistema Multibot
+          </h4>
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-dark-600 mb-4">
+            <div class="text-teal-400">multi-bot/</div>
+            <div class="text-neutral-300 pl-4">├── router/  <span class="text-neutral-500">(classificador)</span></div>
+            <div class="text-neutral-300 pl-4">├── bot-suporte/  <span class="text-neutral-500">(prompt curto)</span></div>
+            <div class="text-neutral-300 pl-4">├── bot-vendas/  <span class="text-neutral-500">(prompt curto)</span></div>
+            <div class="text-neutral-300 pl-4">└── bot-conteudo/  <span class="text-neutral-500">(prompt curto)</span></div>
+          </div>
+          <ul class="space-y-2 text-neutral-300 text-sm">
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span>Cada bot e excelente no seu dominio</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span>Falha isolada, nao derruba o sistema</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">-</span>
+              <span>Router adiciona latencia e complexidade</span>
+            </li>
+            <li class="flex items-start space-x-2">
+              <span class="text-red-400">-</span>
+              <span>Estado compartilhado exige infra extra</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Quando simplicidade ganha -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Quando a Simplicidade Ganha
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Em 80% dos casos, comece com monolito.</strong> Se voce esta lancando um MVP, tem um time pequeno, ou o bot atende um unico dominio com variacao (exemplo: suporte tecnico com FAQ, tickets e troubleshooting), um bot unico bem construido vai ser mais rapido de entregar, mais facil de manter e mais barato de operar. Microsservicos sao a resposta certa para o problema errado se voce nao tem escala.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Limites do Assistente Unico -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🚧 Limites do Assistente Unico</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Todo bot unico tem um <strong class="text-teal-400">ponto de ruptura</strong>. Nao e uma questao de "se", e "quando". Entender os sinais de que voce atingiu o limite e o que separa um desenvolvedor que escala de um que fica preso refatorando.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Os LLMs tem <strong class="text-white">limites cognitivos praticos</strong> que aparecem muito antes de atingir o limite de tokens. Um system prompt com 50 instrucoes conflitantes produz respostas piores que um com 10 instrucoes claras, mesmo que o modelo tenha capacidade de processar ambos.
+        </p>
+        <p class="text-neutral-300">
+          Os tres limites criticos sao: <strong class="text-white">saturacao de contexto</strong> (informacao demais no prompt), <strong class="text-white">confusao de papel</strong> (personalidades conflitantes) e <strong class="text-white">sobrecarga de tools</strong> (muitas ferramentas disponíveis). Qualquer um deles degrada a qualidade significativamente.
+        </p>
+      </div>
+
+      <!-- Os 3 Limites -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-red-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-2xl">🧠</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-red-400 mb-2">Saturacao de Contexto</h4>
+              <p class="text-neutral-300 text-sm mb-3">
+                Mesmo com janelas de 128k ou 200k tokens, modelos perdem acuracia em instrucoes que estao no "meio" do contexto (o famoso problema "lost in the middle"). Um system prompt de 5000 palavras com 30 regras diferentes garante que o modelo vai ignorar ou misturar pelo menos algumas delas.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+                <div class="text-red-400 font-mono">Sintoma:</div>
+                <div class="text-neutral-400 font-mono pl-4">O bot "esquece" regras que estao no system prompt.</div>
+                <div class="text-neutral-400 font-mono pl-4">Respostas ficam genericas em vez de seguir instrucoes.</div>
+                <div class="text-neutral-400 font-mono pl-4">Qualidade varia conforme o tamanho da conversa.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-red-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-2xl">🎭</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-red-400 mb-2">Confusao de Papel (Role Confusion)</h4>
+              <p class="text-neutral-300 text-sm mb-3">
+                Quando o system prompt diz "seja empatico e acolhedor para suporte" mas tambem "seja assertivo e direto para vendas", o modelo fica preso entre personalidades. O resultado e um bot que nao e bom em nenhuma das duas coisas. E pior: o usuario percebe a inconsistencia.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+                <div class="text-red-400 font-mono">Sintoma:</div>
+                <div class="text-neutral-400 font-mono pl-4">Bot alterna entre tons sem motivo claro.</div>
+                <div class="text-neutral-400 font-mono pl-4">Respostas de suporte ficam agressivas.</div>
+                <div class="text-neutral-400 font-mono pl-4">Respostas de vendas ficam excessivamente cautelosas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-red-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+              <span class="text-2xl">🔧</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-red-400 mb-2">Sobrecarga de Tools</h4>
+              <p class="text-neutral-300 text-sm mb-3">
+                Cada tool no schema consome tokens e adiciona complexidade de decisao. Com 5 tools, o modelo escolhe bem. Com 25 tools, ele comeca a chamar a tool errada, inventar parametros, ou ignorar tools disponiveis. O Claude Agent SDK, por exemplo, funciona melhor com tools focadas por contexto.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+                <div class="text-red-400 font-mono">Sintoma:</div>
+                <div class="text-neutral-400 font-mono pl-4">Bot chama tool errada para a tarefa.</div>
+                <div class="text-neutral-400 font-mono pl-4">Inventa parametros que nao existem.</div>
+                <div class="text-neutral-400 font-mono pl-4">Ignora tools relevantes, responde com texto puro.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metricas de Degradacao -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Metricas de Degradacao
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">System prompt > 1500 palavras:</strong> qualidade comeca a cair perceptivelmente. Acima de 3000, cai drasticamente</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Tools > 15:</strong> taxa de selecao correta cai de ~95% para ~78% (benchmark interno com Claude Sonnet)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Dominios > 3 distintos:</strong> confusao de papel aparece em ~20% das respostas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Conversas > 50 turnos:</strong> instrucoes do system prompt sao progressivamente ignoradas</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Meca antes de migrar.</strong> Crie um test suite com 50 mensagens reais dos seus usuarios. Rode contra o bot unico. Se a taxa de acerto (resposta correta + tom correto + tool certa) cai abaixo de 85%, voce tem evidencia concreta para justificar a migracao para multibot. Sem dados, voce esta adivinhando.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Vantagens de Multiplos Assistentes -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">🎯 Vantagens de Multiplos Assistentes</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando a complexidade justifica, um sistema multibot <strong class="text-teal-400">desbloqueia capacidades que um monolito nunca vai ter</strong>. Nao e so sobre qualidade de resposta. E sobre escalabilidade, testabilidade, custo e resiliencia.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Multiplos assistentes seguem o <strong class="text-white">principio da responsabilidade unica</strong> (Single Responsibility Principle) aplicado a IA. Cada bot sabe fazer uma coisa extremamente bem. O resultado e que a soma das partes e maior que o todo: um sistema com 4 bots especializados supera um unico bot tentando ser os 4.
+        </p>
+        <p class="text-neutral-300">
+          As vantagens se dividem em cinco categorias: <strong class="text-white">especializacao</strong> (qualidade), <strong class="text-white">paralelismo</strong> (velocidade), <strong class="text-white">testabilidade</strong> (confiabilidade), <strong class="text-white">escalabilidade independente</strong> (custo) e <strong class="text-white">isolamento de falhas</strong> (resiliencia).
+        </p>
+      </div>
+
+      <!-- 5 Vantagens Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/20">
+              <span class="text-2xl">🎯</span>
+            </span>
+            <h4 class="font-bold text-emerald-400">Especializacao</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            System prompts curtos e focados produzem respostas melhores. Um bot de suporte com 200 palavras de instrucao supera um bot generalista com 2000 palavras na mesma tarefa.
+          </p>
+          <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+            <span class="text-emerald-400 font-mono">Exemplo real:</span>
+            <span class="text-neutral-400 font-mono"> Bot de suporte com Ollama local (custo zero) responde FAQ com 94% de acuracia vs 76% de um bot generalista com Claude.</span>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-blue-500/30 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500/20">
+              <span class="text-2xl">⚡</span>
+            </span>
+            <h4 class="font-bold text-blue-400">Processamento Paralelo</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Bots independentes processam mensagens simultaneamente. Enquanto o bot de suporte responde um ticket, o bot de vendas qualifica outro lead. Zero contenco de recursos.
+          </p>
+          <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+            <span class="text-blue-400 font-mono">Throughput:</span>
+            <span class="text-neutral-400 font-mono"> 4 bots especialistas = 4x mais mensagens processadas por segundo que 1 bot sequencial.</span>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500/20">
+              <span class="text-2xl">🧪</span>
+            </span>
+            <h4 class="font-bold text-purple-400">Testabilidade</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Testar um bot com escopo reduzido e ordens de magnitude mais facil. 50 test cases por dominio cobrem 95% dos cenarios. Para um bot generalista, voce precisaria de 200+ test cases com combinacoes explosivas.
+          </p>
+          <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+            <span class="text-purple-400 font-mono">Pipeline:</span>
+            <span class="text-neutral-400 font-mono"> CI/CD por bot. Mudanca no bot de vendas nao afeta o bot de suporte.</span>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-amber-500/30 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/20">
+              <span class="text-2xl">📈</span>
+            </span>
+            <h4 class="font-bold text-amber-400">Escalabilidade Independente</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Bot de suporte recebe 10x mais mensagens na Black Friday? Escala so ele. Nao precisa escalar vendas, conteudo ou operacoes junto. Cada bot tem seus proprios recursos e limites.
+          </p>
+          <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+            <span class="text-amber-400 font-mono">Custo:</span>
+            <span class="text-neutral-400 font-mono"> Paga so pelo que usa. Suporte pode usar modelo barato, vendas pode usar modelo premium.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Isolamento de Falhas (destaque especial) -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🛡️</span> Isolamento de Falhas
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          No monolito, se a API do OpenAI cai, <strong class="text-white">tudo para</strong>. No multibot, se o bot de conteudo (que usa Claude) cai, o bot de suporte (que usa Ollama local) continua funcionando normalmente. Falhas sao contidas no bot afetado.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl mb-2">🔴</div>
+            <div class="text-sm text-neutral-400">Bot Conteudo</div>
+            <div class="text-xs text-red-400 mt-1">API Claude fora</div>
+          </div>
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl mb-2">🟢</div>
+            <div class="text-sm text-neutral-400">Bot Suporte</div>
+            <div class="text-xs text-emerald-400 mt-1">Ollama local OK</div>
+          </div>
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-dark-600 text-center">
+            <div class="text-2xl mb-2">🟢</div>
+            <div class="text-sm text-neutral-400">Bot Vendas</div>
+            <div class="text-xs text-emerald-400 mt-1">OpenRouter OK</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Misture modelos por funcao para otimizar custo.</strong> Suporte com FAQ repetitivo? Ollama local, custo zero. Vendas que precisa ser persuasivo? GPT-4o ou Claude Sonnet. Pesquisa que precisa de raciocinio? DeepSeek-R1 via OpenRouter. Um sistema multibot te da essa flexibilidade. Um monolito te prende num modelo so.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Criterios de Decisao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">📐 Criterios de Decisao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A decisao entre bot unico e multibot <strong class="text-teal-400">nao e tecnica, e de negocio</strong>. Depende do seu time, do seu orcamento, da complexidade do produto e das necessidades reais dos usuarios. Use uma matriz de decisao, nao o instinto.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Quatro fatores determinam se voce precisa de 1 bot ou varios: <strong class="text-white">tamanho do time</strong> (quem vai manter isso?), <strong class="text-white">complexidade do dominio</strong> (quantas funcoes distintas?), <strong class="text-white">orcamento</strong> (quanto pode gastar em infra e APIs?) e <strong class="text-white">necessidades do usuario</strong> (o usuario percebe diferenca?).
+        </p>
+        <p class="text-neutral-300">
+          A regra de ouro: <strong class="text-white">comece com 1 bot. Divida quando a dor aparecer.</strong> A dor aparece na forma de respostas ruins, usuarios insatisfeitos, system prompt incontrolavel ou impossibilidade de testar adequadamente.
+        </p>
+      </div>
+
+      <!-- Matriz de Decisao -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📊</span> Matriz de Decisao
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-teal-500/20">
+                <th class="text-left py-3 text-neutral-400">Fator</th>
+                <th class="text-center py-3 text-emerald-400">Bot Unico</th>
+                <th class="text-center py-3 text-teal-400">Multibot</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Time</td>
+                <td class="text-center">1-2 devs</td>
+                <td class="text-center">3+ devs</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Dominios</td>
+                <td class="text-center">1-2 relacionados</td>
+                <td class="text-center">3+ distintos</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Tools</td>
+                <td class="text-center">Ate 10</td>
+                <td class="text-center">15+</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Usuarios</td>
+                <td class="text-center">Ate 500/dia</td>
+                <td class="text-center">1000+/dia</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Budget</td>
+                <td class="text-center">$0-500/mes</td>
+                <td class="text-center">$500+/mes</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Personalidades</td>
+                <td class="text-center">1 tom consistente</td>
+                <td class="text-center">Tons conflitantes</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-medium text-white">SLA</td>
+                <td class="text-center">Tolerante a downtime</td>
+                <td class="text-center">99.9% uptime</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fluxo de Decisao -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">🔄</span> Fluxo de Decisao Rapido
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">1</span>
+            <div>
+              <span class="text-white font-medium">O bot atende mais de 2 dominios distintos?</span>
+              <span class="text-neutral-400"> Nao = bot unico. Sim = continue.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">2</span>
+            <div>
+              <span class="text-white font-medium">Os dominios precisam de personalidades diferentes?</span>
+              <span class="text-neutral-400"> Nao = bot unico com modulos. Sim = continue.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">3</span>
+            <div>
+              <span class="text-white font-medium">Voce tem time pra manter multiplos bots?</span>
+              <span class="text-neutral-400"> Nao = bot unico com routing interno. Sim = multibot.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-dark-700/50 rounded-lg">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">4</span>
+            <div>
+              <span class="text-white font-medium">A escala exige processamento paralelo?</span>
+              <span class="text-neutral-400"> Sim = multibot com message queue. Nao = multibot simples.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Documente a decisao.</strong> Escreva um ADR (Architecture Decision Record) de 1 paragrafo: "Escolhemos [bot unico/multibot] porque [criterio 1], [criterio 2], [criterio 3]. Revisaremos quando [gatilho]." Isso evita debates circulares no futuro e da contexto pra quem entrar no time depois.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Padroes de Migracao -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🔀 Padroes de Migracao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        A migracao de bot unico para multibot <strong class="text-teal-400">nunca deve ser big bang</strong>. Nao desliga o monolito na sexta e liga o multibot na segunda. A evolucao e gradual, por etapas, com rollback possivel em cada passo.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          A migracao segue tres etapas: <strong class="text-white">extrair por dominio</strong> (tirar o primeiro especialista do monolito), <strong class="text-white">introduzir router</strong> (classificar para onde cada mensagem vai) e <strong class="text-white">compartilhar estado gradualmente</strong> (mover contexto e memoria para camada compartilhada).
+        </p>
+        <p class="text-neutral-300">
+          Cada etapa deve ser <strong class="text-white">reversivel</strong>. Se o bot especialista piorar a experiencia, voce redireciona de volta pro monolito sem downtime. Feature flags sao seus melhores amigos nessa transicao.
+        </p>
+      </div>
+
+      <!-- 3 Etapas de Migracao -->
+      <div class="space-y-6 mb-6">
+        <!-- Etapa 1 -->
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center border-2 border-teal-500/40">
+              <span class="text-teal-400 font-bold text-lg">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-teal-400 mb-2 text-lg">Extrair por Dominio</h4>
+              <p class="text-neutral-300 text-sm mb-4">
+                Identifique o dominio mais independente do seu bot. Aquele que tem menos dependencia de contexto compartilhado. Extraia ele para um processo separado com seu proprio system prompt e tools.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// Antes: tudo num bot</div>
+                <div class="text-neutral-300">bot.handle('suporte', handleSupport)</div>
+                <div class="text-neutral-300">bot.handle('vendas', handleSales)</div>
+                <div class="text-neutral-300">bot.handle('conteudo', handleContent)</div>
+                <div class="text-neutral-300 mt-3 text-neutral-500">// Depois: FAQ extraido para bot separado</div>
+                <div class="text-teal-400">const faqBot = new FaqBot({ model: 'ollama/qwen2.5' })</div>
+                <div class="text-neutral-300">bot.handle('faq', (msg) => faqBot.respond(msg))</div>
+                <div class="text-neutral-300">bot.handle('suporte', handleSupport) <span class="text-neutral-500">// continua no monolito</span></div>
+                <div class="text-neutral-300">bot.handle('vendas', handleSales)     <span class="text-neutral-500">// continua no monolito</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 2 -->
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center border-2 border-teal-500/40">
+              <span class="text-teal-400 font-bold text-lg">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-teal-400 mb-2 text-lg">Introduzir Router</h4>
+              <p class="text-neutral-300 text-sm mb-4">
+                Quando voce tem 2+ bots, precisa de um classificador. Comece com keyword matching simples. Evolua para LLM-based quando as keywords nao forem suficientes.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// Router v1: keywords</div>
+                <div class="text-teal-400">function route(message) {</div>
+                <div class="text-neutral-300 pl-4">const faqKeywords = ['como', 'tutorial', 'ajuda', 'problema']</div>
+                <div class="text-neutral-300 pl-4">if (faqKeywords.some(k => message.includes(k))) return 'faq'</div>
+                <div class="text-neutral-300 pl-4">return 'general' <span class="text-neutral-500">// fallback pro monolito</span></div>
+                <div class="text-teal-400">}</div>
+                <div class="text-neutral-300 mt-3 text-neutral-500">// Router v2: LLM-based (quando keywords nao bastam)</div>
+                <div class="text-teal-400">async function route(message) {</div>
+                <div class="text-neutral-300 pl-4">const intent = await ollama.classify(message, ['faq', 'vendas', 'geral'])</div>
+                <div class="text-neutral-300 pl-4">return intent.confidence > 0.8 ? intent.label : 'general'</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Etapa 3 -->
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-teal-500/30 flex items-center justify-center border-2 border-teal-500/40">
+              <span class="text-teal-400 font-bold text-lg">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-teal-400 mb-2 text-lg">Compartilhar Estado Gradualmente</h4>
+              <p class="text-neutral-300 text-sm mb-4">
+                O maior desafio do multibot: como os bots compartilham contexto? O usuario comeca no suporte e migra pra vendas. O bot de vendas precisa saber o que aconteceu. Solucoes: banco compartilhado, message passing, session store.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// Session store compartilhada (Redis ou SQLite)</div>
+                <div class="text-teal-400">class SharedContext {</div>
+                <div class="text-neutral-300 pl-4">async getHistory(userId) { <span class="text-neutral-500">// qualquer bot pode ler</span></div>
+                <div class="text-neutral-300 pl-8">return db.query('SELECT * FROM messages WHERE user_id = ?', userId)</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-neutral-300 pl-4">async addMessage(userId, botId, message) { <span class="text-neutral-500">// qualquer bot pode escrever</span></div>
+                <div class="text-neutral-300 pl-8">return db.insert('messages', { userId, botId, message, ts: Date.now() })</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerta -->
+      <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center">
+          <span class="mr-2">🚨</span> Evite Big Bang
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Nunca reescreva tudo de uma vez.</strong> A maioria dos fracassos de migracao acontece quando o time tenta fazer a transicao completa num sprint. Extraia um dominio por vez. Valide por 1-2 semanas. So entao extraia o proximo. Se levar 3 meses, tudo bem. Melhor lento e funcionando que rapido e quebrado.
+        </p>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Use feature flags para cada rota.</strong> <code class="text-teal-400 bg-dark-900 px-1 rounded">ROUTE_FAQ_TO_SPECIALIST=true</code> no .env. Se o especialista der problema, basta mudar pra false e a mensagem volta pro monolito. Sem deploy, sem downtime, sem stress.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Avaliar seu SaaS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🏗️ Exercicio: Avaliar seu SaaS</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Teoria sem pratica e entretenimento. Nesse exercicio voce vai <strong class="text-teal-400">analisar seu proprio produto</strong> (ou um produto ficticio) e documentar a decisao arquitetural com criterios concretos.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏗️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Decisao Arquitetural do Bot</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 20-30 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Mapeie os Dominios</h4>
+              <p class="text-neutral-300 text-sm mb-3">Liste todas as funcoes que seu bot precisa atender. Agrupe por dominio. Identifique quais dominios tem requisitos conflitantes.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20">
+                <div class="text-neutral-500">// Template</div>
+                <div><span class="text-teal-400">Dominio 1:</span> <span class="text-neutral-400">[nome] - [funcoes] - [tom] - [tools]</span></div>
+                <div><span class="text-teal-400">Dominio 2:</span> <span class="text-neutral-400">[nome] - [funcoes] - [tom] - [tools]</span></div>
+                <div><span class="text-teal-400">Conflitos:</span> <span class="text-neutral-400">[dominio X precisa ser Y, dominio Z precisa ser W]</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Preencha a Matriz de Decisao</h4>
+              <p class="text-neutral-300 text-sm mb-3">Para cada fator da matriz (time, dominios, tools, usuarios, budget, personalidades, SLA), marque onde seu caso se encaixa.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20">
+                <div><span class="text-teal-400">Time:</span> <span class="text-neutral-400">[X devs] → [unico/multi]</span></div>
+                <div><span class="text-teal-400">Dominios:</span> <span class="text-neutral-400">[X distintos] → [unico/multi]</span></div>
+                <div><span class="text-teal-400">Tools:</span> <span class="text-neutral-400">[X tools] → [unico/multi]</span></div>
+                <div><span class="text-teal-400">Score:</span> <span class="text-neutral-400">[X/7 para multi] → decisao</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Defina o Plano de Migracao (se aplicavel)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Se a decisao for multibot, documente: qual dominio extrair primeiro, como sera o router, qual modelo cada bot usa.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20">
+                <div class="text-neutral-500">// Plano de migracao</div>
+                <div><span class="text-teal-400">Fase 1:</span> <span class="text-neutral-400">Extrair [dominio] → modelo [X] → prazo [Y]</span></div>
+                <div><span class="text-teal-400">Fase 2:</span> <span class="text-neutral-400">Router: [keyword/LLM] → fallback: [estrategia]</span></div>
+                <div><span class="text-teal-400">Fase 3:</span> <span class="text-neutral-400">Estado compartilhado: [Redis/SQLite/outro]</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Escreva o ADR (Architecture Decision Record)</h4>
+              <p class="text-neutral-300 text-sm mb-3">Documente a decisao em 1 paragrafo. Inclua: decisao, justificativa e gatilho de revisao.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20">
+                <div class="text-neutral-500">// ADR Template</div>
+                <div class="text-white">"Decidimos usar [bot unico/multibot] porque:</div>
+                <div class="text-neutral-300 pl-2">1. [criterio principal]</div>
+                <div class="text-neutral-300 pl-2">2. [criterio secundario]</div>
+                <div class="text-neutral-300 pl-2">3. [restricao relevante]</div>
+                <div class="text-white">Revisaremos quando [gatilho: X usuarios, Y dominios, Z tools]."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Dominios mapeados com funcoes e conflitos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Matriz de decisao preenchida (7 fatores)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Decisao documentada com justificativa</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Gatilho de revisao definido</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-teal-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-teal-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus
+        </h3>
+        <p class="text-neutral-300">
+          Crie um <strong class="text-white">diagrama de arquitetura</strong> do seu sistema (pode ser ASCII art, draw.io ou Excalidraw). Mostre: entrada do usuario, router (se multibot), bots, banco de dados, APIs externas. Esse diagrama vai ser a referencia visual pra todo o time.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Monolito e microsservicos se aplicam a bots</strong>
+              <span class="text-neutral-400"> - Mesmos trade-offs de simplicidade vs escalabilidade. 80% dos casos comecam melhor com monolito.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">O bot unico tem teto: saturacao, confusao de papel, sobrecarga de tools</strong>
+              <span class="text-neutral-400"> - Meca com test suite de 50 mensagens reais antes de decidir migrar.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Multiplos assistentes desbloqueiam especializacao, paralelismo e resiliencia</strong>
+              <span class="text-neutral-400"> - A soma dos especialistas supera o generalista quando a complexidade justifica.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Use matriz de decisao com 7 fatores concretos</strong>
+              <span class="text-neutral-400"> - Time, dominios, tools, usuarios, budget, personalidades e SLA.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Migracao gradual: extrair dominio, introduzir router, compartilhar estado</strong>
+              <span class="text-neutral-400"> - Nunca big bang. Feature flags em cada rota. Rollback sempre possivel.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Documente a decisao com ADR</strong>
+              <span class="text-neutral-400"> - Decisao, justificativa e gatilho de revisao num paragrafo.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-5-1.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo 5.1
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 5
+          </a>
+          <a href="modulo-5-3.html" class="text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">
+            Modulo 5.3: Arquitetura Multibot →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

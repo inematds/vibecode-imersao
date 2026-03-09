@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.3 - Arquitetura Multibot | Imersao Vibe Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    /* Light mode overrides - OBRIGATORIO */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao VB</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center space-x-2 text-sm text-neutral-400">
+      <a href="../../index.html" class="hover:text-teal-400">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.3</span>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">
+        MODULO 5.3
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏛️ Arquitetura Multibot</h1>
+      <p class="text-lg text-neutral-400 max-w-3xl">
+        Os padroes de engenharia por tras de sistemas multibot em producao. Hub-and-spoke, routing por intent, message queues, load balancing e degradacao graceful. Da teoria ao codigo funcional.
+      </p>
+
+      <!-- Stats Banner -->
+      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">~55min</div>
+          <div class="text-xs text-neutral-400">Duracao</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-xl font-bold text-teal-400">Teoria + Pratica</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEUDO -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 1: Hub-and-Spoke: O Padrao Central -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-1" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">1</span>
+        <h2 class="text-2xl font-bold">🔀 Hub-and-Spoke: O Padrao Central</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O padrao <strong class="text-teal-400">hub-and-spoke</strong> e a arquitetura dominante em sistemas multibot. Um ponto central (hub) recebe todas as mensagens e distribui para bots especialistas (spokes). E o mesmo padrao de aeroportos: tudo passa pelo hub, de la vai pra cada destino.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          No hub-and-spoke, o <strong class="text-white">hub (router)</strong> tem tres responsabilidades: receber a mensagem, classificar a intencao e despachar para o spoke correto. Ele nao processa a mensagem. Ele decide quem processa. Os <strong class="text-white">spokes (bots especialistas)</strong> recebem, processam e retornam a resposta ao hub, que devolve ao usuario.
+        </p>
+        <p class="text-neutral-300 mb-4">
+          O hub mantem controle total do fluxo. Ele sabe qual bot respondeu, quanto tempo levou, se houve erro. Isso e fundamental para monitoramento, logging e debugging. Sem hub centralizado, voce perde visibilidade do sistema.
+        </p>
+        <ul class="space-y-2 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Entrada unica:</strong> Usuario fala com um unico ponto. Nao precisa saber que existem multiplos bots por tras</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Roteamento transparente:</strong> A experiencia do usuario e seamless. Ele nao percebe a troca de bot</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Observabilidade central:</strong> Todas as metricas passam pelo hub: latencia, erros, routing decisions</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Diagrama Visual -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📐</span> Arquitetura Hub-and-Spoke
+        </h3>
+        <div class="flex flex-col items-center">
+          <!-- Usuario -->
+          <div class="w-20 h-20 rounded-full bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center mb-4">
+            <span class="text-3xl">👤</span>
+          </div>
+          <div class="text-blue-400 font-semibold text-sm mb-2">Usuario</div>
+          <div class="w-0.5 h-8 bg-teal-500/40"></div>
+
+          <!-- Hub -->
+          <div class="w-48 h-20 rounded-xl bg-teal-500/20 border-2 border-teal-500/50 flex items-center justify-center my-2">
+            <div class="text-center">
+              <span class="text-2xl">🧠</span>
+              <div class="text-teal-400 font-bold text-sm">Router Hub</div>
+            </div>
+          </div>
+
+          <!-- Linhas para spokes -->
+          <div class="flex items-start justify-center w-full max-w-xl mt-2">
+            <div class="flex-1 flex flex-col items-center">
+              <div class="w-0.5 h-8 bg-emerald-500/40"></div>
+              <div class="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-500/40 flex items-center justify-center">
+                <span class="text-2xl">🎧</span>
+              </div>
+              <div class="text-emerald-400 font-semibold text-xs mt-1">Suporte</div>
+              <div class="text-neutral-500 text-xs">Ollama</div>
+            </div>
+            <div class="flex-1 flex flex-col items-center">
+              <div class="w-0.5 h-8 bg-blue-500/40"></div>
+              <div class="w-16 h-16 rounded-full bg-blue-500/20 border-2 border-blue-500/40 flex items-center justify-center">
+                <span class="text-2xl">💰</span>
+              </div>
+              <div class="text-blue-400 font-semibold text-xs mt-1">Vendas</div>
+              <div class="text-neutral-500 text-xs">GPT-4o</div>
+            </div>
+            <div class="flex-1 flex flex-col items-center">
+              <div class="w-0.5 h-8 bg-purple-500/40"></div>
+              <div class="w-16 h-16 rounded-full bg-purple-500/20 border-2 border-purple-500/40 flex items-center justify-center">
+                <span class="text-2xl">✍️</span>
+              </div>
+              <div class="text-purple-400 font-semibold text-xs mt-1">Conteudo</div>
+              <div class="text-neutral-500 text-xs">Claude</div>
+            </div>
+            <div class="flex-1 flex flex-col items-center">
+              <div class="w-0.5 h-8 bg-amber-500/40"></div>
+              <div class="w-16 h-16 rounded-full bg-amber-500/20 border-2 border-amber-500/40 flex items-center justify-center">
+                <span class="text-2xl">🔄</span>
+              </div>
+              <div class="text-amber-400 font-semibold text-xs mt-1">Fallback</div>
+              <div class="text-neutral-500 text-xs">General</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Como o Hub Decide -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Como o Hub Decide (Pseudocodigo)
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Hub: ponto central de decisao</div>
+          <div class="text-teal-400">class RouterHub {</div>
+          <div class="text-neutral-300 pl-4">constructor() {</div>
+          <div class="text-neutral-300 pl-8">this.spokes = {</div>
+          <div class="text-neutral-300 pl-12">suporte:  new <span class="text-emerald-400">SupportBot</span>({ model: 'ollama/qwen2.5:14b' }),</div>
+          <div class="text-neutral-300 pl-12">vendas:   new <span class="text-blue-400">SalesBot</span>({ model: 'openai/gpt-4o' }),</div>
+          <div class="text-neutral-300 pl-12">conteudo: new <span class="text-purple-400">ContentBot</span>({ model: 'anthropic/claude-sonnet' }),</div>
+          <div class="text-neutral-300 pl-12">fallback: new <span class="text-amber-400">FallbackBot</span>({ model: 'ollama/llama3.2:3b' }),</div>
+          <div class="text-neutral-300 pl-8">}</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-300 pl-4">async handle(message) {</div>
+          <div class="text-neutral-300 pl-8">const start = Date.now()</div>
+          <div class="text-neutral-300 pl-8">const { intent, confidence } = await this.<span class="text-teal-400">classify</span>(message)</div>
+          <div class="text-neutral-300 pl-8"></div>
+          <div class="text-neutral-300 pl-8">const bot = confidence > 0.8</div>
+          <div class="text-neutral-300 pl-12">? this.spokes[intent]</div>
+          <div class="text-neutral-300 pl-12">: this.spokes.fallback</div>
+          <div class="text-neutral-300 pl-8"></div>
+          <div class="text-neutral-300 pl-8">const response = await bot.respond(message)</div>
+          <div class="text-neutral-300 pl-8"></div>
+          <div class="text-neutral-300 pl-8"><span class="text-neutral-500">// Log para observabilidade</span></div>
+          <div class="text-neutral-300 pl-8">this.<span class="text-teal-400">log</span>({ intent, confidence, bot: bot.name, latency: Date.now() - start })</div>
+          <div class="text-neutral-300 pl-8"></div>
+          <div class="text-neutral-300 pl-8">return response</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">}</div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">O hub deve ser stateless.</strong> Ele nao guarda contexto de conversa. Ele classifica, despacha e loga. Se o hub cair e reiniciar, nao perde nada. O estado fica nos bots especialistas ou numa camada de persistencia separada (Redis, SQLite). Isso torna o hub facil de escalar horizontalmente.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 2: Router: Classificacao de Intent -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-2" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">2</span>
+        <h2 class="text-2xl font-bold">🧠 Router: Classificacao de Intent</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        O router e o <strong class="text-teal-400">cerebro do sistema multibot</strong>. Ele recebe texto cru do usuario e decide para qual bot especialista enviar. A qualidade do routing determina a qualidade de todo o sistema. Router ruim = usuario falando com o bot errado = experiencia horrivel.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Existem tres abordagens para classificacao de intent, cada uma com seu custo-beneficio:
+        </p>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">Keyword matching:</strong> Mais rapido (~1ms), mais barato (zero custo), mas limitado. Funciona para dominios com vocabularios distintos. Falha com linguagem ambigua</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">LLM-based routing:</strong> Mais preciso (90-95%), mais lento (~200-500ms com Ollama, ~500-1500ms com API). Entende nuance, sarcasmo, perguntas indiretas</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-teal-400 mt-1">•</span>
+            <span><strong class="text-white">ML classifier (fine-tuned):</strong> Melhor equilibrio. Treina um modelo pequeno nos seus dados. Rapido (~10ms), preciso (92-97%), mas precisa de dados de treino</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3 Abordagens -->
+      <div class="space-y-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-emerald-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+              <span class="text-emerald-400 font-bold text-sm">KW</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-emerald-400 mb-2">Keyword Matching</h4>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-dark-600 overflow-x-auto mb-3">
+                <div class="text-neutral-500">// Rapido, simples, limitado</div>
+                <div class="text-emerald-400">const intents = {</div>
+                <div class="text-neutral-300 pl-4">suporte: ['bug', 'erro', 'problema', 'nao funciona', 'ajuda', 'ticket'],</div>
+                <div class="text-neutral-300 pl-4">vendas:  ['preco', 'plano', 'desconto', 'comprar', 'trial', 'demo'],</div>
+                <div class="text-neutral-300 pl-4">conteudo: ['blog', 'post', 'artigo', 'newsletter', 'redes sociais'],</div>
+                <div class="text-emerald-400">}</div>
+                <div class="text-neutral-300 mt-2">function classify(msg) {</div>
+                <div class="text-neutral-300 pl-4">const lower = msg.toLowerCase()</div>
+                <div class="text-neutral-300 pl-4">for (const [intent, keywords] of Object.entries(intents)) {</div>
+                <div class="text-neutral-300 pl-8">if (keywords.some(kw => lower.includes(kw))) return { intent, confidence: 0.9 }</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-neutral-300 pl-4">return { intent: 'fallback', confidence: 0 }</div>
+                <div class="text-neutral-300">}</div>
+              </div>
+              <div class="flex items-center space-x-4 text-xs">
+                <span class="text-emerald-400">Latencia: ~1ms</span>
+                <span class="text-emerald-400">Custo: $0</span>
+                <span class="text-amber-400">Acuracia: ~75-85%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <span class="text-blue-400 font-bold text-sm">LLM</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-blue-400 mb-2">LLM-Based Routing</h4>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-dark-600 overflow-x-auto mb-3">
+                <div class="text-neutral-500">// Preciso, entende nuance, mais lento</div>
+                <div class="text-blue-400">async function classify(message) {</div>
+                <div class="text-neutral-300 pl-4">const prompt = `Classifique a mensagem do usuario em uma das categorias:</div>
+                <div class="text-neutral-300 pl-4">- suporte (duvidas tecnicas, bugs, problemas)</div>
+                <div class="text-neutral-300 pl-4">- vendas (pricing, planos, compra, upgrade)</div>
+                <div class="text-neutral-300 pl-4">- conteudo (criacao, blog, social media)</div>
+                <div class="text-neutral-300 pl-4">- geral (saudacoes, conversa, outros)</div>
+                <div class="text-neutral-300 pl-4">Responda APENAS com JSON: {"intent": "...", "confidence": 0.X}</div>
+                <div class="text-neutral-300 pl-4">Mensagem: "${message}"`</div>
+                <div class="text-neutral-300 pl-4"></div>
+                <div class="text-neutral-300 pl-4">const result = await ollama.chat({</div>
+                <div class="text-neutral-300 pl-8">model: 'qwen2.5:3b', <span class="text-neutral-500">// modelo leve para classificacao</span></div>
+                <div class="text-neutral-300 pl-8">messages: [{ role: 'user', content: prompt }],</div>
+                <div class="text-neutral-300 pl-8">format: 'json',</div>
+                <div class="text-neutral-300 pl-4">})</div>
+                <div class="text-neutral-300 pl-4">return JSON.parse(result.message.content)</div>
+                <div class="text-blue-400">}</div>
+              </div>
+              <div class="flex items-center space-x-4 text-xs">
+                <span class="text-blue-400">Latencia: ~200-500ms</span>
+                <span class="text-blue-400">Custo: $0 (local)</span>
+                <span class="text-emerald-400">Acuracia: ~90-95%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-purple-500/30 p-6">
+          <div class="flex items-start space-x-4">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <span class="text-purple-400 font-bold text-sm">ML</span>
+            </span>
+            <div class="flex-1">
+              <h4 class="font-semibold text-purple-400 mb-2">ML Classifier (Fine-tuned)</h4>
+              <p class="text-neutral-300 text-sm mb-3">
+                Treina um modelo leve (DistilBERT, sentence-transformers) com dados reais do seu produto. Precisa de ~500 mensagens rotuladas por categoria. Rapido como keyword, preciso como LLM.
+              </p>
+              <div class="bg-dark-900 rounded-lg p-3 text-sm border border-dark-600">
+                <span class="text-purple-400 font-mono">Quando usar:</span>
+                <span class="text-neutral-400 font-mono"> Volume alto (1000+ msgs/dia), categorias estaveis, latencia critica (&lt;10ms).</span>
+              </div>
+              <div class="flex items-center space-x-4 text-xs mt-3">
+                <span class="text-purple-400">Latencia: ~5-10ms</span>
+                <span class="text-purple-400">Custo: $0 (inference)</span>
+                <span class="text-emerald-400">Acuracia: ~92-97%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidence Thresholds -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📊</span> Thresholds de Confianca
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          O router nao deve enviar mensagens para especialistas quando nao tem certeza. Defina thresholds:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-emerald-500/20 text-center">
+            <div class="text-2xl font-bold text-emerald-400">0.85+</div>
+            <div class="text-sm text-neutral-400 mt-1">Envia direto</div>
+            <div class="text-xs text-neutral-500">Pro especialista com confianca</div>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-amber-500/20 text-center">
+            <div class="text-2xl font-bold text-amber-400">0.60-0.84</div>
+            <div class="text-sm text-neutral-400 mt-1">Envia com fallback</div>
+            <div class="text-xs text-neutral-500">Tenta especialista, se falhar vai pro geral</div>
+          </div>
+          <div class="bg-dark-800/50 rounded-lg p-4 border border-red-500/20 text-center">
+            <div class="text-2xl font-bold text-red-400">&lt;0.60</div>
+            <div class="text-sm text-neutral-400 mt-1">Fallback direto</div>
+            <div class="text-xs text-neutral-500">Nao arrisca, manda pro bot geral</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Comece com keyword matching + LLM fallback.</strong> Se a keyword acerta, usa ela (rapido e gratis). Se nao acha keyword, passa pro LLM classificar. Isso te da velocidade na maioria dos casos e precisao nos casos ambiguos. E a estrategia que o OpenClaw usa no router.ts.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 3: Message Queue e Async Processing -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-3" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">3</span>
+        <h2 class="text-2xl font-bold">📨 Message Queue e Async Processing</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Nem toda mensagem precisa de resposta instantanea. Quando bots fazem tarefas longas (pesquisa, geracao de relatorio, analise de dados), voce precisa de <strong class="text-teal-400">processamento assincrono</strong>. Message queues sao a cola que mantem o sistema funcionando sem bloquear.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Uma <strong class="text-white">message queue</strong> e uma fila onde mensagens esperam para ser processadas. O router coloca a mensagem na fila, e o bot especialista pega quando estiver disponivel. Isso desacopla quem envia de quem processa. Se o bot de conteudo esta ocupado gerando um artigo de 3000 palavras, as proximas mensagens ficam na fila em vez de dar timeout.
+        </p>
+        <p class="text-neutral-300">
+          Opcoes populares em Node.js: <strong class="text-white">BullMQ</strong> (filas com Redis, robusto), <strong class="text-white">Redis Pub/Sub</strong> (broadcast simples), <strong class="text-white">Database Polling</strong> (mais simples, sem dependencia extra). Para projetos pequenos, database polling com SQLite funciona perfeitamente.
+        </p>
+      </div>
+
+      <!-- Comparativo de Opcoes -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">📊</span> Comparativo de Message Queues
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-teal-500/20">
+                <th class="text-left py-3 text-neutral-400">Tecnologia</th>
+                <th class="text-center py-3 text-neutral-400">Setup</th>
+                <th class="text-center py-3 text-neutral-400">Escala</th>
+                <th class="text-center py-3 text-neutral-400">Persistencia</th>
+                <th class="text-center py-3 text-neutral-400">Ideal para</th>
+              </tr>
+            </thead>
+            <tbody class="text-neutral-300">
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">BullMQ + Redis</td>
+                <td class="text-center">Medio</td>
+                <td class="text-center text-emerald-400">Alta</td>
+                <td class="text-center text-emerald-400">Sim</td>
+                <td class="text-center">Producao seria</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">Redis Pub/Sub</td>
+                <td class="text-center">Facil</td>
+                <td class="text-center text-emerald-400">Alta</td>
+                <td class="text-center text-red-400">Nao</td>
+                <td class="text-center">Broadcast real-time</td>
+              </tr>
+              <tr class="border-b border-dark-600">
+                <td class="py-3 font-medium text-white">SQLite Polling</td>
+                <td class="text-center text-emerald-400">Facil</td>
+                <td class="text-center text-amber-400">Baixa</td>
+                <td class="text-center text-emerald-400">Sim</td>
+                <td class="text-center">MVP, bot pessoal</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-medium text-white">RabbitMQ</td>
+                <td class="text-center">Complexo</td>
+                <td class="text-center text-emerald-400">Muito alta</td>
+                <td class="text-center text-emerald-400">Sim</td>
+                <td class="text-center">Enterprise</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Code: BullMQ -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> BullMQ: Fila de Tarefas com Prioridade
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-neutral-500">// Produtor: router adiciona mensagens na fila</div>
+          <div class="text-teal-400">import { Queue } from 'bullmq'</div>
+          <div class="text-neutral-300 mt-2">const botQueue = new Queue('bot-tasks', { connection: redis })</div>
+          <div class="text-neutral-300 mt-2">async function dispatch(intent, message, userId) {</div>
+          <div class="text-neutral-300 pl-4">await botQueue.add(intent, {</div>
+          <div class="text-neutral-300 pl-8">message,</div>
+          <div class="text-neutral-300 pl-8">userId,</div>
+          <div class="text-neutral-300 pl-8">timestamp: Date.now(),</div>
+          <div class="text-neutral-300 pl-4">}, {</div>
+          <div class="text-neutral-300 pl-8">priority: intent === 'suporte' ? <span class="text-emerald-400">1</span> : <span class="text-neutral-500">5</span>, <span class="text-neutral-500">// suporte = prioridade alta</span></div>
+          <div class="text-neutral-300 pl-8">attempts: 3, <span class="text-neutral-500">// retry automatico</span></div>
+          <div class="text-neutral-300 pl-8">backoff: { type: 'exponential', delay: 2000 },</div>
+          <div class="text-neutral-300 pl-4">})</div>
+          <div class="text-neutral-300">}</div>
+          <div class="text-neutral-300 mt-4 text-neutral-500">// Consumidor: bot especialista processa da fila</div>
+          <div class="text-teal-400">import { Worker } from 'bullmq'</div>
+          <div class="text-neutral-300 mt-2">const worker = new Worker('bot-tasks', async (job) => {</div>
+          <div class="text-neutral-300 pl-4">const bot = bots[job.name] <span class="text-neutral-500">// seleciona bot pelo intent</span></div>
+          <div class="text-neutral-300 pl-4">const response = await bot.respond(job.data.message)</div>
+          <div class="text-neutral-300 pl-4">await sendToUser(job.data.userId, response)</div>
+          <div class="text-neutral-300">}, { connection: redis, concurrency: 5 })</div>
+        </div>
+      </div>
+
+      <!-- Priority Queues -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">⚡</span> Priority Queues: Nem Toda Mensagem e Igual
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Um usuario com problema no login nao pode esperar atras de um pedido de geracao de conteudo. Priority queues garantem que mensagens urgentes passam na frente.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-red-500/20">
+            <div class="text-red-400 font-bold text-sm mb-1">Prioridade 1 (Critica)</div>
+            <div class="text-neutral-400 text-xs">Suporte: bugs, login, pagamento</div>
+            <div class="text-neutral-500 text-xs mt-1">SLA: &lt;30 segundos</div>
+          </div>
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-amber-500/20">
+            <div class="text-amber-400 font-bold text-sm mb-1">Prioridade 3 (Normal)</div>
+            <div class="text-neutral-400 text-xs">Vendas: pricing, demos, trials</div>
+            <div class="text-neutral-500 text-xs mt-1">SLA: &lt;2 minutos</div>
+          </div>
+          <div class="bg-dark-900/50 rounded-lg p-4 border border-blue-500/20">
+            <div class="text-blue-400 font-bold text-sm mb-1">Prioridade 5 (Baixa)</div>
+            <div class="text-neutral-400 text-xs">Conteudo: artigos, newsletter</div>
+            <div class="text-neutral-500 text-xs mt-1">SLA: &lt;5 minutos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Envie uma mensagem de "processando" para o usuario imediatamente.</strong> Quando a mensagem entra na fila, responda ao usuario: "Entendi, estou analisando..." Isso evita que o usuario repita a mensagem ou ache que o bot travou. Quando o processamento terminar, envie a resposta completa. O OpenClaw faz isso com <code class="text-teal-400 bg-dark-900 px-1 rounded">bot.sendChatAction('typing')</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 4: Load Balancing entre Bots -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-4" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">4</span>
+        <h2 class="text-2xl font-bold">⚖️ Load Balancing entre Bots</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Quando um bot especialista nao da conta do volume, voce precisa de <strong class="text-teal-400">multiplas instancias do mesmo bot</strong>. Load balancing distribui a carga entre elas. E o mesmo conceito de servidores web, aplicado a agentes de IA.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Load balancing para bots de IA tem nuances diferentes de web servers. O tempo de processamento e variavel (uma pergunta simples leva 2s, uma analise complexa leva 30s), entao algoritmos simples como round-robin podem sobrecarregar instancias. <strong class="text-white">Least-connections</strong> tende a funcionar melhor para bots.
+        </p>
+        <p class="text-neutral-300">
+          Outra estrategia e <strong class="text-white">weighted routing</strong>: direcione mais trafego para instancias com modelos mais rapidos ou hardware melhor. E quando a carga aumenta, <strong class="text-white">auto-scaling</strong> adiciona novas instancias automaticamente.
+        </p>
+      </div>
+
+      <!-- Estrategias de Balanceamento -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-teal-500/20">
+              <span class="text-2xl">🔄</span>
+            </span>
+            <h4 class="font-bold text-teal-400">Round-Robin</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Distribui mensagens sequencialmente entre instancias. Instancia 1, 2, 3, 1, 2, 3...
+          </p>
+          <div class="space-y-1 text-xs">
+            <div class="flex items-center space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span class="text-neutral-400">Simples de implementar</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-red-400">-</span>
+              <span class="text-neutral-400">Ignora carga atual de cada instancia</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-amber-400">→</span>
+              <span class="text-neutral-400">Bom quando todas as tarefas tem tempo similar</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-teal-500/20">
+              <span class="text-2xl">📉</span>
+            </span>
+            <h4 class="font-bold text-teal-400">Least-Connections</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Envia para a instancia com menos tarefas ativas no momento. Adapta-se automaticamente a cargas variaveis.
+          </p>
+          <div class="space-y-1 text-xs">
+            <div class="flex items-center space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span class="text-neutral-400">Melhor distribuicao para tarefas de IA</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span class="text-neutral-400">Evita sobrecarga de instancias lentas</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-amber-400">→</span>
+              <span class="text-neutral-400">Recomendado para bots em producao</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-teal-500/20">
+              <span class="text-2xl">⚖️</span>
+            </span>
+            <h4 class="font-bold text-teal-400">Weighted</h4>
+          </div>
+          <p class="text-neutral-300 text-sm mb-3">
+            Atribui pesos por instancia. Instancia com GPU recebe peso 3x. Instancia com CPU recebe peso 1x.
+          </p>
+          <div class="space-y-1 text-xs">
+            <div class="flex items-center space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span class="text-neutral-400">Aproveita hardware heterogeneo</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-emerald-400">+</span>
+              <span class="text-neutral-400">Combina com least-connections</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-amber-400">→</span>
+              <span class="text-neutral-400">Bom quando tem mix de cloud + local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code: Load Balancer -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+          <span class="mr-2">💻</span> Load Balancer com Least-Connections
+        </h3>
+        <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+          <div class="text-teal-400">class BotLoadBalancer {</div>
+          <div class="text-neutral-300 pl-4">constructor(instances) {</div>
+          <div class="text-neutral-300 pl-8">this.instances = instances.map(i => ({ ...i, active: 0 }))</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-300 pl-4">pickInstance() {</div>
+          <div class="text-neutral-300 pl-8"><span class="text-neutral-500">// Filtra instancias saudaveis, pega a com menos conexoes ativas</span></div>
+          <div class="text-neutral-300 pl-8">const healthy = this.instances.filter(i => i.healthy)</div>
+          <div class="text-neutral-300 pl-8">return healthy.sort((a, b) => a.active - b.active)[0]</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-neutral-300 pl-4"></div>
+          <div class="text-neutral-300 pl-4">async dispatch(message) {</div>
+          <div class="text-neutral-300 pl-8">const instance = this.pickInstance()</div>
+          <div class="text-neutral-300 pl-8">instance.active++</div>
+          <div class="text-neutral-300 pl-8">try {</div>
+          <div class="text-neutral-300 pl-12">return await instance.bot.respond(message)</div>
+          <div class="text-neutral-300 pl-8">} finally {</div>
+          <div class="text-neutral-300 pl-12">instance.active--</div>
+          <div class="text-neutral-300 pl-8">}</div>
+          <div class="text-neutral-300 pl-4">}</div>
+          <div class="text-teal-400">}</div>
+          <div class="text-neutral-300 mt-3 text-neutral-500">// Uso</div>
+          <div class="text-neutral-300">const supportLB = new BotLoadBalancer([</div>
+          <div class="text-neutral-300 pl-4">{ bot: new SupportBot('ollama:14b'), healthy: true, weight: 3 },</div>
+          <div class="text-neutral-300 pl-4">{ bot: new SupportBot('ollama:3b'),  healthy: true, weight: 1 },</div>
+          <div class="text-neutral-300">])</div>
+        </div>
+      </div>
+
+      <!-- Auto-Scaling -->
+      <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center">
+          <span class="mr-2">📈</span> Auto-Scaling por Demanda
+        </h3>
+        <ul class="space-y-3 text-neutral-300">
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Metrica de trigger:</strong> Fila do bot com mais de 10 mensagens pendentes? Sobe nova instancia. Abaixo de 3 por 5 minutos? Desce</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Limites:</strong> Defina min/max instancias. Min=1 (sempre ligado), Max=5 (nao estourar custo)</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-blue-400 mt-1">•</span>
+            <span><strong class="text-white">Cooldown:</strong> Espere 2 minutos entre scale up e scale down pra evitar flapping</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Para bots pessoais, voce nao precisa de load balancing.</strong> Um processo com concurrency=5 no BullMQ ja da conta de um usuario (voce). Load balancing so importa quando voce tem 100+ usuarios simultaneos. Nao adicione complexidade que voce nao precisa ainda.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 5: Fallback e Degradacao Graceful -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-5" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">5</span>
+        <h2 class="text-2xl font-bold">🛡️ Fallback e Degradacao Graceful</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Bots vao falhar. APIs caem, modelos ficam lentos, rate limits sao atingidos. O que define um sistema robusto nao e a ausencia de falhas, e <strong class="text-teal-400">como ele se comporta quando falha</strong>. Degradacao graceful garante que o usuario sempre recebe alguma resposta, mesmo que nao seja a ideal.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-4 flex items-center">
+          <span class="mr-2">🎯</span> Conceito Principal
+        </h3>
+        <p class="text-neutral-300 mb-4">
+          Degradacao graceful segue uma <strong class="text-white">cadeia de fallback</strong>: se o bot especialista falha, tenta um bot generico. Se o bot generico falha, tenta uma resposta pre-programada. Se tudo falha, informa o usuario que vai analisar e retornar. Nunca silencio. Nunca erro cru.
+        </p>
+        <p class="text-neutral-300">
+          Os tres pilares sao: <strong class="text-white">health checks</strong> (detectar falha proativamente), <strong class="text-white">circuit breaker</strong> (parar de chamar bot que esta falhando) e <strong class="text-white">fallback chain</strong> (sempre ter um plano B, C e D).
+        </p>
+      </div>
+
+      <!-- Cadeia de Fallback Visual -->
+      <div class="bg-dark-800 rounded-xl border border-teal-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
+          <span class="mr-2">🔗</span> Cadeia de Fallback
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-4 p-4 bg-emerald-900/20 rounded-lg border border-emerald-500/20">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold">1</span>
+            <div class="flex-1">
+              <span class="text-white font-medium">Bot Especialista</span>
+              <span class="text-neutral-400 text-sm"> - Tenta o bot ideal para a intencao detectada</span>
+            </div>
+            <span class="text-emerald-400 text-sm font-mono">OK → responde</span>
+          </div>
+          <div class="flex justify-center">
+            <span class="text-red-400 text-sm">falhou ↓</span>
+          </div>
+          <div class="flex items-center space-x-4 p-4 bg-amber-900/20 rounded-lg border border-amber-500/20">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold">2</span>
+            <div class="flex-1">
+              <span class="text-white font-medium">Bot Generalista</span>
+              <span class="text-neutral-400 text-sm"> - LLM generico tenta responder sem especializacao</span>
+            </div>
+            <span class="text-amber-400 text-sm font-mono">OK → responde</span>
+          </div>
+          <div class="flex justify-center">
+            <span class="text-red-400 text-sm">falhou ↓</span>
+          </div>
+          <div class="flex items-center space-x-4 p-4 bg-blue-900/20 rounded-lg border border-blue-500/20">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">3</span>
+            <div class="flex-1">
+              <span class="text-white font-medium">Resposta Pre-Programada</span>
+              <span class="text-neutral-400 text-sm"> - Template estatico por categoria de intent</span>
+            </div>
+            <span class="text-blue-400 text-sm font-mono">Sempre funciona</span>
+          </div>
+          <div class="flex justify-center">
+            <span class="text-red-400 text-sm">impossivel ↓</span>
+          </div>
+          <div class="flex items-center space-x-4 p-4 bg-red-900/20 rounded-lg border border-red-500/20">
+            <span class="flex-shrink-0 w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold">4</span>
+            <div class="flex-1">
+              <span class="text-white font-medium">Mensagem de Erro Amigavel</span>
+              <span class="text-neutral-400 text-sm"> - "Estou com dificuldades. Vou analisar e retornar."</span>
+            </div>
+            <span class="text-red-400 text-sm font-mono">Ultimo recurso</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Checks + Circuit Breaker -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-teal-400 mb-4 flex items-center">
+            <span class="mr-2">💓</span> Health Checks
+          </h4>
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+            <div class="text-neutral-500">// Verifica saude de cada bot a cada 30s</div>
+            <div class="text-teal-400">async function healthCheck(bot) {</div>
+            <div class="text-neutral-300 pl-4">try {</div>
+            <div class="text-neutral-300 pl-8">const start = Date.now()</div>
+            <div class="text-neutral-300 pl-8">await bot.ping() <span class="text-neutral-500">// mensagem de teste</span></div>
+            <div class="text-neutral-300 pl-8">const latency = Date.now() - start</div>
+            <div class="text-neutral-300 pl-8">return {</div>
+            <div class="text-neutral-300 pl-12">healthy: latency < 5000,</div>
+            <div class="text-neutral-300 pl-12">latency,</div>
+            <div class="text-neutral-300 pl-8">}</div>
+            <div class="text-neutral-300 pl-4">} catch {</div>
+            <div class="text-neutral-300 pl-8">return { healthy: false }</div>
+            <div class="text-neutral-300 pl-4">}</div>
+            <div class="text-teal-400">}</div>
+          </div>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
+          <h4 class="font-bold text-teal-400 mb-4 flex items-center">
+            <span class="mr-2">⚡</span> Circuit Breaker
+          </h4>
+          <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+            <div class="text-neutral-500">// Para de chamar bot que falhou 3x seguidas</div>
+            <div class="text-teal-400">class CircuitBreaker {</div>
+            <div class="text-neutral-300 pl-4">failures = 0</div>
+            <div class="text-neutral-300 pl-4">state = 'closed' <span class="text-neutral-500">// closed | open | half-open</span></div>
+            <div class="text-neutral-300 pl-4"></div>
+            <div class="text-neutral-300 pl-4">async call(fn) {</div>
+            <div class="text-neutral-300 pl-8">if (this.state === 'open')</div>
+            <div class="text-neutral-300 pl-12">throw new Error('Circuit open')</div>
+            <div class="text-neutral-300 pl-8">try {</div>
+            <div class="text-neutral-300 pl-12">const result = await fn()</div>
+            <div class="text-neutral-300 pl-12">this.failures = 0</div>
+            <div class="text-neutral-300 pl-12">return result</div>
+            <div class="text-neutral-300 pl-8">} catch (e) {</div>
+            <div class="text-neutral-300 pl-12">if (++this.failures >= 3)</div>
+            <div class="text-neutral-300 pl-16">this.openCircuit()</div>
+            <div class="text-neutral-300 pl-12">throw e</div>
+            <div class="text-neutral-300 pl-8">}</div>
+            <div class="text-neutral-300 pl-4">}</div>
+            <div class="text-teal-400">}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center">
+          <span class="mr-2">💡</span> Dica Pratica
+        </h3>
+        <p class="text-neutral-300">
+          <strong class="text-white">Logue todas as falhas e fallbacks.</strong> Se voce nao sabe que o bot de vendas caiu 47 vezes ontem e o fallback respondeu no lugar, voce nao sabe que tem um problema. Crie alertas: se o fallback rate passa de 10%, algo precisa de atencao. O dashboard do OpenClaw mostra isso em tempo real.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TOPICO 6: Exercicio: Implementar Router Central -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section id="topico-6" class="mb-16">
+      <div class="flex items-center space-x-4 mb-6">
+        <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl">6</span>
+        <h2 class="text-2xl font-bold">🏗️ Exercicio: Implementar Router Central</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-6 leading-relaxed">
+        Hora de colocar a arquitetura em pratica. Voce vai construir um <strong class="text-teal-400">router funcional que classifica intent e despacha para 2+ bots especialistas</strong> com fallback. Ao final, voce tera um sistema multibot minimo viavel rodando.
+      </p>
+
+      <!-- Box Principal do Exercicio -->
+      <div class="bg-gradient-to-br from-teal-900/30 to-dark-800 rounded-xl border-2 border-teal-500/40 p-8 mb-6">
+        <div class="flex items-center space-x-3 mb-6">
+          <span class="text-3xl">🏗️</span>
+          <div>
+            <h3 class="text-xl font-bold text-teal-400">Exercicio: Router Central com Fallback</h3>
+            <p class="text-neutral-400 text-sm">Tempo estimado: 30-40 minutos</p>
+          </div>
+        </div>
+
+        <!-- Passos Numerados -->
+        <div class="space-y-6">
+          <!-- Step 1 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">1</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Configure o Projeto</h4>
+              <p class="text-neutral-300 text-sm mb-3">Crie a estrutura basica com Node.js. Instale dependencias minimas.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-teal-400">mkdir multibot-router && cd multibot-router</div>
+                <div class="text-teal-400">npm init -y</div>
+                <div class="text-teal-400">npm install node-telegram-bot-api dotenv</div>
+                <div class="text-neutral-300 mt-2 text-neutral-500"># Opcional: Ollama para classificacao local</div>
+                <div class="text-teal-400">npm install ollama</div>
+                <div class="text-neutral-300 mt-2 text-neutral-500"># Estrutura</div>
+                <div class="text-neutral-300">mkdir -p src/bots</div>
+                <div class="text-neutral-300">touch src/router.js src/bots/support.js src/bots/sales.js src/bots/fallback.js</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">2</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implemente o Classificador</h4>
+              <p class="text-neutral-300 text-sm mb-3">Comece com keyword matching. Depois adicione LLM como fallback para mensagens ambiguas.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// src/router.js</div>
+                <div class="text-teal-400">const INTENTS = {</div>
+                <div class="text-neutral-300 pl-4">support: ['bug', 'erro', 'problema', 'nao funciona', 'como faco'],</div>
+                <div class="text-neutral-300 pl-4">sales: ['preco', 'plano', 'comprar', 'upgrade', 'trial', 'demo'],</div>
+                <div class="text-teal-400">}</div>
+                <div class="text-neutral-300 mt-2">function classify(message) {</div>
+                <div class="text-neutral-300 pl-4">const lower = message.toLowerCase()</div>
+                <div class="text-neutral-300 pl-4">for (const [intent, kws] of Object.entries(INTENTS)) {</div>
+                <div class="text-neutral-300 pl-8">if (kws.some(kw => lower.includes(kw)))</div>
+                <div class="text-neutral-300 pl-12">return { intent, confidence: 0.9 }</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-neutral-300 pl-4">return { intent: 'fallback', confidence: 0 }</div>
+                <div class="text-neutral-300">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">3</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Crie 2 Bots Especialistas</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cada bot com system prompt unico e funcao respond(). Pode usar Ollama local ou API.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// src/bots/support.js</div>
+                <div class="text-teal-400">class SupportBot {</div>
+                <div class="text-neutral-300 pl-4">system = `Voce e um agente de suporte tecnico.</div>
+                <div class="text-neutral-300 pl-4">Seja empatico, resolva rapido, consulte a FAQ.`</div>
+                <div class="text-neutral-300 pl-4"></div>
+                <div class="text-neutral-300 pl-4">async respond(message) {</div>
+                <div class="text-neutral-300 pl-8">return await ollama.chat({</div>
+                <div class="text-neutral-300 pl-12">model: 'qwen2.5:14b',</div>
+                <div class="text-neutral-300 pl-12">messages: [</div>
+                <div class="text-neutral-300 pl-16">{ role: 'system', content: this.system },</div>
+                <div class="text-neutral-300 pl-16">{ role: 'user', content: message },</div>
+                <div class="text-neutral-300 pl-12">]</div>
+                <div class="text-neutral-300 pl-8">})</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">4</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Implemente o Fallback com Try/Catch</h4>
+              <p class="text-neutral-300 text-sm mb-3">Se o especialista falha, tenta o generalista. Se o generalista falha, resposta estatica.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-teal-400">async function handleMessage(message) {</div>
+                <div class="text-neutral-300 pl-4">const { intent, confidence } = classify(message)</div>
+                <div class="text-neutral-300 pl-4">const bot = confidence > 0.8 ? bots[intent] : bots.fallback</div>
+                <div class="text-neutral-300 pl-4"></div>
+                <div class="text-neutral-300 pl-4">try {</div>
+                <div class="text-neutral-300 pl-8">return await bot.respond(message)</div>
+                <div class="text-neutral-300 pl-4">} catch (err) {</div>
+                <div class="text-neutral-300 pl-8">console.error(`Bot ${intent} falhou:`, err.message)</div>
+                <div class="text-neutral-300 pl-8">try {</div>
+                <div class="text-neutral-300 pl-12">return await bots.fallback.respond(message)</div>
+                <div class="text-neutral-300 pl-8">} catch {</div>
+                <div class="text-neutral-300 pl-12">return 'Desculpe, estou com dificuldades. Tente novamente em instantes.'</div>
+                <div class="text-neutral-300 pl-8">}</div>
+                <div class="text-neutral-300 pl-4">}</div>
+                <div class="text-teal-400">}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">5</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Conecte ao Telegram e Teste</h4>
+              <p class="text-neutral-300 text-sm mb-3">Integre o router com o Telegram Bot API. Teste com 10 mensagens de tipos diferentes.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm space-y-1 border border-teal-500/20">
+                <div class="text-neutral-500"># Mensagens de teste</div>
+                <div><span class="text-emerald-400">Suporte:</span> <span class="text-neutral-300">"meu login nao funciona" → SupportBot</span></div>
+                <div><span class="text-emerald-400">Suporte:</span> <span class="text-neutral-300">"encontrei um bug na tela de pagamento" → SupportBot</span></div>
+                <div><span class="text-blue-400">Vendas:</span> <span class="text-neutral-300">"qual o preco do plano enterprise?" → SalesBot</span></div>
+                <div><span class="text-blue-400">Vendas:</span> <span class="text-neutral-300">"quero fazer upgrade" → SalesBot</span></div>
+                <div><span class="text-amber-400">Fallback:</span> <span class="text-neutral-300">"oi, tudo bem?" → FallbackBot</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="flex items-start space-x-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/30 flex items-center justify-center border border-teal-500/40">
+              <span class="text-teal-400 font-bold">6</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-semibold text-white mb-2">Adicione Logging de Routing</h4>
+              <p class="text-neutral-300 text-sm mb-3">Cada mensagem processada gera um log: intent, confianca, bot selecionado, latencia.</p>
+              <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm border border-teal-500/20 overflow-x-auto">
+                <div class="text-neutral-500">// Log de cada decisao de routing</div>
+                <div class="text-neutral-300">console.log(JSON.stringify({</div>
+                <div class="text-neutral-300 pl-4">ts: new Date().toISOString(),</div>
+                <div class="text-neutral-300 pl-4">message: message.substring(0, 50),</div>
+                <div class="text-neutral-300 pl-4">intent,</div>
+                <div class="text-neutral-300 pl-4">confidence,</div>
+                <div class="text-neutral-300 pl-4">bot: bot.name,</div>
+                <div class="text-neutral-300 pl-4">latency_ms: Date.now() - start,</div>
+                <div class="text-neutral-300 pl-4">fallback: usedFallback,</div>
+                <div class="text-neutral-300">}))</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist de Sucesso -->
+      <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center">
+          <span class="mr-2">✅</span> Criterios de Sucesso
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Router classifica 3+ categorias de intent</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">2+ bots especialistas com prompts distintos</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Fallback chain funcional (especialista → geral → estatico)</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Logging de routing em cada mensagem</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">10 mensagens testadas com routing correto</span>
+          </div>
+          <div class="flex items-center space-x-3 p-3 bg-dark-800/50 rounded-lg">
+            <span class="text-emerald-400">☐</span>
+            <span class="text-neutral-300">Threshold de confianca implementado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bg-gradient-to-br from-teal-900/20 via-blue-900/20 to-purple-900/20 rounded-xl border border-teal-500/20 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-teal-400 mb-3 flex items-center">
+          <span class="mr-2">🌟</span> Bonus: Evolua para LLM-Based Routing
+        </h3>
+        <p class="text-neutral-300 mb-3">
+          Substitua o keyword matching por classificacao LLM usando Ollama local. Use qwen2.5:3b ou llama3.2:1b como classificador. Compare a acuracia com keyword matching e documente os resultados.
+        </p>
+        <p class="text-neutral-300">
+          <strong class="text-white">Extra credit:</strong> Adicione um health check que verifica se cada bot esta respondendo a cada 30 segundos. Se um bot falha 3x seguidas, marque como unhealthy e redirecione automaticamente pro fallback.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- RESUMO FINAL -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center">
+          <span class="mr-3">📋</span> Resumo do Modulo
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Hub-and-spoke: router central recebe tudo, despacha para especialistas</strong>
+              <span class="text-neutral-400"> - Hub stateless, observabilidade centralizada, experiencia seamless pro usuario.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Router: keyword matching + LLM fallback e o melhor inicio</strong>
+              <span class="text-neutral-400"> - Rapido na maioria dos casos, preciso nos ambiguos. Thresholds de confianca evitam routing errado.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Message queues desacoplam router de bots</strong>
+              <span class="text-neutral-400"> - BullMQ para producao, SQLite polling para MVP. Priority queues para SLA por tipo de mensagem.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Least-connections e a melhor estrategia de load balancing para bots</strong>
+              <span class="text-neutral-400"> - Tempo de processamento variavel invalida round-robin simples. Auto-scaling por tamanho de fila.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Fallback chain: especialista → generalista → estatico → erro amigavel</strong>
+              <span class="text-neutral-400"> - Health checks + circuit breaker detectam e isolam falhas. Nunca silencio, nunca erro cru.</span>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3">
+            <span class="text-teal-400 mt-1">✓</span>
+            <div>
+              <strong class="text-white">Seu router central esta funcional com classificacao, despacho e fallback</strong>
+              <span class="text-neutral-400"> - Base solida para evoluir: adicionar bots, melhorar classificacao, conectar canais.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-start gap-4">
+          <a href="modulo-5-2.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            ← Modulo 5.2
+          </a>
+          <a href="index.html" class="text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">
+            Voltar para Trilha 5
+          </a>
+          <a href="modulo-5-4.html" class="text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">
+            Modulo 5.4 →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - 2026 | <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

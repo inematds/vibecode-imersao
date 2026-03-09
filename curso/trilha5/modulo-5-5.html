@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modulo 5.5: OpenClaw e ClaudeClaw | Imersao Vibe Coding</title>
+  <meta name="description" content="Frameworks de referencia para bots pessoais com IA. OpenClaw open source e ClaudeClaw com Claude Agent SDK.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    /* Light mode overrides */
+    html:not(.dark) body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    .topic-section {
+      scroll-margin-top: 5rem;
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-4">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">&#x1F680;</span>
+            <span class="font-bold text-lg hidden sm:inline">Imersao Vibe Coding</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors">
+            <span class="sm:hidden">T1</span>
+            <span class="hidden sm:inline">Mentalidade</span>
+          </a>
+          <a href="../trilha2/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors">
+            <span class="sm:hidden">T2</span>
+            <span class="hidden sm:inline">Arquitetura</span>
+          </a>
+          <a href="../trilha3/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors">
+            <span class="sm:hidden">T3</span>
+            <span class="hidden sm:inline">Construcao</span>
+          </a>
+          <a href="../trilha4/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors">
+            <span class="sm:hidden">T4</span>
+            <span class="hidden sm:inline">Agentes</span>
+          </a>
+          <a href="index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-teal-400 bg-teal-500/10">
+            <span class="sm:hidden">T5</span>
+            <span class="hidden sm:inline">Multibots</span>
+          </a>
+          <a href="../trilha6/index.html" class="px-2 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-neutral-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <span class="sm:hidden">T6</span>
+            <span class="hidden sm:inline">Operacao</span>
+          </a>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-2">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="flex items-center space-x-2 text-sm text-neutral-500">
+      <a href="../../index.html" class="hover:text-teal-400 transition-colors">Inicio</a>
+      <span>/</span>
+      <a href="index.html" class="hover:text-teal-400 transition-colors">Trilha 5</a>
+      <span>/</span>
+      <span class="text-teal-400">Modulo 5.5</span>
+    </nav>
+  </div>
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block px-4 py-1.5 bg-teal-500/20 text-teal-400 text-sm font-semibold rounded-full mb-4">MODULO 5.5</span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4">&#x1F43E; OpenClaw e ClaudeClaw</h1>
+      <p class="text-neutral-400 max-w-2xl mx-auto mb-6">Frameworks de referencia para bots pessoais com IA. Arquitetura, skills, customizacao e como montar o seu.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">6</div>
+          <div class="text-xs text-neutral-400">Topicos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">60</div>
+          <div class="text-xs text-neutral-400">Minutos</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">Avancado</div>
+          <div class="text-xs text-neutral-400">Nivel</div>
+        </div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600">
+          <div class="text-lg font-bold text-teal-400">Pratico</div>
+          <div class="text-xs text-neutral-400">Tipo</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 1: Frameworks de Bots Pessoais -->
+    <!-- ================================================================== -->
+    <section id="topico-1" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">1</div>
+        <h2 class="text-2xl font-bold">&#x1F43E; Frameworks de Bots Pessoais</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Um bot pessoal com IA nao e a mesma coisa que um chatbot. Chatbots sao reativos: voce faz uma pergunta, ele responde. Bots pessoais sao proativos, persistentes e contextuais. Eles rodam 24/7 na sua maquina ou servidor, conhecem suas preferencias, acessam suas ferramentas e executam tarefas reais no mundo. A diferenca entre perguntar "como esta o clima?" e ter um assistente que automaticamente avisa voce de chuva antes de sair e a diferenca entre um chatbot e um bot pessoal.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O conceito de personal AI assistant ganhou forca em 2025 quando desenvolvedores comecaram a construir seus proprios bots que rodavam localmente, conectados a APIs de LLMs, com acesso a emails, calendarios, sistema de arquivos e ferramentas de desenvolvimento. Diferente de assistentes corporativos como Siri ou Google Assistant, esses bots sao totalmente customizaveis, open source em muitos casos, e rodam sob o controle total do usuario.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A motivacao principal e autonomia. Quando voce depende de um assistente de uma big tech, voce esta limitado ao que eles decidiram que voce pode fazer. Com um bot pessoal, voce define as capacidades. Quer que ele leia seus emails e resuma os importantes? Configuravel. Quer que ele monitore precos de passagens aereas? Configuravel. Quer que ele faca deploy de um projeto quando voce manda uma mensagem no Telegram? Totalmente configuravel. A unica limitacao e sua imaginacao e as APIs disponiveis.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>Personal AI Assistant (always-on bot)</strong> e um software que roda permanentemente, conectado a um ou mais canais de comunicacao (Telegram, Slack, Discord, WhatsApp), com acesso a ferramentas externas (email, calendario, browser, sistema de arquivos), e alimentado por um ou mais modelos de linguagem (Claude, GPT, Llama, Qwen). Ele mantem contexto entre conversas, aprende preferencias do usuario, e pode executar tarefas autonomamente.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A arquitetura tipica de um bot pessoal tem quatro camadas. A camada de <strong>interface</strong> (Telegram, Slack) recebe e envia mensagens. A camada de <strong>processamento</strong> (router, intent classifier) decide o que fazer com cada mensagem. A camada de <strong>execucao</strong> (skills, tools, MCP servers) realiza as acoes. E a camada de <strong>memoria</strong> (banco de dados, embeddings) mantem o contexto ao longo do tempo.
+        </p>
+        <p class="text-neutral-300">
+          Ter seu proprio bot e diferente de usar ChatGPT pelo browser porque o bot tem <strong>persistencia</strong> (lembra de conversas anteriores), <strong>proatividade</strong> (pode enviar mensagens sem ser perguntado, via scheduled tasks), e <strong>integracao</strong> (conecta a ferramentas reais que afetam o mundo). Ele nao responde perguntas. Ele faz coisas.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Ecossistema de Bots Pessoais em 2026</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">50K+</div>
+            <p class="text-neutral-400 text-sm">repositorios no GitHub com tag "personal-ai-assistant" ou similar</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Telegram</div>
+            <p class="text-neutral-400 text-sm">canal mais popular para bots pessoais (API aberta, bot-friendly, rich media)</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">3 stacks</div>
+            <p class="text-neutral-400 text-sm">dominantes: Node.js/TS, Python, Go. Node lidera em bots real-time</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">24/7</div>
+            <p class="text-neutral-400 text-sm">bots pessoais rodam como servicos permanentes, nao como scripts one-shot</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Antes de construir seu bot, defina os 3-5 casos de uso mais importantes para voce. Nao tente fazer tudo no dia um. Comece com o caso de uso que voce usaria todo dia. Para muitos devs, isso e "responder perguntas rapidas sobre meus projetos" ou "resumir emails importantes". Comece ai e expanda organicamente.
+        </p>
+        <p class="text-neutral-300">
+          Escolha Telegram como sua interface inicial. A API e a mais amigavel para bots, suporta markdown, arquivos, fotos, audio, e tem zero custo. Voce pode migrar para outros canais depois, mas Telegram e o melhor ponto de partida por uma margem grande.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Definir casos de uso concretos antes de comecar a codar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Escolher um canal de comunicacao e domina-lo primeiro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Pensar em persistencia e memoria desde o inicio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Rodar o bot como servico (systemd, pm2, Docker)</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Construir um "chatbot generico" sem proposito claro</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar seguranca (qualquer um pode mandar mensagem pro bot)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Depender de um unico provedor de LLM sem fallback</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao implementar rate limiting ou controle de custos</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 2: OpenClaw: Arquitetura Open Source -->
+    <!-- ================================================================== -->
+    <section id="topico-2" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">2</div>
+        <h2 class="text-2xl font-bold">&#x1F513; OpenClaw: Arquitetura Open Source</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        OpenClaw e um framework open source para construir bots pessoais com IA. Escrito em TypeScript rodando em Node.js, ele fornece a arquitetura base que voce precisa para ter um assistente pessoal funcional sem comecar do zero. A filosofia e ser extensivel, self-hosted e community-driven. Voce clona, configura e tem um bot rodando em minutos.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O stack tecnico foi escolhido por razoes praticas. Node.js e ideal para bots porque e event-driven e non-blocking, perfeito para lidar com multiplas mensagens simultaneas sem travar. TypeScript adiciona type safety, o que e critico em projetos que crescem organicamente. SQLite como banco de dados elimina a necessidade de instalar e gerenciar um servidor de banco separado. Tudo roda em um unico processo.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        A extensibilidade via plugins e skills significa que a comunidade pode contribuir funcionalidades sem mexer no core do framework. Cada skill e um modulo independente com seus proprios triggers, dependencias e logica. Voce pode instalar skills prontas ou criar as suas. O sistema de plugins segue o mesmo padrao de ecossistemas maduros como ESLint ou Prettier: a comunidade constroi, voce escolhe o que usar.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>OpenClaw</strong> segue uma arquitetura modular com quatro componentes principais. O <strong>Bot Core</strong> gerencia o lifecycle da aplicacao, conexao com Telegram, e message handling. O <strong>Router</strong> analisa cada mensagem e decide qual agente ou skill deve processar. O <strong>Agent Layer</strong> conecta a diferentes backends de LLM (Ollama local, Claude API, OpenRouter). E o <strong>Skill System</strong> fornece capacidades concretas como ler emails, agendar tarefas ou buscar na web.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          Ser self-hosted significa que seus dados nunca saem da sua maquina (exceto as chamadas de API para o LLM que voce escolher). Suas conversas, memorias, tasks e configuracoes ficam em um arquivo SQLite local. Voce tem controle total sobre o que e armazenado, por quanto tempo, e quem tem acesso. Isso e um diferencial enorme em relacao a assistentes cloud-based onde seus dados estao nos servidores de outra empresa.
+        </p>
+        <p class="text-neutral-300">
+          A natureza open source permite auditoria completa do codigo. Voce pode ler cada linha que roda na sua maquina. Pode fazer fork e customizar livremente. Pode contribuir features de volta para a comunidade. E pode ter certeza de que nenhum dado esta sendo coletado sem seu conhecimento.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Stack Tecnico do OpenClaw</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Node.js</div>
+            <p class="text-neutral-400 text-sm">Runtime event-driven, ideal para I/O concorrente de mensagens</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">TypeScript</div>
+            <p class="text-neutral-400 text-sm">Type safety para codebase extensivel e refatoracao segura</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">SQLite</div>
+            <p class="text-neutral-400 text-sm">Zero-config database, arquivo unico, backup trivial</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Telegraf</div>
+            <p class="text-neutral-400 text-sm">Framework Telegram Bot API com middleware pattern</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Quando clonar o OpenClaw, comece lendo o arquivo de configuracao principal (.env) e o README. Entenda quais variaveis sao obrigatorias (token do Telegram, chave de API do LLM) e quais sao opcionais. Configure o minimo necessario para ter o bot respondendo, e so depois adicione skills e customizacoes.
+        </p>
+        <p class="text-neutral-300">
+          Use Ollama como backend inicial se voce tem uma maquina com GPU. E gratuito, roda local, e voce pode experimentar sem se preocupar com custos de API. Qwen 2.5 14B e um bom modelo para comecar: rapido, bom em portugues, e cabe em uma GPU com 16GB de VRAM.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Ler o codigo fonte antes de customizar (entender antes de mudar)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Contribuir bugs e features de volta para o repositorio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Manter o .env fora do git (seguranca basica)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Fazer backup regular do banco SQLite</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Modificar o core sem entender o lifecycle do bot</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Commitar tokens e API keys no repositorio</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar atualizacoes do upstream (bugs de seguranca)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Rodar sem ALLOWED_CHAT_ID (qualquer pessoa pode usar seu bot)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 3: ClaudeClaw: Bot com Claude -->
+    <!-- ================================================================== -->
+    <section id="topico-3" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">3</div>
+        <h2 class="text-2xl font-bold">&#x1F916; ClaudeClaw: Bot com Claude</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        ClaudeClaw e a implementacao de referencia do OpenClaw que usa o Claude Agent SDK como backend principal. A diferenca fundamental em relacao a simplesmente chamar a API do Claude e que o ClaudeClaw usa o modo agentico do Claude Code, onde o modelo tem acesso completo a ferramentas: pode ler e editar arquivos, executar comandos no terminal, fazer buscas na web, e rodar qualquer ferramenta MCP configurada. Voce esta dando ao Claude as mesmas capacidades que um desenvolvedor tem no terminal.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        A interface principal e o Telegram. Voce manda uma mensagem de texto ou audio, o bot transcreve se necessario, processa via Claude Agent SDK, e retorna a resposta. Mas nao e so texto entrando e saindo. O Claude pode enviar arquivos de volta (PDFs gerados, screenshots, planilhas), pode executar operacoes no seu servidor (git push, npm build, restart de servicos), e pode acessar APIs externas via MCP servers.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        O conceito de sessoes persistentes e central. Diferente de uma conversa no ChatGPT que comeca do zero a cada vez, o ClaudeClaw mantem uma sessao ativa do Claude Code. Isso significa que o contexto da conversa persiste entre mensagens. Voce pode dizer "lembra daquele projeto que discutimos ontem?" e o bot tera esse contexto. Quando a janela de contexto enche, o sistema faz compaction automatica, resumindo o historico para liberar espaco sem perder informacao critica.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          <strong>Claude Agent SDK</strong> e a biblioteca oficial da Anthropic para criar agentes autonomos com Claude. No contexto do ClaudeClaw, o SDK e usado para criar um agente que tem acesso a todas as ferramentas do sistema. Quando voce manda "cria um script Python que faz X", o Claude nao apenas gera o codigo. Ele cria o arquivo, executa, verifica se funciona, corrige erros, e envia o resultado final.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          A combinacao Telegram + Claude Agent SDK e poderosa porque une a ubiquidade do Telegram (acessivel do celular, computador, web) com o poder agentico do Claude (pode fazer qualquer coisa que voce faria no terminal). Voce literalmente comanda seu servidor a partir de mensagens de texto no celular. Manda um audio dizendo "faz deploy do projeto X" e o bot executa git pull, npm build, restart do servico, e confirma que esta tudo no ar.
+        </p>
+        <p class="text-neutral-300">
+          O sistema de <strong>full tool access</strong> significa que o Claude dentro do ClaudeClaw tem as mesmas permissoes que o usuario que roda o processo. Ele pode acessar o filesystem, rodar comandos bash, fazer requests HTTP, e interagir com qualquer MCP server configurado. Isso e extremamente poderoso e requer cuidado: voce precisa configurar ALLOWED_CHAT_ID para garantir que so voce pode enviar comandos ao bot.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Capacidades do ClaudeClaw</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Full Tools</div>
+            <p class="text-neutral-400 text-sm">Bash, filesystem, web search, browser, MCP servers</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Persistente</div>
+            <p class="text-neutral-400 text-sm">Sessao Claude Code que sobrevive entre mensagens com auto-compaction</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Multi-modal</div>
+            <p class="text-neutral-400 text-sm">Texto, audio (transcricao), imagens, arquivos de entrada e saida</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Proativo</div>
+            <p class="text-neutral-400 text-sm">Scheduled tasks, notificacoes, monitoramento automatico</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          O ClaudeClaw usa creditos da API Anthropic. Monitore seu uso via dashboard (porta 3141) que mostra tokens consumidos, custo por mensagem, e custo acumulado por agente. Configure alertas de gasto se necessario. Uma conversa longa com muitas tool calls pode custar $1-5, entao tenha visibilidade sobre isso.
+        </p>
+        <p class="text-neutral-300">
+          Use o sistema multi-agente para economizar. Perguntas simples vao para Ollama (custo zero), e so tarefas que realmente precisam de tools e raciocinio complexo vao para Claude. O router inteligente faz isso automaticamente quando configurado.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Configurar ALLOWED_CHAT_ID imediatamente (seguranca critica)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Monitorar custo por mensagem via dashboard</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar o CLAUDE.md para definir personalidade e comportamento</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Configurar multi-agente para otimizar custos</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Rodar sem restricao de chat ID (risco financeiro e de seguranca)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Enviar tarefas triviais para Claude (use Ollama para perguntas simples)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar o custo acumulado de sessoes longas</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Dar permissoes de root ao processo do bot</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 4: Skills e Integracao -->
+    <!-- ================================================================== -->
+    <section id="topico-4" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">4</div>
+        <h2 class="text-2xl font-bold">&#x1F9E9; Skills e Integracao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Skills sao modulos de capacidade que dao ao bot habilidades concretas e especificas. Em vez de depender apenas do conhecimento geral do LLM, skills conectam o bot a servicos reais: Gmail para emails, Google Calendar para agenda, um browser headless para navegacao web, Obsidian para notas, e qualquer outra API ou ferramenta que voce precise. Cada skill transforma o bot de um conversador em um executor.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O sistema de skills funciona com triggers automaticos. No CLAUDE.md (o arquivo de personalidade do bot), voce define uma tabela de skills com palavras-chave. Quando o usuario menciona "email" ou "inbox", o sistema sabe que deve acionar a skill de Gmail. Quando menciona "agenda" ou "reuniao", aciona a skill de Google Calendar. Essa deteccao acontece no nivel do LLM, que interpreta a intencao da mensagem e invoca a skill apropriada.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        MCP (Model Context Protocol) e o padrao aberto que permite ao Claude se conectar a ferramentas externas de forma padronizada. Em vez de cada skill implementar sua propria integracao, o MCP define um protocolo comum. Existem centenas de MCP servers disponiveis: para GitHub, Slack, bancos de dados, APIs REST, e muito mais. Instalar um MCP server novo e adicionar uma capacidade inteira ao bot com uma linha de configuracao.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-4">Skills Principais do Ecossistema</h3>
+        <div class="space-y-4">
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-teal-400">Gmail</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Le emails, filtra por remetente ou assunto, resume threads longas, redige respostas, envia emails. Triggers: "email", "inbox", "reply", "send". Usa OAuth2 para autenticacao segura com escopo limitado.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-teal-400">Google Calendar</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Lista eventos, cria reunioes, verifica disponibilidade, envia lembretes. Triggers: "schedule", "meeting", "calendar", "availability". Entende linguagem natural: "marca uma call com o Joao amanha as 15h".</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-teal-400">Agent Browser</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Navega a web, preenche formularios, faz scraping de dados, tira screenshots de paginas. Triggers: "browse", "scrape", "click", "fill form". Usa Puppeteer/Playwright para controle completo do browser.</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-4">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-teal-400">Todo / Task Manager</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Gerencia tarefas, listas de afazeres, lembretes. Integra com Obsidian, Todoist, ou banco local. Triggers: "tasks", "todo", "lembrete". Permite scheduled tasks com cron expressions.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Ecossistema MCP em Numeros</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-2xl font-bold text-blue-400">500+</div>
+            <p class="text-neutral-400 text-sm">MCP servers disponiveis no registro publico em 2026</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Padrao Aberto</div>
+            <p class="text-neutral-400 text-sm">Qualquer provedor pode criar MCP servers, nao e lock-in da Anthropic</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">JSON-RPC</div>
+            <p class="text-neutral-400 text-sm">Protocolo leve, facil de implementar em qualquer linguagem</p>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-400">Auto-discovery</div>
+            <p class="text-neutral-400 text-sm">Claude detecta automaticamente as ferramentas disponiveis via MCP</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Comece com 2-3 skills e adicione mais conforme a necessidade real aparece. Nao instale 20 MCP servers no dia um. Cada skill adicional aumenta o contexto que o LLM precisa processar (mais ferramentas = mais tokens = mais custo e latencia). Instale o que voce realmente vai usar.
+        </p>
+        <p class="text-neutral-300">
+          Quando uma skill nao existir pronta, voce pode criar a sua. Um MCP server basico em Node.js pode ser criado em menos de 50 linhas de codigo. A documentacao do protocolo e clara e existem templates prontos. Se voce tem uma API que usa frequentemente, transforme-a em um MCP server e ganhe acesso via linguagem natural.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Documentar triggers de cada skill no CLAUDE.md</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Testar cada skill isoladamente antes de integrar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar OAuth2 com escopos minimos para servicos Google</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Criar MCP servers para APIs que voce usa com frequencia</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Instalar dezenas de skills sem uso real (bloat)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Dar full account access quando read-only basta</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Ignorar rate limits de APIs externas (bans e custos)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Hardcodar credenciais de skills no codigo</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 5: Customizacao e Extensao -->
+    <!-- ================================================================== -->
+    <section id="topico-5" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">5</div>
+        <h2 class="text-2xl font-bold">&#x1F527; Customizacao e Extensao</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        A verdadeira forca de um bot pessoal esta na customizacao. Nao e um produto generico que serve para todo mundo igual. E o SEU assistente, configurado para as SUAS necessidades, com a personalidade que VOCE definiu, acessando as ferramentas que VOCE usa. O CLAUDE.md e o coracao dessa customizacao: um arquivo markdown que funciona como o system prompt persistente do bot, definindo quem ele e, como ele se comporta, e o que ele sabe fazer.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O sistema de memoria permite que o bot aprenda e se adapte ao longo do tempo. Existem dois tipos de memoria: a sessional (contexto dentro de uma conversa) e a persistente (informacoes que sobrevivem entre sessoes). A memoria persistente fica em um banco SQLite com campos de saliencia (quao importante e essa informacao) e setor (semantica, episodica, procedural). O bot pode gravar memorias automaticamente durante conversas e recupera-las quando relevante.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Scheduled tasks transformam o bot de reativo em proativo. Em vez de esperar voce perguntar algo, o bot pode executar acoes em horarios definidos via cron expressions. Exemplos praticos: verificar emails importantes toda manha as 9h e enviar um resumo, monitorar o status de um servidor a cada hora, lembrar de uma tarefa recorrente toda segunda-feira. As notificacoes proativas vao via Telegram, transformando o bot em um sistema de alertas inteligente.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-3">Conceito Principal</h3>
+        <p class="text-neutral-300 mb-3">
+          O <strong>CLAUDE.md</strong> e o arquivo mais importante do bot. Ele define a personalidade (nome, tom de voz, regras de comunicacao), o conhecimento contextual (quem e o usuario, quais sao seus projetos, como ele pensa), as capacidades (tabela de skills com triggers), comandos especiais (checkpoint, convolife), e instrucoes sobre como usar ferramentas especificas. Toda mensagem que o bot processa e influenciada pelo conteudo desse arquivo.
+        </p>
+        <p class="text-neutral-300 mb-3">
+          O <strong>memory system</strong> usa uma tabela no SQLite com campos: content (o que lembrar), sector (tipo de memoria), salience (importancia de 1.0 a 5.0), created_at e accessed_at (timestamps). Memorias de alta saliencia sao recuperadas mais frequentemente. O bot pode criar memorias automaticamente ("nota: usuario prefere Python sobre JavaScript") e o usuario pode forcar um checkpoint manual para salvar o estado da conversa.
+        </p>
+        <p class="text-neutral-300">
+          Para criar <strong>skills customizadas</strong>, voce precisa de tres coisas: um script que executa a acao (pode ser bash, Python, Node.js, qualquer coisa executavel), uma entrada no CLAUDE.md descrevendo a skill e seus triggers, e opcionalmente um MCP server se voce quer que o Claude interaja com a skill de forma estruturada. O padrao mais simples e um bash script que o Claude executa via tool use.
+        </p>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Anatomia do CLAUDE.md</h3>
+        <div class="space-y-3 mt-4">
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Personality</strong> - Nome, tom de voz, regras de comunicacao (ex: "nunca use em dashes", "fale como pessoa real")</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Who Is [User]</strong> - Contexto sobre o usuario: profissao, projetos, forma de pensar, preferencias</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Your Job</strong> - Diretrizes de comportamento: "execute, nao explique", "pergunte se precisar de clarificacao"</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Skills Table</strong> - Tabela skill/triggers mapeando palavras-chave a capacidades</p>
+          </div>
+          <div class="bg-dark-700/50 rounded-lg p-3">
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Special Commands</strong> - Comandos como "convolife" (status do contexto) e "checkpoint" (salvar estado)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Invista tempo no CLAUDE.md. Quanto mais contexto voce der sobre voce, seus projetos e suas preferencias, melhores serao as respostas. Nao precisa ser um documento de 50 paginas. 2-3 paragrafos bem escritos sobre quem voce e e o que voce faz ja fazem uma diferenca enorme na qualidade das interacoes.
+        </p>
+        <p class="text-neutral-300">
+          Para scheduled tasks, comece com uma task de teste simples (ex: "manda um oi todo dia as 9h") para validar que o sistema de cron esta funcionando. Depois evolua para tasks uteis. O formato cron pode ser confuso no inicio; use crontab.guru para gerar e validar suas expressoes.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Iterar no CLAUDE.md frequentemente conforme descobre o que funciona</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar "checkpoint" regularmente para preservar contexto valioso</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Comecar scheduled tasks com coisas simples e escalar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Documentar suas skills custom para facilitar manutencao</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>CLAUDE.md generico sem informacao pessoal (desperdicar contexto)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Scheduled tasks a cada minuto (custo de API e sobrecarga)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Memorias sem controle de saliencia (tudo vira ruido)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Skills que dependem de estado global (dificulta debug)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- TOPICO 6: Exercicio: Setup de Framework -->
+    <!-- ================================================================== -->
+    <section id="topico-6" class="topic-section">
+      <div class="flex items-center space-x-4 mb-6">
+        <div class="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xl flex-shrink-0">6</div>
+        <h2 class="text-2xl font-bold">&#x1F6E0;&#xFE0F; Exercicio: Setup de Framework</h2>
+      </div>
+
+      <p class="text-neutral-300 mb-4 text-lg">
+        Hora de colocar a mao na massa. Neste exercicio voce vai configurar seu proprio bot pessoal usando o OpenClaw como base. O objetivo e ter um bot funcional no Telegram que responde mensagens usando um LLM, com pelo menos uma skill configurada. Ao final, voce tera a base sobre a qual pode construir qualquer coisa.
+      </p>
+
+      <p class="text-neutral-300 mb-4">
+        O exercicio esta dividido em etapas progressivas. Cada etapa produz um resultado funcional, entao mesmo que voce nao complete tudo, tera algo rodando. A estimativa de tempo e 60-90 minutos para o setup basico, mais 30-60 minutos para a skill customizada. Se voce ja tem experiencia com Node.js e Telegram bots, pode ser mais rapido.
+      </p>
+
+      <p class="text-neutral-300 mb-6">
+        Pre-requisitos: Node.js 18+ instalado, uma conta no Telegram, e acesso a pelo menos um provedor de LLM (Ollama local e o mais facil para comecar, pois e gratuito e nao requer API key externa). Se voce quer usar Claude, precisara de uma chave de API da Anthropic.
+      </p>
+
+      <!-- Conceito Principal -->
+      <div class="bg-gradient-to-r from-teal-900/30 to-dark-800 rounded-xl p-6 border border-teal-500/30 mb-6">
+        <h3 class="font-bold text-teal-400 mb-4">Passo a Passo do Exercicio</h3>
+        <div class="space-y-6">
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">1</span>
+              <h4 class="font-semibold text-teal-400">Criar o Bot no Telegram</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Abra o Telegram, busque @BotFather, envie /newbot, escolha um nome e username. Copie o token gerado. Depois, envie uma mensagem para o bot e use a API do Telegram para descobrir seu chat_id (ou use @userinfobot).</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">2</span>
+              <h4 class="font-semibold text-teal-400">Clonar e Configurar o Repositorio</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Clone o repositorio, copie o .env.example para .env, e preencha as variaveis obrigatorias:</p>
+            <div class="bg-dark-800 rounded-lg p-3 font-mono text-xs text-neutral-300 mt-2">
+              <p>git clone [repo-url] meu-bot && cd meu-bot</p>
+              <p>cp .env.example .env</p>
+              <p># Edite .env: BOT_TOKEN, ALLOWED_CHAT_ID, ANTHROPIC_API_KEY ou OLLAMA config</p>
+              <p>npm install && npm run build</p>
+            </div>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">3</span>
+              <h4 class="font-semibold text-teal-400">Personalizar o CLAUDE.md</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Abra o CLAUDE.md e substitua todos os placeholders [BRACKETED] com suas informacoes. De um nome ao bot, descreva quem voce e, liste os projetos em que trabalha. Esse arquivo e o que faz o bot ser SEU assistente e nao um chatbot generico.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">4</span>
+              <h4 class="font-semibold text-teal-400">Primeiro Teste</h4>
+            </div>
+            <p class="text-neutral-300 text-sm">Rode o bot com npm start ou node dist/index.js. Envie uma mensagem no Telegram. Se tudo estiver correto, voce recebera uma resposta. Verifique os logs no terminal para debug. Erros comuns: token errado, chat_id errado, Ollama nao rodando.</p>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center text-teal-400 font-bold text-xs flex-shrink-0">5</span>
+              <h4 class="font-semibold text-teal-400">Criar sua Primeira Skill</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Crie uma skill simples. Exemplo: um script que retorna o status de um servico ou o clima da sua cidade. Passos:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li>1. Crie o script em ~/.claude/skills/minha-skill.md</li>
+              <li>2. Adicione na tabela de skills do CLAUDE.md</li>
+              <li>3. Teste mandando uma mensagem com o trigger</li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-700/50 rounded-lg p-5">
+            <div class="flex items-center space-x-3 mb-2">
+              <span class="w-6 h-6 rounded-full bg-primary/30 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">6</span>
+              <h4 class="font-semibold text-primary">Rodar como Servico</h4>
+            </div>
+            <p class="text-neutral-300 text-sm mb-2">Configure o bot para rodar permanentemente. Opcoes:</p>
+            <ul class="text-sm text-neutral-300 space-y-1 ml-9">
+              <li><strong class="text-primary">pm2:</strong> npm install -g pm2 && pm2 start dist/index.js --name meu-bot</li>
+              <li><strong class="text-primary">systemd:</strong> crie um .service file para auto-restart e boot start</li>
+              <li><strong class="text-primary">Docker:</strong> use o Dockerfile incluido para containerizar</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dados / Pesquisa -->
+      <div class="bg-blue-900/20 rounded-xl p-6 border border-blue-500/30 mb-6">
+        <h3 class="font-bold text-blue-400 mb-3">Checklist de Entregaveis</h3>
+        <div class="space-y-2 text-sm text-neutral-300">
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Bot criado no BotFather com token configurado</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Repositorio clonado e dependencias instaladas</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>CLAUDE.md personalizado com suas informacoes</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Bot respondendo mensagens no Telegram</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Pelo menos uma skill customizada funcionando</span></label>
+          <label class="flex items-start space-x-2"><span class="text-blue-400 mt-0.5">&#x25A2;</span><span>Bot rodando como servico persistente (pm2/systemd/Docker)</span></label>
+        </div>
+      </div>
+
+      <!-- Dica Pratica -->
+      <div class="bg-primary/10 rounded-xl p-6 border border-primary/30 mb-6">
+        <h3 class="font-bold text-primary mb-3">Dica Pratica</h3>
+        <p class="text-neutral-300 mb-3">
+          Se voce travar em algum passo, use o proprio Claude Code para ajudar. Rode "claude" no terminal dentro do diretorio do projeto e descreva o problema. O Claude pode ler os logs, diagnosticar o erro, e sugerir a correcao. E meta: usar IA para configurar seu bot de IA.
+        </p>
+        <p class="text-neutral-300">
+          Para a skill customizada, comece com algo util pra voce no dia a dia. Se voce acompanha criptomoedas, faca uma skill que pega precos. Se voce gerencia servidores, faca uma skill de health check. A melhor skill e a que voce vai usar amanha.
+        </p>
+      </div>
+
+      <!-- Fazer vs Evitar -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-teal-900/20 rounded-xl p-6 border border-teal-500/30">
+          <h3 class="font-bold text-teal-400 mb-3">Fazer</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Seguir o passo a passo na ordem (cada etapa depende da anterior)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Testar cada etapa antes de prosseguir para a proxima</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Ler os logs do terminal quando algo nao funcionar</span></li>
+            <li class="flex items-start space-x-2"><span class="text-teal-400 mt-0.5">&#10003;</span><span>Usar Claude Code como par de debug quando travar</span></li>
+          </ul>
+        </div>
+        <div class="bg-red-900/20 rounded-xl p-6 border border-red-500/30">
+          <h3 class="font-bold text-red-400 mb-3">Evitar</h3>
+          <ul class="space-y-2 text-sm text-neutral-300">
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Pular o CLAUDE.md (vai funcionar, mas mal)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Nao configurar ALLOWED_CHAT_ID (seguranca!)</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Tentar fazer tudo de uma vez sem testar incrementalmente</span></li>
+            <li class="flex items-start space-x-2"><span class="text-red-400 mt-0.5">&#10007;</span><span>Desistir no primeiro erro (logs sempre tem a resposta)</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- RESUMO FINAL -->
+    <!-- ================================================================== -->
+    <section class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 rounded-2xl p-8 border border-teal-500/30">
+      <h2 class="text-2xl font-bold text-teal-400 mb-6 text-center">Resumo do Modulo 5.5</h2>
+      <p class="text-neutral-300 text-center mb-8 max-w-2xl mx-auto">
+        Voce agora conhece os frameworks de referencia para bots pessoais com IA e tem as ferramentas para construir o seu. Vamos revisar:
+      </p>
+
+      <div class="space-y-3 max-w-xl mx-auto mb-8">
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Bots pessoais sao assistentes always-on com persistencia, proatividade e integracao real</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">OpenClaw e o framework open source: Node.js, TypeScript, SQLite, extensivel via plugins</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">ClaudeClaw usa Claude Agent SDK com full tool access via Telegram</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Skills e MCP servers adicionam capacidades concretas: email, calendario, browser, tasks</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">CLAUDE.md define personalidade, memoria persiste contexto, scheduled tasks dao proatividade</span>
+        </div>
+        <div class="flex items-start space-x-3">
+          <span class="text-teal-400 mt-0.5">&#10003;</span>
+          <span class="text-neutral-300">Voce configurou seu proprio bot: repo clonado, .env configurado, skill criada, bot rodando</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-start items-center gap-4 pt-6 border-t border-teal-500/20">
+        <a href="modulo-5-4.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-300 rounded-lg transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Modulo 5.4</span>
+        </a>
+        <a href="index.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 rounded-lg transition-colors">
+          <span>Voltar para Trilha 5</span>
+        </a>
+        <a href="modulo-5-6.html" class="inline-flex items-center space-x-2 px-6 py-3 bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 rounded-lg transition-colors">
+          <span>Proximo Modulo</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-dark-600 py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+      <p>Imersao Vibe Coding - Modulo 5.5: OpenClaw e ClaudeClaw - 2026</p>
+      <p class="mt-2">
+        <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && !html.classList.contains('dark'))) {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
