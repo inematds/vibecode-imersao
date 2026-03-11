@@ -84,8 +84,13 @@
     html:not(.dark) .hover\:bg-rose-500\/10:hover { background-color: rgba(225, 29, 72, 0.08); }
     html:not(.dark) .hover\:bg-rose-500\/30:hover { background-color: rgba(225, 29, 72, 0.18); }
     html:not(.dark) .group:hover .group-hover\:text-rose-400 { color: #9f1239; }
-    /* Light mode - remove gradientes */
-    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    /* Light mode - gradientes claros */
+    html:not(.dark) [class*="from-emerald-900"] { background-image: linear-gradient(to bottom right, rgba(5, 150, 105, 0.08), #f9fafb, #f9fafb) !important; }
+    html:not(.dark) [class*="from-blue-900"] { background-image: linear-gradient(to bottom right, rgba(37, 99, 235, 0.08), #f9fafb, #f9fafb) !important; }
+    html:not(.dark) [class*="from-purple-900"] { background-image: linear-gradient(to bottom right, rgba(124, 58, 237, 0.08), #f9fafb, #f9fafb) !important; }
+    html:not(.dark) [class*="from-amber-900"] { background-image: linear-gradient(to bottom right, rgba(217, 119, 6, 0.08), #f9fafb, #f9fafb) !important; }
+    html:not(.dark) [class*="from-teal-900"] { background-image: linear-gradient(to bottom right, rgba(13, 148, 136, 0.08), #f9fafb, #f9fafb) !important; }
+    html:not(.dark) [class*="from-rose-900"] { background-image: linear-gradient(to bottom right, rgba(225, 29, 72, 0.08), #f9fafb, #f9fafb) !important; }
 
     /* Light mode - cores especiais */
     html:not(.dark) .text-primary { color: #a16207; }
